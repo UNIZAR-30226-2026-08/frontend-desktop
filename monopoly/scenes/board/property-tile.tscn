@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://cphy0sd46xk4g"]
+
+[ext_resource type="Script" uid="uid://ef41h6its1ss" path="res://scripts/property_tile.gd" id="1_llvu5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llvu5"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_llvu5"]
+thickness = 3
+
+[sub_resource type="LabelSettings" id="LabelSettings_gbap1"]
+line_spacing = -5.0
+font_size = 14
+font_color = Color(0, 0, 0, 1)
+
+[node name="PropertyTile" type="PanelContainer" unique_id=589823767]
+offset_right = 128.0
+offset_bottom = 168.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
+script = ExtResource("1_llvu5")
+property_color = Color(0, 0.7928104, 0.62456346, 1)
+
+[node name="VerticalAlign" type="VBoxContainer" parent="." unique_id=820974535]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PropertyColor" type="ColorRect" parent="VerticalAlign" unique_id=1370824229]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+color = Color(6.6420434e-06, 0.7986126, 0.6671381, 1)
+
+[node name="Separator" type="HSeparator" parent="VerticalAlign" unique_id=84761007]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_llvu5")
+
+[node name="TopSpace" type="Control" parent="VerticalAlign" unique_id=126052340]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="PropertyName" type="Label" parent="VerticalAlign" unique_id=893882161]
+layout_mode = 2
+text = "Property
+name"
+label_settings = SubResource("LabelSettings_gbap1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MidSpace" type="Control" parent="VerticalAlign" unique_id=950045876]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PropertyPrice" type="Label" parent="VerticalAlign" unique_id=835884986]
+layout_mode = 2
+text = "$999"
+label_settings = SubResource("LabelSettings_gbap1")
+horizontal_alignment = 1
+vertical_alignment = 1
