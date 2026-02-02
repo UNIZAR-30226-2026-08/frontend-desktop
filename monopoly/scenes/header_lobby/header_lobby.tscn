@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://rfdk552bt2kr"]
+
+[ext_resource type="Theme" uid="uid://c7jhkadlu31dt" path="res://styles/themes/black_text_bold.tres" id="1_k8ffq"]
+
+[node name="headerLobby" type="Control" unique_id=1441666460]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -573.0
+offset_right = 573.0
+offset_bottom = 100.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2033254830]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.5505388, 0.9973605, 0.5118112, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect" unique_id=1264101033]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="ColorRect/HBoxContainer" unique_id=1855525144]
+layout_mode = 2
+theme = ExtResource("1_k8ffq")
+theme_override_font_sizes/font_size = 90
+text = "MAGNATE"

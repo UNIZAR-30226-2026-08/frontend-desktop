@@ -1,0 +1,14 @@
+[gd_resource type="Theme" format=3 uid="uid://cju5l3mecasy1"]
+
+[ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior-Bold.ttf" id="1_waw30"]
+[ext_resource type="StyleBox" uid="uid://rd16gs68eqw6" path="res://styles/themes/button_themes/main_menu_button_hover_style.tres" id="2_ijlf3"]
+[ext_resource type="StyleBox" uid="uid://ougncj02wgi3" path="res://styles/themes/button_themes/main_menu_button_normal_style.tres" id="3_4dbse"]
+[ext_resource type="StyleBox" uid="uid://dedtdrxlvhx5k" path="res://styles/themes/button_themes/main_menu_button_pressed_style.tres" id="4_4dbse"]
+
+[resource]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/font_sizes/font_size = 80
+Button/fonts/font = ExtResource("1_waw30")
+Button/styles/hover = ExtResource("2_ijlf3")
+Button/styles/normal = ExtResource("3_4dbse")
+Button/styles/pressed = ExtResource("4_4dbse")

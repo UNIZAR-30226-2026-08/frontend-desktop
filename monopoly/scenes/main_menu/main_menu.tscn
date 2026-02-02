@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://dnk10rdihme8l"]
+
+[ext_resource type="PackedScene" uid="uid://rfdk552bt2kr" path="res://scenes/header_lobby/header_lobby.tscn" id="1_0ebjn"]
+[ext_resource type="Theme" uid="uid://cju5l3mecasy1" path="res://styles/themes/button_themes/main_menu_button_theme.tres" id="1_fsom3"]
+
+[node name="MainMenu" type="Node2D" unique_id=1680391977]
+
+[node name="VBoxGlobal" type="VBoxContainer" parent="." unique_id=448473936]
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="headerLobby" parent="VBoxGlobal" unique_id=1441666460 instance=ExtResource("1_0ebjn")]
+layout_mode = 2
+
+[node name="ColorRectContainer" type="ColorRect" parent="VBoxGlobal" unique_id=847571524]
+layout_mode = 2
+size_flags_vertical = 3
+color = Color(0.91228855, 0.912289, 0.9122887, 1)
+
+[node name="HorizontalContainer" type="HBoxContainer" parent="VBoxGlobal/ColorRectContainer" unique_id=2006290584]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="LeftVerticalContainer" type="VBoxContainer" parent="VBoxGlobal/ColorRectContainer/HorizontalContainer" unique_id=61594672]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OnlineGameButton" type="Button" parent="VBoxGlobal/ColorRectContainer/HorizontalContainer/LeftVerticalContainer" unique_id=1680962023]
+custom_minimum_size = Vector2(500, 230)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme = ExtResource("1_fsom3")
+text = "Partida Online"
+autowrap_mode = 2
+
+[node name="LocalGameButton" type="Button" parent="VBoxGlobal/ColorRectContainer/HorizontalContainer/LeftVerticalContainer" unique_id=66183050]
+custom_minimum_size = Vector2(500, 230)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme = ExtResource("1_fsom3")
+text = "Partida Local"
+autowrap_mode = 2
+
+[node name="RightVerticalContainer" type="VBoxContainer" parent="VBoxGlobal/ColorRectContainer/HorizontalContainer" unique_id=663279382]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CrearSalaButton" type="Button" parent="VBoxGlobal/ColorRectContainer/HorizontalContainer/RightVerticalContainer" unique_id=107913732]
+custom_minimum_size = Vector2(500, 230)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme = ExtResource("1_fsom3")
+text = "Crear una sala"
+autowrap_mode = 2
+
+[node name="UnirseSalaButton" type="Button" parent="VBoxGlobal/ColorRectContainer/HorizontalContainer/RightVerticalContainer" unique_id=485776712]
+custom_minimum_size = Vector2(500, 230)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme = ExtResource("1_fsom3")
+text = "Unirse a una sala"
+autowrap_mode = 2
