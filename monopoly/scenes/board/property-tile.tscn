@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://cphy0sd46xk4g"]
 
 [ext_resource type="Script" uid="uid://ef41h6its1ss" path="res://scripts/property_tile.gd" id="1_llvu5"]
+[ext_resource type="Theme" uid="uid://duwyynctj8dug" path="res://styles/themes/black_text_regular.tres" id="2_171pr"]
+[ext_resource type="Theme" uid="uid://c7jhkadlu31dt" path="res://styles/themes/black_text_bold.tres" id="2_gbap1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llvu5"]
 bg_color = Color(1, 1, 1, 1)
@@ -13,19 +15,14 @@ border_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_llvu5"]
 thickness = 3
 
-[sub_resource type="LabelSettings" id="LabelSettings_gbap1"]
-line_spacing = -5.0
-font_size = 14
-font_color = Color(0, 0, 0, 1)
-
 [node name="PropertyTile" type="PanelContainer" unique_id=589823767 node_paths=PackedStringArray("child_property_color", "child_property_name", "child_property_price")]
-offset_right = 128.0
-offset_bottom = 168.0
+offset_right = 130.0
+offset_bottom = 194.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
 script = ExtResource("1_llvu5")
 child_property_color = NodePath("VerticalAlign/PropertyColor")
-child_property_name = NodePath("VerticalAlign/PropertyName")
-child_property_price = NodePath("VerticalAlign/PropertyPrice")
+child_property_name = NodePath("VerticalAlign/InteriorAlign/PropertyName")
+child_property_price = NodePath("VerticalAlign/InteriorAlign/PropertyPrice")
 property_color = Color(0, 0.7928104, 0.62456346, 1)
 
 [node name="VerticalAlign" type="VBoxContainer" parent="." unique_id=820974535]
@@ -43,25 +40,30 @@ layout_mode = 2
 theme_override_constants/separation = 0
 theme_override_styles/separator = SubResource("StyleBoxLine_llvu5")
 
-[node name="TopSpace" type="Control" parent="VerticalAlign" unique_id=126052340]
+[node name="InteriorAlign" type="VBoxContainer" parent="VerticalAlign" unique_id=966003394]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TopSpace" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=144419178]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="PropertyName" type="Label" parent="VerticalAlign" unique_id=893882161]
+[node name="PropertyName" type="Label" parent="VerticalAlign/InteriorAlign" unique_id=893882161]
 layout_mode = 2
+theme = ExtResource("2_171pr")
 text = "Property
 name"
-label_settings = SubResource("LabelSettings_gbap1")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MidSpace" type="Control" parent="VerticalAlign" unique_id=950045876]
-custom_minimum_size = Vector2(0, 50)
+[node name="PropertyPrice" type="Label" parent="VerticalAlign/InteriorAlign" unique_id=835884986]
 layout_mode = 2
-
-[node name="PropertyPrice" type="Label" parent="VerticalAlign" unique_id=835884986]
-layout_mode = 2
+size_flags_vertical = 10
+theme = ExtResource("2_gbap1")
 text = "$999"
-label_settings = SubResource("LabelSettings_gbap1")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="BottomSpace" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=424352800]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
