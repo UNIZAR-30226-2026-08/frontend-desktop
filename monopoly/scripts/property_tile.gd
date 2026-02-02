@@ -1,9 +1,9 @@
 extends Container
 
 # Children references
-@onready var child_property_color: ColorRect = $VerticalAlign/PropertyColor
-@onready var child_property_name: Label = $VerticalAlign/PropertyName
-@onready var child_property_price: Label = $VerticalAlign/PropertyPrice
+@export var child_property_color: ColorRect
+@export var child_property_name: Label
+@export var child_property_price: Label
 
 # Exported values
 @export_multiline var property_name: String = "Property\nname"

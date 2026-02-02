@@ -18,11 +18,14 @@ line_spacing = -5.0
 font_size = 14
 font_color = Color(0, 0, 0, 1)
 
-[node name="PropertyTile" type="PanelContainer" unique_id=589823767]
+[node name="PropertyTile" type="PanelContainer" unique_id=589823767 node_paths=PackedStringArray("child_property_color", "child_property_name", "child_property_price")]
 offset_right = 128.0
 offset_bottom = 168.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
 script = ExtResource("1_llvu5")
+child_property_color = NodePath("VerticalAlign/PropertyColor")
+child_property_name = NodePath("VerticalAlign/PropertyName")
+child_property_price = NodePath("VerticalAlign/PropertyPrice")
 property_color = Color(0, 0.7928104, 0.62456346, 1)
 
 [node name="VerticalAlign" type="VBoxContainer" parent="." unique_id=820974535]
