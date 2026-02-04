@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://d0n0vsktkc5wr"
-path="res://.godot/imported/LTSuperior-Bold.ttf-5c42fcdd7f7280b1f6a9705b7bdecfb0.fontdata"
+uid="uid://conyee5yte71n"
+path="res://.godot/imported/LTSuperior-Italic.ttf-fdefcf0fe5e2b54a223cd3a4c80d55a0.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/LTSuperior-Bold.ttf"
-dest_files=["res://.godot/imported/LTSuperior-Bold.ttf-5c42fcdd7f7280b1f6a9705b7bdecfb0.fontdata"]
+source_file="res://assets/fonts/LTSuperior/LTSuperior-Italic.ttf"
+dest_files=["res://.godot/imported/LTSuperior-Italic.ttf-fdefcf0fe5e2b54a223cd3a4c80d55a0.fontdata"]
 
 [params]
 
