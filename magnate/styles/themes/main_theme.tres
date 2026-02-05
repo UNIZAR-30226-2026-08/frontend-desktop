@@ -1,22 +1,48 @@
 [gd_resource type="Theme" format=3 uid="uid://c1nforevd52yq"]
 
 [ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="1_ark2o"]
-[ext_resource type="FontFile" uid="uid://bc5ftjuoo88in" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBold.ttf" id="2_m4b6a"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ark2o"]
-bg_color = Color(0.9607843, 1, 0.9607843, 1)
+bg_color = Color(0.7607843, 0.9490196, 0.38039216, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 20.0
+expand_margin_top = 10.0
+expand_margin_right = 20.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m4b6a"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 7
+border_width_top = 7
+border_width_right = 7
+border_width_bottom = 7
+border_color = Color(1, 0.7882353, 0.44313726, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 20.0
+expand_margin_top = 10.0
+expand_margin_right = 20.0
+expand_margin_bottom = 10.0
 
 [resource]
 default_font = ExtResource("1_ark2o")
-Label/colors/font_color = Color(0.101960786, 0.14117648, 0.12941177, 1)
-Label/colors/font_outline_color = Color(0, 0, 0, 1)
-Label/colors/font_shadow_color = Color(0, 0, 0, 1)
-Label/constants/line_spacing = 0
-Label/constants/outline_size = 0
-Label/constants/shadow_offset_x = 0
-Label/constants/shadow_offset_y = 0
-Label/constants/shadow_outline_size = 0
-Label/fonts/font = ExtResource("2_m4b6a")
-Label/styles/focus = null
-Label/styles/normal = null
-Panel/styles/panel = SubResource("StyleBoxFlat_ark2o")
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/font_sizes/font_size = 70
+Button/styles/focus = SubResource("StyleBoxFlat_ark2o")
+Button/styles/hover = SubResource("StyleBoxFlat_ark2o")
+Button/styles/normal = SubResource("StyleBoxFlat_ark2o")
+Button/styles/pressed = SubResource("StyleBoxFlat_ark2o")
+LineEdit/colors/caret_color = Color(0.28627452, 0.3137255, 0.34117648, 1)
+LineEdit/colors/font_color = Color(0.28627452, 0.3137255, 0.34117648, 1)
+LineEdit/colors/font_placeholder_color = Color(0.4717685, 0.50803894, 0.5443705, 1)
+LineEdit/colors/selection_color = Color(0.7607843, 0.9490196, 0.38039216, 1)
+LineEdit/constants/caret_width = 5
+LineEdit/font_sizes/font_size = 60
+LineEdit/styles/focus = SubResource("StyleBoxFlat_m4b6a")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_m4b6a")

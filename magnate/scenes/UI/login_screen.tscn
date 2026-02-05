@@ -1,0 +1,278 @@
+[gd_scene format=3 uid="uid://2gid2sbx7dqf"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_pbf7n"]
+[ext_resource type="Texture2D" uid="uid://c0towcf10ju02" path="res://assets/images/bg_city.jpg" id="2_kwpom"]
+[ext_resource type="Texture2D" uid="uid://dgsqcv5ujqxjn" path="res://assets/icons/lock_closed.svg" id="3_kwpom"]
+[ext_resource type="Texture2D" uid="uid://byy5fxv28tjh0" path="res://assets/icons/pawn.svg" id="3_xuk5p"]
+[ext_resource type="Script" uid="uid://dayb80a6dos6k" path="res://scripts/button_tween.gd" id="5_w6wvi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nj82m"]
+bg_color = Color(0.19607843, 0.19607843, 0.19607843, 0.39215687)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xuk5p"]
+bg_color = Color(0.33333334, 0.54509807, 0.43137255, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.999999, 0.9996125, 0.8273123, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w6wvi"]
+bg_color = Color(0.19607843, 0.19607843, 0.19607843, 0.39215687)
+border_color = Color(0.19607843, 0.19607843, 0.19607843, 0.39215687)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 20.0
+expand_margin_top = 10.0
+expand_margin_right = 20.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0krvm"]
+bg_color = Color(0.6043939, 0.7776508, 0.20972613, 1)
+border_color = Color(0.19607843, 0.19607843, 0.19607843, 0.39215687)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 20.0
+expand_margin_top = 10.0
+expand_margin_right = 20.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_52kn4"]
+bg_color = Color(0.86753684, 0.98004586, 0.68707293, 1)
+border_color = Color(0.19607843, 0.19607843, 0.19607843, 0.39215687)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 20.0
+expand_margin_top = 10.0
+expand_margin_right = 20.0
+expand_margin_bottom = 10.0
+
+[node name="LoginScreen" type="TextureRect" unique_id=670991787]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_pbf7n")
+texture = ExtResource("2_kwpom")
+expand_mode = 1
+
+[node name="BackgroundTone" type="ColorRect" parent="." unique_id=445554045]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.33333334, 0.54509807, 0.43137255, 0.8627451)
+
+[node name="PanelShade" type="Panel" parent="BackgroundTone" unique_id=1549646530]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -460.0
+offset_top = -76.0
+offset_right = 460.0
+offset_bottom = 404.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nj82m")
+
+[node name="MainPanel" type="Panel" parent="BackgroundTone" unique_id=571780339]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -460.0
+offset_top = -90.0
+offset_right = 460.0
+offset_bottom = 390.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xuk5p")
+
+[node name="MainMargin" type="MarginContainer" parent="BackgroundTone/MainPanel" unique_id=1244429430]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 70
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 70
+theme_override_constants/margin_bottom = 60
+
+[node name="MainVBox" type="VBoxContainer" parent="BackgroundTone/MainPanel/MainMargin" unique_id=1062500680]
+layout_mode = 2
+theme_override_constants/separation = 60
+alignment = 1
+
+[node name="NameInput" type="LineEdit" parent="BackgroundTone/MainPanel/MainMargin/MainVBox" unique_id=279176434]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../PasswordInput")
+placeholder_text = "Nombre"
+context_menu_enabled = false
+emoji_menu_enabled = false
+middle_mouse_paste_enabled = false
+right_icon = ExtResource("3_xuk5p")
+
+[node name="Shadow" type="Panel" parent="BackgroundTone/MainPanel/MainMargin/MainVBox/NameInput" unique_id=208167001]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 9.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_w6wvi")
+
+[node name="PasswordInput" type="LineEdit" parent="BackgroundTone/MainPanel/MainMargin/MainVBox" unique_id=1591297535]
+layout_mode = 2
+placeholder_text = "Contraseña"
+context_menu_enabled = false
+emoji_menu_enabled = false
+middle_mouse_paste_enabled = false
+secret = true
+right_icon = ExtResource("3_kwpom")
+
+[node name="Shadow" type="Panel" parent="BackgroundTone/MainPanel/MainMargin/MainVBox/PasswordInput" unique_id=54196152]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 9.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../../NameInput")
+focus_neighbor_bottom = NodePath("../../HBoxContainer/Button")
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_w6wvi")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BackgroundTone/MainPanel/MainMargin/MainVBox" unique_id=1411265556]
+layout_mode = 2
+alignment = 1
+
+[node name="LeftSpace" type="Control" parent="BackgroundTone/MainPanel/MainMargin/MainVBox/HBoxContainer" unique_id=2041121676]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="BackgroundTone/MainPanel/MainMargin/MainVBox/HBoxContainer" unique_id=404122092]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_neighbor_top = NodePath("../../PasswordInput")
+text = "Entrar"
+script = ExtResource("5_w6wvi")
+
+[node name="LowerShadow" type="Panel" parent="BackgroundTone/MainPanel/MainMargin/MainVBox/HBoxContainer/Button" unique_id=969037069]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0krvm")
+
+[node name="UpperShadow" type="Panel" parent="BackgroundTone/MainPanel/MainMargin/MainVBox/HBoxContainer/Button" unique_id=1925055236]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_52kn4")
+
+[node name="ButtonTextShadow" type="Label" parent="BackgroundTone/MainPanel/MainMargin/MainVBox/HBoxContainer/Button" unique_id=1097064913]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.6039216, 0.7764706, 0.20784314, 1)
+theme_override_font_sizes/font_size = 70
+text = "Entrar"
+horizontal_alignment = 1
+
+[node name="ButtonText" type="Label" parent="BackgroundTone/MainPanel/MainMargin/MainVBox/HBoxContainer/Button" unique_id=1092833723]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 70
+text = "Entrar"
+horizontal_alignment = 1
+
+[node name="RightSpace" type="Control" parent="BackgroundTone/MainPanel/MainMargin/MainVBox/HBoxContainer" unique_id=583771450]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TempLogoShadow" type="Label" parent="BackgroundTone" unique_id=1878417644]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -411.5
+offset_top = 150.0
+offset_right = 411.5
+offset_bottom = 320.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.7107477, 0.49731326, 3.85046e-07, 1)
+theme_override_font_sizes/font_size = 170
+text = "MAGNATE"
+
+[node name="TempLogo" type="Label" parent="BackgroundTone" unique_id=1796577553]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -411.5
+offset_top = 140.0
+offset_right = 411.5
+offset_bottom = 310.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.7882353, 0.44313726, 1)
+theme_override_font_sizes/font_size = 170
+text = "MAGNATE"
