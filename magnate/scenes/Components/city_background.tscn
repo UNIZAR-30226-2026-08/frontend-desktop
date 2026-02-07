@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://vxxc8m2hs5mg"]
+
+[ext_resource type="Texture2D" uid="uid://c0towcf10ju02" path="res://assets/images/bg_city.jpg" id="1_tdgs2"]
+[ext_resource type="Shader" uid="uid://ck0l6ykpvlid7" path="res://styles/shaders/blur.gdshader" id="2_46tea"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vnyr4"]
+shader = ExtResource("2_46tea")
+shader_parameter/lod = 2.000000095
+
+[node name="CityBackground" type="TextureRect" unique_id=1440435364]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_tdgs2")
+expand_mode = 1
+
+[node name="BackgroundBlur" type="ColorRect" parent="." unique_id=1155217013]
+material = SubResource("ShaderMaterial_vnyr4")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.33333334, 0.54509807, 0.43137255, 0.39215687)
