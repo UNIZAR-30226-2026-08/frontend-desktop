@@ -1,15 +1,8 @@
 [gd_scene format=3 uid="uid://ce2ydpyu4fdey"]
 
-[ext_resource type="Shader" uid="uid://ho1l1vbefaye" path="res://styles/shaders/striped-background.gdshader" id="1_hyj5u"]
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_qgcvq"]
+[ext_resource type="PackedScene" uid="uid://vxxc8m2hs5mg" path="res://scenes/Components/city_background.tscn" id="2_85qbq"]
 [ext_resource type="Shader" uid="uid://b8swka4jmmsdt" path="res://styles/shaders/wavy-text.gdshader" id="2_q74op"]
-[ext_resource type="Texture2D" uid="uid://boy31313b634l" path="res://icon.svg" id="4_aecpy"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ka7x1"]
-shader = ExtResource("1_hyj5u")
-shader_parameter/color1 = Color(0.9607843, 1, 0.9607843, 1)
-shader_parameter/color2 = Color(0.9607843, 1, 0.9607843, 0.9411765)
-shader_parameter/count = 10.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_um6ps"]
 shader = ExtResource("2_q74op")
@@ -18,13 +11,15 @@ shader_parameter/speed = 5.0
 shader_parameter/frequency = 5.0
 
 [node name="LoadingScreen" type="Panel" unique_id=1028263792]
-material = SubResource("ShaderMaterial_ka7x1")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_qgcvq")
+
+[node name="CityBackground" parent="." unique_id=1440435364 instance=ExtResource("2_85qbq")]
+layout_mode = 1
 
 [node name="LoadingText" type="Label" parent="." unique_id=126607555]
 material = SubResource("ShaderMaterial_um6ps")
@@ -43,13 +38,30 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 120
 text = "Cargando..."
 
-[node name="Logo" type="TextureRect" parent="." unique_id=1514253657]
+[node name="TempLogoShadow" type="Label" parent="." unique_id=963870513]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
+offset_left = -411.5
+offset_top = 150.0
+offset_right = 411.5
+offset_bottom = 320.0
 grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("4_aecpy")
+theme_override_colors/font_color = Color(0.7107477, 0.49731326, 3.85046e-07, 1)
+theme_override_font_sizes/font_size = 170
+text = "MAGNATE"
+
+[node name="TempLogo" type="Label" parent="." unique_id=483007764]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -411.5
+offset_top = 140.0
+offset_right = 411.5
+offset_bottom = 310.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.7882353, 0.44313726, 1)
+theme_override_font_sizes/font_size = 170
+text = "MAGNATE"
