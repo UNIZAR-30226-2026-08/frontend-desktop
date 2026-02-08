@@ -1,23 +1,11 @@
 [gd_scene format=3 uid="uid://2gid2sbx7dqf"]
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_pbf7n"]
-[ext_resource type="PackedScene" uid="uid://vxxc8m2hs5mg" path="res://scenes/Components/city_background.tscn" id="2_w6wvi"]
+[ext_resource type="PackedScene" uid="uid://vxxc8m2hs5mg" path="res://scenes/components/city_background.tscn" id="2_w6wvi"]
 [ext_resource type="Texture2D" uid="uid://dgsqcv5ujqxjn" path="res://assets/icons/lock_closed.svg" id="3_kwpom"]
 [ext_resource type="Texture2D" uid="uid://byy5fxv28tjh0" path="res://assets/icons/pawn.svg" id="3_xuk5p"]
-[ext_resource type="PackedScene" uid="uid://5pilfc0bnc3" path="res://scenes/Components/lineedit_with_shadow.tscn" id="4_xuk5p"]
-[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/Components/animated_button.tscn" id="6_w6wvi"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xuk5p"]
-bg_color = Color(0.33333334, 0.54509807, 0.43137255, 1)
-border_width_left = 10
-border_width_top = 10
-border_width_right = 10
-border_width_bottom = 10
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
+[ext_resource type="PackedScene" uid="uid://5pilfc0bnc3" path="res://scenes/components/lineedit_with_shadow.tscn" id="4_xuk5p"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="6_w6wvi"]
 
 [node name="LoginScreen" type="Control" unique_id=734078795]
 layout_mode = 3
@@ -31,7 +19,7 @@ theme = ExtResource("1_pbf7n")
 [node name="Background" parent="." unique_id=1440435364 instance=ExtResource("2_w6wvi")]
 layout_mode = 1
 
-[node name="MainPanel" type="Panel" parent="." unique_id=571780339]
+[node name="MainPanel" type="PanelContainer" parent="." unique_id=1164785660]
 layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
@@ -43,15 +31,9 @@ offset_right = 460.0
 offset_bottom = 390.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_xuk5p")
 
 [node name="MainMargin" type="MarginContainer" parent="MainPanel" unique_id=1244429430]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/margin_left = 70
 theme_override_constants/margin_top = 60
 theme_override_constants/margin_right = 70
@@ -64,6 +46,8 @@ alignment = 1
 
 [node name="NameInputWithShadow" parent="MainPanel/MainMargin/MainVBox" unique_id=1768335443 instance=ExtResource("4_xuk5p")]
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../PassInputWithShadow")
+focus_next = NodePath("../PassInputWithShadow")
 placeholder_text = "Nombre"
 middle_mouse_paste_enabled = false
 drag_and_drop_selection_enabled = false
@@ -71,6 +55,10 @@ right_icon = ExtResource("3_xuk5p")
 
 [node name="PassInputWithShadow" parent="MainPanel/MainMargin/MainVBox" unique_id=235522331 instance=ExtResource("4_xuk5p")]
 layout_mode = 2
+focus_neighbor_top = NodePath("../NameInputWithShadow")
+focus_neighbor_bottom = NodePath("../HBoxContainer/AnimatedButton")
+focus_next = NodePath("../HBoxContainer/AnimatedButton")
+focus_previous = NodePath("../NameInputWithShadow")
 placeholder_text = "Contraseña"
 middle_mouse_paste_enabled = false
 drag_and_drop_selection_enabled = false
@@ -87,6 +75,9 @@ size_flags_horizontal = 3
 
 [node name="AnimatedButton" parent="MainPanel/MainMargin/MainVBox/HBoxContainer" unique_id=175575919 instance=ExtResource("6_w6wvi")]
 layout_mode = 2
+focus_neighbor_top = NodePath("../../PassInputWithShadow")
+focus_next = NodePath("../../NameInputWithShadow")
+focus_previous = NodePath("../../PassInputWithShadow")
 
 [node name="RightSpace" type="Control" parent="MainPanel/MainMargin/MainVBox/HBoxContainer" unique_id=583771450]
 layout_mode = 2

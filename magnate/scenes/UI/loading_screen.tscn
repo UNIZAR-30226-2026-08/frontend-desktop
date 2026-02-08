@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://ce2ydpyu4fdey"]
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_qgcvq"]
-[ext_resource type="PackedScene" uid="uid://vxxc8m2hs5mg" path="res://scenes/Components/city_background.tscn" id="2_85qbq"]
-[ext_resource type="Shader" uid="uid://b8swka4jmmsdt" path="res://styles/shaders/wavy-text.gdshader" id="2_q74op"]
+[ext_resource type="PackedScene" uid="uid://vxxc8m2hs5mg" path="res://scenes/components/city_background.tscn" id="2_85qbq"]
+[ext_resource type="Shader" uid="uid://b8swka4jmmsdt" path="res://styles/shaders/wavy.gdshader" id="2_q74op"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_um6ps"]
 shader = ExtResource("2_q74op")

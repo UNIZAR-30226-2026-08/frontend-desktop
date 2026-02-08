@@ -1,11 +1,15 @@
 extends Button
 
+@export_category("Texto")
+@export var titulo: String = ""
+@export var descripcion: String = ""
+
 @export_category("Animation")
 @export var hover_scale: Vector2 = Vector2(1.1, 1.1)
 @export var pressed_scale: Vector2 = Vector2(0.9, 0.9)
 
-@onready var title: Label = $ButtonText
-@onready var title_shadow: Label = $ButtonTextShadow
+@onready var title: Label = $Margin/MainVBox/Title
+@onready var description: Label = $Margin/MainVBox/Description
 @onready var sfx: AudioStreamPlayer = $ClickSFXStreamPlayer
 
 func _ready() -> void:
@@ -17,8 +21,8 @@ func _ready() -> void:
 	pressed.connect(_button_pressed)
 	
 	# Set text
-	title.text = self.text
-	title_shadow.text = self.text
+	title.text = titulo
+	description.text = descripcion
 	
 	call_deferred("_init_pivot")
 
