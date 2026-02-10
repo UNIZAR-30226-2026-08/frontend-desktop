@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TipData" format=3 uid="uid://5j2b8t0de47o"]
+
+[ext_resource type="Script" uid="uid://dn5v3dwxpk883" path="res://scripts/tips_scripts/tip_data.gd" id="1_3i3pq"]
+
+[resource]
+script = ExtResource("1_3i3pq")
+number = "TIP 5"
+title = "Reserva de Emergencia55"
+description = "Nunca gastes todo tu dinero. Mantén siempre reserva para rentas inesperadas y oportunidades.555555"
+metadata/_custom_type_script = "uid://dn5v3dwxpk883"
