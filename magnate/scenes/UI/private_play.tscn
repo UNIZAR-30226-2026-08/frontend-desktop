@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dwichb2a47x0e"]
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_8jusn"]
-[ext_resource type="Shader" uid="uid://dk6h3t6f17nd" path="res://styles/shaders/strip_background.gdshader" id="1_mj240"]
+[ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="1_mj240"]
 [ext_resource type="Script" uid="uid://ci5kg55pf7h5p" path="res://scripts/private_play.gd" id="2_nluy2"]
 [ext_resource type="PackedScene" uid="uid://5pilfc0bnc3" path="res://scenes/components/lineedit_with_shadow.tscn" id="2_stftt"]
 [ext_resource type="PackedScene" uid="uid://b75mpeiodd857" path="res://scenes/components/animated_bigbutton.tscn" id="3_2c3ea"]
@@ -9,20 +9,13 @@
 [ext_resource type="Texture2D" uid="uid://b22yts8cv50mi" path="res://assets/images/join.png" id="4_8jusn"]
 [ext_resource type="Texture2D" uid="uid://cwufyndwm5cw8" path="res://assets/images/host.png" id="6_2c3ea"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_g2gpt"]
-shader = ExtResource("1_mj240")
-shader_parameter/color_b = Color(0.95, 0.95, 0.95, 1)
-shader_parameter/color_a = Color(1, 1, 1, 1)
-shader_parameter/divisions = 20.0
-shader_parameter/angle = 0.5
-
 [sub_resource type="ButtonGroup" id="ButtonGroup_2c3ea"]
 resource_local_to_scene = false
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ge38p"]
 
 [node name="PrivatePlay" type="Panel" unique_id=1569321352]
-material = SubResource("ShaderMaterial_g2gpt")
+material = ExtResource("1_mj240")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
