@@ -94,6 +94,7 @@ Button/styles/focus = SubResource("StyleBoxFlat_ark2o")
 Button/styles/hover = SubResource("StyleBoxFlat_ark2o")
 Button/styles/normal = SubResource("StyleBoxFlat_ark2o")
 Button/styles/pressed = SubResource("StyleBoxFlat_ark2o")
+Label/colors/primary_color = Color(0.24705882, 0.6392157, 0.3019608, 1)
 Label/font_sizes/font_size = 70
 LineEdit/colors/caret_color = Color(0.28627452, 0.3137255, 0.34117648, 1)
 LineEdit/colors/font_color = Color(0.28627452, 0.3137255, 0.34117648, 1)
