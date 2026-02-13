@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://baktdl26t2tmk"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_hwfsq"]
+[ext_resource type="FontFile" uid="uid://cel767gfqwf3q" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBoldItalic.ttf" id="2_eiykd"]
+
+[node name="LogoShadow" type="Label" unique_id=1697976471]
+offset_right = 831.0
+offset_bottom = 170.0
+theme = ExtResource("1_hwfsq")
+theme_override_colors/font_color = Color(0.7107477, 0.49731326, 3.85046e-07, 1)
+theme_override_fonts/font = ExtResource("2_eiykd")
+theme_override_font_sizes/font_size = 170
+text = "MAGNATE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Logo" type="Label" parent="." unique_id=1131835336]
+layout_mode = 1
+offset_top = -6.0
+offset_right = 831.0
+offset_bottom = 164.0
+theme_override_colors/font_color = Color(1, 0.7882353, 0.44313726, 1)
+theme_override_fonts/font = ExtResource("2_eiykd")
+theme_override_font_sizes/font_size = 170
+text = "MAGNATE"
+horizontal_alignment = 1
+vertical_alignment = 1

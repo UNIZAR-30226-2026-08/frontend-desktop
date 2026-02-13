@@ -2,6 +2,7 @@ extends Panel
 
 @onready var tab_container: TabContainer = $VBoxContainer/TabContainer
 @onready var join_button: Button = $VBoxContainer/HBoxContainer/JoinButton
+@onready var confirm_button: Button = $VBoxContainer/ConfirmButton
 var button_group: ButtonGroup
 
 func _ready() -> void:
@@ -9,6 +10,7 @@ func _ready() -> void:
 	button_group.pressed.connect(_change_option)
 	
 func _change_option(button: BaseButton) -> void:
+	confirm_button.disabled = false
 	if button.name == "JoinButton":
 		tab_container.current_tab = 0
 	else:

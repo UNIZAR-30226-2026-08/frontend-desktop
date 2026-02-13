@@ -2,9 +2,20 @@
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_hhlk2"]
 [ext_resource type="Script" uid="uid://jm1ec775nics" path="res://scripts/bigbutton_tween.gd" id="2_6drt8"]
+[ext_resource type="FontFile" uid="uid://cel767gfqwf3q" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBoldItalic.ttf" id="3_clgmd"]
 [ext_resource type="AudioStream" uid="uid://dv18pd6ydtscm" path="res://assets/audio/click.ogg" id="3_fpxqh"]
+[ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="4_p1yym"]
+[ext_resource type="Shader" uid="uid://d65ikkdxjpva" path="res://styles/shaders/color_fade.gdshader" id="4_v0gxr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p1yym"]
+shader = ExtResource("4_v0gxr")
+shader_parameter/split_point = 0.3
+shader_parameter/smoothness = 1.0
+shader_parameter/fade_color = Color(0, 0, 0, 0.1)
+shader_parameter/exclude_white = true
 
 [node name="BigButton" type="Button" unique_id=2008779922]
+material = SubResource("ShaderMaterial_p1yym")
 custom_minimum_size = Vector2(500, 250)
 offset_right = 500.0
 offset_bottom = 250.0
@@ -34,13 +45,16 @@ alignment = 1
 
 [node name="Title" type="Label" parent="Margin/MainVBox" unique_id=55058797]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_clgmd")
 text = "Título"
 horizontal_alignment = 1
 
 [node name="Description" type="Label" parent="Margin/MainVBox" unique_id=839150126]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 35
+theme_override_colors/font_color = Color(1, 1, 1, 0.6)
+theme_override_fonts/font = ExtResource("4_p1yym")
+theme_override_font_sizes/font_size = 25
 text = "Descripción"
 horizontal_alignment = 1
 autowrap_mode = 3

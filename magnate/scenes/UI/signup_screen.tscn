@@ -3,21 +3,12 @@
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_7bo0m"]
 [ext_resource type="PackedScene" uid="uid://vxxc8m2hs5mg" path="res://scenes/components/city_background.tscn" id="2_udk7o"]
 [ext_resource type="PackedScene" uid="uid://5pilfc0bnc3" path="res://scenes/components/lineedit_with_shadow.tscn" id="3_malkv"]
-[ext_resource type="Texture2D" uid="uid://byy5fxv28tjh0" path="res://assets/icons/pawn.svg" id="4_2icjf"]
-[ext_resource type="Texture2D" uid="uid://dgsqcv5ujqxjn" path="res://assets/icons/lock_closed.svg" id="5_ig0j3"]
+[ext_resource type="PackedScene" uid="uid://baktdl26t2tmk" path="res://scenes/components/logo.tscn" id="3_udk7o"]
+[ext_resource type="Texture2D" uid="uid://d1ii7ia4skoem" path="res://assets/icons/single_player.svg" id="5_2icjf"]
+[ext_resource type="Texture2D" uid="uid://d2f4u0460actv" path="res://assets/icons/email.svg" id="5_malkv"]
+[ext_resource type="Texture2D" uid="uid://k0g5efr3ougq" path="res://assets/icons/lock.svg" id="6_2icjf"]
 [ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="6_5fmy7"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xuk5p"]
-bg_color = Color(0.33333334, 0.54509807, 0.43137255, 1)
-border_width_left = 10
-border_width_top = 10
-border_width_right = 10
-border_width_bottom = 10
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
+[ext_resource type="Texture2D" uid="uid://cgol567hbives" path="res://assets/icons/key.svg" id="8_ig0j3"]
 
 [node name="LoginScreen" type="Control" unique_id=734078795]
 layout_mode = 3
@@ -31,108 +22,98 @@ theme = ExtResource("1_7bo0m")
 [node name="Background" parent="." unique_id=1440435364 instance=ExtResource("2_udk7o")]
 layout_mode = 1
 
-[node name="MainPanel" type="PanelContainer" parent="." unique_id=160251842]
-layout_mode = 0
+[node name="MainVBox" type="VBoxContainer" parent="." unique_id=1062500680]
+layout_mode = 1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -460.0
-offset_top = -190.0
-offset_right = 460.0
-offset_bottom = 430.0
+offset_left = -415.5
+offset_top = -274.0
+offset_right = 415.5
+offset_bottom = 274.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_xuk5p")
-
-[node name="MainMargin" type="MarginContainer" parent="MainPanel" unique_id=1244429430]
-layout_mode = 2
-theme_override_constants/margin_left = 70
-theme_override_constants/margin_top = 60
-theme_override_constants/margin_right = 70
-theme_override_constants/margin_bottom = 60
-
-[node name="MainVBox" type="VBoxContainer" parent="MainPanel/MainMargin" unique_id=1062500680]
-layout_mode = 2
 theme_override_constants/separation = 60
 alignment = 1
 
-[node name="NameInputWithShadow" parent="MainPanel/MainMargin/MainVBox" unique_id=1768335443 instance=ExtResource("3_malkv")]
+[node name="Logo" parent="MainVBox" unique_id=1697976471 instance=ExtResource("3_udk7o")]
 layout_mode = 2
-focus_neighbor_bottom = NodePath("../PassInputWithShadow")
-focus_next = NodePath("../PassInputWithShadow")
-placeholder_text = "Nombre"
+
+[node name="LogoSpacer" type="Control" parent="MainVBox" unique_id=802384105]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="UsernameInput" parent="MainVBox" unique_id=1768335443 instance=ExtResource("3_malkv")]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../PassInput")
+focus_next = NodePath("../PassInput")
+placeholder_text = "Nombre de usuario"
 middle_mouse_paste_enabled = false
 drag_and_drop_selection_enabled = false
-right_icon = ExtResource("4_2icjf")
+right_icon = ExtResource("5_2icjf")
+icon_expand_mode = 2
+right_icon_scale = 0.8
 
-[node name="PassInputWithShadow" parent="MainPanel/MainMargin/MainVBox" unique_id=235522331 instance=ExtResource("3_malkv")]
+[node name="MailInput" parent="MainVBox" unique_id=1872970268 instance=ExtResource("3_malkv")]
 layout_mode = 2
-focus_neighbor_top = NodePath("../NameInputWithShadow")
-focus_neighbor_bottom = NodePath("../RepeatPassInputWithShadow")
-focus_next = NodePath("../RepeatPassInputWithShadow")
-focus_previous = NodePath("../NameInputWithShadow")
+focus_neighbor_bottom = NodePath("../PassInput")
+focus_next = NodePath("../PassInput")
+placeholder_text = "Email"
+middle_mouse_paste_enabled = false
+drag_and_drop_selection_enabled = false
+right_icon = ExtResource("5_malkv")
+icon_expand_mode = 2
+right_icon_scale = 0.8
+
+[node name="PassInput" parent="MainVBox" unique_id=235522331 instance=ExtResource("3_malkv")]
+layout_mode = 2
+focus_neighbor_top = NodePath("../MailInput")
+focus_neighbor_bottom = NodePath("../HBoxContainer/AnimatedButton")
+focus_next = NodePath("../HBoxContainer/AnimatedButton")
+focus_previous = NodePath("../MailInput")
 placeholder_text = "Contraseña"
 middle_mouse_paste_enabled = false
 drag_and_drop_selection_enabled = false
 secret = true
-right_icon = ExtResource("5_ig0j3")
+right_icon = ExtResource("6_2icjf")
+icon_expand_mode = 2
+right_icon_scale = 0.8
 
-[node name="RepeatPassInputWithShadow" parent="MainPanel/MainMargin/MainVBox" unique_id=34984298 instance=ExtResource("3_malkv")]
+[node name="ConfirmPassInput" parent="MainVBox" unique_id=1604858281 instance=ExtResource("3_malkv")]
 layout_mode = 2
-focus_neighbor_top = NodePath("../PassInputWithShadow")
+focus_neighbor_top = NodePath("../MailInput")
 focus_neighbor_bottom = NodePath("../HBoxContainer/AnimatedButton")
 focus_next = NodePath("../HBoxContainer/AnimatedButton")
-focus_previous = NodePath("../PassInputWithShadow")
-placeholder_text = "Repetir contraseña"
+focus_previous = NodePath("../MailInput")
+placeholder_text = "Confirma contraseña"
 middle_mouse_paste_enabled = false
 drag_and_drop_selection_enabled = false
 secret = true
-right_icon = ExtResource("5_ig0j3")
+right_icon = ExtResource("8_ig0j3")
+icon_expand_mode = 2
+right_icon_scale = 0.8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainPanel/MainMargin/MainVBox" unique_id=1411265556]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainVBox" unique_id=1411265556]
 layout_mode = 2
 alignment = 1
 
-[node name="LeftSpace" type="Control" parent="MainPanel/MainMargin/MainVBox/HBoxContainer" unique_id=2041121676]
+[node name="LeftSpace" type="Control" parent="MainVBox/HBoxContainer" unique_id=2041121676]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="AnimatedButton" parent="MainPanel/MainMargin/MainVBox/HBoxContainer" unique_id=175575919 instance=ExtResource("6_5fmy7")]
+[node name="AnimatedButton" parent="MainVBox/HBoxContainer" unique_id=175575919 instance=ExtResource("6_5fmy7")]
+custom_minimum_size = Vector2(250, 60)
 layout_mode = 2
-focus_neighbor_top = NodePath("../../RepeatPassInputWithShadow")
-focus_next = NodePath("../../NameInputWithShadow")
-focus_previous = NodePath("../../RepeatPassInputWithShadow")
+focus_neighbor_top = NodePath("../../PassInput")
+focus_next = NodePath("../../MailInput")
+focus_previous = NodePath("../../PassInput")
+text = "REGISTRARSE"
 
-[node name="RightSpace" type="Control" parent="MainPanel/MainMargin/MainVBox/HBoxContainer" unique_id=583771450]
+[node name="RightSpace" type="Control" parent="MainVBox/HBoxContainer" unique_id=583771450]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="TempLogoShadow" type="Label" parent="." unique_id=1878417644]
-layout_mode = 0
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -411.5
-offset_top = 150.0
-offset_right = 411.5
-offset_bottom = 320.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0.7107477, 0.49731326, 3.85046e-07, 1)
-theme_override_font_sizes/font_size = 170
-text = "MAGNATE"
-
-[node name="TempLogo" type="Label" parent="." unique_id=1796577553]
-layout_mode = 0
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -411.5
-offset_top = 140.0
-offset_right = 411.5
-offset_bottom = 310.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(1, 0.7882353, 0.44313726, 1)
-theme_override_font_sizes/font_size = 170
-text = "MAGNATE"
 
 [node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=189878863]
 bus = &"Music"
