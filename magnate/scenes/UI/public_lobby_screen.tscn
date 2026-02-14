@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://bg4ecfpwnrfii" path="res://scripts/lobby_scripts/lobby_screen.gd" id="1_j2ys1"]
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="2_j2ys1"]
 [ext_resource type="PackedScene" uid="uid://ciy5qxnho1tlx" path="res://scenes/components/player_row.tscn" id="2_lps85"]
+[ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="5_uk2wy"]
 
 [node name="public_lobby_screen" type="Control" unique_id=1463536821]
 layout_mode = 3
@@ -33,22 +34,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Header" type="ColorRect" parent="VBoxContainer" unique_id=1927775776]
-custom_minimum_size = Vector2(0, 200)
+[node name="Header" parent="VBoxContainer" unique_id=93527095 instance=ExtResource("5_uk2wy")]
 layout_mode = 2
-color = Color(0.33333334, 0.54509807, 0.43137255, 1)
-
-[node name="screen_title" type="Label" parent="VBoxContainer/Header" unique_id=2113391653]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("2_j2ys1")
-text = "Sala pública"
-horizontal_alignment = 1
-vertical_alignment = 1
+title = "Sala pública"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=379726644]
 layout_mode = 2

@@ -2,28 +2,16 @@
 
 [ext_resource type="Script" uid="uid://crf2y21jgte7c" path="res://scripts/header.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://cwxhcbn6fvsiy" path="res://assets/icons/money.svg" id="2_pattern"]
-[ext_resource type="Texture2D" uid="uid://c13n3umufco8c" path="res://assets/icons/back-arrow1.svg" id="3_icon"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_circle"]
-bg_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
-shadow_color = Color(0, 0, 0, 0.25)
-shadow_size = 1
-shadow_offset = Vector2(0, 4)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_focus"]
+[ext_resource type="PackedScene" uid="uid://cpo0vkocad1pp" path="res://scenes/components/animated_back_button.tscn" id="3_8iqth"]
 
 [node name="Header" type="ColorRect" unique_id=93527095]
 clip_contents = true
-custom_minimum_size = Vector2(0, 200)
+custom_minimum_size = Vector2(0, 180)
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 200.0
+offset_bottom = 180.0
 grow_horizontal = 2
-color = Color(0.247059, 0.639216, 0.301961, 1)
+color = Color(0, 0.5411765, 0.36078432, 1)
 script = ExtResource("1_script")
 
 [node name="Pattern" type="TextureRect" parent="." unique_id=1046291704]
@@ -65,45 +53,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 24
 
-[node name="BackButtonWrapper" type="Control" parent="Layout/LeftCol/Margin" unique_id=350243866]
+[node name="BackButton" parent="Layout/LeftCol/Margin" unique_id=175575919 instance=ExtResource("3_8iqth")]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-
-[node name="BackButton" type="Button" parent="Layout/LeftCol/Margin/BackButtonWrapper" unique_id=362825959]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(96, 96)
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -48.0
-offset_right = 96.0
-offset_bottom = 48.0
-grow_vertical = 2
-pivot_offset = Vector2(48, 48)
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_circle")
-theme_override_styles/hover = SubResource("StyleBoxFlat_circle")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_circle")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_focus")
-
-[node name="BackIcon" type="TextureRect" parent="Layout/LeftCol/Margin/BackButtonWrapper/BackButton" unique_id=1830121999]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -28.0
-offset_top = -28.0
-offset_right = 28.0
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_icon")
-expand_mode = 1
+size_flags_vertical = 4
 
 [node name="CenterCol" type="Control" parent="Layout" unique_id=25756241]
 layout_mode = 2
@@ -136,7 +90,3 @@ anchor_bottom = 1.0
 offset_top = -4.0
 grow_horizontal = 2
 grow_vertical = 0
-
-[connection signal="button_up" from="Layout/LeftCol/Margin/BackButtonWrapper/BackButton" to="." method="_on_back_button_up"]
-[connection signal="mouse_entered" from="Layout/LeftCol/Margin/BackButtonWrapper/BackButton" to="." method="_on_back_button_mouse_entered"]
-[connection signal="mouse_exited" from="Layout/LeftCol/Margin/BackButtonWrapper/BackButton" to="." method="_on_back_button_mouse_exited"]

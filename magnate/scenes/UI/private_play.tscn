@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b75mpeiodd857" path="res://scenes/components/animated_bigbutton.tscn" id="3_2c3ea"]
 [ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="3_nluy2"]
 [ext_resource type="Texture2D" uid="uid://b22yts8cv50mi" path="res://assets/images/join.png" id="4_8jusn"]
+[ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="4_g2gpt"]
 [ext_resource type="Texture2D" uid="uid://cwufyndwm5cw8" path="res://assets/images/host.png" id="6_2c3ea"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_2c3ea"]
@@ -48,10 +49,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Header" type="ColorRect" parent="VBoxContainer" unique_id=1092688965]
-custom_minimum_size = Vector2(0, 200)
+[node name="Header" parent="VBoxContainer" unique_id=93527095 instance=ExtResource("4_g2gpt")]
 layout_mode = 2
-color = Color(0.33333334, 0.54509807, 0.43137255, 1)
+title = "Selecciona el modo"
 
 [node name="TopSpace" type="Control" parent="VBoxContainer" unique_id=2120307415]
 custom_minimum_size = Vector2(0, 20)
