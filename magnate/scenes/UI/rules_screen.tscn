@@ -11,6 +11,7 @@
 [ext_resource type="Resource" uid="uid://djaly15rrqkcu" path="res://styles/tips/tip_3.tres" id="7_6pcab"]
 [ext_resource type="Resource" uid="uid://dxjxuk23u6663" path="res://styles/tips/tip_4.tres" id="8_647yf"]
 [ext_resource type="Resource" uid="uid://5j2b8t0de47o" path="res://styles/tips/tip_5.tres" id="9_5m3ie"]
+[ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="12_6pcab"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g2gpt"]
 shader = ExtResource("1_ykcls")
@@ -42,9 +43,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_hex4j")
 
-[node name="Header" type="ColorRect" parent="." unique_id=1092688965]
-custom_minimum_size = Vector2(0, 200)
+[node name="Header" parent="Background" unique_id=93527095 instance=ExtResource("12_6pcab")]
 layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 200.0
-color = Color(0.33333334, 0.54509807, 0.43137255, 1)
+anchors_preset = 0
+title = "Reglas de juego"
