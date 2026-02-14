@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://cpo0vkocad1pp"]
+
+[ext_resource type="Theme" uid="uid://duaci3g2svraq" path="res://styles/themes/aux_teme.tres" id="1_7qrm5"]
+[ext_resource type="Script" uid="uid://dayb80a6dos6k" path="res://scripts/button_tween.gd" id="2_2syus"]
+[ext_resource type="AudioStream" uid="uid://dv18pd6ydtscm" path="res://assets/audio/click.ogg" id="3_r14qg"]
+[ext_resource type="Texture2D" uid="uid://c13n3umufco8c" path="res://assets/icons/back-arrow1.svg" id="4_3c3w2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3c3w2"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u7p0u"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2bvsl"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hwxbp"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[node name="AnimatedBackButton" type="Button" unique_id=175575919]
+offset_right = 96.0
+offset_bottom = 96.0
+theme = ExtResource("1_7qrm5")
+theme_override_styles/normal = SubResource("StyleBoxFlat_3c3w2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_u7p0u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2bvsl")
+theme_override_styles/focus = SubResource("StyleBoxFlat_hwxbp")
+script = ExtResource("2_2syus")
+
+[node name="ClickSFXStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2021435628]
+stream = ExtResource("3_r14qg")
+pitch_scale = 0.5
+bus = &"SFX"
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2097752716]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 16.0
+offset_right = 82.0
+offset_bottom = 83.0
+texture = ExtResource("4_3c3w2")
+expand_mode = 1

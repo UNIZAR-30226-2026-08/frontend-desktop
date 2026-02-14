@@ -23,7 +23,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 200.0
 grow_horizontal = 2
-color = Color(0.247059, 0.639216, 0.301961, 1)
+color = Color(0, 0.5411765, 0.36078432, 1)
 script = ExtResource("1_script")
 
 [node name="Pattern" type="TextureRect" parent="." unique_id=1046291704]
@@ -84,12 +84,47 @@ pivot_offset = Vector2(48, 48)
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_circle")
-theme_override_styles/hover = SubResource("StyleBoxFlat_circle")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_circle")
+theme_override_styles/hover = SubResource("StyleBoxFlat_circle")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_focus")
 
 [node name="BackIcon" type="TextureRect" parent="Layout/LeftCol/Margin/BackButtonWrapper/BackButton" unique_id=1830121999]
 unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -28.0
+offset_top = -28.0
+offset_right = 28.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_icon")
+expand_mode = 1
+
+[node name="BackButton2" type="Button" parent="Layout/LeftCol/Margin/BackButtonWrapper" unique_id=287663605]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -48.0
+offset_right = 96.0
+offset_bottom = 48.0
+grow_vertical = 2
+pivot_offset = Vector2(48, 48)
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_circle")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_circle")
+theme_override_styles/hover = SubResource("StyleBoxFlat_circle")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_focus")
+
+[node name="BackIcon" type="TextureRect" parent="Layout/LeftCol/Margin/BackButtonWrapper/BackButton2" unique_id=512900895]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -140,3 +175,6 @@ grow_vertical = 0
 [connection signal="button_up" from="Layout/LeftCol/Margin/BackButtonWrapper/BackButton" to="." method="_on_back_button_up"]
 [connection signal="mouse_entered" from="Layout/LeftCol/Margin/BackButtonWrapper/BackButton" to="." method="_on_back_button_mouse_entered"]
 [connection signal="mouse_exited" from="Layout/LeftCol/Margin/BackButtonWrapper/BackButton" to="." method="_on_back_button_mouse_exited"]
+[connection signal="button_up" from="Layout/LeftCol/Margin/BackButtonWrapper/BackButton2" to="." method="_on_back_button_up"]
+[connection signal="mouse_entered" from="Layout/LeftCol/Margin/BackButtonWrapper/BackButton2" to="." method="_on_back_button_mouse_entered"]
+[connection signal="mouse_exited" from="Layout/LeftCol/Margin/BackButtonWrapper/BackButton2" to="." method="_on_back_button_mouse_exited"]
