@@ -1,14 +1,13 @@
 [gd_scene format=3 uid="uid://cphy0sd46xk4g"]
 
 [ext_resource type="Script" uid="uid://ef41h6its1ss" path="res://scripts/property_tile.gd" id="1_llvu5"]
-[ext_resource type="Theme" uid="uid://duwyynctj8dug" path="res://styles/themes/black_text_regular.tres" id="2_171pr"]
-[ext_resource type="Theme" uid="uid://c7jhkadlu31dt" path="res://styles/themes/black_text_bold.tres" id="2_gbap1"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_r2gmx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llvu5"]
 bg_color = Color(1, 1, 1, 1)
-border_width_left = 3
+border_width_left = 1
 border_width_top = 3
-border_width_right = 3
+border_width_right = 1
 border_width_bottom = 3
 border_color = Color(0, 0, 0, 1)
 
@@ -16,8 +15,9 @@ border_color = Color(0, 0, 0, 1)
 thickness = 3
 
 [node name="PropertyTile" type="PanelContainer" unique_id=589823767 node_paths=PackedStringArray("child_property_color", "child_property_name", "child_property_price")]
-offset_right = 130.0
-offset_bottom = 194.0
+offset_right = 100.0
+offset_bottom = 180.0
+theme = ExtResource("1_r2gmx")
 theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
 script = ExtResource("1_llvu5")
 child_property_color = NodePath("VerticalAlign/PropertyColor")
@@ -50,7 +50,8 @@ layout_mode = 2
 
 [node name="PropertyName" type="Label" parent="VerticalAlign/InteriorAlign" unique_id=893882161]
 layout_mode = 2
-theme = ExtResource("2_171pr")
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_font_sizes/font_size = 24
 text = "Property
 name"
 horizontal_alignment = 1
@@ -59,7 +60,8 @@ vertical_alignment = 1
 [node name="PropertyPrice" type="Label" parent="VerticalAlign/InteriorAlign" unique_id=835884986]
 layout_mode = 2
 size_flags_vertical = 10
-theme = ExtResource("2_gbap1")
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_font_sizes/font_size = 25
 text = "$999"
 horizontal_alignment = 1
 vertical_alignment = 1

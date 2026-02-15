@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://c2qpauvryk1fd"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_iflqc"]
+[ext_resource type="Script" uid="uid://gdx3owq4ft0h" path="res://scripts/corner_tile.gd" id="2_dwbgo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llvu5"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 3
+border_width_right = 1
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+
+[node name="CornerTile" type="Panel" unique_id=426996368]
+offset_right = 180.0
+offset_bottom = 180.0
+theme = ExtResource("1_iflqc")
+theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
+script = ExtResource("2_dwbgo")
+
+[node name="Title" type="Label" parent="." unique_id=893882161]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -215.0
+offset_top = -90.0
+offset_right = -37.0
+offset_bottom = -37.0
+grow_horizontal = 0
+grow_vertical = 0
+rotation = 5.497787
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_font_sizes/font_size = 25
+text = "Corner"
+horizontal_alignment = 1
+vertical_alignment = 1

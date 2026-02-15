@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://cf417oe42rk3d"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_edoq1"]
+[ext_resource type="Script" uid="uid://c80xikbcprhbs" path="res://scripts/bridge_tile.gd" id="2_o30ew"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llvu5"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 3
+border_width_right = 1
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+
+[node name="BridgeTile" type="Panel" unique_id=810856610]
+offset_right = 100.0
+offset_bottom = 180.0
+theme = ExtResource("1_edoq1")
+theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
+script = ExtResource("2_o30ew")
+
+[node name="BridgeName" type="Label" parent="." unique_id=893882161]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -8.5
+offset_right = 87.0
+offset_bottom = 8.5
+grow_vertical = 2
+rotation = 4.712389
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_font_sizes/font_size = 25
+text = "Bridge name"
+horizontal_alignment = 1
+vertical_alignment = 1
