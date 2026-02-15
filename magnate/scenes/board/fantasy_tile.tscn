@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://cbwe3sts61rxb"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_rbomd"]
+[ext_resource type="Script" uid="uid://caab8rjb3sxj4" path="res://scripts/fantasy_tile.gd" id="2_rbomd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llvu5"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 3
+border_width_right = 1
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+
+[node name="FantasyTile" type="PanelContainer" unique_id=589823767]
+offset_right = 100.0
+offset_bottom = 180.0
+theme = ExtResource("1_rbomd")
+theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
+script = ExtResource("2_rbomd")
+
+[node name="VerticalAlign" type="VBoxContainer" parent="." unique_id=820974535]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="InteriorAlign" type="VBoxContainer" parent="VerticalAlign" unique_id=966003394]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TopSpace" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=144419178]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="FantasyText" type="Label" parent="VerticalAlign/InteriorAlign" unique_id=893882161]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_font_sizes/font_size = 25
+text = "Fantasía"
+horizontal_alignment = 1
+vertical_alignment = 1
