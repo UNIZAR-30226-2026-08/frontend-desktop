@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://bipbji0mtu678"]
+
+[ext_resource type="Script" uid="uid://b1qbyi8gac0is" path="res://scripts/animated_icon_text_button.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bbp3yapj8yb55" path="res://assets/icons/user-white.svg" id="2_icon"]
+[ext_resource type="AudioStream" uid="uid://dv18pd6ydtscm" path="res://assets/audio/click.ogg" id="3_sfx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
+bg_color = Color(0.133333, 0.133333, 0.133333, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+shadow_color = Color(0, 0, 0, 0.2)
+shadow_size = 2
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pressed"]
+bg_color = Color(0.1, 0.1, 0.1, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+shadow_color = Color(0, 0, 0, 0.1)
+shadow_size = 1
+shadow_offset = Vector2(0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hover"]
+bg_color = Color(0.18, 0.18, 0.18, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 4
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_focus"]
+
+[node name="AnimatedIconTextButton" type="Button" unique_id=921870095]
+custom_minimum_size = Vector2(200, 100)
+offset_right = 160.0
+offset_bottom = 56.0
+pivot_offset = Vector2(80, 28)
+theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_focus")
+script = ExtResource("1_script")
+icon_texture = ExtResource("2_icon")
+
+[node name="HBox" type="HBoxContainer" parent="." unique_id=1714278353]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="HBox" unique_id=84163983]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("2_icon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBox" unique_id=515731497]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 24
+text = "Button"
+vertical_alignment = 1
+
+[node name="ClickSFXStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1083321876]
+stream = ExtResource("3_sfx")
+pitch_scale = 1.1
+bus = &"SFX"

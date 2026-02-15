@@ -81,7 +81,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.4)
 theme_override_fonts/font = ExtResource("3_rhwfr")
 theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxEmpty_x7a4q")
-text = "C O N S T R U Y E   T U   I M P E R I O"
+text = "C O N S T R U Y E   T U   I M P E R I O"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -115,10 +115,11 @@ layout_mode = 2
 
 [node name="VersionText" type="Label" parent="Container" unique_id=1120558046]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.4)
+theme_override_colors/font_color = Color(0.443137, 0.443137, 0.478431, 1)
+theme_override_constants/letter_spacing = 4
 theme_override_fonts/font = ExtResource("5_bene6")
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 10
 theme_override_styles/normal = SubResource("StyleBoxEmpty_x7a4q")
-text = "VERSIÓN 0.0.0 - 2026"
+text = "VERSIÓN 0.0.0 — 2026"
 horizontal_alignment = 1
 vertical_alignment = 1
