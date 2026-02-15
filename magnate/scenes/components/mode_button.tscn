@@ -1,0 +1,111 @@
+[gd_scene load_steps=8 format=3 uid="uid://bdwovms75w8l7"]
+
+[ext_resource type="Script" uid="uid://dpyds4nbonkiu" path="res://scripts/home_scripts/mode_button.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cbmxs65jj0bgh" path="res://assets/images/bg_city_white.jpg" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://cwrxutje1ufwq" path="res://assets/icons/gamepad.svg" id="3_icon"]
+[ext_resource type="FontFile" uid="uid://cel767gfqwf3q" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBoldItalic.ttf" id="4_5nakb"]
+[ext_resource type="AudioStream" uid="uid://dv18pd6ydtscm" path="res://assets/audio/click.ogg" id="4_e31iq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mask"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+
+[sub_resource type="Gradient" id="Gradient_overlay"]
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.9)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_overlay"]
+gradient = SubResource("Gradient_overlay")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[node name="ModeButton" type="Button" unique_id=655910623]
+clip_children = 1
+custom_minimum_size = Vector2(0, 200)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_mask")
+theme_override_styles/hover = SubResource("StyleBoxFlat_mask")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_mask")
+theme_override_styles/focus = SubResource("StyleBoxFlat_mask")
+script = ExtResource("1_script")
+title_text = "MODE"
+subtitle_text = "Description"
+icon_texture = ExtResource("3_icon")
+bg_texture = ExtResource("2_bg")
+
+[node name="BgImage" type="TextureRect" parent="." unique_id=126430344]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Gradient" type="TextureRect" parent="." unique_id=1436914453]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_overlay")
+
+[node name="Icon" type="TextureRect" parent="." unique_id=2146756868]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -84.0
+offset_top = 24.0
+offset_right = -20.0
+offset_bottom = 88.0
+grow_horizontal = 0
+pivot_offset = Vector2(32, 32)
+mouse_filter = 2
+texture = ExtResource("3_icon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextContainer" type="VBoxContainer" parent="." unique_id=1672859480]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -120.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+alignment = 2
+
+[node name="Title" type="Label" parent="TextContainer" unique_id=1368211581]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_5nakb")
+theme_override_font_sizes/font_size = 40
+text = "MODE"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="TextContainer" unique_id=365272981]
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 18
+text = "Description"
+horizontal_alignment = 1
+
+[node name="ClickSFXStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1461197883]
+stream = ExtResource("4_e31iq")

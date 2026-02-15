@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TipData" format=3 uid="uid://cxhno8mdfppys"]
+
+[ext_resource type="Script" uid="uid://dn5v3dwxpk883" path="res://scripts/tips_scripts/tip_data.gd" id="1_rjlvw"]
+
+[resource]
+script = ExtResource("1_rjlvw")
+number = "TIP 2"
+title = "Reserva de Emergencia2"
+description = "Nunca gastes todo tu dinero. Mantén siempre reserva 2"
+metadata/_custom_type_script = "uid://dn5v3dwxpk883"

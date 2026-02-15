@@ -10,9 +10,25 @@ config_version=5
 
 [application]
 
-config/name="monopoly"
+config/name="Magnate"
+run/main_scene="uid://d2twidlaag5qv"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[audio]
+
+buses/default_bus_layout="uid://olwy1fnpvxcd"
+
+[autoload]
+
+Globals="*uid://b4pmg3hfq0uag"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [editor]
 
@@ -26,3 +42,5 @@ version_control/autoload_on_startup=true
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

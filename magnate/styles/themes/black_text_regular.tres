@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://duwyynctj8dug"]
+
+[ext_resource type="FontFile" uid="uid://n3efsq8ypxye" path="res://assets/fonts/LTSuperior/LTSuperior-Regular.ttf" id="1_o3tdh"]
+
+[resource]
+Label/colors/font_color = Color(0, 0, 0, 1)
+Label/fonts/font = ExtResource("1_o3tdh")

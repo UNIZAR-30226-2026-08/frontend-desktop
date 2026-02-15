@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://csdrthrlwgfk2"]
+
+[ext_resource type="Shader" uid="uid://dk6h3t6f17nd" path="res://styles/shaders/strip_background.gdshader" id="1_ykcls"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="2_hex4j"]
+[ext_resource type="Script" uid="uid://bosgwaqp0htqe" path="res://scripts/tips_scripts/tips_screen.gd" id="3_ykcls"]
+[ext_resource type="PackedScene" uid="uid://dsn3612ae1pvh" path="res://scenes/components/tip_card.tscn" id="4_5dtuh"]
+[ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="4_47gi2"]
+[ext_resource type="Script" uid="uid://dn5v3dwxpk883" path="res://scripts/tips_scripts/tip_data.gd" id="4_kbn6k"]
+[ext_resource type="Resource" uid="uid://pi8f1soru2n6" path="res://styles/tips/tip_1.tres" id="5_ykcls"]
+[ext_resource type="Resource" uid="uid://cxhno8mdfppys" path="res://styles/tips/tip_2.tres" id="6_tu13m"]
+[ext_resource type="Resource" uid="uid://djaly15rrqkcu" path="res://styles/tips/tip_3.tres" id="7_6pcab"]
+[ext_resource type="Resource" uid="uid://dxjxuk23u6663" path="res://styles/tips/tip_4.tres" id="8_647yf"]
+[ext_resource type="Resource" uid="uid://5j2b8t0de47o" path="res://styles/tips/tip_5.tres" id="9_5m3ie"]
+[ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="12_6pcab"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g2gpt"]
+shader = ExtResource("1_ykcls")
+shader_parameter/color_b = Color(0.95, 0.95, 0.95, 1)
+shader_parameter/color_a = Color(1, 1, 1, 1)
+shader_parameter/divisions = 20.0
+shader_parameter/angle = 0.5
+
+[node name="tips_screen" type="Control" unique_id=723652825]
+material = SubResource("ShaderMaterial_g2gpt")
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_hex4j")
+script = ExtResource("3_ykcls")
+tips_data = Array[ExtResource("4_kbn6k")]([ExtResource("5_ykcls"), ExtResource("6_tu13m"), ExtResource("7_6pcab"), ExtResource("8_647yf"), ExtResource("9_5m3ie")])
+card_scene = ExtResource("4_5dtuh")
+
+[node name="Background" type="Panel" parent="." unique_id=279795062]
+material = ExtResource("4_47gi2")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_hex4j")
+
+[node name="Header" parent="Background" unique_id=93527095 instance=ExtResource("12_6pcab")]
+layout_mode = 0
+anchors_preset = 0
+title = "Reglas de juego"

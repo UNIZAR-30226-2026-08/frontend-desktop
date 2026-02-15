@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://dsn3612ae1pvh"]
+
+[ext_resource type="Script" uid="uid://dg3paf3li2yhw" path="res://scripts/tips_scripts/tip_card.gd" id="1_4h3qd"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_liveh"]
+[ext_resource type="StyleBox" uid="uid://cpabepa84ckgl" path="res://styles/tips/style_tip_card.tres" id="2_o2n62"]
+
+[node name="tip_card" type="Control" unique_id=603918792]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 500.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_4h3qd")
+
+[node name="Panel" type="Panel" parent="." unique_id=208458036]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_o2n62")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel" unique_id=57194191]
+layout_mode = 0
+offset_top = 1.0
+offset_right = 500.0
+offset_bottom = 498.0
+
+[node name="left_space" type="Control" parent="Panel/HBoxContainer" unique_id=1695571860]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer" unique_id=170145004]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="top_space" type="Control" parent="Panel/HBoxContainer/VBoxContainer" unique_id=148567837]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="tip_number" type="Label" parent="Panel/HBoxContainer/VBoxContainer" unique_id=277816478]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_liveh")
+text = "TIP X"
+horizontal_alignment = 1
+
+[node name="mid_space_1" type="Control" parent="Panel/HBoxContainer/VBoxContainer" unique_id=1042517633]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="tip_title" type="Label" parent="Panel/HBoxContainer/VBoxContainer" unique_id=1097991042]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_liveh")
+theme_override_font_sizes/font_size = 40
+text = "TIP TITLE"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="mid_space_2" type="Control" parent="Panel/HBoxContainer/VBoxContainer" unique_id=927956122]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="tip_text" type="Label" parent="Panel/HBoxContainer/VBoxContainer" unique_id=2130719818]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_liveh")
+theme_override_font_sizes/font_size = 25
+text = "lore idpdjds maiodnoia  saiodj aodmn ska  dsakod oads dsmaoid aiosa osa kosa dkoaokas okas osa  sdaokdfn aodaok aokd osadosa aksko dasokd saokdmsaok dokasm kodko akosd osa dokas doasdkosa osa doksa  okskoc samkosa kosa "
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="right_space" type="Control" parent="Panel/HBoxContainer" unique_id=578734272]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+
+[node name="invisible_button" type="Button" parent="Panel" unique_id=534329429]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 501.0
+offset_bottom = 501.0
+
+[connection signal="pressed" from="Panel/invisible_button" to="." method="_on_invisible_button_pressed"]

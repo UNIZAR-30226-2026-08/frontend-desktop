@@ -1,0 +1,119 @@
+[gd_scene format=3 uid="uid://dwhqre8yvgla8"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_7bo0m"]
+[ext_resource type="PackedScene" uid="uid://vxxc8m2hs5mg" path="res://scenes/components/city_background.tscn" id="2_udk7o"]
+[ext_resource type="PackedScene" uid="uid://5pilfc0bnc3" path="res://scenes/components/lineedit_with_shadow.tscn" id="3_malkv"]
+[ext_resource type="PackedScene" uid="uid://baktdl26t2tmk" path="res://scenes/components/logo.tscn" id="3_udk7o"]
+[ext_resource type="Texture2D" uid="uid://d1ii7ia4skoem" path="res://assets/icons/single_player.svg" id="5_2icjf"]
+[ext_resource type="Texture2D" uid="uid://d2f4u0460actv" path="res://assets/icons/email.svg" id="5_malkv"]
+[ext_resource type="Texture2D" uid="uid://k0g5efr3ougq" path="res://assets/icons/lock.svg" id="6_2icjf"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="6_5fmy7"]
+[ext_resource type="Texture2D" uid="uid://cgol567hbives" path="res://assets/icons/key.svg" id="8_ig0j3"]
+
+[node name="LoginScreen" type="Control" unique_id=734078795]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7bo0m")
+
+[node name="Background" parent="." unique_id=1440435364 instance=ExtResource("2_udk7o")]
+layout_mode = 1
+
+[node name="MainVBox" type="VBoxContainer" parent="." unique_id=1062500680]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -415.5
+offset_top = -274.0
+offset_right = 415.5
+offset_bottom = 274.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 60
+alignment = 1
+
+[node name="Logo" parent="MainVBox" unique_id=1697976471 instance=ExtResource("3_udk7o")]
+layout_mode = 2
+
+[node name="LogoSpacer" type="Control" parent="MainVBox" unique_id=802384105]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="UsernameInput" parent="MainVBox" unique_id=1768335443 instance=ExtResource("3_malkv")]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../PassInput")
+focus_next = NodePath("../PassInput")
+placeholder_text = "Nombre de usuario"
+middle_mouse_paste_enabled = false
+drag_and_drop_selection_enabled = false
+right_icon = ExtResource("5_2icjf")
+icon_expand_mode = 2
+right_icon_scale = 0.8
+
+[node name="MailInput" parent="MainVBox" unique_id=1872970268 instance=ExtResource("3_malkv")]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../PassInput")
+focus_next = NodePath("../PassInput")
+placeholder_text = "Email"
+middle_mouse_paste_enabled = false
+drag_and_drop_selection_enabled = false
+right_icon = ExtResource("5_malkv")
+icon_expand_mode = 2
+right_icon_scale = 0.8
+
+[node name="PassInput" parent="MainVBox" unique_id=235522331 instance=ExtResource("3_malkv")]
+layout_mode = 2
+focus_neighbor_top = NodePath("../MailInput")
+focus_neighbor_bottom = NodePath("../HBoxContainer/AnimatedButton")
+focus_next = NodePath("../HBoxContainer/AnimatedButton")
+focus_previous = NodePath("../MailInput")
+placeholder_text = "Contraseña"
+middle_mouse_paste_enabled = false
+drag_and_drop_selection_enabled = false
+secret = true
+right_icon = ExtResource("6_2icjf")
+icon_expand_mode = 2
+right_icon_scale = 0.8
+
+[node name="ConfirmPassInput" parent="MainVBox" unique_id=1604858281 instance=ExtResource("3_malkv")]
+layout_mode = 2
+focus_neighbor_top = NodePath("../MailInput")
+focus_neighbor_bottom = NodePath("../HBoxContainer/AnimatedButton")
+focus_next = NodePath("../HBoxContainer/AnimatedButton")
+focus_previous = NodePath("../MailInput")
+placeholder_text = "Confirma contraseña"
+middle_mouse_paste_enabled = false
+drag_and_drop_selection_enabled = false
+secret = true
+right_icon = ExtResource("8_ig0j3")
+icon_expand_mode = 2
+right_icon_scale = 0.8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainVBox" unique_id=1411265556]
+layout_mode = 2
+alignment = 1
+
+[node name="LeftSpace" type="Control" parent="MainVBox/HBoxContainer" unique_id=2041121676]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AnimatedButton" parent="MainVBox/HBoxContainer" unique_id=175575919 instance=ExtResource("6_5fmy7")]
+custom_minimum_size = Vector2(250, 60)
+layout_mode = 2
+focus_neighbor_top = NodePath("../../PassInput")
+focus_next = NodePath("../../MailInput")
+focus_previous = NodePath("../../PassInput")
+text = "REGISTRARSE"
+
+[node name="RightSpace" type="Control" parent="MainVBox/HBoxContainer" unique_id=583771450]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=189878863]
+bus = &"Music"

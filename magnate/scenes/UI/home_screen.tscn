@@ -1,0 +1,150 @@
+[gd_scene format=3 uid="uid://d2twidlaag5qv"]
+
+[ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="1_t60bq"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="2_0d83e"]
+[ext_resource type="PackedScene" uid="uid://cpo0vkocad1pp" path="res://scenes/components/animated_icon_button.tscn" id="5_0d83e"]
+[ext_resource type="Texture2D" uid="uid://djd6n1vv7wucv" path="res://assets/images/logo.png" id="5_logo"]
+[ext_resource type="PackedScene" uid="uid://bipbji0mtu678" path="res://scenes/components/animated_icon_text_button.tscn" id="6_text_btn"]
+[ext_resource type="Texture2D" uid="uid://boq37bt1dlywk" path="res://assets/icons/gear-white.svg" id="7_gear_icon"]
+[ext_resource type="Texture2D" uid="uid://bk6ss4g333w3s" path="res://assets/icons/multi_player.svg" id="9_friends"]
+[ext_resource type="Texture2D" uid="uid://niwry5nvf35n" path="res://assets/icons/shop.svg" id="10_shop"]
+[ext_resource type="Texture2D" uid="uid://cfb5tn0bm4d1p" path="res://assets/icons/online.svg" id="11_online"]
+[ext_resource type="PackedScene" uid="uid://bdwovms75w8l7" path="res://scenes/components/mode_button.tscn" id="12_btn_scene"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_base"]
+bg_color = Color(0.898039, 0.898039, 0.898039, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+shadow_color = Color(0, 0, 0, 0.15)
+shadow_size = 6
+shadow_offset = Vector2(0, 6)
+
+[node name="Home" type="Panel" unique_id=1116373073]
+material = ExtResource("1_t60bq")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_0d83e")
+
+[node name="MainLayout" type="VBoxContainer" parent="." unique_id=1795813452]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="TopBar" type="MarginContainer" parent="MainLayout" unique_id=2010971310]
+layout_mode = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainLayout/TopBar" unique_id=41175701]
+layout_mode = 2
+
+[node name="Logo" type="TextureRect" parent="MainLayout/TopBar/HBoxContainer" unique_id=327575899]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("5_logo")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="RightMenu" type="HBoxContainer" parent="MainLayout/TopBar/HBoxContainer" unique_id=1121320750]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="ProfileButton" parent="MainLayout/TopBar/HBoxContainer/RightMenu" unique_id=1755169703 instance=ExtResource("6_text_btn")]
+custom_minimum_size = Vector2(200, 56)
+layout_mode = 2
+button_text = "Perfil"
+
+[node name="SettingsButton" parent="MainLayout/TopBar/HBoxContainer/RightMenu" unique_id=175575919 instance=ExtResource("5_0d83e")]
+layout_mode = 2
+icon_texture = ExtResource("7_gear_icon")
+
+[node name="GridContainer" type="MarginContainer" parent="MainLayout" unique_id=329134211]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 64
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainLayout/GridContainer" unique_id=814957878]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="LeftColumn" type="VBoxContainer" parent="MainLayout/GridContainer/HBoxContainer" unique_id=748659143]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 32
+
+[node name="BtnPublica" parent="MainLayout/GridContainer/HBoxContainer/LeftColumn" unique_id=1428092308 instance=ExtResource("12_btn_scene")]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_base")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_base")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_base")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_base")
+title_text = "PARTIDA PÚBLICA"
+subtitle_text = "CONSTRUYE TU IMPERIO"
+icon_texture = ExtResource("11_online")
+
+[node name="BtnPrivada" parent="MainLayout/GridContainer/HBoxContainer/LeftColumn" unique_id=1904786738 instance=ExtResource("12_btn_scene")]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_base")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_base")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_base")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_base")
+title_text = "PARTIDA PRIVADA"
+subtitle_text = "COMPITE CON TUS AMIGOS"
+icon_texture = ExtResource("9_friends")
+
+[node name="RightColumn" type="VBoxContainer" parent="MainLayout/GridContainer/HBoxContainer" unique_id=478995237]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 32
+
+[node name="MarginContainer" type="MarginContainer" parent="MainLayout/GridContainer/HBoxContainer/RightColumn" unique_id=1529537715]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 45
+
+[node name="BtnAmigos" parent="MainLayout/GridContainer/HBoxContainer/RightColumn/MarginContainer" unique_id=601224972 instance=ExtResource("12_btn_scene")]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_base")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_base")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_base")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_base")
+title_text = "AMIGOS"
+subtitle_text = "GESTIONA TU RED"
+icon_texture = ExtResource("9_friends")
+
+[node name="MarginContainer2" type="MarginContainer" parent="MainLayout/GridContainer/HBoxContainer/RightColumn" unique_id=342232460]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_bottom = 45
+
+[node name="BtnTienda" parent="MainLayout/GridContainer/HBoxContainer/RightColumn/MarginContainer2" unique_id=731100831 instance=ExtResource("12_btn_scene")]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_base")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_base")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_base")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_base")
+title_text = "TIENDA"
+subtitle_text = "COMPRA DE COSMÉTICOS"
+icon_texture = ExtResource("10_shop")

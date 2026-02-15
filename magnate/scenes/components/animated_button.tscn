@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://b1kg6l62o2fi2"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_k8m1f"]
+[ext_resource type="Script" uid="uid://dayb80a6dos6k" path="res://scripts/button_tween.gd" id="2_svlbt"]
+[ext_resource type="AudioStream" uid="uid://dv18pd6ydtscm" path="res://assets/audio/click.ogg" id="3_svlbt"]
+
+[node name="AnimatedButton" type="Button" unique_id=175575919]
+offset_right = 219.0
+offset_bottom = 90.0
+theme = ExtResource("1_k8m1f")
+text = "Jugar"
+script = ExtResource("2_svlbt")
+
+[node name="ClickSFXStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2021435628]
+stream = ExtResource("3_svlbt")
+pitch_scale = 0.5
+bus = &"SFX"

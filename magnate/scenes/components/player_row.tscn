@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://ciy5qxnho1tlx"]
+
+[ext_resource type="Script" uid="uid://cronbsf4ku44s" path="res://scripts/lobby_scripts/player_row.gd" id="1_wmoqm"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="2_0es8g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0es8g"]
+bg_color = Color(0.33278918, 0.59765625, 0.27781677, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[node name="player_row" type="PanelContainer" unique_id=1971651513]
+custom_minimum_size = Vector2(1400, 150)
+offset_right = 800.0
+offset_bottom = 150.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0es8g")
+script = ExtResource("1_wmoqm")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1424566067]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="HBoxContainer" unique_id=1210728574]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+
+[node name="player_icon" type="TextureRect" parent="HBoxContainer" unique_id=1481942632]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="Control2" type="Control" parent="HBoxContainer" unique_id=1255224128]
+custom_minimum_size = Vector2(15, 0)
+layout_mode = 2
+
+[node name="player_name" type="Label" parent="HBoxContainer" unique_id=662073165]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("2_0es8g")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 50
+
+[node name="player_info" type="Label" parent="HBoxContainer" unique_id=1536375586]
+layout_mode = 2
+size_flags_horizontal = 10
+theme = ExtResource("2_0es8g")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 40
+
+[node name="Control3" type="Control" parent="HBoxContainer" unique_id=696553244]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2

@@ -1,0 +1,134 @@
+[gd_scene format=3 uid="uid://dwichb2a47x0e"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_8jusn"]
+[ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="1_mj240"]
+[ext_resource type="Script" uid="uid://ci5kg55pf7h5p" path="res://scripts/private_play.gd" id="2_nluy2"]
+[ext_resource type="PackedScene" uid="uid://5pilfc0bnc3" path="res://scenes/components/lineedit_with_shadow.tscn" id="2_stftt"]
+[ext_resource type="PackedScene" uid="uid://b75mpeiodd857" path="res://scenes/components/animated_bigbutton.tscn" id="3_2c3ea"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="3_nluy2"]
+[ext_resource type="Texture2D" uid="uid://b22yts8cv50mi" path="res://assets/images/join.png" id="4_8jusn"]
+[ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="4_g2gpt"]
+[ext_resource type="Texture2D" uid="uid://cwufyndwm5cw8" path="res://assets/images/host.png" id="6_2c3ea"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_2c3ea"]
+resource_local_to_scene = false
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ge38p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mj240"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 7
+border_width_top = 7
+border_width_right = 7
+border_width_bottom = 7
+border_color = Color(1, 0.7882353, 0.44313726, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 20.0
+expand_margin_top = 10.0
+expand_margin_right = 20.0
+expand_margin_bottom = 10.0
+
+[node name="PrivatePlay" type="Panel" unique_id=1569321352]
+material = ExtResource("1_mj240")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_8jusn")
+script = ExtResource("2_nluy2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1868669340]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" parent="VBoxContainer" unique_id=93527095 instance=ExtResource("4_g2gpt")]
+layout_mode = 2
+title = "Selecciona el modo"
+
+[node name="TopSpace" type="Control" parent="VBoxContainer" unique_id=2120307415]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1011032679]
+layout_mode = 2
+alignment = 1
+
+[node name="JoinButton" parent="VBoxContainer/HBoxContainer" unique_id=770794381 instance=ExtResource("3_2c3ea")]
+layout_mode = 2
+button_group = SubResource("ButtonGroup_2c3ea")
+titulo = "UNIRSE"
+descripcion = "INTRODUCE EL CÓDIGO Y ÚNETE A LA SALA"
+
+[node name="ButtonSpacer" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=1109855816]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="CreateButton" parent="VBoxContainer/HBoxContainer" unique_id=2008779922 instance=ExtResource("3_2c3ea")]
+layout_mode = 2
+button_group = SubResource("ButtonGroup_2c3ea")
+titulo = "CREAR"
+descripcion = "CREA UNA SALA PARA QUE SE UNAN TUS AMIGOS"
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer" unique_id=1712613431]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ge38p")
+current_tab = 2
+tabs_visible = false
+
+[node name="JoinImage" type="TextureRect" parent="VBoxContainer/TabContainer" unique_id=56937017]
+visible = false
+layout_mode = 2
+texture = ExtResource("4_8jusn")
+expand_mode = 3
+stretch_mode = 5
+metadata/_tab_index = 0
+
+[node name="LineeditWithShadow" parent="VBoxContainer/TabContainer/JoinImage" unique_id=1768335443 instance=ExtResource("2_stftt")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -125.0
+offset_top = -125.0
+offset_right = 125.0
+offset_bottom = -51.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_mj240")
+placeholder_text = "12345"
+alignment = 1
+max_length = 5
+
+[node name="CreateImage" type="TextureRect" parent="VBoxContainer/TabContainer" unique_id=577724660]
+visible = false
+layout_mode = 2
+texture = ExtResource("6_2c3ea")
+expand_mode = 2
+stretch_mode = 5
+metadata/_tab_index = 1
+
+[node name="EmptyInitialPage" type="Control" parent="VBoxContainer/TabContainer" unique_id=1561262004]
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="ConfirmButton" parent="VBoxContainer" unique_id=1831841571 instance=ExtResource("3_nluy2")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+disabled = true
+text = "CONFIRMAR"
+
+[node name="BottomSpace" type="Control" parent="VBoxContainer" unique_id=1971907428]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2

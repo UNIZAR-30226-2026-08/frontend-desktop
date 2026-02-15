@@ -1,0 +1,122 @@
+[gd_resource type="Theme" format=3 uid="uid://c1nforevd52yq"]
+
+[ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="1_ark2o"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_ark2o"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_m4b6a"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qj67h"]
+bg_color = Color(0.5211406, 0.52114064, 0.52114046, 1)
+border_width_left = 30
+border_width_top = 30
+border_width_right = 30
+border_width_bottom = 30
+border_color = Color(0, 0.6363865, 0.6363864, 0)
+corner_radius_top_left = 120
+corner_radius_top_right = 120
+corner_radius_bottom_right = 120
+corner_radius_bottom_left = 120
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y204k"]
+content_margin_left = 40.0
+content_margin_top = 25.0
+content_margin_right = 40.0
+content_margin_bottom = 25.0
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 120
+corner_radius_top_right = 120
+corner_radius_bottom_right = 120
+corner_radius_bottom_left = 120
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_86xmx"]
+bg_color = Color(0.7107411, 0.71074116, 0.7107411, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 30.0
+expand_margin_top = 10.0
+expand_margin_right = 30.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ark2o"]
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 45.0
+expand_margin_top = 10.0
+expand_margin_right = 45.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m4b6a"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 7
+border_width_top = 7
+border_width_right = 7
+border_width_bottom = 7
+border_color = Color(1, 0.7882353, 0.44313726, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 40.0
+expand_margin_top = 10.0
+expand_margin_right = 20.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8sfn"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xuk5p"]
+bg_color = Color(0.33333334, 0.54509807, 0.43137255, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[resource]
+default_font = ExtResource("1_ark2o")
+BigButton/base_type = &"Button"
+BigButton/colors/font_color = Color(1, 1, 1, 1)
+BigButton/font_sizes/font_size = 57
+BigButton/fonts/font = ExtResource("1_ark2o")
+BigButton/icons/checked = SubResource("ImageTexture_ark2o")
+BigButton/icons/unchecked = SubResource("ImageTexture_m4b6a")
+BigButton/styles/hover = SubResource("StyleBoxFlat_qj67h")
+BigButton/styles/hover_pressed = SubResource("StyleBoxFlat_y204k")
+BigButton/styles/normal = SubResource("StyleBoxFlat_qj67h")
+BigButton/styles/pressed = SubResource("StyleBoxFlat_y204k")
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/font_sizes/font_size = 50
+Button/styles/disabled = SubResource("StyleBoxFlat_86xmx")
+Button/styles/focus = SubResource("StyleBoxFlat_ark2o")
+Button/styles/hover = SubResource("StyleBoxFlat_ark2o")
+Button/styles/normal = SubResource("StyleBoxFlat_ark2o")
+Button/styles/pressed = SubResource("StyleBoxFlat_ark2o")
+Label/colors/primary_color = Color(0.24705882, 0.6392157, 0.3019608, 1)
+Label/font_sizes/font_size = 70
+LineEdit/colors/caret_color = Color(0.28627452, 0.3137255, 0.34117648, 1)
+LineEdit/colors/font_color = Color(0.28627452, 0.3137255, 0.34117648, 1)
+LineEdit/colors/font_placeholder_color = Color(0.4717685, 0.50803894, 0.5443705, 1)
+LineEdit/colors/selection_color = Color(0.7607843, 0.9490196, 0.38039216, 1)
+LineEdit/constants/caret_width = 5
+LineEdit/font_sizes/font_size = 44
+LineEdit/styles/focus = SubResource("StyleBoxFlat_m4b6a")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_m4b6a")
+Panel/styles/panel = SubResource("StyleBoxFlat_i8sfn")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_xuk5p")

@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://b04a4l0a8vgfr"]
+
+[ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="1_ffp3p"]
+[ext_resource type="Script" uid="uid://bg4ecfpwnrfii" path="res://scripts/lobby_scripts/lobby_screen.gd" id="1_j2ys1"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="2_j2ys1"]
+[ext_resource type="PackedScene" uid="uid://ciy5qxnho1tlx" path="res://scenes/components/player_row.tscn" id="2_lps85"]
+[ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="5_uk2wy"]
+
+[node name="public_lobby_screen" type="Control" unique_id=1463536821]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_j2ys1")
+player_row_scene = ExtResource("2_lps85")
+
+[node name="Background" type="Panel" parent="." unique_id=243336356]
+material = ExtResource("1_ffp3p")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_j2ys1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1440373406]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" parent="VBoxContainer" unique_id=93527095 instance=ExtResource("5_uk2wy")]
+layout_mode = 2
+title = "Sala pública"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=379726644]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/margin_top = 75
+theme_override_constants/margin_bottom = 75
+
+[node name="PlayerList" type="VBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=2024311381]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 20
+
+[node name="player_number" type="Label" parent="VBoxContainer" unique_id=1836948764]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme = ExtResource("2_j2ys1")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "Número de jugadores: X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="waiting_players" type="Label" parent="VBoxContainer" unique_id=1047940653]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme = ExtResource("2_j2ys1")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "Esperando jugadores..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="bottom_padding" type="Control" parent="VBoxContainer" unique_id=306650219]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
