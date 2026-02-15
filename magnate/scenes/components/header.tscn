@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://crf2y21jgte7c" path="res://scripts/header.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://cwxhcbn6fvsiy" path="res://assets/icons/money.svg" id="2_pattern"]
-[ext_resource type="PackedScene" uid="uid://cpo0vkocad1pp" path="res://scenes/components/animated_back_button.tscn" id="3_8iqth"]
+[ext_resource type="PackedScene" uid="uid://cpo0vkocad1pp" path="res://scenes/components/animated_icon_button.tscn" id="3_8iqth"]
 
 [node name="Header" type="ColorRect" unique_id=93527095]
 clip_contents = true

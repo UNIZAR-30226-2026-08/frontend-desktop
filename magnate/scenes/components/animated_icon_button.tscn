@@ -1,60 +1,62 @@
 [gd_scene format=3 uid="uid://cpo0vkocad1pp"]
 
 [ext_resource type="Theme" uid="uid://duaci3g2svraq" path="res://styles/themes/aux_teme.tres" id="1_7qrm5"]
-[ext_resource type="Script" uid="uid://dayb80a6dos6k" path="res://scripts/button_tween.gd" id="2_2syus"]
+[ext_resource type="Script" uid="uid://bsy84ixv74js7" path="res://scripts/icon_button_tween.gd" id="2_new_script"]
 [ext_resource type="AudioStream" uid="uid://dv18pd6ydtscm" path="res://assets/audio/click.ogg" id="3_r14qg"]
 [ext_resource type="Texture2D" uid="uid://c13n3umufco8c" path="res://assets/icons/back-arrow1.svg" id="4_3c3w2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3c3w2"]
-bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+bg_color = Color(0.133333, 0.133333, 0.133333, 1)
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
-shadow_color = Color(0, 0, 0, 0.34509805)
+shadow_color = Color(0, 0, 0, 0.345098)
 shadow_size = 1
 shadow_offset = Vector2(0, 3)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u7p0u"]
-bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+bg_color = Color(0.133333, 0.133333, 0.133333, 1)
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
-shadow_color = Color(0, 0, 0, 0.34509805)
+shadow_color = Color(0, 0, 0, 0.345098)
 shadow_size = 1
 shadow_offset = Vector2(0, 3)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2bvsl"]
-bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+bg_color = Color(0.133333, 0.133333, 0.133333, 1)
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
-shadow_color = Color(0, 0, 0, 0.34509805)
+shadow_color = Color(0, 0, 0, 0.345098)
 shadow_size = 1
 shadow_offset = Vector2(0, 3)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hwxbp"]
-bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+bg_color = Color(0.133333, 0.133333, 0.133333, 1)
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
-shadow_color = Color(0, 0, 0, 0.34509805)
+shadow_color = Color(0, 0, 0, 0.345098)
 shadow_size = 1
 shadow_offset = Vector2(0, 3)
 
-[node name="AnimatedBackButton" type="Button" unique_id=175575919]
+[node name="AnimatedIconButton" type="Button" unique_id=175575919]
 custom_minimum_size = Vector2(96, 96)
 offset_right = 96.0
 offset_bottom = 96.0
+pivot_offset = Vector2(48, 48)
 theme = ExtResource("1_7qrm5")
-theme_override_styles/normal = SubResource("StyleBoxFlat_3c3w2")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_u7p0u")
-theme_override_styles/hover = SubResource("StyleBoxFlat_2bvsl")
 theme_override_styles/focus = SubResource("StyleBoxFlat_hwxbp")
-script = ExtResource("2_2syus")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2bvsl")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_u7p0u")
+theme_override_styles/normal = SubResource("StyleBoxFlat_3c3w2")
+script = ExtResource("2_new_script")
+icon_texture = ExtResource("4_3c3w2")
 
 [node name="ClickSFXStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2021435628]
 stream = ExtResource("3_r14qg")
@@ -62,10 +64,19 @@ pitch_scale = 0.5
 bus = &"SFX"
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=2097752716]
-layout_mode = 0
-offset_left = 14.0
-offset_top = 16.0
-offset_right = 82.0
-offset_bottom = 83.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -34.0
+offset_top = -34.0
+offset_right = 34.0
+offset_bottom = 34.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("4_3c3w2")
 expand_mode = 1
+stretch_mode = 5
