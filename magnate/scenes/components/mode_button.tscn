@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bdwovms75w8l7"]
+[gd_scene format=3 uid="uid://bdwovms75w8l7"]
 
 [ext_resource type="Script" uid="uid://dpyds4nbonkiu" path="res://scripts/home_scripts/mode_button.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://cbmxs65jj0bgh" path="res://assets/images/bg_city_white.jpg" id="2_bg"]

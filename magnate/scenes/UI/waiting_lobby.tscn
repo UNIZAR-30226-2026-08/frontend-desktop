@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://cqbqnknexwroe"]
+
+[ext_resource type="Script" uid="uid://enhwn6nsgjej" path="res://scripts/lobby_scripts/waiting_lobby.gd" id="1_7ex62"]
+[ext_resource type="PackedScene" uid="uid://vsue14dc3j1d" path="res://scenes/components/player_icon_big.tscn" id="2_wjwl7"]
+[ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="3_dvshn"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="4_1ke3a"]
+[ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="5_em104"]
+
+[node name="waiting_lobby" type="Control" unique_id=1463536821]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7ex62")
+player_icon_big_scene = ExtResource("2_wjwl7")
+
+[node name="Background" type="Panel" parent="." unique_id=243336356]
+material = ExtResource("3_dvshn")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_1ke3a")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1440373406]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" parent="VBoxContainer" unique_id=93527095 instance=ExtResource("5_em104")]
+layout_mode = 2
+title = "Sala de espera"
+
+[node name="top_margin" type="Control" parent="VBoxContainer" unique_id=1889231577]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=379726644]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/margin_top = 75
+theme_override_constants/margin_bottom = 75
+
+[node name="PlayerList" type="HBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=1004673776]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="room_code_label" type="Label" parent="VBoxContainer" unique_id=1269556110]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme = ExtResource("4_1ke3a")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "Código: 123456"
+
+[node name="mid_margin" type="Control" parent="VBoxContainer" unique_id=1564692885]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="player_count_label" type="Label" parent="VBoxContainer" unique_id=1727328891]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("4_1ke3a")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "Jugadores: 2"
+
+[node name="mid_margin2" type="Control" parent="VBoxContainer" unique_id=342269418]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="start_game_button" type="Button" parent="VBoxContainer" unique_id=918523246]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("4_1ke3a")
+text = "Empezar juego"
+
+[node name="bottom_margin" type="Control" parent="VBoxContainer" unique_id=2021374846]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
