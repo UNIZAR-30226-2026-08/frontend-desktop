@@ -5,6 +5,7 @@
 [ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="3_dvshn"]
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="4_1ke3a"]
 [ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="5_em104"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="6_plxh4"]
 
 [node name="waiting_lobby" type="Control" unique_id=1463536821]
 layout_mode = 3
@@ -78,13 +79,13 @@ text = "Jugadores: 2"
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="start_game_button" type="Button" parent="VBoxContainer" unique_id=918523246]
+[node name="start_game_button" parent="VBoxContainer" unique_id=175575919 instance=ExtResource("6_plxh4")]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("4_1ke3a")
 text = "Empezar juego"
 
 [node name="bottom_margin" type="Control" parent="VBoxContainer" unique_id=2021374846]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+
+[connection signal="back_action_requested" from="VBoxContainer/Header" to="." method="_on_header_back_action_requested"]

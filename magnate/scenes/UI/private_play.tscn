@@ -63,6 +63,7 @@ alignment = 1
 
 [node name="JoinButton" parent="VBoxContainer/HBoxContainer" unique_id=770794381 instance=ExtResource("3_2c3ea")]
 layout_mode = 2
+theme_type_variation = &"BigButtonToggle"
 button_group = SubResource("ButtonGroup_2c3ea")
 titulo = "UNIRSE"
 descripcion = "INTRODUCE EL CÓDIGO Y ÚNETE A LA SALA"
@@ -73,6 +74,7 @@ layout_mode = 2
 
 [node name="CreateButton" parent="VBoxContainer/HBoxContainer" unique_id=2008779922 instance=ExtResource("3_2c3ea")]
 layout_mode = 2
+theme_type_variation = &"BigButtonToggle"
 button_group = SubResource("ButtonGroup_2c3ea")
 titulo = "CREAR"
 descripcion = "CREA UNA SALA PARA QUE SE UNAN TUS AMIGOS"
@@ -132,3 +134,6 @@ text = "CONFIRMAR"
 [node name="BottomSpace" type="Control" parent="VBoxContainer" unique_id=1971907428]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+
+[connection signal="back_action_requested" from="VBoxContainer/Header" to="." method="_on_header_back_action_requested"]
+[connection signal="pressed" from="VBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]

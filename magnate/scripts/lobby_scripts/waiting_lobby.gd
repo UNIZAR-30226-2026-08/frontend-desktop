@@ -66,3 +66,7 @@ func update_player_count():
 	else:
 		# Si te da este error, revisa si el nodo se llama 'player_number' o 'player_count_label'
 		print("Error: No encuentro el nodo del contador en VBoxContainer")
+
+
+func _on_header_back_action_requested() -> void:
+	SceneTransition.change_scene("res://scenes/UI/private_play.tscn")

@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://t0m5rvjixvms"]
+
+[ext_resource type="Script" uid="uid://1cej6gcviya7" path="res://scripts/autoload/scene_transition.gd" id="1_vcdyj"]
+
+[sub_resource type="Animation" id="Animation_ksnbv"]
+resource_name = "RESET"
+length = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Color:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.01),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_vcdyj"]
+resource_name = "fade_in"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Color:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.19999999),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uxcbp"]
+_data = {
+&"RESET": SubResource("Animation_ksnbv"),
+&"fade_in": SubResource("Animation_vcdyj")
+}
+
+[node name="SceneTransition" type="CanvasLayer" unique_id=1639274966]
+script = ExtResource("1_vcdyj")
+
+[node name="TransitionAnimation" type="AnimationPlayer" parent="." unique_id=1230046865]
+libraries/ = SubResource("AnimationLibrary_uxcbp")
+
+[node name="Color" type="ColorRect" parent="." unique_id=1455268749]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0.5411765, 0.36078432, 1)

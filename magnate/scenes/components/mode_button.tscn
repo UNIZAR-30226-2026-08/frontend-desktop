@@ -32,8 +32,8 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_mask")
-theme_override_styles/hover = SubResource("StyleBoxFlat_mask")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_mask")
+theme_override_styles/hover = SubResource("StyleBoxFlat_mask")
 theme_override_styles/focus = SubResource("StyleBoxFlat_mask")
 script = ExtResource("1_script")
 title_text = "MODE"
@@ -109,3 +109,4 @@ horizontal_alignment = 1
 
 [node name="ClickSFXStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1461197883]
 stream = ExtResource("4_e31iq")
+pitch_scale = 0.5

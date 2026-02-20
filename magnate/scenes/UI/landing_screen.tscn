@@ -1,18 +1,11 @@
 [gd_scene format=3 uid="uid://c72ahxfhkpr7e"]
 
-[ext_resource type="Texture2D" uid="uid://cbmxs65jj0bgh" path="res://assets/images/bg_city_white.jpg" id="1_qig0a"]
+[ext_resource type="Script" uid="uid://ceutk3a53auyt" path="res://scripts/landing_scripts/landing_screen.gd" id="1_x5nff"]
 [ext_resource type="PackedScene" uid="uid://baktdl26t2tmk" path="res://scenes/components/logo.tscn" id="2_qqoxn"]
+[ext_resource type="PackedScene" uid="uid://vxxc8m2hs5mg" path="res://scenes/components/city_background.tscn" id="2_x5nff"]
 [ext_resource type="FontFile" uid="uid://cnvplhda1itnw" path="res://assets/fonts/LTSuperior/LTSuperior-SemiBold.ttf" id="3_rhwfr"]
 [ext_resource type="PackedScene" uid="uid://b75mpeiodd857" path="res://scenes/components/animated_bigbutton.tscn" id="4_x7a4q"]
 [ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="5_bene6"]
-
-[sub_resource type="Gradient" id="Gradient_overlay"]
-colors = PackedColorArray(0.1, 0.1, 0.1, 0, 0.05, 0.05, 0.05, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_overlay"]
-gradient = SubResource("Gradient_overlay")
-fill_from = Vector2(0.5, 0)
-fill_to = Vector2(0.5, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x7a4q"]
 
@@ -23,27 +16,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_x5nff")
 
-[node name="Background" type="TextureRect" parent="." unique_id=1619036843]
-modulate = Color(1, 1, 1, 0.3)
+[node name="CityBackground" parent="." unique_id=1440435364 instance=ExtResource("2_x5nff")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("1_qig0a")
-expand_mode = 2
-stretch_mode = 6
-
-[node name="GradientOverlay" type="TextureRect" parent="." unique_id=571487195]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("GradientTexture2D_overlay")
 
 [node name="Container" type="VBoxContainer" parent="." unique_id=1914739086]
 layout_mode = 1
@@ -99,13 +75,19 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 
-[node name="BigButton" parent="Container/HBoxContainer" unique_id=2008779922 instance=ExtResource("4_x7a4q")]
+[node name="LoginButton" parent="Container/HBoxContainer" unique_id=2008779922 instance=ExtResource("4_x7a4q")]
 layout_mode = 2
+toggle_mode = false
 titulo = "INICIAR"
 descripcion = "SESIÓN"
 
-[node name="BigButton2" parent="Container/HBoxContainer" unique_id=100153685 instance=ExtResource("4_x7a4q")]
+[node name="Spacer" type="Control" parent="Container/HBoxContainer" unique_id=1926652193]
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
+
+[node name="SignupButton" parent="Container/HBoxContainer" unique_id=100153685 instance=ExtResource("4_x7a4q")]
+layout_mode = 2
+toggle_mode = false
 titulo = "REGISTRAR"
 descripcion = "NUEVO SOCIO"
 
@@ -116,10 +98,12 @@ layout_mode = 2
 [node name="VersionText" type="Label" parent="Container" unique_id=1120558046]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.443137, 0.443137, 0.478431, 1)
-theme_override_constants/letter_spacing = 4
 theme_override_fonts/font = ExtResource("5_bene6")
 theme_override_font_sizes/font_size = 10
 theme_override_styles/normal = SubResource("StyleBoxEmpty_x7a4q")
 text = "VERSIÓN 0.0.0 — 2026"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[connection signal="pressed" from="Container/HBoxContainer/LoginButton" to="." method="_on_login_button_pressed"]
+[connection signal="pressed" from="Container/HBoxContainer/SignupButton" to="." method="_on_signup_button_pressed"]

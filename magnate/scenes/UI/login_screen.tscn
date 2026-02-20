@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://2gid2sbx7dqf"]
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_pbf7n"]
+[ext_resource type="Script" uid="uid://dlgk2e8g5itqj" path="res://scripts/login_screen/login_screen.gd" id="2_52kn4"]
 [ext_resource type="PackedScene" uid="uid://vxxc8m2hs5mg" path="res://scenes/components/city_background.tscn" id="2_w6wvi"]
 [ext_resource type="PackedScene" uid="uid://5pilfc0bnc3" path="res://scenes/components/lineedit_with_shadow.tscn" id="4_xuk5p"]
 [ext_resource type="Texture2D" uid="uid://d2f4u0460actv" path="res://assets/icons/email.svg" id="5_0krvm"]
@@ -16,6 +17,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_pbf7n")
+script = ExtResource("2_52kn4")
 
 [node name="Background" parent="." unique_id=1440435364 instance=ExtResource("2_w6wvi")]
 layout_mode = 1
@@ -89,3 +91,5 @@ size_flags_horizontal = 3
 
 [node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=189878863]
 bus = &"Music"
+
+[connection signal="pressed" from="MainVBox/HBoxContainer/AnimatedButton" to="." method="_on_animated_button_pressed"]

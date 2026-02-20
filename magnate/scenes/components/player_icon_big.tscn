@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dyr05bl1052fj" path="res://assets/icons/loading_circle.svg" id="2_tmn0o"]
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="3_qfbvr"]
 [ext_resource type="FontFile" uid="uid://cel767gfqwf3q" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBoldItalic.ttf" id="4_f7vb1"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="5_p7x4w"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qfbvr"]
 bg_color = Color(1, 1, 1, 1)
@@ -121,30 +122,34 @@ texture = ExtResource("2_nkkxk")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="AddBotButton" type="Button" parent="." unique_id=1235943177]
-custom_minimum_size = Vector2(250, 0)
-layout_mode = 0
-offset_left = 81.0
-offset_top = 302.0
-offset_right = 319.0
-offset_bottom = 352.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("3_qfbvr")
-theme_override_font_sizes/font_size = 45
+[node name="AddBotButton" parent="." unique_id=175575919 instance=ExtResource("5_p7x4w")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -119.0
+offset_top = -95.0
+offset_right = 119.0
+offset_bottom = -45.0
+grow_horizontal = 2
+grow_vertical = 0
 text = "Añadir Bot"
 
-[node name="RemoveBotButton" type="Button" parent="." unique_id=1079827443]
-custom_minimum_size = Vector2(250, 0)
-layout_mode = 0
-offset_left = 81.0
-offset_top = 302.0
-offset_right = 319.0
-offset_bottom = 352.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("3_qfbvr")
-theme_override_font_sizes/font_size = 45
+[node name="RemoveBotButton" parent="." unique_id=630031643 instance=ExtResource("5_p7x4w")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -133.5
+offset_top = -95.0
+offset_right = 133.5
+offset_bottom = -45.0
+grow_horizontal = 2
+grow_vertical = 0
 text = "Eliminar Bot"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1672859480]

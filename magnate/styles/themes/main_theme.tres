@@ -2,6 +2,18 @@
 
 [ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="1_ark2o"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4plbq"]
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 120
+corner_radius_top_right = 120
+corner_radius_bottom_right = 120
+corner_radius_bottom_left = 120
+
 [sub_resource type="ImageTexture" id="ImageTexture_ark2o"]
 
 [sub_resource type="ImageTexture" id="ImageTexture_m4b6a"]
@@ -93,12 +105,21 @@ BigButton/base_type = &"Button"
 BigButton/colors/font_color = Color(1, 1, 1, 1)
 BigButton/font_sizes/font_size = 57
 BigButton/fonts/font = ExtResource("1_ark2o")
-BigButton/icons/checked = SubResource("ImageTexture_ark2o")
-BigButton/icons/unchecked = SubResource("ImageTexture_m4b6a")
-BigButton/styles/hover = SubResource("StyleBoxFlat_qj67h")
-BigButton/styles/hover_pressed = SubResource("StyleBoxFlat_y204k")
-BigButton/styles/normal = SubResource("StyleBoxFlat_qj67h")
-BigButton/styles/pressed = SubResource("StyleBoxFlat_y204k")
+BigButton/styles/disabled = null
+BigButton/styles/focus = SubResource("StyleBoxFlat_4plbq")
+BigButton/styles/hover = SubResource("StyleBoxFlat_4plbq")
+BigButton/styles/normal = SubResource("StyleBoxFlat_4plbq")
+BigButton/styles/pressed = SubResource("StyleBoxFlat_4plbq")
+BigButtonToggle/base_type = &"Button"
+BigButtonToggle/colors/font_color = Color(1, 1, 1, 1)
+BigButtonToggle/font_sizes/font_size = 57
+BigButtonToggle/fonts/font = ExtResource("1_ark2o")
+BigButtonToggle/icons/checked = SubResource("ImageTexture_ark2o")
+BigButtonToggle/icons/unchecked = SubResource("ImageTexture_m4b6a")
+BigButtonToggle/styles/hover = SubResource("StyleBoxFlat_qj67h")
+BigButtonToggle/styles/hover_pressed = SubResource("StyleBoxFlat_y204k")
+BigButtonToggle/styles/normal = SubResource("StyleBoxFlat_qj67h")
+BigButtonToggle/styles/pressed = SubResource("StyleBoxFlat_y204k")
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_disabled_color = Color(1, 1, 1, 1)
 Button/colors/font_hover_color = Color(1, 1, 1, 1)

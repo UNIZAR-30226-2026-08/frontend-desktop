@@ -8,10 +8,17 @@ var button_group: ButtonGroup
 func _ready() -> void:
 	button_group = join_button.button_group
 	button_group.pressed.connect(_change_option)
-	
+
 func _change_option(button: BaseButton) -> void:
 	confirm_button.disabled = false
 	if button.name == "JoinButton":
 		tab_container.current_tab = 0
 	else:
 		tab_container.current_tab = 1
+
+func _on_confirm_button_pressed() -> void:
+	SceneTransition.change_scene("res://scenes/UI/waiting_lobby.tscn")
+
+
+func _on_header_back_action_requested() -> void:
+	SceneTransition.change_scene("res://scenes/UI/home_screen.tscn")
