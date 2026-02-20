@@ -2,6 +2,7 @@
 
 [ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="1_t60bq"]
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="2_0d83e"]
+[ext_resource type="Script" uid="uid://0qaq1s7nv1pv" path="res://scripts/home_scripts/home_screen.gd" id="3_yo4tc"]
 [ext_resource type="PackedScene" uid="uid://cpo0vkocad1pp" path="res://scenes/components/animated_icon_button.tscn" id="5_0d83e"]
 [ext_resource type="Texture2D" uid="uid://djd6n1vv7wucv" path="res://assets/images/logo.png" id="5_logo"]
 [ext_resource type="PackedScene" uid="uid://bipbji0mtu678" path="res://scenes/components/animated_icon_text_button.tscn" id="6_text_btn"]
@@ -34,6 +35,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_0d83e")
+script = ExtResource("3_yo4tc")
 
 [node name="MainLayout" type="VBoxContainer" parent="." unique_id=1795813452]
 layout_mode = 1
@@ -148,3 +150,6 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_btn_base")
 title_text = "TIENDA"
 subtitle_text = "COMPRA DE COSMÉTICOS"
 icon_texture = ExtResource("10_shop")
+
+[connection signal="pressed" from="MainLayout/GridContainer/HBoxContainer/LeftColumn/BtnPublica" to="." method="_on_btn_publica_pressed"]
+[connection signal="pressed" from="MainLayout/GridContainer/HBoxContainer/LeftColumn/BtnPrivada" to="." method="_on_btn_privada_pressed"]

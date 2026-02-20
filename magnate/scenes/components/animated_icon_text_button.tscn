@@ -79,5 +79,5 @@ vertical_alignment = 1
 
 [node name="ClickSFXStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1083321876]
 stream = ExtResource("3_sfx")
-pitch_scale = 1.1
+pitch_scale = 0.5
 bus = &"SFX"
