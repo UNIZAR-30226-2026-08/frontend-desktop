@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cphy0sd46xk4g"]
 
-[ext_resource type="Script" uid="uid://ef41h6its1ss" path="res://scripts/property_tile.gd" id="1_llvu5"]
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_r2gmx"]
+[ext_resource type="Script" uid="uid://kit7m67rsqqs" path="res://scripts/property_tile.gd" id="2_r2gmx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llvu5"]
 bg_color = Color(1, 1, 1, 1)
@@ -14,16 +14,14 @@ border_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_llvu5"]
 thickness = 3
 
-[node name="PropertyTile" type="PanelContainer" unique_id=589823767 node_paths=PackedStringArray("child_property_color", "child_property_name", "child_property_price")]
-offset_right = 100.0
-offset_bottom = 180.0
+[node name="PropertyTile" type="PanelContainer" unique_id=589823767]
+offset_right = 80.0
+offset_bottom = 120.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme = ExtResource("1_r2gmx")
 theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
-script = ExtResource("1_llvu5")
-child_property_color = NodePath("VerticalAlign/PropertyColor")
-child_property_name = NodePath("VerticalAlign/InteriorAlign/PropertyName")
-child_property_price = NodePath("VerticalAlign/InteriorAlign/PropertyPrice")
-property_color = Color(0, 0.7928104, 0.62456346, 1)
+script = ExtResource("2_r2gmx")
 
 [node name="VerticalAlign" type="VBoxContainer" parent="." unique_id=820974535]
 layout_mode = 2
@@ -51,9 +49,8 @@ layout_mode = 2
 [node name="PropertyName" type="Label" parent="VerticalAlign/InteriorAlign" unique_id=893882161]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
-theme_override_font_sizes/font_size = 24
-text = "Property
-name"
+theme_override_font_sizes/font_size = 20
+text = "Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -61,7 +58,7 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
-theme_override_font_sizes/font_size = 25
+theme_override_font_sizes/font_size = 15
 text = "$999"
 horizontal_alignment = 1
 vertical_alignment = 1

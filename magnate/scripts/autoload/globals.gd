@@ -10,8 +10,23 @@ extends Node
 @export var WHITE: Color = Color('FFFFFF')
 @export var BLACK: Color = Color('222222')
 
-@export_group('Dimensions')
-@export var GAP_LENGTH: int = 40 # Número aleatorio, cambiará
-@export var TILE_SHORT_SIDE_LENGTH: int = 80 # Número aleatorio, cambiará
-@export var TILE_LONG_SIDE_LENGTH: int = 160 # Número aleatorio, cambiará
-@export var BRIDGE_LONG_SIDE_LENGTH: int = 2 * 160 + GAP_LENGTH # Número aleatorio, cambiará
+@export_group('Build')
+@export var BUILD_TYPE: BuildType = BuildType.DEV
+
+enum BuildType {
+	DEV,
+	PROD,
+}
+
+const BOARD_JSON_FILEPATH = "res://assets/game_info/board.json"
+enum TileType {
+	PROPERTY,
+	FANTASY,
+	START,
+	SERVER,
+	TRAM,
+	BRIDGE,
+	GO_TO_JAIL,
+	JAIL,
+	PARKING,
+}
