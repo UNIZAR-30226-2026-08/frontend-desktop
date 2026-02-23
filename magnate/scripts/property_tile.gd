@@ -1,28 +1,14 @@
-extends Container
+extends PanelContainer
 
-# Children references
-@export var child_property_color: ColorRect
-@export var child_property_name: Label
-@export var child_property_price: Label
+@onready var property_price: Label = $VerticalAlign/InteriorAlign/PropertyPrice
+@onready var property_name: Label = $VerticalAlign/InteriorAlign/PropertyName
+@onready var property_color: ColorRect = $VerticalAlign/PropertyColor
 
-# Exported values
-@export_multiline var property_name: String = "Property\nname"
-@export var property_color: Color = Globals.BLACK
-@export_range(0, 1000000) var property_price: int = 999
+func set_property_name(name: String) -> void:
+	property_name.text = name
 
-# Initializes children values to external
-func init_children() -> void:
-	child_property_color.color = property_color
-	child_property_name.text = property_name
-	child_property_price.text = "$" + str(property_price)
+func set_property_price(price: int) -> void:
+	property_price.text = str(price)
 
-func init_dimensions() -> void:
-	self.size = Vector2(
-		Globals.TILE_SHORT_SIDE_LENGTH,
-		Globals.TILE_LONG_SIDE_LENGTH
-	)
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	init_children()
-	init_dimensions()
+func set_property_color(color: Color) -> void:
+	property_color.color = color

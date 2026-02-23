@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://cf417oe42rk3d"]
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_edoq1"]
-[ext_resource type="Script" uid="uid://c80xikbcprhbs" path="res://scripts/bridge_tile.gd" id="2_o30ew"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llvu5"]
 bg_color = Color(1, 1, 1, 1)
@@ -12,11 +11,10 @@ border_width_bottom = 3
 border_color = Color(0, 0, 0, 1)
 
 [node name="BridgeTile" type="Panel" unique_id=810856610]
-offset_right = 100.0
-offset_bottom = 180.0
+offset_right = 85.0
+offset_bottom = 370.0
 theme = ExtResource("1_edoq1")
 theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
-script = ExtResource("2_o30ew")
 
 [node name="BridgeName" type="Label" parent="." unique_id=893882161]
 layout_mode = 1
