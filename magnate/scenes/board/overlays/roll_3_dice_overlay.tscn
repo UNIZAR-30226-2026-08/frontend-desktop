@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bt83e045i8s36"]
+
+[node name="Roll3DiceOverlay" type="CanvasLayer" unique_id=1321461346]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=353791365]
+offset_right = 40.0
+offset_bottom = 40.0

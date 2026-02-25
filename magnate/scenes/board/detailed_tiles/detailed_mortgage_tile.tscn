@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://cgltbxhah1ssn"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_q7gwk"]
+[ext_resource type="Script" uid="uid://c42fupb74dvag" path="res://scripts/board/detailed_tiles/detailed_mortgage_tile.gd" id="2_y3yp7"]
+[ext_resource type="FontFile" uid="uid://pqt8tux3lbt7" path="res://assets/fonts/LTSuperior/LTSuperior-Light.ttf" id="3_pi5ag"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gvqww"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 1)
+
+[node name="DetailedMortgageTile" type="PanelContainer" unique_id=589823767]
+offset_right = 400.0
+offset_bottom = 600.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_q7gwk")
+theme_override_styles/panel = SubResource("StyleBoxFlat_gvqww")
+script = ExtResource("2_y3yp7")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1459937722]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer" unique_id=621924419]
+layout_mode = 2
+color = Color(0.734375, 0.2409668, 0.2409668, 1)
+
+[node name="VerticalAlign" type="VBoxContainer" parent="MarginContainer" unique_id=820974535]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VerticalAlign" unique_id=1258342314]
+layout_mode = 2
+
+[node name="TopSpace" type="Control" parent="MarginContainer/VerticalAlign" unique_id=144419178]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VerticalAlign" unique_id=1885641114]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 40
+text = "HIPOTECADO"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MidSpace1" type="Control" parent="MarginContainer/VerticalAlign" unique_id=182019848]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Line1" type="ColorRect" parent="MarginContainer/VerticalAlign" unique_id=1828097884]
+custom_minimum_size = Vector2(300, 2)
+layout_mode = 2
+
+[node name="MidSpace2" type="Control" parent="MarginContainer/VerticalAlign" unique_id=1009972773]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="PropertyName" type="Label" parent="MarginContainer/VerticalAlign" unique_id=893882161]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+text = "NAME OF THE PROPERTY"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="MidSpace3" type="Control" parent="MarginContainer/VerticalAlign" unique_id=2048371630]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="MortgagePrice" type="Label" parent="MarginContainer/VerticalAlign" unique_id=835884986]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_pi5ag")
+theme_override_font_sizes/font_size = 20
+text = "HIPOTECADO POR 50€"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MidSpace4" type="Control" parent="MarginContainer/VerticalAlign" unique_id=1131275427]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Line2" type="ColorRect" parent="MarginContainer/VerticalAlign" unique_id=1532665534]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+
+[node name="MidSpace5" type="Control" parent="MarginContainer/VerticalAlign" unique_id=546198545]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Explanation" type="Label" parent="MarginContainer/VerticalAlign" unique_id=176958285]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_pi5ag")
+theme_override_font_sizes/font_size = 20
+text = "Como esta casilla está hipotecada, no hace falta pagar a su propietario."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
