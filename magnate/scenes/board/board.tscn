@@ -1,6 +1,117 @@
 [gd_scene format=3 uid="uid://osyh1204d63f"]
 
 [ext_resource type="Script" uid="uid://65ckidct12lw" path="res://scripts/board/board.gd" id="1_s78fa"]
+[ext_resource type="Texture2D" uid="uid://2p3ca35wvh80" path="res://assets/images/background_ingame.png" id="2_jnyf0"]
 
 [node name="Board" type="Node2D" unique_id=392167778]
 script = ExtResource("1_s78fa")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1876886405]
+custom_minimum_size = Vector2(1920, 1080)
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_jnyf0")
+
+[node name="BlackFringe1" type="ColorRect" parent="." unique_id=1404421708]
+custom_minimum_size = Vector2(120, 0)
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 455.0
+offset_top = 38.0
+offset_right = 575.0
+offset_bottom = 1043.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BlackFringe2" type="ColorRect" parent="." unique_id=2026912340]
+custom_minimum_size = Vector2(120, 0)
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1340.0
+offset_top = 38.0
+offset_right = 1460.0
+offset_bottom = 1043.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BlackFringe3" type="ColorRect" parent="." unique_id=708967700]
+custom_minimum_size = Vector2(120, 0)
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 575.0
+offset_top = 38.0
+offset_right = 1340.0
+offset_bottom = 158.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BlackFringe4" type="ColorRect" parent="." unique_id=937117291]
+custom_minimum_size = Vector2(120, 0)
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 575.0
+offset_top = 923.0
+offset_right = 1340.0
+offset_bottom = 1043.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BlackFringe5" type="ColorRect" parent="." unique_id=1086169211]
+custom_minimum_size = Vector2(120, 0)
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 665.0
+offset_top = 250.0
+offset_right = 825.0
+offset_bottom = 835.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BlackFringe6" type="ColorRect" parent="." unique_id=1591148429]
+custom_minimum_size = Vector2(120, 0)
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1091.0
+offset_top = 250.0
+offset_right = 1251.0
+offset_bottom = 835.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BlackFringe7" type="ColorRect" parent="." unique_id=604249]
+custom_minimum_size = Vector2(120, 0)
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 825.0
+offset_top = 250.0
+offset_right = 1091.0
+offset_bottom = 410.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BlackFringe8" type="ColorRect" parent="." unique_id=1672971944]
+custom_minimum_size = Vector2(120, 0)
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 825.0
+offset_top = 675.0
+offset_right = 1091.0
+offset_bottom = 835.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)

@@ -4,9 +4,9 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llvu5"]
 bg_color = Color(1, 1, 1, 1)
-border_width_left = 1
+border_width_left = 3
 border_width_top = 3
-border_width_right = 1
+border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0, 0, 0, 1)
 
@@ -20,18 +20,14 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="InteriorAlign" type="VBoxContainer" parent="VerticalAlign" unique_id=966003394]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="TopSpace" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=144419178]
+[node name="TopSpace" type="Control" parent="VerticalAlign" unique_id=144419178]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="FantasyText" type="Label" parent="VerticalAlign/InteriorAlign" unique_id=893882161]
+[node name="FantasyText" type="Label" parent="VerticalAlign" unique_id=893882161]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 15
 text = "Fantasía"
 horizontal_alignment = 1
 vertical_alignment = 1

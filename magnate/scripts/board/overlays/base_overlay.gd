@@ -6,9 +6,11 @@ extends CanvasLayer
 @onready var CARD_SIZE = Vector2(400, 600)
 @onready var CORNER_CARD_SIZE = Vector2(600, 600)
 
+@onready var CORNER = false
+
+# offsets extras a ojo depende del tipo de carta que sea jajaja
 @onready var CARD_OFFSET_X = 0
 @onready var CARD_OFFSET_Y = -100
-
 @onready var CORNER_CARD_OFFSET_X = -300
 @onready var CORNER_CARD_OFFSET_Y = -350
 
@@ -30,9 +32,17 @@ func setup_overlay(card_scene_path: String, data: Dictionary = {}):
 
 # Función interna para evitar repetir código
 func _prepare_and_add_card(card: Control, data: Dictionary):
-	var offset_x = CORNER_CARD_OFFSET_X
-	var offset_y = CORNER_CARD_OFFSET_Y
-	var card_size = CORNER_CARD_SIZE
+	var offset_x
+	var offset_y
+	var card_size
+	if(CORNER):
+		offset_x = CORNER_CARD_OFFSET_X
+		offset_y = CORNER_CARD_OFFSET_Y
+		card_size = CORNER_CARD_SIZE
+	else:
+		offset_x = CARD_OFFSET_X
+		offset_y = CARD_OFFSET_Y
+		card_size = CARD_SIZE
 	
 	# 1. Limpiar previo
 	for child in anchor.get_children():
