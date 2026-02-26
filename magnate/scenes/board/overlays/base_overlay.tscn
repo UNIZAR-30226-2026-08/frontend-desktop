@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://iip2p7fd0k63"]
+
+[ext_resource type="Texture2D" uid="uid://c0towcf10ju02" path="res://assets/images/bg_city.jpg" id="1_5dku7"]
+[ext_resource type="Script" uid="uid://bg3rt56lo1430" path="res://scripts/board/overlays/base_overlay.gd" id="1_noyl2"]
+[ext_resource type="PackedScene" uid="uid://vd87r5unxafe" path="res://scenes/board/detailed_tiles/detailed_property_tile.tscn" id="2_jgip4"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="4_ibbsl"]
+[ext_resource type="Script" uid="uid://dayb80a6dos6k" path="res://scripts/button_tween.gd" id="5_jgip4"]
+
+[node name="BaseOverlay" type="CanvasLayer" unique_id=417320456]
+script = ExtResource("1_noyl2")
+default_card_scene = ExtResource("2_jgip4")
+
+[node name="temporal_para_ver_efecto" type="TextureRect" parent="." unique_id=248528354]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_5dku7")
+expand_mode = 1
+
+[node name="Dimmer" type="ColorRect" parent="." unique_id=1096305439]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0)
+
+[node name="ContentAnchor" type="Control" parent="." unique_id=350748873]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ConfirmButton" type="Button" parent="." unique_id=253896587]
+z_index = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -92.0
+offset_top = -180.0
+offset_right = 92.0
+offset_bottom = -130.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("4_ibbsl")
+theme_override_font_sizes/font_size = 70
+text = "Aceptar"
+script = ExtResource("5_jgip4")
+
+[connection signal="pressed" from="ConfirmButton" to="." method="_on_confirm_button_pressed"]

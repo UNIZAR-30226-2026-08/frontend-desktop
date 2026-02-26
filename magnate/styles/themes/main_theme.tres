@@ -2,6 +2,19 @@
 
 [ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="1_ark2o"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hper1"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.365, 0.365, 1)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_detail = 1
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4plbq"]
 bg_color = Color(0, 0.5411765, 0.36078432, 1)
 border_width_left = 10
@@ -103,9 +116,25 @@ corner_radius_bottom_left = 100
 default_font = ExtResource("1_ark2o")
 BigButton/base_type = &"Button"
 BigButton/colors/font_color = Color(1, 1, 1, 1)
+BigButton/colors/font_disabled_color = Color(0, 0, 0, 1)
+BigButton/colors/font_focus_color = Color(0, 0, 0, 1)
+BigButton/colors/font_hover_color = Color(0, 0, 0, 1)
+BigButton/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+BigButton/colors/font_outline_color = Color(0, 0, 0, 1)
+BigButton/colors/font_pressed_color = Color(0, 0, 0, 1)
+BigButton/colors/icon_disabled_color = Color(0, 0, 0, 1)
+BigButton/colors/icon_focus_color = Color(0, 0, 0, 1)
+BigButton/colors/icon_hover_color = Color(0, 0, 0, 1)
+BigButton/colors/icon_hover_pressed_color = Color(0, 0, 0, 1)
+BigButton/colors/icon_normal_color = Color(0, 0, 0, 1)
+BigButton/colors/icon_pressed_color = Color(0, 0, 0, 1)
+BigButton/constants/align_to_largest_stylebox = 0
+BigButton/constants/h_separation = 0
+BigButton/constants/icon_max_width = 0
+BigButton/constants/outline_size = 0
 BigButton/font_sizes/font_size = 57
 BigButton/fonts/font = ExtResource("1_ark2o")
-BigButton/styles/disabled = null
+BigButton/styles/disabled = SubResource("StyleBoxFlat_hper1")
 BigButton/styles/focus = SubResource("StyleBoxFlat_4plbq")
 BigButton/styles/hover = SubResource("StyleBoxFlat_4plbq")
 BigButton/styles/normal = SubResource("StyleBoxFlat_4plbq")
@@ -122,7 +151,21 @@ BigButtonToggle/styles/normal = SubResource("StyleBoxFlat_qj67h")
 BigButtonToggle/styles/pressed = SubResource("StyleBoxFlat_y204k")
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_disabled_color = Color(1, 1, 1, 1)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
 Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
 Button/font_sizes/font_size = 50
 Button/styles/disabled = SubResource("StyleBoxFlat_86xmx")
 Button/styles/focus = SubResource("StyleBoxFlat_ark2o")

@@ -1,0 +1,116 @@
+[gd_scene format=3 uid="uid://dtdx4dou1ljl6"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_brol5"]
+[ext_resource type="Texture2D" uid="uid://cafrfcpfyr8qm" path="res://assets/images/secretary.png" id="2_x1856"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dxen"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 1)
+
+[node name="DetailedJailTile" type="Control" unique_id=1772909635]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 600.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_brol5")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1283559629]
+custom_minimum_size = Vector2(600, 600)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2dxen")
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer" unique_id=394837070]
+layout_mode = 2
+
+[node name="BackgroundWhite" type="ColorRect" parent="PanelContainer" unique_id=1293432889]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=1004195216]
+layout_mode = 0
+offset_left = 150.0
+offset_right = 600.0
+offset_bottom = 450.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2dxen")
+
+[node name="BackgroundOrange" type="ColorRect" parent="PanelContainer2" unique_id=1695962800]
+layout_mode = 2
+color = Color(1, 0.54062504, 0.203125, 1)
+
+[node name="InLabel" type="Label" parent="." unique_id=148657105]
+layout_mode = 0
+offset_left = 406.0
+offset_top = 23.000015
+offset_right = 660.0
+offset_bottom = 93.000015
+rotation = 0.7853982
+size_flags_vertical = 1
+theme = ExtResource("1_brol5")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 70
+text = "ESPERE"
+horizontal_alignment = 1
+
+[node name="Secretary Label" type="Label" parent="." unique_id=434294299]
+z_index = 1
+layout_mode = 0
+offset_left = 167.99998
+offset_top = 198.00002
+offset_right = 489.0
+offset_bottom = 268.0
+rotation = 0.7853982
+size_flags_vertical = 1
+theme = ExtResource("1_brol5")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 70
+text = "AQUÍ"
+horizontal_alignment = 1
+
+[node name="CorridorLabel1" type="Label" parent="." unique_id=72071592]
+z_index = 1
+layout_mode = 0
+offset_left = 224.0
+offset_top = 458.0
+offset_right = 545.0
+offset_bottom = 498.0
+size_flags_vertical = 1
+theme = ExtResource("1_brol5")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "PASILLO"
+horizontal_alignment = 1
+
+[node name="CorridorLabel2" type="Label" parent="." unique_id=1541938273]
+z_index = 1
+layout_mode = 0
+offset_left = 134.0
+offset_top = 82.0
+offset_right = 455.0
+offset_bottom = 122.0
+rotation = 1.5707964
+size_flags_vertical = 1
+theme = ExtResource("1_brol5")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "PASILLO"
+horizontal_alignment = 1
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=1537935622]
+layout_mode = 0
+offset_left = 333.00003
+offset_top = 57.000008
+offset_right = 636.2803
+offset_bottom = 246.10266
+rotation = 0.7853982
+texture = ExtResource("2_x1856")
+expand_mode = 1

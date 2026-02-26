@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://bt83e045i8s36"]
+
+[ext_resource type="Script" uid="uid://cvo84lpc7yi37" path="res://scripts/board/overlays/roll_3_dice_overlay.gd" id="1_hrylb"]
+[ext_resource type="Texture2D" uid="uid://clmm1lapye6w6" path="res://assets/icons/dice/dice-six-faces-one.svg" id="2_3erw5"]
+[ext_resource type="Texture2D" uid="uid://brdlqidj54bko" path="res://assets/icons/dice/dice-six-faces-two.svg" id="3_hdlgy"]
+[ext_resource type="Texture2D" uid="uid://c0towcf10ju02" path="res://assets/images/bg_city.jpg" id="3_k5s8y"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="4_a6p67"]
+[ext_resource type="Texture2D" uid="uid://c8kn45mn7pyww" path="res://assets/icons/dice/dice-six-faces-three.svg" id="4_pjsp2"]
+[ext_resource type="Script" uid="uid://dayb80a6dos6k" path="res://scripts/button_tween.gd" id="5_3erw5"]
+[ext_resource type="Texture2D" uid="uid://daj30sdv6b2s0" path="res://assets/icons/dice/dice-six-faces-four.svg" id="5_nqkk7"]
+[ext_resource type="Texture2D" uid="uid://b8y162ufi1fed" path="res://assets/icons/dice/dice-six-faces-five.svg" id="6_6f3kb"]
+[ext_resource type="Texture2D" uid="uid://br6rtmhuptf23" path="res://assets/icons/dice/dice-six-faces-six.svg" id="7_i4jj5"]
+
+[node name="RollThreeDice" type="CanvasLayer" unique_id=417320456]
+script = ExtResource("1_hrylb")
+dice_faces = Array[Texture2D]([ExtResource("2_3erw5"), ExtResource("3_hdlgy"), ExtResource("4_pjsp2"), ExtResource("5_nqkk7"), ExtResource("6_6f3kb"), ExtResource("7_i4jj5")])
+
+[node name="temporal_para_ver_efecto" type="TextureRect" parent="." unique_id=248528354]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_k5s8y")
+expand_mode = 1
+
+[node name="Dimmer" type="ColorRect" parent="." unique_id=1096305439]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0)
+
+[node name="ContentAnchor" type="CenterContainer" parent="." unique_id=1681835791]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentAnchor" unique_id=1789264583]
+layout_mode = 2
+
+[node name="Dice1" type="TextureRect" parent="ContentAnchor/HBoxContainer" unique_id=1194588728]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Space" type="Control" parent="ContentAnchor/HBoxContainer" unique_id=1506021274]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Dice2" type="TextureRect" parent="ContentAnchor/HBoxContainer" unique_id=462172261]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Space2" type="Control" parent="ContentAnchor/HBoxContainer" unique_id=79060565]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Dice3" type="TextureRect" parent="ContentAnchor/HBoxContainer" unique_id=1315003600]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StopDiceButton" type="Button" parent="." unique_id=253896587]
+z_index = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -92.0
+offset_top = -180.0
+offset_right = 92.0
+offset_bottom = -130.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("4_a6p67")
+theme_override_font_sizes/font_size = 70
+text = "Parar los dados"
+script = ExtResource("5_3erw5")
+
+[connection signal="pressed" from="StopDiceButton" to="." method="_on_stop_dice_button_pressed"]
