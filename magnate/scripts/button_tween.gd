@@ -28,4 +28,13 @@ func _button_exit() -> void:
 
 
 func _on_confirm_button_pressed() -> void:
-	pass
+	# Audio
+	sfx.play()
+	
+	# Animation
+	var button_press_tween: Tween = create_tween()
+	button_press_tween.tween_property(self, "scale", pressed_scale, 0.06).set_trans(Tween.TRANS_SINE)
+	if self.is_hovered():
+		button_press_tween.tween_property(self, "scale", hover_scale, 0.12).set_trans(Tween.TRANS_SINE)
+	else:
+		button_press_tween.tween_property(self, "scale", Vector2.ONE, 0.12).set_trans(Tween.TRANS_SINE)

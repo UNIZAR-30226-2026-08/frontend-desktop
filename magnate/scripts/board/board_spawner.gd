@@ -41,7 +41,7 @@ static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> Control:
 			tile_instance.set_property_color(tile_def["color"])
 		Globals.TileType.BRIDGE:
 			pass
-		Globals.TileType.FANTASY:
+		Globals.TileType.SERVER:
 			pass
 	return tile_instance
 
