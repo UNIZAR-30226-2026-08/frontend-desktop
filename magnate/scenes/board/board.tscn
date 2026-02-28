@@ -7,10 +7,12 @@
 [node name="Board" type="Node2D" unique_id=392167778]
 script = ExtResource("1_s78fa")
 
+[node name="Background" type="TextureRect" parent="." unique_id=1876886405]
+custom_minimum_size = Vector2(1920, 1080)
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_jnyf0")
+
 [node name="CameraSystem" parent="." unique_id=250162375 instance=ExtResource("2_knosr")]
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1876886405]
-custom_minimum_size = Vector2(1920, 1080)
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("2_jnyf0")
+[node name="Tiles" type="Node2D" parent="." unique_id=41079374]
