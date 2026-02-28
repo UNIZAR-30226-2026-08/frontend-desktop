@@ -5,7 +5,7 @@ const PROPERTY_TILE = preload("uid://cphy0sd46xk4g")
 const FANTASY_TILE = preload("uid://cbwe3sts61rxb")
 const BRIDGE_TILE = preload("uid://cf417oe42rk3d")
 
-static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> void:
+static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> Control:
 	# Instantiate tile type
 	var tile_entity: PackedScene
 	match tile_def.type:
@@ -16,7 +16,7 @@ static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> void:
 		Globals.TileType.FANTASY:
 			tile_entity = FANTASY_TILE
 		_:
-			return
+			return null
 	# Common tile properties
 	var tile_instance: Control = tile_entity.instantiate() as Control
 	parent_scene.add_child(tile_instance)
@@ -34,8 +34,11 @@ static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> void:
 			pass
 		Globals.TileType.FANTASY:
 			pass
+	return tile_instance
 
-static func spawn_board(parent_scene: Node2D) -> void:
+static func spawn_board(parent_scene: Node2D) -> Dictionary[String, Control]:
 	var tile_defs = BoardDefinitionParser.parse_board(Globals.BOARD_JSON_FILEPATH)
+	var tile_dict: Dictionary[String, Control] = {}
 	for tile_id in tile_defs:
-		_spawn_tile(parent_scene, tile_defs[tile_id])
+		tile_dict[tile_id] = _spawn_tile(parent_scene, tile_defs[tile_id])
+	return tile_dict
