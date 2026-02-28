@@ -18,7 +18,6 @@ static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> void:
 		_:
 			return
 	# Common tile properties
-	Utils.debug("Instanciada " + tile_def.name)
 	var tile_instance: Control = tile_entity.instantiate() as Control
 	parent_scene.add_child(tile_instance)
 	tile_instance.pivot_offset = tile_def["size"] / 2
