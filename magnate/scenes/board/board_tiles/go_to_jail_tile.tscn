@@ -5,23 +5,22 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dxen"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
 [node name="DetailedGoToJailTile" type="Control" unique_id=1772909635]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 600.0
-offset_bottom = 600.0
+offset_right = 120.0
+offset_bottom = 120.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_yfmb7")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1283559629]
-custom_minimum_size = Vector2(600, 600)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,35 +34,37 @@ layout_mode = 2
 
 [node name="GoToLabel" type="Label" parent="." unique_id=148657105]
 layout_mode = 0
-offset_left = 427.0
-offset_top = 9.000015
-offset_right = 663.0
-offset_bottom = 79.000015
-rotation = 0.7853982
+offset_left = 3.0
+offset_top = 28.000015
+offset_right = 37.0
+offset_bottom = 43.000015
+rotation = -0.7853982
 size_flags_vertical = 1
 theme = ExtResource("1_yfmb7")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "VE A"
+theme_override_font_sizes/font_size = 15
+text = "Ve a"
 horizontal_alignment = 1
 
 [node name="SecretaryLabel" type="Label" parent="." unique_id=434294299]
 layout_mode = 0
-offset_left = 61.999992
-offset_top = 290.00003
-offset_right = 423.0
-offset_bottom = 360.00003
-rotation = 0.7853982
+offset_left = 58.0
+offset_top = 108.000015
+offset_right = 129.0
+offset_bottom = 123.000015
+rotation = -0.7853982
 size_flags_vertical = 1
 theme = ExtResource("1_yfmb7")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 60
-text = "SECRETARIA"
+theme_override_font_sizes/font_size = 15
+text = "Secretaria"
 
 [node name="BodyguardLabel" type="TextureRect" parent="." unique_id=1537935622]
 layout_mode = 0
-offset_left = 345.00003
-offset_top = -39.999992
-offset_right = 763.0
-offset_bottom = 378.0
-rotation = 0.7853982
+offset_left = -10.000004
+offset_top = 52.000004
+offset_right = 408.0
+offset_bottom = 470.0
+rotation = -0.7853982
+scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_jrpyf")

@@ -4,6 +4,9 @@ extends RefCounted
 const PROPERTY_TILE = preload("uid://cphy0sd46xk4g")
 const FANTASY_TILE = preload("uid://cbwe3sts61rxb")
 const BRIDGE_TILE = preload("uid://cf417oe42rk3d")
+const GO_TO_JAIL_TILE = preload("uid://dh48464mm8og5")
+const PARKING_TILE = preload("uid://c2q0i0vsel4nv")
+const JAIL_TILE = preload("uid://dtdx4dou1ljl6")
 
 static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> Control:
 	# Instantiate tile type
@@ -15,6 +18,12 @@ static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> Control:
 			tile_entity = BRIDGE_TILE
 		Globals.TileType.FANTASY:
 			tile_entity = FANTASY_TILE
+		Globals.TileType.GO_TO_JAIL:
+			tile_entity = GO_TO_JAIL_TILE
+		Globals.TileType.PARKING:
+			tile_entity = PARKING_TILE
+		Globals.TileType.JAIL:
+			tile_entity = JAIL_TILE
 		_:
 			return null
 	# Common tile properties

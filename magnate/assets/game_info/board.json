@@ -1,624 +1,74 @@
 {
-	"groups": [
-		{
-			"group": 1.0,
-			"color": "#FC5C65"
-		},
-		{
-			"group": 2.0,
-			"color": "#4B6584"
-		},
-		{
-			"group": 3.0,
-			"color": "#FA8231"
-		},
-		{
-			"group": 4.0,
-			"color": "#AAF0A3"
-		},
-		{
-			"group": 5.0,
-			"color": "#6D214F"
-		},
-		{
-			"group": 6.0,
-			"color": "#42C6F5"
-		},
-		{
-			"group": 7.0,
-			"color": "#31E001"
-		},
-		{
-			"group": 8.0,
-			"color": "#A55EEA"
-		},
-		{
-			"group": 9.0,
-			"color": "#3867D6"
-		},
-		{
-			"group": 10.0,
-			"color": "#FFF500"
-		},
-		{
-			"group": 11.0,
-			"color": "#885129"
-		},
-		{
-			"group": 12.0,
-			"color": "#FEB8B1"
-		}
-	],
-	"tiles": [
-		{
-			"id": "000",
-			"name": "Salida",
-			"type": "start",
-			"x": 1402.0,
-			"y": 983.0,
-			"rotation": 0.0,
-			"width": 120.0,
-			"height": 120.0
-		},
-		{
-			"id": "001",
-			"name": "Aula 101",
-			"type": "property",
-			"x": 1299.0,
-			"y": 983.0,
-			"group": 1.0,
-			"rotation": 0.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "002",
-			"name": "Fantasía",
-			"type": "fantasy",
-			"x": 1214.0,
-			"y": 983.0,
-			"rotation": 0.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "003",
-			"name": "Aula 103",
-			"type": "property",
-			"x": 1129.0,
-			"y": 983.0,
-			"group": 1.0,
-			"rotation": 0.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "004",
-			"name": "Fantasía",
-			"type": "fantasy",
-			"x": 1044.0,
-			"y": 983.0,
-			"rotation": 0.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "005",
-			"name": "Aula 105",
-			"type": "server",
-			"x": 959.0,
-			"y": 983.0,
-			"rotation": 0.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "006",
-			"name": "Aula 106",
-			"type": "property",
-			"x": 874.0,
-			"y": 983.0,
-			"group": 2.0,
-			"rotation": 0.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "007",
-			"name": "Fantasía",
-			"type": "fantasy",
-			"x": 789.0,
-			"y": 983.0,
-			"rotation": 0.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "008",
-			"name": "Aula 108",
-			"type": "property",
-			"x": 704.0,
-			"y": 983.0,
-			"group": 2.0,
-			"rotation": 0.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "009",
-			"name": "Aula 109",
-			"type": "property",
-			"x": 619.0,
-			"y": 983.0,
-			"group": 2.0,
-			"rotation": 0.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "010",
-			"name": "Tranvía",
-			"type": "tram",
-			"x": 516.0,
-			"y": 982.0,
-			"rotation": 0.0,
-			"width": 120.0,
-			"height": 120.0
-		},
-		{
-			"id": "011",
-			"name": "Lab 201",
-			"type": "property",
-			"x": 517.0,
-			"y": 880.0,
-			"group": 3.0,
-			"rotation": 90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "012",
-			"name": "Fantasía",
-			"type": "fantasy",
-			"x": 517.0,
-			"y": 795.0,
-			"rotation": 90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "013",
-			"name": "Lab 203",
-			"type": "property",
-			"x": 517.0,
-			"y": 710.0,
-			"group": 3.0,
-			"rotation": 90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "014",
-			"name": "Lab 204",
-			"type": "property",
-			"x": 517.0,
-			"y": 625.0,
-			"group": 3.0,
-			"rotation": 90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "015",
-			"name": "Puente",
-			"type": "bridge",
-			"x": 644.0,
-			"y": 540.0,
-			"rotation": 90.0,
-			"width": 85.0,
-			"height": 375.0
-		},
-		{
-			"id": "016",
-			"name": "Lab 206",
-			"type": "property",
-			"x": 517.0,
-			"y": 455.0,
-			"group": 4.0,
-			"rotation": 90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "017",
-			"name": "Fantasía",
-			"type": "fantasy",
-			"x": 517.0,
-			"y": 370.0,
-			"rotation": 90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "018",
-			"name": "Lab 208",
-			"type": "property",
-			"x": 517.0,
-			"y": 285.0,
-			"group": 4.0,
-			"rotation": 90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "019",
-			"name": "Lab 209",
-			"type": "property",
-			"x": 517.0,
-			"y": 200.0,
-			"group": 4.0,
-			"rotation": 90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "020",
-			"name": "Ve a la cárcel",
-			"type": "go_to_jail",
-			"x": 516.0,
-			"y": 97.0,
-			"rotation": 180.0,
-			"width": 120.0,
-			"height": 120.0
-		},
-		{
-			"id": "021",
-			"name": "Despacho 1",
-			"type": "property",
-			"x": 619.0,
-			"y": 98.0,
-			"group": 5.0,
-			"rotation": 180.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "022",
-			"name": "Fantasía",
-			"type": "fantasy",
-			"x": 704.0,
-			"y": 98.0,
-			"rotation": 180.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "023",
-			"name": "Despacho 3",
-			"type": "property",
-			"x": 789.0,
-			"y": 98.0,
-			"group": 5.0,
-			"rotation": 180.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "024",
-			"name": "Despacho 4",
-			"type": "property",
-			"x": 874.0,
-			"y": 98.0,
-			"group": 5.0,
-			"rotation": 180.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "025",
-			"name": "Despacho 5",
-			"type": "server",
-			"x": 959.0,
-			"y": 98.0,
-			"rotation": 180.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "026",
-			"name": "Despacho 6",
-			"type": "property",
-			"x": 1044.0,
-			"y": 98.0,
-			"group": 6.0,
-			"rotation": 180.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "027",
-			"name": "Cafetería",
-			"type": "property",
-			"x": 1129.0,
-			"y": 98.0,
-			"group": 6.0,
-			"rotation": 180.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "028",
-			"name": "Fantasía",
-			"type": "fantasy",
-			"x": 1214.0,
-			"y": 98.0,
-			"rotation": 180.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "029",
-			"name": "Biblio",
-			"type": "property",
-			"x": 1299.0,
-			"y": 98.0,
-			"group": 6.0,
-			"rotation": 180.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "030",
-			"name": "Tranvia",
-			"type": "tram",
-			"x": 1402.0,
-			"y": 98.0,
-			"rotation": 180.0,
-			"width": 120.0,
-			"height": 120.0
-		},
-		{
-			"id": "031",
-			"name": "Gimnasio",
-			"type": "property",
-			"x": 1400.0,
-			"y": 200.0,
-			"group": 7.0,
-			"rotation": -90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "032",
-			"name": "Piscina",
-			"type": "property",
-			"x": 1400.0,
-			"y": 285.0,
-			"group": 7.0,
-			"rotation": -90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "033",
-			"name": "Fantasía",
-			"type": "fantasy",
-			"x": 1400.0,
-			"y": 370.0,
-			"rotation": -90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "034",
-			"name": "Teatro",
-			"type": "property",
-			"x": 1400.0,
-			"y": 455.0,
-			"group": 7.0,
-			"rotation": -90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "035",
-			"name": "Puente",
-			"type": "bridge",
-			"x": 1272.0,
-			"y": 540.0,
-			"rotation": -90.0,
-			"width": 85.0,
-			"height": 375.0
-		},
-		{
-			"id": "036",
-			"name": "Fantasía",
-			"type": "fantasy",
-			"x": 1400.0,
-			"y": 625.0,
-			"rotation": -90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "037",
-			"name": "Parking C",
-			"type": "property",
-			"x": 1400.0,
-			"y": 710.0,
-			"group": 8.0,
-			"rotation": -90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "038",
-			"name": "Fantasía",
-			"type": "fantasy",
-			"x": 1400.0,
-			"y": 795.0,
-			"rotation": -90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "039",
-			"name": "Parking E",
-			"type": "property",
-			"x": 1400.0,
-			"y": 880.0,
-			"group": 8.0,
-			"rotation": -90.0,
-			"width": 85.0,
-			"height": 120.0
-		},
-		{
-			"id": "100",
-			"name": "Tranvia",
-			"type": "tram",
-			"x": 1169.0,
-			"y": 750.0,
-			"rotation": -90.0,
-			"width": 165.0,
-			"height": 165.0
-		},
-		{
-			"id": "101",
-			"name": "Aula A",
-			"type": "property",
-			"x": 1044.0,
-			"y": 750.0,
-			"group": 9.0,
-			"rotation": 0.0,
-			"width": 85.0,
-			"height": 165.0
-		},
-		{
-			"id": "102",
-			"name": "Aula B",
-			"type": "fantasy",
-			"x": 959.0,
-			"y": 750.0,
-			"rotation": 0.0,
-			"width": 85.0,
-			"height": 165.0
-		},
-		{
-			"id": "103",
-			"name": "Aula C",
-			"type": "property",
-			"x": 874.0,
-			"y": 750.0,
-			"group": 9.0,
-			"rotation": 0.0,
-			"width": 85.0,
-			"height": 165.0
-		},
-		{
-			"id": "104",
-			"name": "Carcel",
-			"type": "jail",
-			"x": 749.0,
-			"y": 750.0,
-			"rotation": 0.0,
-			"width": 165.0,
-			"height": 165.0
-		},
-		{
-			"id": "105",
-			"name": "Lab A",
-			"type": "property",
-			"x": 749.0,
-			"y": 625.0,
-			"group": 10.0,
-			"rotation": 90.0,
-			"width": 85.0,
-			"height": 165.0
-		},
-		{
-			"id": "106",
-			"name": "Lab C",
-			"type": "property",
-			"x": 749.0,
-			"y": 455.0,
-			"group": 10.0,
-			"rotation": 90.0,
-			"width": 85.0,
-			"height": 165.0
-		},
-		{
-			"id": "107",
-			"name": "Tranvia",
-			"type": "tram",
-			"x": 749.0,
-			"y": 330.0,
-			"rotation": 90.0,
-			"width": 165.0,
-			"height": 165.0
-		},
-		{
-			"id": "108",
-			"name": "Desp A",
-			"type": "property",
-			"x": 873.0,
-			"y": 330.0,
-			"group": 11.0,
-			"rotation": 180.0,
-			"width": 85.0,
-			"height": 165.0
-		},
-		{
-			"id": "109",
-			"name": "Desp B",
-			"type": "fantasy",
-			"x": 958.0,
-			"y": 330.0,
-			"rotation": 180.0,
-			"width": 85.0,
-			"height": 165.0
-		},
-		{
-			"id": "110",
-			"name": "Desp C",
-			"type": "property",
-			"x": 1043.0,
-			"y": 330.0,
-			"group": 11.0,
-			"rotation": 180.0,
-			"width": 85.0,
-			"height": 165.0
-		},
-		{
-			"id": "111",
-			"name": "Parking",
-			"type": "parking",
-			"x": 1167.0,
-			"y": 330.0,
-			"rotation": 180.0,
-			"width": 165.0,
-			"height": 165.0
-		},
-		{
-			"id": "112",
-			"name": "Sec A",
-			"type": "property",
-			"x": 1167.0,
-			"y": 455.0,
-			"group": 12.0,
-			"rotation": -90.0,
-			"width": 85.0,
-			"height": 165.0
-		},
-		{
-			"id": "113",
-			"name": "Sec C",
-			"type": "property",
-			"x": 1167.0,
-			"y": 625.0,
-			"group": 12.0,
-			"rotation": -90.0,
-			"width": 85.0,
-			"height": 165.0
-		}
-	]
+  "playerColors": ["#f94144", "#f9c74f", "#90be6d", "#2c7da0"],
+  "groups":
+  [
+	{"group": 1, "color": "#FC5C65" },
+	{"group": 2, "color": "#4B6584" },
+	{"group": 3, "color": "#FA8231" },
+	{"group": 4, "color": "#AAF0A3" },
+	{"group": 5, "color": "#6D214F" },
+	{"group": 6, "color": "#42C6F5" },
+	{"group": 7, "color": "#31E001" },
+	{"group": 8, "color": "#A55EEA" },
+	{"group": 9, "color": "#3867D6" },
+	{"group": 10, "color": "#FFF500" },
+	{"group": 11, "color": "#885129" },
+	{"group": 12, "color": "#FEB8B1" }
+  ],
+  "tiles": [
+	{ "id": "000", "name": "Salida", "type": "start", "x": 1402, "y": 983, "rotation": 0, "width": 120, "height": 120 },
+	{ "id": "001", "name": "Conserjería del Ada Byron", "type": "property", "x": 1299, "y": 983, "group": 1, "rotation": 0, "width": 85, "height": 120 },
+	{ "id": "002", "name": "Fantasía", "type": "fantasy", "x": 1214, "y": 983, "rotation": 0, "width": 85, "height": 120 },
+	{ "id": "003", "name": "Sala de estudios Ada Byron", "type": "property", "x": 1129, "y": 983, "group": 1, "rotation": 0, "width": 85, "height": 120 },
+	{ "id": "004", "name": "Fantasía", "type": "fantasy", "x": 1044, "y": 983, "rotation": 0, "width": 85, "height": 120 },
+	{ "id": "005", "name": "Pilgor", "type": "server", "x": 959, "y": 983, "rotation": 0, "width": 85, "height": 120 },
+	{ "id": "006", "name": "Lab 0.05b", "type": "property", "x": 874, "y": 983, "group": 2, "rotation": 0, "width": 85, "height": 120 },
+	{ "id": "007", "name": "Fantasía", "type": "fantasy", "x": 789, "y": 983, "rotation": 0, "width": 85, "height": 120 },
+	{ "id": "008", "name": "Lab 0.06b", "type": "property", "x": 704, "y": 983, "group": 2, "rotation": 0, "width": 85, "height": 120 },
+	{ "id": "009", "name": "Lab 1.02", "type": "property", "x": 619, "y": 983, "group": 2, "rotation": 0, "width": 85, "height": 120 },
+	{ "id": "010", "name": "Tranvía", "type": "tram", "x": 516, "y": 982, "rotation": 90, "width": 120, "height": 120, "subText": "Gran Vía" },
+	{ "id": "011", "name": "Microondas Ada Byron", "type": "property", "x": 517, "y": 880, "group": 3, "rotation": 90, "width": 85, "height": 120 },
+	{ "id": "012", "name": "Fantasía", "type": "fantasy", "x": 517, "y": 795, "rotation": 90, "width": 85, "height": 120 },
+	{ "id": "013", "name": "Máquinas expendedoras del Ada Byron", "type": "property", "x": 517, "y": 710, "group": 3, "rotation": 90, "width": 85, "height": 120 },
+	{ "id": "014", "name": "Cafetería Ada Byron", "type": "property", "x": 517, "y": 625, "group": 3, "rotation": 90, "width": 85, "height": 120 },
+	{ "id": "015", "name": "Puente de Santiago", "type": "bridge", "x": 644, "y": 540, "rotation": 90, "width": 85, "height": 375 },
+	{ "id": "016", "name": "Macetas apadrinadas", "type": "property", "x": 517, "y": 455, "group": 4, "rotation": 90, "width": 85, "height": 120 },
+	{ "id": "017", "name": "Fantasía", "type": "fantasy", "x": 517, "y": 370, "rotation": 90, "width": 85, "height": 120 },
+	{ "id": "018", "name": "Máquinas expendedoras del Torres Quevedo", "type": "property", "x": 517, "y": 285, "group": 4, "rotation": 90, "width": 85, "height": 120 },
+	{ "id": "019", "name": "Cafetería del Torres Quevedo", "type": "property", "x": 517, "y": 200, "group": 4, "rotation": 90, "width": 85, "height": 120 },
+	{ "id": "020", "name": "Ve a secretaría", "type": "go_to_jail", "x": 516, "y": 97, "rotation": 180, "width": 120, "height": 120 },
+	{ "id": "021", "name": "Secretaría EINA", "type": "property", "x": 619, "y": 98, "group": 5, "rotation": 180, "width": 85, "height": 120 },
+	{ "id": "022", "name": "Fantasía", "type": "fantasy", "x": 704, "y": 98, "rotation": 180, "width": 85, "height": 120 },
+	{ "id": "023", "name": "Laboratorio de Física y Electrónica", "type": "property", "x": 789, "y": 98, "group": 5, "rotation": 180, "width": 85, "height": 120 },
+	{ "id": "024", "name": "Salón de Actos Torres Quevedo", "type": "property", "x": 874, "y": 98, "group": 5, "rotation": 180, "width": 85, "height": 120 },
+	{ "id": "025", "name": "Hendrix", "type": "server", "x": 959, "y": 98, "rotation": 180, "width": 85, "height": 120 },
+	{ "id": "026", "name": "Aula 1.18 Torres Quevedo", "type": "property", "x": 1044, "y": 98,"group": 6, "rotation": 180, "width": 85, "height": 120 },
+	{ "id": "027", "name": "Aula 1.19 Torres Quevedo", "type": "property", "x": 1129, "y": 98, "group": 6, "rotation": 180, "width": 85, "height": 120 },
+	{ "id": "028", "name": "Fantasía", "type": "fantasy", "x": 1214, "y": 98, "rotation": 180, "width": 85, "height": 120 },
+	{ "id": "029", "name": "Aula 1.20 Torres Quevedo", "type": "property", "x": 1299, "y": 98, "group": 6, "rotation": 180, "width": 85, "height": 120 },
+	{ "id": "030", "name": "Tranvia", "type": "tram", "x": 1402, "y": 98, "rotation": 270, "width": 120, "height": 120, "subText": "La Chimenea" },
+	{ "id": "031", "name": "Microondas Betancourt", "type": "property", "x": 1400, "y": 200, "group": 7, "rotation": -90, "width": 85, "height": 120 },
+	{ "id": "032", "name": "Sala de estudio Tomás Pollán", "type": "property", "x": 1400, "y": 285, "group": 7, "rotation": -90, "width": 85, "height": 120 },
+	{ "id": "033", "name": "Fantasía", "type": "fantasy", "x": 1400, "y": 370, "rotation": -90, "width": 85, "height": 120 },
+	{ "id": "034", "name": "Cafetería Betancourt", "type": "property", "x": 1400, "y": 455, "group": 7, "rotation": -90, "width": 85, "height": 120 },
+	{ "id": "035", "name": "Puente del Tercer Milenio", "type": "bridge", "x": 1272, "y": 540, "rotation": -90, "width": 85, "height": 375 },
+	{ "id": "036", "name": "Fantasía", "type": "fantasy", "x": 1400, "y": 625, "rotation": -90, "width": 85, "height": 120 },
+	{ "id": "037", "name": "Sala de trabajo 2", "type": "property", "x": 1400, "y": 710, "group": 8, "rotation": -90, "width": 85, "height": 120 },
+	{ "id": "038", "name": "Fantasía", "type": "fantasy", "x": 1400, "y": 795, "rotation": -90, "width": 85, "height": 120 },
+	{ "id": "039", "name": "Biblioteca Hypatia de Alejandría", "type": "property", "x": 1400, "y": 880, "group": 8, "rotation": -90, "width": 85, "height": 120 },
+	{ "id": "100", "name": "Tranvia", "type": "tram", "x": 1169, "y": 750, "rotation": 0, "width": 165, "height": 165, "subText": "Plaza San Francisco" },
+	{ "id": "101", "name": "Biblioteca de Geología", "type": "property", "x": 1044, "y": 750, "group": 9, "rotation": 0, "width": 85, "height": 165 },
+	{ "id": "102", "name": "Fantasía", "type": "fantasy", "x": 959, "y": 750, "rotation": 0, "width": 85, "height": 165 },
+	{ "id": "103", "name": "Baño de chicas con terraza", "type": "property", "x": 874, "y": 750, "group": 9, "rotation": 0, "width": 85, "height": 165 },
+	{ "id": "104", "name": "Secretaría", "type": "jail", "x": 749, "y": 750, "rotation": 90, "width": 165, "height": 165 },
+	{ "id": "105", "name": "Aula Magna Facultad de Ciencias", "type": "property", "x": 749, "y": 625, "group": 10, "rotation": 90, "width": 85, "height": 165 },
+	{ "id": "106", "name": "Secretaría Facultad de Ciencias", "type": "property", "x": 749, "y": 455, "group": 10, "rotation": 90, "width": 85, "height": 165 },
+	{ "id": "107", "name": "Tranvia", "type": "tram", "x": 749, "y": 330, "rotation": 180, "width": 165, "height": 165, "subText": "Campus Río Ebro" },
+	{ "id": "108", "name": "Cafetería de Matemáticas", "type": "property", "x": 873, "y": 330, "group": 11, "rotation": 180, "width": 85, "height": 165 },
+	{ "id": "109", "name": "Fantasía", "type": "fantasy", "x": 958, "y": 330,  "rotation": 180, "width": 85, "height": 165 },
+	{ "id": "110", "name": "Biblioteca Química", "type": "property", "x": 1043, "y": 330, "group": 11, "rotation": 180, "width": 85, "height": 165 },
+	{ "id": "111", "name": "Parking", "type": "parking", "x": 1167, "y": 330, "rotation": 270, "width": 165, "height": 165 },
+	{ "id": "112", "name": "Biblioteca Matemáticas", "type": "property", "x": 1167, "y": 455, "group": 12, "rotation": -90, "width": 85, "height": 165 },
+	{ "id": "113", "name": "Aula 11", "type": "property", "x": 1167, "y": 625, "group": 12, "rotation": -90, "width": 85, "height": 165 }
+  ]
 }

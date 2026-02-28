@@ -6,23 +6,22 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dxen"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
 [node name="DetailedParkingTile" type="Control" unique_id=1772909635]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 600.0
-offset_bottom = 600.0
+offset_right = 160.0
+offset_bottom = 160.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_2dxen")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1283559629]
-custom_minimum_size = Vector2(600, 600)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,39 +37,41 @@ expand_mode = 3
 
 [node name="dimmer" type="ColorRect" parent="PanelContainer" unique_id=1293432889]
 layout_mode = 2
-color = Color(1, 1, 1, 0.7176471)
 
 [node name="ParkingLabel" type="Label" parent="." unique_id=148657105]
 layout_mode = 0
-offset_left = 371.00003
-offset_top = 36.000015
-offset_right = 670.0
-offset_bottom = 106.000015
-rotation = 0.7853982
+offset_left = 1.9999981
+offset_top = 63.000004
+offset_right = 88.0
+offset_bottom = 83.0
+rotation = -0.7853982
 size_flags_vertical = 1
 theme = ExtResource("1_2dxen")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 70
-text = "PARKING"
+theme_override_font_sizes/font_size = 20
+text = "Parking"
+horizontal_alignment = 1
 
 [node name="FreeLabel" type="Label" parent="." unique_id=434294299]
 layout_mode = 0
-offset_left = 63.0
-offset_top = 255.00003
-offset_right = 470.0
-offset_bottom = 325.00003
-rotation = 0.7853982
+offset_left = 75.0
+offset_top = 160.0
+offset_right = 192.0
+offset_bottom = 180.0
+rotation = -0.7853982
 size_flags_vertical = 1
 theme = ExtResource("1_2dxen")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 70
-text = "\"GRATUITO\""
+theme_override_font_sizes/font_size = 20
+text = "Gratuito"
+horizontal_alignment = 1
 
 [node name="TextureRect2" type="TextureRect" parent="." unique_id=1537935622]
 layout_mode = 0
-offset_left = 263.00003
-offset_top = 78.0
-offset_right = 624.0
-offset_bottom = 297.0
-rotation = 0.7853982
+offset_left = 19.0
+offset_top = 93.0
+offset_right = 380.0
+offset_bottom = 312.0
+rotation = -0.7853982
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("3_66t5l")
