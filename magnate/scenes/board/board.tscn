@@ -13,8 +13,9 @@ offset_bottom = 40.0
 texture = ExtResource("2_jnyf0")
 
 [node name="BlackFringe1" type="ColorRect" parent="." unique_id=1404421708]
+visible = false
 custom_minimum_size = Vector2(120, 0)
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 455.0
@@ -26,8 +27,9 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="BlackFringe2" type="ColorRect" parent="." unique_id=2026912340]
+visible = false
 custom_minimum_size = Vector2(120, 0)
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 1340.0
@@ -39,8 +41,9 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="BlackFringe3" type="ColorRect" parent="." unique_id=708967700]
+visible = false
 custom_minimum_size = Vector2(120, 0)
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 575.0
@@ -52,8 +55,9 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="BlackFringe4" type="ColorRect" parent="." unique_id=937117291]
+visible = false
 custom_minimum_size = Vector2(120, 0)
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 575.0
@@ -65,8 +69,9 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="BlackFringe5" type="ColorRect" parent="." unique_id=1086169211]
+visible = false
 custom_minimum_size = Vector2(120, 0)
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 665.0
@@ -78,8 +83,9 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="BlackFringe6" type="ColorRect" parent="." unique_id=1591148429]
+visible = false
 custom_minimum_size = Vector2(120, 0)
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 1091.0
@@ -91,8 +97,9 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="BlackFringe7" type="ColorRect" parent="." unique_id=604249]
+visible = false
 custom_minimum_size = Vector2(120, 0)
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 825.0
@@ -104,8 +111,9 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="BlackFringe8" type="ColorRect" parent="." unique_id=1672971944]
+visible = false
 custom_minimum_size = Vector2(120, 0)
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 825.0
