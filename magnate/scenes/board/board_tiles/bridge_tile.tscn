@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://cf417oe42rk3d"]
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_edoq1"]
+[ext_resource type="Script" uid="uid://dulpa2tpiurla" path="res://scripts/board/detailed_tiles/bridge_tile.gd" id="2_jbk3q"]
+[ext_resource type="Texture2D" uid="uid://edu42cfc0tyw" path="res://assets/icons/bridge.svg" id="3_2afur"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llvu5"]
 bg_color = Color(1, 1, 1, 1)
@@ -15,21 +17,35 @@ offset_right = 85.0
 offset_bottom = 370.0
 theme = ExtResource("1_edoq1")
 theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
+script = ExtResource("2_jbk3q")
+
+[node name="Milenio" type="TextureRect" parent="." unique_id=1137350197]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -1.0
+offset_top = 100.0
+offset_right = 84.64438
+offset_bottom = 182.00793
+rotation = -1.5707964
+texture = ExtResource("3_2afur")
+expand_mode = 1
 
 [node name="BridgeName" type="Label" parent="." unique_id=893882161]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 12.0
-offset_top = -13.0
-offset_right = 154.0
-offset_bottom = 12.0
+offset_left = 14.0
+offset_top = 172.0
+offset_right = 264.0
+offset_bottom = 197.0
 grow_vertical = 2
 rotation = 4.712389
 size_flags_horizontal = 0
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 theme_override_font_sizes/font_size = 25
 text = "Bridge name"
-horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2

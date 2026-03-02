@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://cov8rn28xmtuf"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_dy4r7"]
+[ext_resource type="Script" uid="uid://eqvyfctpm2sa" path="res://scripts/board/server_tile.gd" id="2_jumo5"]
+[ext_resource type="Texture2D" uid="uid://cffmjbxkqlr8n" path="res://assets/images/server.png" id="3_jumo5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llvu5"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+
+[node name="ServerTile" type="PanelContainer" unique_id=589823767]
+offset_right = 80.0
+offset_bottom = 120.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_dy4r7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
+script = ExtResource("2_jumo5")
+
+[node name="VerticalAlign" type="VBoxContainer" parent="." unique_id=820974535]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="InteriorAlign" type="VBoxContainer" parent="VerticalAlign" unique_id=966003394]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TopSpace" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=144419178]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+
+[node name="ServerName" type="Label" parent="VerticalAlign/InteriorAlign" unique_id=893882161]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(65, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_font_sizes/font_size = 15
+text = "Server"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ServerImage" type="TextureRect" parent="VerticalAlign/InteriorAlign" unique_id=600507432]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+texture = ExtResource("3_jumo5")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ServerPrice" type="Label" parent="VerticalAlign/InteriorAlign" unique_id=835884986]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_font_sizes/font_size = 15
+text = "$150"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BottomSpace" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=424352800]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2

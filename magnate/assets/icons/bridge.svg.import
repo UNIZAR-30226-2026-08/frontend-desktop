@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2p3ca35wvh80"
-path="res://.godot/imported/background_ingame.png-6cb5ede6ef9117904f0c7c1a6214256e.ctex"
+uid="uid://edu42cfc0tyw"
+path="res://.godot/imported/bridge.svg-b20e9d8d717aed8ea1dc401c9a878796.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/background_ingame.png"
-dest_files=["res://.godot/imported/background_ingame.png-6cb5ede6ef9117904f0c7c1a6214256e.ctex"]
+source_file="res://assets/icons/bridge.svg"
+dest_files=["res://.godot/imported/bridge.svg-b20e9d8d717aed8ea1dc401c9a878796.ctex"]
 
 [params]
 
@@ -38,3 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

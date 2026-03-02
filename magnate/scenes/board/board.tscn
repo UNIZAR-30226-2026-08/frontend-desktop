@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://osyh1204d63f"]
 
 [ext_resource type="Script" uid="uid://65ckidct12lw" path="res://scripts/board/board.gd" id="1_s78fa"]
-[ext_resource type="Texture2D" uid="uid://2p3ca35wvh80" path="res://assets/images/background_ingame.png" id="2_jnyf0"]
 [ext_resource type="PackedScene" uid="uid://vldp6gc5cesj" path="res://scenes/board/camera_system.tscn" id="2_knosr"]
+[ext_resource type="Texture2D" uid="uid://67747f3hkkg" path="res://assets/images/background_ingame.jpg" id="2_q07he"]
 
 [node name="Board" type="Node2D" unique_id=392167778]
 script = ExtResource("1_s78fa")
@@ -11,7 +11,7 @@ script = ExtResource("1_s78fa")
 custom_minimum_size = Vector2(1920, 1080)
 offset_right = 1920.0
 offset_bottom = 1080.0
-texture = ExtResource("2_jnyf0")
+texture = ExtResource("2_q07he")
 
 [node name="CameraSystem" parent="." unique_id=250162375 instance=ExtResource("2_knosr")]
 
