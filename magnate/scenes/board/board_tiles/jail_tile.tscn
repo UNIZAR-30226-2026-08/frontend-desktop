@@ -5,13 +5,13 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dxen"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
 border_color = Color(0, 0, 0, 1)
 
-[node name="DetailedJailTile" type="Control" unique_id=1772909635]
+[node name="JailTile" type="Control" unique_id=1772909635]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 160.0
@@ -40,8 +40,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -25.0
-offset_bottom = -25.0
+offset_right = -31.0
+offset_bottom = -33.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2dxen")
@@ -53,10 +53,10 @@ color = Color(0.76371557, 0.95428234, 0.9999998, 1)
 [node name="Secretary Label" type="Label" parent="." unique_id=434294299]
 z_index = 1
 layout_mode = 0
-offset_left = 53.0
-offset_top = 120.0
-offset_right = 147.0
-offset_bottom = 140.0
+offset_left = 46.000004
+offset_top = 106.000015
+offset_right = 140.0
+offset_bottom = 126.000015
 rotation = -0.7853982
 size_flags_vertical = 1
 theme = ExtResource("1_brol5")
@@ -68,30 +68,30 @@ horizontal_alignment = 1
 [node name="CorridorLabel1" type="Label" parent="." unique_id=72071592]
 z_index = 1
 layout_mode = 0
-offset_left = 34.0
-offset_top = 141.0
-offset_right = 102.0
-offset_bottom = 156.0
+offset_left = 14.0
+offset_top = 139.0
+offset_right = 114.0
+offset_bottom = 154.0
 size_flags_vertical = 1
 theme = ExtResource("1_brol5")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 15
-text = "Espere en"
+text = "Acompañando"
 horizontal_alignment = 1
 
 [node name="CorridorLabel2" type="Label" parent="." unique_id=1541938273]
 z_index = 1
 layout_mode = 0
-offset_left = 141.0
-offset_top = 97.0
-offset_right = 202.0
-offset_bottom = 112.0
+offset_left = 139.0
+offset_top = 99.0
+offset_right = 212.0
+offset_bottom = 114.0
 rotation = -1.5707964
 size_flags_vertical = 1
 theme = ExtResource("1_brol5")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 15
-text = "el pasillo"
+text = "a un amigo"
 horizontal_alignment = 1
 
 [node name="TextureRect2" type="TextureRect" parent="." unique_id=1537935622]

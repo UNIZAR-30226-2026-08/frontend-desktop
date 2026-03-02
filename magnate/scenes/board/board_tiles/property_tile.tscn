@@ -28,6 +28,7 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="PropertyColor" type="ColorRect" parent="VerticalAlign" unique_id=1370824229]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 color = Color(6.6420434e-06, 0.7986126, 0.6671381, 1)
@@ -43,21 +44,24 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="TopSpace" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=144419178]
-custom_minimum_size = Vector2(0, 5)
+custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 
 [node name="PropertyName" type="Label" parent="VerticalAlign/InteriorAlign" unique_id=893882161]
-custom_minimum_size = Vector2(60, 0)
+unique_name_in_owner = true
+custom_minimum_size = Vector2(68, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_constants/line_spacing = -1
+theme_override_font_sizes/font_size = 11
 text = "Name dsjaidjada"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="PropertyPrice" type="Label" parent="VerticalAlign/InteriorAlign" unique_id=835884986]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
@@ -67,5 +71,5 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BottomSpace" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=424352800]
-custom_minimum_size = Vector2(0, 10)
+custom_minimum_size = Vector2(0, 4)
 layout_mode = 2

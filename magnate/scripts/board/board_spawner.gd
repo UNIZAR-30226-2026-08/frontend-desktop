@@ -7,6 +7,9 @@ const BRIDGE_TILE = preload("uid://cf417oe42rk3d")
 const GO_TO_JAIL_TILE = preload("uid://dh48464mm8og5")
 const PARKING_TILE = preload("uid://c2q0i0vsel4nv")
 const JAIL_TILE = preload("uid://dtdx4dou1ljl6")
+const SERVER_TILE = preload("uid://cov8rn28xmtuf")
+const START_TILE = preload("uid://dqdoqvx1b8srl")
+const TRAM_TILE = preload("uid://38yhgyxt25m4")
 
 static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> Control:
 	# Instantiate tile type
@@ -24,6 +27,12 @@ static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> Control:
 			tile_entity = PARKING_TILE
 		Globals.TileType.JAIL:
 			tile_entity = JAIL_TILE
+		Globals.TileType.SERVER:
+			tile_entity = SERVER_TILE
+		Globals.TileType.START:
+			tile_entity = START_TILE
+		Globals.TileType.TRAM:
+			tile_entity = TRAM_TILE
 		_:
 			return null
 	# Common tile properties
@@ -40,9 +49,9 @@ static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> Control:
 			tile_instance.set_property_name(tile_def["name"])
 			tile_instance.set_property_color(tile_def["color"])
 		Globals.TileType.BRIDGE:
-			pass
+			tile_instance.set_bridge_name(tile_def["name"])
 		Globals.TileType.SERVER:
-			pass
+			tile_instance.set_server_name(tile_def["name"])
 	return tile_instance
 
 static func spawn_board(parent_scene: Node2D) -> Dictionary[String, Control]:

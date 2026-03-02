@@ -1,8 +1,8 @@
 extends PanelContainer
 
-@onready var property_price: Label = $VerticalAlign/InteriorAlign/PropertyPrice
-@onready var property_name: Label = $VerticalAlign/InteriorAlign/PropertyName
-@onready var property_color: ColorRect = $VerticalAlign/PropertyColor
+@onready var property_price: Label = %PropertyPrice
+@onready var property_name: Label = %PropertyName
+@onready var property_color: ColorRect = %PropertyColor
 
 func set_property_name(prop_name: String) -> void:
 	property_name.text = prop_name
