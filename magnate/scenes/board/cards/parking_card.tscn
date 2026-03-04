@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://bx7ia06uadx86"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_ugyh7"]
+[ext_resource type="Texture2D" uid="uid://qb2ajads1kun" path="res://assets/images/parking_picture.jpg" id="2_86nt7"]
+[ext_resource type="Texture2D" uid="uid://8q5qxi87a7a5" path="res://assets/images/caravana.png" id="3_s6k05"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dxen"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 1)
+
+[node name="ParkingCard" type="Control" unique_id=1772909635]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 600.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_ugyh7")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1283559629]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2dxen")
+
+[node name="background_betan" type="TextureRect" parent="PanelContainer" unique_id=901401817]
+layout_mode = 2
+texture = ExtResource("2_86nt7")
+expand_mode = 3
+
+[node name="dimmer" type="ColorRect" parent="PanelContainer" unique_id=1293432889]
+layout_mode = 2
+
+[node name="ParkingLabel" type="Label" parent="." unique_id=148657105]
+layout_mode = 0
+offset_left = 398.0
+offset_top = 40.0
+offset_right = 634.0
+offset_bottom = 110.0
+rotation = 0.7853982
+size_flags_vertical = 1
+theme = ExtResource("1_ugyh7")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 70
+text = "Parking"
+horizontal_alignment = 1
+
+[node name="FreeLabel" type="Label" parent="." unique_id=434294299]
+layout_mode = 0
+offset_left = 84.000015
+offset_top = 345.0
+offset_right = 345.0
+offset_bottom = 415.0
+rotation = 0.7853982
+size_flags_vertical = 1
+theme = ExtResource("1_ugyh7")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 70
+text = "Gratuito"
+horizontal_alignment = 1
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=1537935622]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 31.999992
+offset_right = 1806.6245
+offset_bottom = 934.28174
+rotation = 0.7853982
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("3_s6k05")

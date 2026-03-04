@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://bfcpwq3bljh8g"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_csroy"]
+[ext_resource type="Script" uid="uid://ctygupp245y51" path="res://scripts/board/detailed_tiles/server_card.gd" id="2_hg1er"]
+[ext_resource type="Texture2D" uid="uid://cffmjbxkqlr8n" path="res://assets/images/server.png" id="3_warp4"]
+[ext_resource type="FontFile" uid="uid://pqt8tux3lbt7" path="res://assets/fonts/LTSuperior/LTSuperior-Light.ttf" id="4_u38yj"]
+[ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="5_rarnh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llvu5"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5bwru"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="ServerCard" type="PanelContainer" unique_id=589823767]
+offset_right = 400.0
+offset_bottom = 600.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_csroy")
+theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
+script = ExtResource("2_hg1er")
+
+[node name="VerticalAlign" type="VBoxContainer" parent="." unique_id=820974535]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="InteriorAlign" type="VBoxContainer" parent="VerticalAlign" unique_id=966003394]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TopSpace" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=144419178]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="ServerName" type="Label" parent="VerticalAlign/InteriorAlign" unique_id=893882161]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_font_sizes/font_size = 65
+text = "Servidor"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TopSpace2" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=697644569]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="ServerImage" type="TextureRect" parent="VerticalAlign/InteriorAlign" unique_id=600507432]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_warp4")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TopSpace3" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=798622439]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Highlighter1" type="PanelContainer" parent="VerticalAlign/InteriorAlign" unique_id=1445696810]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_5bwru")
+
+[node name="Rent1" type="Label" parent="VerticalAlign/InteriorAlign/Highlighter1" unique_id=330677059]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_u38yj")
+theme_override_font_sizes/font_size = 25
+text = "Con 1 Servidor . . . . . . . . . 100€"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spcae9" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=1259723228]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Highlighter2" type="PanelContainer" parent="VerticalAlign/InteriorAlign" unique_id=1339499314]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_5bwru")
+
+[node name="Rent2" type="Label" parent="VerticalAlign/InteriorAlign/Highlighter2" unique_id=1519041513]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_u38yj")
+theme_override_font_sizes/font_size = 25
+text = "Con 2 Servidores . . . . . . . 250€"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spcae8" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=801151661]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="MortgagePrice" type="Label" parent="VerticalAlign/InteriorAlign" unique_id=1717327232]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_rarnh")
+theme_override_font_sizes/font_size = 25
+text = "Valor de la Hipoteca 70€"
+horizontal_alignment = 1
+vertical_alignment = 1

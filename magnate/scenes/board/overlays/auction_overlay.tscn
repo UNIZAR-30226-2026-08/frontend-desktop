@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://s5i6upd25o0y"]
+
+[ext_resource type="Script" uid="uid://c2hwtfqti30pk" path="res://scripts/board/overlays/auction_overlay.gd" id="1_7aekb"]
+[ext_resource type="Texture2D" uid="uid://c0towcf10ju02" path="res://assets/images/bg_city.jpg" id="2_xdnm8"]
+[ext_resource type="PackedScene" uid="uid://vd87r5unxafe" path="res://scenes/board/cards/property_card.tscn" id="3_7aekb"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="3_g2f6o"]
+[ext_resource type="PackedScene" uid="uid://bfcpwq3bljh8g" path="res://scenes/board/cards/server_card.tscn" id="4_g2f6o"]
+[ext_resource type="FontFile" uid="uid://pqt8tux3lbt7" path="res://assets/fonts/LTSuperior/LTSuperior-Light.ttf" id="4_h3upp"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="5_h3upp"]
+[ext_resource type="PackedScene" uid="uid://5pilfc0bnc3" path="res://scenes/components/lineedit_with_shadow.tscn" id="7_g2f6o"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g2f6o"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0.5411765, 0.36078432, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+corner_detail = 20
+
+[node name="AuctionOverlay" type="CanvasLayer" unique_id=417320456]
+script = ExtResource("1_7aekb")
+
+[node name="temporal_para_ver_efecto" type="TextureRect" parent="." unique_id=248528354]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_xdnm8")
+expand_mode = 1
+
+[node name="Dimmer" type="ColorRect" parent="." unique_id=1096305439]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.9019608)
+
+[node name="TitleLabel" type="Label" parent="." unique_id=1706409431]
+custom_minimum_size = Vector2(700, 0)
+offset_left = 610.0
+offset_top = 58.0
+offset_right = 1310.0
+offset_bottom = 128.0
+theme = ExtResource("3_g2f6o")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "SUBASTA A CIEGAS"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="." unique_id=140999038]
+custom_minimum_size = Vector2(1000, 0)
+offset_left = 460.0
+offset_top = 150.0
+offset_right = 1460.0
+offset_bottom = 220.0
+theme = ExtResource("3_g2f6o")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_h3upp")
+theme_override_font_sizes/font_size = 60
+text = "¿Cuánto estás dispuesto a pagar?"
+horizontal_alignment = 1
+
+[node name="CountdownLabel" type="Label" parent="." unique_id=424917656]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+offset_left = 1570.0
+offset_top = 465.0
+offset_right = 1770.0
+offset_bottom = 615.0
+theme = ExtResource("3_g2f6o")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 150
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ServerCard" parent="." unique_id=919827841 instance=ExtResource("4_g2f6o")]
+unique_name_in_owner = true
+offset_left = 100.0
+offset_top = 240.0
+offset_right = 500.0
+offset_bottom = 840.0
+
+[node name="PropertyCard" parent="." unique_id=589823767 instance=ExtResource("3_7aekb")]
+unique_name_in_owner = true
+offset_left = 100.0
+offset_top = 240.0
+offset_right = 500.0
+offset_bottom = 840.0
+
+[node name="CurrentBidContainer" type="PanelContainer" parent="." unique_id=2125894105]
+unique_name_in_owner = true
+offset_left = 730.0
+offset_top = 490.0
+offset_right = 1230.0
+offset_bottom = 590.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_g2f6o")
+
+[node name="CurentBidLabel" type="Label" parent="CurrentBidContainer" unique_id=853981195]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "Puja actual: 100€"
+horizontal_alignment = 1
+
+[node name="AuctionPriceContainer" parent="." unique_id=1768335443 instance=ExtResource("7_g2f6o")]
+unique_name_in_owner = true
+offset_left = 737.0
+offset_top = 490.0
+offset_right = 1237.0
+offset_bottom = 590.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/caret_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 80
+alignment = 1
+max_length = 5
+
+[node name="SetPriceButton" parent="." unique_id=175575919 instance=ExtResource("5_h3upp")]
+unique_name_in_owner = true
+offset_left = 892.0
+offset_top = 900.0
+offset_right = 1094.0
+offset_bottom = 970.0
+text = "Fijar puja"
+
+[connection signal="text_submitted" from="AuctionPriceContainer" to="." method="_on_text_submitted"]
+[connection signal="pressed" from="SetPriceButton" to="." method="_on_set_price_button_pressed"]
