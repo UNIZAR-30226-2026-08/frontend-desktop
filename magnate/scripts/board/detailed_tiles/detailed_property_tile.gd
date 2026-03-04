@@ -24,8 +24,6 @@ func _ready() -> void:
 	for h in highlighters:
 		h.visible = true
 		h.self_modulate = Color("ffffff")
-		
-	highlight_rent(3)
 
 # --- Funciones de actualización Individuales ---
 

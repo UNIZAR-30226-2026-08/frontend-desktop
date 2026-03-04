@@ -32,14 +32,16 @@ border_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1krse"]
 bg_color = Color(1, 1, 1, 1)
 
-[node name="DetailedpropertyTile" type="PanelContainer" unique_id=589823767]
-offset_right = 400.0
-offset_bottom = 600.0
+[node name="PropertyCard" type="PanelContainer" unique_id=589823767]
+custom_minimum_size = Vector2(400, 600)
+offset_right = 380.0
+offset_bottom = 558.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_2uhet")
 theme_override_styles/panel = SubResource("StyleBoxFlat_gvqww")
 script = ExtResource("2_2uhet")
+metadata/_edit_use_anchors_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1459937722]
 layout_mode = 2
