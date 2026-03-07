@@ -19,6 +19,7 @@ offset_right = 160.0
 offset_bottom = 160.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 theme = ExtResource("1_2dxen")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1283559629]

@@ -1,0 +1,137 @@
+[gd_scene format=3 uid="uid://c0y6xvu71nnvc"]
+
+[ext_resource type="Script" uid="uid://bk13hd6b0oak5" path="res://scripts/board/hud/player_hud_card.gd" id="1_4oh5c"]
+[ext_resource type="FontFile" uid="uid://cel767gfqwf3q" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBoldItalic.ttf" id="2_ucs7k"]
+[ext_resource type="FontFile" uid="uid://b78i0vraohs54" path="res://assets/fonts/LTSuperior/LTSuperior-Black.ttf" id="3_iak8p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ucs7k"]
+bg_color = Color(0, 0, 0, 0.4)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.2)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="SystemFont" id="SystemFont_ucs7k"]
+font_names = PackedStringArray("Monospace")
+font_weight = 900
+subpixel_positioning = 0
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_clean"]
+color = Color(1, 1, 1, 0.15)
+grow_begin = -4.0
+grow_end = -4.0
+
+[sub_resource type="SystemFont" id="SystemFont_i6yh6"]
+font_names = PackedStringArray("Monospace")
+font_weight = 900
+subpixel_positioning = 0
+msdf_size = 44
+
+[node name="PlayerHudCard" type="MarginContainer" unique_id=1059201475]
+custom_minimum_size = Vector2(340, 108)
+offset_right = 340.0
+offset_bottom = 108.0
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 14
+script = ExtResource("1_4oh5c")
+
+[node name="MainVBox" type="VBoxContainer" parent="." unique_id=573881638]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="TopRow" type="HBoxContainer" parent="MainVBox" unique_id=120376061]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="NameVBox" type="VBoxContainer" parent="MainVBox/TopRow" unique_id=630388735]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Subtitle" type="Label" parent="MainVBox/TopRow/NameVBox" unique_id=1947159994]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.7)
+theme_override_constants/line_spacing = 0
+theme_override_fonts/font = ExtResource("3_iak8p")
+theme_override_font_sizes/font_size = 11
+text = "JUGADOR"
+
+[node name="NameLabel" type="Label" parent="MainVBox/TopRow/NameVBox" unique_id=1388103788]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_fonts/font = ExtResource("2_ucs7k")
+theme_override_font_sizes/font_size = 20
+text = "PLAYER NAME"
+
+[node name="Control" type="Control" parent="MainVBox/TopRow" unique_id=1082172394]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BalancePanel" type="PanelContainer" parent="MainVBox/TopRow" unique_id=1108418526]
+custom_minimum_size = Vector2(110, 46)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_ucs7k")
+
+[node name="BalanceHBox" type="HBoxContainer" parent="MainVBox/TopRow/BalancePanel" unique_id=1128804267]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+
+[node name="CurrencyMargin" type="MarginContainer" parent="MainVBox/TopRow/BalancePanel/BalanceHBox" unique_id=41829710]
+layout_mode = 2
+
+[node name="Currency" type="Label" parent="MainVBox/TopRow/BalancePanel/BalanceHBox/CurrencyMargin" unique_id=2123099889]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.7764706, 0.16862746, 1)
+theme_override_font_sizes/font_size = 14
+text = "$"
+vertical_alignment = 1
+
+[node name="BalanceMargin" type="MarginContainer" parent="MainVBox/TopRow/BalancePanel/BalanceHBox" unique_id=1864126541]
+layout_mode = 2
+
+[node name="BalanceLabel" type="Label" parent="MainVBox/TopRow/BalancePanel/BalanceHBox/BalanceMargin" unique_id=1104846478]
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_ucs7k")
+theme_override_font_sizes/font_size = 22
+text = "1500"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Divider" type="HSeparator" parent="MainVBox" unique_id=1467093558]
+layout_mode = 2
+theme_override_constants/separation = 6
+theme_override_styles/separator = SubResource("StyleBoxLine_clean")
+
+[node name="BottomRow" type="HBoxContainer" parent="MainVBox" unique_id=1893960656]
+layout_mode = 2
+
+[node name="PropsLabel" type="Label" parent="MainVBox/BottomRow" unique_id=2122729049]
+layout_mode = 2
+theme_override_constants/paragraph_spacing = 0
+theme_override_fonts/font = ExtResource("3_iak8p")
+theme_override_font_sizes/font_size = 11
+text = "0 PROPIEDADES"
+
+[node name="Control" type="Control" parent="MainVBox/BottomRow" unique_id=1721116216]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="IDLabel" type="Label" parent="MainVBox/BottomRow" unique_id=551796911]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.4)
+theme_override_constants/line_spacing = 0
+theme_override_fonts/font = SubResource("SystemFont_i6yh6")
+theme_override_font_sizes/font_size = 11
+text = "#0000"
+horizontal_alignment = 2
+vertical_alignment = 1

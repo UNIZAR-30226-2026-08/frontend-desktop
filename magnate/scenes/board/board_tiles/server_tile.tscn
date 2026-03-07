@@ -17,6 +17,7 @@ offset_right = 80.0
 offset_bottom = 120.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 theme = ExtResource("1_dy4r7")
 theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
 script = ExtResource("2_jumo5")
