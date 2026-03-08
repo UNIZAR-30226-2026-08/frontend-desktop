@@ -106,8 +106,7 @@ func highlight_rent(index: int) -> void:
 	
 	# 2. Apagar todos los resaltadores
 	for h in highlighters:
-		h.visible = true
-		h.self_modulate = Color("ffffff")
+		h.modulate = Color("ffffff")
 	
 	# 3. Validar índice y activar el elegido
 	if index >= 0 and index < highlighters.size():
@@ -120,6 +119,6 @@ func _run_infinite_flash(node: Control) -> void:
 	flash_tween = create_tween().set_loops() # Bucle infinito
 	node.modulate = Color(1.0, 1.0, 0.0, 1.0)
 	# Animación: va de casi invisible a resaltar el color
-	# Ajusta el 0.6 y el 0.2 a tu gusto según cuánta intensidad quieras
+	# Ajusta el 0.6 y el 0.2 según la intensidad
 	flash_tween.tween_property(node, "self_modulate:a", 0.7, 0.4).set_trans(Tween.TRANS_SINE)
 	flash_tween.tween_property(node, "self_modulate:a", 0.3, 0.4).set_trans(Tween.TRANS_SINE)

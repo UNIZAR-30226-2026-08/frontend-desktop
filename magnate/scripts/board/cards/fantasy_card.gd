@@ -1,31 +1,40 @@
 extends Control
 
-@onready var fantasy_card_back: PanelContainer = $SubViewportContainer/SubViewport/FantasyCardBack
+enum CardSide {FRONT, BACK}
+
+@export var side_to_show: CardSide = CardSide.BACK
+
+signal pressed;
+
+@onready var fantasy_card_back: Panel = $SubViewportContainer/SubViewport/FantasyCardBack
 @onready var fantasy_card_front: PanelContainer = $SubViewportContainer/SubViewport/FantasyCardFront
 @onready var sub_viewport_container: SubViewportContainer = $SubViewportContainer
 
-enum CardSide {FRONT, BACK}
-
-var _side: CardSide = CardSide.BACK
+var flipped = false;
 
 func _ready() -> void:
-	fantasy_card_back.show()
-	fantasy_card_front.hide()
+	pivot_offset = size
+	if side_to_show == CardSide.BACK:
+		fantasy_card_back.show()
+		fantasy_card_front.hide()
+	else:
+		fantasy_card_back.hide()
+		fantasy_card_front.show()
 
 func change_side_smooth(_s: CardSide) -> void:
-	if _s != _side: flip_smooth()
+	if _s != side_to_show: flip_smooth()
 
 func change_side(_s: CardSide) -> void:
-	if _s != _side: flip()
+	if _s != side_to_show: flip()
 
 func flip() -> void:
-	match _side:
+	match side_to_show:
 		CardSide.BACK:
-			_side = CardSide.FRONT
+			side_to_show = CardSide.FRONT
 			fantasy_card_back.hide()
 			fantasy_card_front.show()
 		CardSide.FRONT:
-			_side = CardSide.BACK
+			side_to_show = CardSide.BACK
 			fantasy_card_back.show()
 			fantasy_card_front.hide()
 
@@ -50,5 +59,10 @@ func flip_smooth() -> void:
 	await tween.finished
 
 func _on_sub_viewport_container_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.is_pressed():
+	if event is InputEventMouseButton and event.is_pressed() and not flipped:
+		flipped = true
+		pressed.emit()
 		flip_smooth()
+
+func set_opacity(o: float) -> void:
+	sub_viewport_container.material.set_shader_parameter("opacity", o)

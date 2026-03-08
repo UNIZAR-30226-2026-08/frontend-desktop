@@ -1,19 +1,31 @@
 [gd_scene format=3 uid="uid://qb3qtbimhvep"]
 
+[ext_resource type="Shader" uid="uid://ck0l6ykpvlid7" path="res://styles/shaders/blur.gdshader" id="1_0th5n"]
 [ext_resource type="Script" uid="uid://bejnrqfu6s4mb" path="res://scripts/board/cards/fantasy_card.gd" id="1_ap1h0"]
 [ext_resource type="Shader" uid="uid://8k7h5n683cye" path="res://styles/shaders/card_hover.gdshader" id="1_tal0y"]
 [ext_resource type="Script" uid="uid://tasvlsvggvvf" path="res://scripts/board/cards/card_hover.gd" id="2_ap1h0"]
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="3_0cgh1"]
 [ext_resource type="FontFile" uid="uid://bc5ftjuoo88in" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBold.ttf" id="4_knvkm"]
 [ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="5_ws44l"]
+[ext_resource type="Shader" uid="uid://bjtqks7xnw56e" path="res://styles/shaders/dashed_hline.gdshader" id="7_0cgh1"]
+[ext_resource type="FontFile" uid="uid://conyee5yte71n" path="res://assets/fonts/LTSuperior/LTSuperior-Italic.ttf" id="8_knvkm"]
+[ext_resource type="Texture2D" uid="uid://ctg1auyxpnbr4" path="res://assets/icons/hat_wizard.svg" id="8_pvrn6"]
+[ext_resource type="Shader" uid="uid://spbteqj3hxfv" path="res://styles/shaders/transparency.gdshader" id="8_q3si6"]
+[ext_resource type="Shader" uid="uid://78d0sxs6wxy8" path="res://styles/shaders/circle.gdshader" id="8_ws44l"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hs711"]
+shader = ExtResource("1_0th5n")
+shader_parameter/lod = 2.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v6p85"]
+resource_local_to_scene = true
 shader = ExtResource("1_tal0y")
-shader_parameter/fov = 90.0
+shader_parameter/fov = 30.0
 shader_parameter/cull_back = true
 shader_parameter/y_rot = 0.0
 shader_parameter/x_rot = 0.0
 shader_parameter/inset = 0.0
+shader_parameter/opacity = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v6p85"]
 bg_color = Color(1, 1, 1, 1)
@@ -39,17 +51,22 @@ border_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_druit"]
 color = Color(0.4, 0.4, 0.4, 0.47058824)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ap1h0"]
+shader = ExtResource("7_0cgh1")
+shader_parameter/dash_count = 10.0
+shader_parameter/dash_ratio = 0.5
+
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_bavur"]
 color = Color(0.4, 0.4, 0.4, 0.47058824)
 thickness = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gvqww"]
 bg_color = Color(0.0044464525, 0.07702751, 0, 1)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0th5n"]
+shader = ExtResource("8_q3si6")
+shader_parameter/opacity = 0.10000000475
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2uhet"]
 bg_color = Color(1, 1, 1, 0)
@@ -59,17 +76,27 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
 
-[node name="Control" type="Control" unique_id=954079663]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pvrn6"]
+shader = ExtResource("8_ws44l")
+shader_parameter/ring_color = Color(0.89, 0.69, 0.42, 1)
+shader_parameter/fill_color = Color(0, 0.08, 0, 1)
+shader_parameter/thickness = 0.02
+shader_parameter/radius = 0.4
+
+[node name="FantasyCard" type="Control" unique_id=954079663]
+modulate = Color(0, 0, 0, 1)
+material = SubResource("ShaderMaterial_hs711")
+custom_minimum_size = Vector2(400, 600)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = -20.0
-offset_bottom = -20.0
+offset_left = -200.0
+offset_top = -300.0
+offset_right = 200.0
+offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ap1h0")
@@ -96,8 +123,18 @@ size = Vector2i(400, 600)
 render_target_update_mode = 4
 
 [node name="FantasyCardFront" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=688031677]
-offset_right = 400.0
-offset_bottom = 600.0
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -300.0
+offset_right = 200.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("3_0cgh1")
@@ -184,6 +221,7 @@ custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
 
 [node name="BottomSeparator" type="HSeparator" parent="SubViewportContainer/SubViewport/FantasyCardFront/MarginContainer/PanelContainer/VerticalAlign" unique_id=1916827371]
+material = SubResource("ShaderMaterial_ap1h0")
 custom_minimum_size = Vector2(320, 40)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -201,28 +239,112 @@ text = "10€"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="FantasyCardBack" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=589823767]
-offset_right = 400.0
-offset_bottom = 600.0
+[node name="FantasyCardBack" type="Panel" parent="SubViewportContainer/SubViewport" unique_id=1928303016]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -300.0
+offset_right = 200.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("3_0cgh1")
 theme_override_styles/panel = SubResource("StyleBoxFlat_gvqww")
 
+[node name="BgPattern" type="TextureRect" parent="SubViewportContainer/SubViewport/FantasyCardBack" unique_id=748608971]
+material = SubResource("ShaderMaterial_0th5n")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 234.89514
+offset_top = -770.5941
+offset_right = 1162.3827
+offset_bottom = -43.106567
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.5235988
+texture = ExtResource("8_pvrn6")
+expand_mode = 5
+stretch_mode = 1
+
 [node name="MarginContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/FantasyCardBack" unique_id=1459937722]
-layout_mode = 2
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 392.0
+offset_bottom = 592.0
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="PanelContainer" type="PanelContainer" parent="SubViewportContainer/SubViewport/FantasyCardBack/MarginContainer" unique_id=287705031]
+[node name="PanelContainer" type="PanelContainer" parent="SubViewportContainer/SubViewport/FantasyCardBack/MarginContainer" unique_id=1133476021]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2uhet")
 
-[node name="VerticalAlign" type="VBoxContainer" parent="SubViewportContainer/SubViewport/FantasyCardBack/MarginContainer/PanelContainer" unique_id=820974535]
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/FantasyCardBack/MarginContainer/PanelContainer" unique_id=1138429418]
 layout_mode = 2
-size_flags_vertical = 0
-theme_override_constants/separation = 0
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SubViewportContainer/SubViewport/FantasyCardBack/MarginContainer/PanelContainer/VBoxContainer" unique_id=974610693]
+layout_mode = 2
+alignment = 1
+
+[node name="Circle" type="ColorRect" parent="SubViewportContainer/SubViewport/FantasyCardBack/MarginContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=1016007364]
+material = SubResource("ShaderMaterial_pvrn6")
+custom_minimum_size = Vector2(130, 130)
+layout_mode = 2
+
+[node name="QuestionMark" type="Label" parent="SubViewportContainer/SubViewport/FantasyCardBack/MarginContainer/PanelContainer/VBoxContainer/HBoxContainer/Circle" unique_id=1290240084]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -25.0
+offset_right = 180.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.8901961, 0.69411767, 0.41568628, 1)
+theme_override_fonts/font = ExtResource("4_knvkm")
+theme_override_font_sizes/font_size = 70
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="SubViewportContainer/SubViewport/FantasyCardBack/MarginContainer/PanelContainer/VBoxContainer" unique_id=1594928713]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="FantasyText" type="Label" parent="SubViewportContainer/SubViewport/FantasyCardBack/MarginContainer/PanelContainer/VBoxContainer" unique_id=1650847715]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8901961, 0.69411767, 0.41568628, 1)
+theme_override_fonts/font = ExtResource("4_knvkm")
+theme_override_font_sizes/font_size = 50
+text = "FANTASÍA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExplanationText" type="RichTextLabel" parent="SubViewportContainer/SubViewport/FantasyCardBack/MarginContainer/PanelContainer/VBoxContainer" unique_id=1395169841]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/normal_font = ExtResource("8_knvkm")
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = "Puedes desvelar esta carta por [color=#e3b16a]0€[/color], pero si lo haces, ya
+no podrás elegir la otra carta."
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="gui_input" from="SubViewportContainer" to="." method="_on_sub_viewport_container_gui_input"]

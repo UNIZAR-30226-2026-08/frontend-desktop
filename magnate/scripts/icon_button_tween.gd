@@ -27,6 +27,7 @@ func _on_pressed() -> void:
 	if sfx:
 		sfx.play()
 
-	var tween = create_tween().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	# var tween = create_tween().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "scale", Vector2(0.9, 0.9), 0.1)
 	tween.tween_property(self, "scale", Vector2(1.1, 1.1), 0.1)

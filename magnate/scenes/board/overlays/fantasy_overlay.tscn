@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://blvke57w4belm"]
+
+[ext_resource type="Script" uid="uid://boynactkbolbh" path="res://scripts/board/overlays/fantasy_overlay.gd" id="1_w3oti"]
+[ext_resource type="Texture2D" uid="uid://c0towcf10ju02" path="res://assets/images/bg_city.jpg" id="2_ef5n2"]
+[ext_resource type="PackedScene" uid="uid://qb3qtbimhvep" path="res://scenes/board/cards/fantasy_card.tscn" id="3_w3oti"]
+
+[node name="FantasyOverlay" type="CanvasLayer" unique_id=417320456]
+script = ExtResource("1_w3oti")
+
+[node name="temporal_para_ver_efecto" type="TextureRect" parent="." unique_id=248528354]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_ef5n2")
+expand_mode = 1
+
+[node name="Dimmer" type="ColorRect" parent="." unique_id=1096305439]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.78431374)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1809629072]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="FrontFantasyCard" parent="HBoxContainer" unique_id=954079663 instance=ExtResource("3_w3oti")]
+layout_mode = 2
+side_to_show = 0
+
+[node name="BackFantasyCard" parent="HBoxContainer" unique_id=1061969941 instance=ExtResource("3_w3oti")]
+layout_mode = 2
+
+[connection signal="pressed" from="HBoxContainer/FrontFantasyCard" to="." method="_on_front_fantasy_card_pressed"]
+[connection signal="pressed" from="HBoxContainer/BackFantasyCard" to="." method="_on_back_fantasy_card_pressed"]
