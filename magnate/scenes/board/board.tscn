@@ -3,6 +3,29 @@
 [ext_resource type="Script" uid="uid://65ckidct12lw" path="res://scripts/board/board.gd" id="1_s78fa"]
 [ext_resource type="PackedScene" uid="uid://vldp6gc5cesj" path="res://scenes/board/camera_system.tscn" id="2_knosr"]
 [ext_resource type="Texture2D" uid="uid://67747f3hkkg" path="res://assets/images/background_ingame.jpg" id="2_q07he"]
+[ext_resource type="Script" uid="uid://cohd4ovwrydr0" path="res://addons/dice_roller/dice_def.gd" id="4_ci4ar"]
+[ext_resource type="PackedScene" uid="uid://cnlssqpge8erk" path="res://addons/dice_roller/dice_roller/dice_roller.tscn" id="4_q07he"]
+[ext_resource type="Script" uid="uid://xsgh2gwr4gub" path="res://addons/dice_roller/dice_shape.gd" id="5_exf0g"]
+
+[sub_resource type="Resource" id="Resource_lmc47"]
+script = ExtResource("5_exf0g")
+
+[sub_resource type="Resource" id="Resource_dej46"]
+script = ExtResource("4_ci4ar")
+color = Color(0.980392, 0.921569, 0.843137, 1)
+shape = SubResource("Resource_lmc47")
+metadata/_custom_type_script = "uid://cohd4ovwrydr0"
+
+[sub_resource type="Resource" id="Resource_rpdi3"]
+script = ExtResource("4_ci4ar")
+metadata/_custom_type_script = "uid://cohd4ovwrydr0"
+
+[sub_resource type="Resource" id="Resource_c6wwm"]
+script = ExtResource("4_ci4ar")
+metadata/_custom_type_script = "uid://cohd4ovwrydr0"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q07he"]
+transparency = 1
 
 [node name="Board" type="Node2D" unique_id=392167778]
 script = ExtResource("1_s78fa")
@@ -13,6 +36,34 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 texture = ExtResource("2_q07he")
 
+[node name="Tiles" type="Node2D" parent="." unique_id=41079374]
+
+[node name="SubViewport" type="SubViewportContainer" parent="." unique_id=165011524]
+offset_left = 708.0
+offset_top = 291.0
+offset_right = 1208.0
+offset_bottom = 791.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewport" unique_id=1709998702]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(600, 600)
+render_target_update_mode = 4
+
+[node name="DiceRoller" parent="SubViewport/SubViewport" unique_id=656930698 instance=ExtResource("4_q07he")]
+top_level = true
+dice_set = Array[ExtResource("4_ci4ar")]([SubResource("Resource_dej46"), SubResource("Resource_rpdi3"), SubResource("Resource_c6wwm")])
+roller_color = Color(1, 1, 1, 0)
+
+[node name="RollerBox" parent="SubViewport/SubViewport/DiceRoller" index="0" unique_id=1324775602]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 8, 0)
+height = 2.0
+width = 2.0
+
+[node name="CSGBox3D" parent="SubViewport/SubViewport/DiceRoller/RollerBox" index="0"]
+material = SubResource("StandardMaterial3D_q07he")
+
 [node name="CameraSystem" parent="." unique_id=250162375 instance=ExtResource("2_knosr")]
 
-[node name="Tiles" type="Node2D" parent="." unique_id=41079374]
+[editable path="SubViewport/SubViewport/DiceRoller"]
+[editable path="SubViewport/SubViewport/DiceRoller/RollerBox"]
