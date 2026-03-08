@@ -4,7 +4,7 @@
 shader_type canvas_item;
 
 // Camera FOV
-uniform float fov : hint_range(1, 179) = 90;
+uniform float fov : hint_range(1, 179) = 30;
 uniform bool cull_back = true;
 uniform float y_rot : hint_range(-180, 180) = 0.0;
 uniform float x_rot : hint_range(-180, 180) = 0.0;
@@ -13,6 +13,8 @@ uniform float x_rot : hint_range(-180, 180) = 0.0;
 // rotation without clipping inside its rect.
 uniform float inset : hint_range(0, 1) = 0;
 // Consider changing this to a uniform and changing it from code
+
+uniform float opacity : hint_range(0.0, 1.0) = 1;
 
 varying flat vec2 o;
 varying vec3 p;
@@ -50,6 +52,6 @@ void vertex(){
 void fragment(){
 	if (cull_back && p.z <= 0.0) discard;
 	vec2 uv = (p.xy / p.z).xy - o;
-    COLOR = texture(TEXTURE, uv + 0.5);
-	COLOR.a *= step(max(abs(uv.x), abs(uv.y)), 0.5);
+    COLOR = texture(TEXTURE, uv + 0.5) * opacity;
+	COLOR.a *= step(max(abs(uv.x), abs(uv.y)), 0.5) / opacity;
 }
