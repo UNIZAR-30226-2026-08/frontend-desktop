@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_k8m1f"]
 [ext_resource type="Script" uid="uid://dayb80a6dos6k" path="res://scripts/button_tween.gd" id="2_svlbt"]
-[ext_resource type="AudioStream" uid="uid://dv18pd6ydtscm" path="res://assets/audio/click.ogg" id="3_svlbt"]
+[ext_resource type="AudioStream" uid="uid://dv18pd6ydtscm" path="res://assets/audio/sfx/click.ogg" id="3_svlbt"]
 
 [node name="AnimatedButton" type="Button" unique_id=175575919]
 offset_right = 219.0
