@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b1qbyi8gac0is" path="res://scripts/animated_icon_text_button.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://bbp3yapj8yb55" path="res://assets/icons/user-white.svg" id="2_icon"]
-[ext_resource type="AudioStream" uid="uid://dv18pd6ydtscm" path="res://assets/audio/click.ogg" id="3_sfx"]
+[ext_resource type="AudioStream" uid="uid://dv18pd6ydtscm" path="res://assets/audio/sfx/click.ogg" id="3_sfx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
 bg_color = Color(0.133333, 0.133333, 0.133333, 1)

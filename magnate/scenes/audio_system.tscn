@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ch72ng0eupl0o"]
+
+[ext_resource type="Script" uid="uid://cxjdeurb1ag48" path="res://scripts/audio_system/audio_system.gd" id="1_vux68"]
+
+[node name="AudioSystem" type="Node2D" unique_id=321605636]
+script = ExtResource("1_vux68")
