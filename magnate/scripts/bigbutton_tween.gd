@@ -10,7 +10,6 @@ extends Button
 
 @onready var title: Label = $Margin/MainVBox/Title
 @onready var description: Label = $Margin/MainVBox/Description
-@onready var sfx: AudioStreamPlayer = $ClickSFXStreamPlayer
 
 func _ready() -> void:
 	# Connect signals
@@ -39,7 +38,8 @@ func _button_exit() -> void:
 
 func _button_pressed() -> void:
 	# Audio
-	sfx.play()
+	var audio = AudioResource.from_type(Globals.AUDIO_CLICK, AudioResource.AudioResourceType.UI)
+	AudioSystem.play_audio(audio)
 	
 	# Animation
 	var button_press_tween: Tween = create_tween()

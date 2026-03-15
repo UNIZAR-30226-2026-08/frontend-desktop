@@ -15,7 +15,6 @@ extends Button
 @onready var label_subtitle = $TextContainer/Subtitle
 @onready var icon_rect = $Icon
 @onready var bg_rect = $BgImage
-@onready var sfx: AudioStreamPlayer = $ClickSFXStreamPlayer
 
 func _ready() -> void:
 	if label_title:
@@ -79,8 +78,8 @@ func _button_exit() -> void:
 		tween.tween_property(icon_rect, "modulate:a", 0.5, 0.1)
 
 func _button_pressed() -> void:
-	if sfx and sfx.stream:
-		sfx.play()
+	var audio = AudioResource.from_type(Globals.AUDIO_CLICK, AudioResource.AudioResourceType.UI)
+	AudioSystem.play_audio(audio)
 	
 	var tween = create_tween()
 	tween.tween_property(self, "scale", pressed_scale, 0.06).set_trans(Tween.TRANS_SINE)

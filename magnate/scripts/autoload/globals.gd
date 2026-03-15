@@ -13,6 +13,15 @@ extends Node
 @export_group('Build')
 @export var BUILD_TYPE: BuildType = BuildType.DEV
 
+@export_group('Audio')
+@export_subgroup('UI')
+@export var AUDIO_CLICK = preload("uid://dv18pd6ydtscm")
+@export_subgroup('SFX')
+@export var AUDIO_CARDFLIP = preload("uid://cmr3nua1ihvr3")
+@export_subgroup('Music')
+@export var AUDIO_MENUMUSIC = preload("uid://cgqfmnsjmcjqc")
+@export var AUDIO_BOARDMUSIC = preload("uid://dqwe63a21r68t")
+
 enum BuildType {
 	DEV,
 	PROD,

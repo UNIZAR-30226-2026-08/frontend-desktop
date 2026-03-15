@@ -4,8 +4,6 @@ extends Button
 @export var hover_scale: Vector2 = Vector2(1.1, 1.1)
 @export var pressed_scale: Vector2 = Vector2(0.9, 0.9)
 
-@onready var sfx: AudioStreamPlayer = $ClickSFXStreamPlayer
-
 func _ready() -> void:
 	# Connect signals
 	mouse_entered.connect(_button_enter)
@@ -29,7 +27,8 @@ func _button_exit() -> void:
 
 func _on_confirm_button_pressed() -> void:
 	# Audio
-	sfx.play()
+	var audio = AudioResource.from_type(Globals.AUDIO_CLICK, AudioResource.AudioResourceType.UI)
+	AudioSystem.play_audio(audio)
 	
 	# Animation
 	var button_press_tween: Tween = create_tween()

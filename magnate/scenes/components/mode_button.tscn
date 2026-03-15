@@ -4,7 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://cbmxs65jj0bgh" path="res://assets/images/bg_city_white.jpg" id="2_bg"]
 [ext_resource type="Texture2D" uid="uid://cwrxutje1ufwq" path="res://assets/icons/gamepad.svg" id="3_icon"]
 [ext_resource type="FontFile" uid="uid://cel767gfqwf3q" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBoldItalic.ttf" id="4_5nakb"]
-[ext_resource type="AudioStream" uid="uid://dv18pd6ydtscm" path="res://assets/audio/sfx/click.ogg" id="4_e31iq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mask"]
 bg_color = Color(1, 1, 1, 1)
@@ -106,7 +105,3 @@ theme_override_constants/outline_size = 0
 theme_override_font_sizes/font_size = 18
 text = "Description"
 horizontal_alignment = 1
-
-[node name="ClickSFXStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1461197883]
-stream = ExtResource("4_e31iq")
-pitch_scale = 0.5

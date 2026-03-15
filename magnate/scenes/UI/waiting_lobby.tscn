@@ -89,3 +89,4 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
 [connection signal="back_action_requested" from="VBoxContainer/Header" to="." method="_on_header_back_action_requested"]
+[connection signal="pressed" from="VBoxContainer/start_game_button" to="." method="_on_start_game_button_pressed"]

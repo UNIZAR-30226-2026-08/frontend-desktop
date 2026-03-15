@@ -42,6 +42,9 @@ func _set_y_rot(value: float) -> void:
 	sub_viewport_container.material.set_shader_parameter("y_rot", value)
 
 func flip_smooth() -> void:
+	var audio = AudioResource.from_type(Globals.AUDIO_CARDFLIP, AudioResource.AudioResourceType.SFX)
+	AudioSystem.play_audio_with_position(audio, global_position)
+	
 	# Animate
 	var start_rotation = sub_viewport_container.material.get_shader_parameter("y_rot")
 	var tween = create_tween()

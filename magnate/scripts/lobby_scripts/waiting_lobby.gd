@@ -70,3 +70,7 @@ func update_player_count():
 
 func _on_header_back_action_requested() -> void:
 	SceneTransition.change_scene("res://scenes/UI/private_play.tscn")
+
+
+func _on_start_game_button_pressed() -> void:
+	SceneTransition.change_scene("res://scenes/board/board.tscn")
