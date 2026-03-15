@@ -5,7 +5,6 @@ extends Button
 
 @onready var label = %Label
 @onready var icon_rect = %Icon
-@onready var sfx = $ClickSFXStreamPlayer
 
 func _ready() -> void:
 	if label:
@@ -30,9 +29,9 @@ func _on_exit() -> void:
 	tween.tween_property(self, "scale", Vector2.ONE, 0.15)
 
 func _on_pressed() -> void:
-	if sfx:
-		sfx.play()
+	var audio = AudioResource.from_type(Globals.AUDIO_CLICK, AudioResource.AudioResourceType.UI)
+	AudioSystem.play_audio(audio)
 	
-	var tween = create_tween().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "scale", Vector2(0.95, 0.95), 0.1)
 	tween.tween_property(self, "scale", Vector2(1.05, 1.05), 0.1)

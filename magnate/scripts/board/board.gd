@@ -8,6 +8,7 @@ var player_hud: PlayerHUD
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# Spawn the board
 	tiles = BoardSpawner.spawn_board(tile_parent_node)
 	camera_system.init_camera_system(self)
 	
@@ -17,13 +18,18 @@ func _ready() -> void:
 	for player_data in players:
 		var token: PlayerToken = player_data["token"]
 		token.on_token_clicked.connect(_on_player_token_clicked.bind(player_data))
-		
+	
+	# Prepare the player HUD
 	player_hud = PlayerHUD.new()
 	add_child(player_hud)
 	player_hud.setup_players(players)
-		
+	
 	TokenLayoutManager.update_all_token_positions(players, tiles)
 	
+	# Start playing the board background music
+	var music = AudioResource.from_type(Globals.AUDIO_BOARDMUSIC, AudioResource.AudioResourceType.MUSIC)
+	AudioSystem.play_audio(music)
+
 func set_tile_owner(tile_id: String, player_color: Color) -> void:
 	if not tiles.has(tile_id):
 		return

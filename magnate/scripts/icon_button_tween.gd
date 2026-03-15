@@ -3,7 +3,6 @@ extends Button
 @export var icon_texture: Texture2D
 
 @onready var icon_rect: TextureRect = $TextureRect
-@onready var sfx: AudioStreamPlayer = $ClickSFXStreamPlayer
 
 func _ready() -> void:
 	if icon_texture:
@@ -24,10 +23,9 @@ func _on_mouse_exited() -> void:
 	tween.tween_property(self, "scale", Vector2.ONE, 0.15)
 
 func _on_pressed() -> void:
-	if sfx:
-		sfx.play()
+	var audio = AudioResource.from_type(Globals.AUDIO_CLICK, AudioResource.AudioResourceType.UI)
+	AudioSystem.play_audio(audio)
 
-	# var tween = create_tween().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "scale", Vector2(0.9, 0.9), 0.1)
 	tween.tween_property(self, "scale", Vector2(1.1, 1.1), 0.1)
