@@ -1,0 +1,514 @@
+[gd_scene format=3 uid="uid://by8ymobr7asbh"]
+
+[ext_resource type="Script" uid="uid://tjog2jt3xsxl" path="res://scripts/board/overlays/results_auction_overlay.gd" id="1_1havd"]
+[ext_resource type="Texture2D" uid="uid://c0towcf10ju02" path="res://assets/images/bg_city.jpg" id="2_iuea6"]
+[ext_resource type="Shader" uid="uid://dk6h3t6f17nd" path="res://styles/shaders/strip_background.gdshader" id="3_1u2hh"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="4_hdh73"]
+[ext_resource type="FontFile" uid="uid://b3216w4ia8it8" path="res://assets/fonts/LTSuperior/LTSuperior-BoldItalic.ttf" id="5_88ixc"]
+[ext_resource type="FontFile" uid="uid://conyee5yte71n" path="res://assets/fonts/LTSuperior/LTSuperior-Italic.ttf" id="6_1gwb7"]
+[ext_resource type="FontFile" uid="uid://pqt8tux3lbt7" path="res://assets/fonts/LTSuperior/LTSuperior-Light.ttf" id="7_1u2hh"]
+[ext_resource type="StyleBox" uid="uid://cnvygwbyqya08" path="res://styles/ingame/colordot.tres" id="8_rvouw"]
+[ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="9_pu3pd"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="12_ypx18"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_de608"]
+shader = ExtResource("3_1u2hh")
+shader_parameter/color_b = Color(0.95, 0.95, 0.95, 1)
+shader_parameter/color_a = Color(1, 1, 1, 1)
+shader_parameter/divisions = 14.0000006175
+shader_parameter/angle = 0.6000000285
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dd6nk"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_spp4y"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1havd"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5qra4"]
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 45.0
+expand_margin_top = 20.0
+expand_margin_right = 45.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_emv0e"]
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 45.0
+expand_margin_top = 20.0
+expand_margin_right = 45.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2x0xy"]
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 45.0
+expand_margin_top = 20.0
+expand_margin_right = 45.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ipjcy"]
+bg_color = Color(0.7107411, 0.71074116, 0.7107411, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 45.0
+expand_margin_top = 20.0
+expand_margin_right = 45.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kpfvs"]
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 45.0
+expand_margin_top = 20.0
+expand_margin_right = 45.0
+expand_margin_bottom = 20.0
+
+[node name="ResultsAuctionOverlay" type="CanvasLayer" unique_id=417320456]
+script = ExtResource("1_1havd")
+
+[node name="temporal_para_ver_efecto" type="TextureRect" parent="." unique_id=248528354]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_iuea6")
+expand_mode = 1
+
+[node name="Dimmer" type="ColorRect" parent="." unique_id=1096305439]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.9019608)
+
+[node name="SquarePanel" type="Panel" parent="." unique_id=1611699495]
+material = SubResource("ShaderMaterial_de608")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -450.0
+offset_right = 400.0
+offset_bottom = 450.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dd6nk")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SquarePanel" unique_id=421339297]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Space1" type="Control" parent="SquarePanel/VBoxContainer" unique_id=472381524]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PreTitleLabel" type="Label" parent="SquarePanel/VBoxContainer" unique_id=140999038]
+layout_mode = 2
+theme = ExtResource("4_hdh73")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_1gwb7")
+theme_override_font_sizes/font_size = 25
+text = "SUBASTA FINALIZADA"
+horizontal_alignment = 1
+
+[node name="Space2" type="Control" parent="SquarePanel/VBoxContainer" unique_id=1961882839]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="SquarePanel/VBoxContainer" unique_id=1706409431]
+layout_mode = 2
+theme = ExtResource("4_hdh73")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_88ixc")
+theme_override_font_sizes/font_size = 70
+text = "¡ADJUDICADO!"
+horizontal_alignment = 1
+
+[node name="Space3" type="Control" parent="SquarePanel/VBoxContainer" unique_id=1330519636]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="PropertyNameLabel" type="Label" parent="SquarePanel/VBoxContainer" unique_id=670600079]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("4_hdh73")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("7_1u2hh")
+theme_override_font_sizes/font_size = 25
+text = "CONSERJERÍA DEL ADA BYRON LORE IPSUM"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Space5" type="Control" parent="SquarePanel/VBoxContainer" unique_id=1632610336]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="WinnerPanel" type="Panel" parent="SquarePanel/VBoxContainer" unique_id=732009230]
+custom_minimum_size = Vector2(650, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_spp4y")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SquarePanel/VBoxContainer/WinnerPanel" unique_id=1521837913]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InSpace1" type="Control" parent="SquarePanel/VBoxContainer/WinnerPanel/HBoxContainer" unique_id=496015415]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="ColorDot1" type="Panel" parent="SquarePanel/VBoxContainer/WinnerPanel/HBoxContainer" unique_id=2146771858]
+unique_name_in_owner = true
+modulate = Color(1, 0.08203125, 0.08203125, 1)
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("8_rvouw")
+
+[node name="InSpace2" type="Control" parent="SquarePanel/VBoxContainer/WinnerPanel/HBoxContainer" unique_id=2013811276]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SquarePanel/VBoxContainer/WinnerPanel/HBoxContainer" unique_id=737650897]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="InSpace3" type="Control" parent="SquarePanel/VBoxContainer/WinnerPanel/HBoxContainer/VBoxContainer" unique_id=2059653536]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="AuxLabel" type="Label" parent="SquarePanel/VBoxContainer/WinnerPanel/HBoxContainer/VBoxContainer" unique_id=370419381]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.40234375, 0.40234375, 0.40234375, 1)
+theme_override_fonts/font = ExtResource("9_pu3pd")
+theme_override_font_sizes/font_size = 15
+text = "NUEVO PROPIETARIO"
+
+[node name="Player1Label" type="Label" parent="SquarePanel/VBoxContainer/WinnerPanel/HBoxContainer/VBoxContainer" unique_id=279273648]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("9_pu3pd")
+theme_override_font_sizes/font_size = 45
+text = "PLAYER 1"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="SquarePanel/VBoxContainer/WinnerPanel/HBoxContainer" unique_id=583522731]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+
+[node name="InSpace3" type="Control" parent="SquarePanel/VBoxContainer/WinnerPanel/HBoxContainer/VBoxContainer2" unique_id=1136055416]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="AuxLabel" type="Label" parent="SquarePanel/VBoxContainer/WinnerPanel/HBoxContainer/VBoxContainer2" unique_id=1153316214]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.40234375, 0.40234375, 0.40234375, 1)
+theme_override_fonts/font = ExtResource("9_pu3pd")
+theme_override_font_sizes/font_size = 15
+text = "INVERSIÓN"
+horizontal_alignment = 2
+
+[node name="Player1Bet" type="Label" parent="SquarePanel/VBoxContainer/WinnerPanel/HBoxContainer/VBoxContainer2" unique_id=239639211]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("9_pu3pd")
+theme_override_font_sizes/font_size = 60
+text = "180€"
+
+[node name="InSpace3" type="Control" parent="SquarePanel/VBoxContainer/WinnerPanel/HBoxContainer" unique_id=924611130]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="Space6" type="Control" parent="SquarePanel/VBoxContainer" unique_id=1799738170]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="AuxLabel2" type="Label" parent="SquarePanel/VBoxContainer" unique_id=1953777626]
+custom_minimum_size = Vector2(650, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.40234375, 0.40234375, 0.40234375, 1)
+theme_override_fonts/font = ExtResource("9_pu3pd")
+theme_override_font_sizes/font_size = 20
+text = "OTRAS PUJAS"
+
+[node name="Space7" type="Control" parent="SquarePanel/VBoxContainer" unique_id=109975122]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="SecondBidderPanel" type="Panel" parent="SquarePanel/VBoxContainer" unique_id=1982777472]
+custom_minimum_size = Vector2(650, 75)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_1havd")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SquarePanel/VBoxContainer/SecondBidderPanel" unique_id=220172838]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InSpace1" type="Control" parent="SquarePanel/VBoxContainer/SecondBidderPanel/HBoxContainer" unique_id=159774164]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+
+[node name="ColorDot2" type="Panel" parent="SquarePanel/VBoxContainer/SecondBidderPanel/HBoxContainer" unique_id=803712376]
+unique_name_in_owner = true
+modulate = Color(0.082352936, 0.118198514, 1, 1)
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("8_rvouw")
+
+[node name="InSpace2" type="Control" parent="SquarePanel/VBoxContainer/SecondBidderPanel/HBoxContainer" unique_id=1866918740]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SquarePanel/VBoxContainer/SecondBidderPanel/HBoxContainer" unique_id=1949544175]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Player2Label" type="Label" parent="SquarePanel/VBoxContainer/SecondBidderPanel/HBoxContainer/VBoxContainer" unique_id=510504509]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("9_pu3pd")
+theme_override_font_sizes/font_size = 25
+text = "PLAYER 2"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="SquarePanel/VBoxContainer/SecondBidderPanel/HBoxContainer" unique_id=1573702271]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+
+[node name="Player2Bet" type="Label" parent="SquarePanel/VBoxContainer/SecondBidderPanel/HBoxContainer/VBoxContainer2" unique_id=293462471]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0.453125, 0.44604492, 0.44604492, 1)
+theme_override_fonts/font = ExtResource("9_pu3pd")
+theme_override_font_sizes/font_size = 25
+text = "50€"
+
+[node name="InSpace3" type="Control" parent="SquarePanel/VBoxContainer/SecondBidderPanel/HBoxContainer" unique_id=1855229669]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="Space8" type="Control" parent="SquarePanel/VBoxContainer" unique_id=719106821]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ThirdBidderPanel" type="Panel" parent="SquarePanel/VBoxContainer" unique_id=28373415]
+custom_minimum_size = Vector2(650, 75)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_1havd")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SquarePanel/VBoxContainer/ThirdBidderPanel" unique_id=1440290983]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InSpace1" type="Control" parent="SquarePanel/VBoxContainer/ThirdBidderPanel/HBoxContainer" unique_id=1652207447]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+
+[node name="ColorDot3" type="Panel" parent="SquarePanel/VBoxContainer/ThirdBidderPanel/HBoxContainer" unique_id=1418192416]
+unique_name_in_owner = true
+modulate = Color(1, 0.6630515, 0.082352936, 1)
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("8_rvouw")
+
+[node name="InSpace2" type="Control" parent="SquarePanel/VBoxContainer/ThirdBidderPanel/HBoxContainer" unique_id=2110340848]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SquarePanel/VBoxContainer/ThirdBidderPanel/HBoxContainer" unique_id=1689946623]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Player3Label" type="Label" parent="SquarePanel/VBoxContainer/ThirdBidderPanel/HBoxContainer/VBoxContainer" unique_id=30531845]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("9_pu3pd")
+theme_override_font_sizes/font_size = 25
+text = "PLAYER 3"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="SquarePanel/VBoxContainer/ThirdBidderPanel/HBoxContainer" unique_id=1593263192]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+
+[node name="Player3Bet" type="Label" parent="SquarePanel/VBoxContainer/ThirdBidderPanel/HBoxContainer/VBoxContainer2" unique_id=1794508606]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0.453125, 0.44604492, 0.44604492, 1)
+theme_override_fonts/font = ExtResource("9_pu3pd")
+theme_override_font_sizes/font_size = 25
+text = "30€"
+
+[node name="InSpace3" type="Control" parent="SquarePanel/VBoxContainer/ThirdBidderPanel/HBoxContainer" unique_id=1159758180]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="Space10" type="Control" parent="SquarePanel/VBoxContainer" unique_id=1101990168]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ForthBidderPanel" type="Panel" parent="SquarePanel/VBoxContainer" unique_id=1423553962]
+custom_minimum_size = Vector2(650, 75)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_1havd")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SquarePanel/VBoxContainer/ForthBidderPanel" unique_id=52647563]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InSpace1" type="Control" parent="SquarePanel/VBoxContainer/ForthBidderPanel/HBoxContainer" unique_id=1517441620]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+
+[node name="ColorDot4" type="Panel" parent="SquarePanel/VBoxContainer/ForthBidderPanel/HBoxContainer" unique_id=1222572051]
+unique_name_in_owner = true
+modulate = Color(0.082352936, 1, 0.24724263, 1)
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("8_rvouw")
+
+[node name="InSpace2" type="Control" parent="SquarePanel/VBoxContainer/ForthBidderPanel/HBoxContainer" unique_id=1291431222]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SquarePanel/VBoxContainer/ForthBidderPanel/HBoxContainer" unique_id=983765489]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Player4Label" type="Label" parent="SquarePanel/VBoxContainer/ForthBidderPanel/HBoxContainer/VBoxContainer" unique_id=1296180200]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("9_pu3pd")
+theme_override_font_sizes/font_size = 25
+text = "PLAYER 4"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="SquarePanel/VBoxContainer/ForthBidderPanel/HBoxContainer" unique_id=248159232]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+
+[node name="Player4Bet" type="Label" parent="SquarePanel/VBoxContainer/ForthBidderPanel/HBoxContainer/VBoxContainer2" unique_id=1873106019]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0.453125, 0.44604492, 0.44604492, 1)
+theme_override_fonts/font = ExtResource("9_pu3pd")
+theme_override_font_sizes/font_size = 25
+text = "10€"
+
+[node name="InSpace3" type="Control" parent="SquarePanel/VBoxContainer/ForthBidderPanel/HBoxContainer" unique_id=1473516866]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="ConfirmButton" parent="SquarePanel/VBoxContainer" unique_id=175575919 instance=ExtResource("12_ypx18")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_5qra4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_emv0e")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2x0xy")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_ipjcy")
+theme_override_styles/focus = SubResource("StyleBoxFlat_kpfvs")
+text = "ACEPTAR"
+
+[node name="Space4" type="Control" parent="SquarePanel/VBoxContainer" unique_id=574433085]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[connection signal="pressed" from="SquarePanel/VBoxContainer/ConfirmButton" to="." method="_on_set_price_button_pressed"]
