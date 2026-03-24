@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://s5i6upd25o0y"]
 
 [ext_resource type="Script" uid="uid://c2hwtfqti30pk" path="res://scripts/board/overlays/auction_overlay.gd" id="1_7aekb"]
-[ext_resource type="Texture2D" uid="uid://c0towcf10ju02" path="res://assets/images/bg_city.jpg" id="2_xdnm8"]
 [ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="3_2x0xy"]
 [ext_resource type="PackedScene" uid="uid://vd87r5unxafe" path="res://scenes/board/cards/property_card.tscn" id="3_7aekb"]
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="3_g2f6o"]
@@ -78,15 +77,6 @@ expand_margin_bottom = 10.0
 
 [node name="AuctionOverlay" type="CanvasLayer" unique_id=417320456]
 script = ExtResource("1_7aekb")
-
-[node name="temporal_para_ver_efecto" type="TextureRect" parent="." unique_id=248528354]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_xdnm8")
-expand_mode = 1
 
 [node name="Dimmer" type="ColorRect" parent="." unique_id=1096305439]
 unique_name_in_owner = true

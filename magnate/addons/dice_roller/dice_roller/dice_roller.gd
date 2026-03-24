@@ -35,6 +35,7 @@ const default_set := {
 			$RollerBox.height = new_value.y
 			$RollerBox.depth = new_value.z
 			reload_dices()
+			
 @export var interactive := false
 
 ## Emits the final value once the roll has finished
@@ -114,7 +115,6 @@ func reload_dices():
 	clear_dices()
 	ensure_valid_and_unique_dice_names()
 	for dice: DiceDef in dice_set:
-		#print("reloading dice: ", dice, dice.shape)
 		add_dice_escene(dice)
 	reposition_dices()
 
@@ -133,22 +133,12 @@ func add_dice_escene(dice: DiceDef):
 	dices.append(scene)
 
 func dices_arrangement(ndices: int, width: float, height: float) -> Vector2i:
-	""" Given an aspect ratio and a number of dices returns
-	the number of rows and columns to best organize the dices.
-	"""
-	# ndices <= rows * cols =
-	# = ( cols * height / width ) * cols =
-	# = cols *  cols * height / width
-	# cols >= sqrt( ndices * width / height )
-	# column_center = -w/2 + w/cols * (1 + 2*i)/2 = w/2 (-1 + (2*i+1)/cols)
 	var first_cols: int = ceil(sqrt(ndices*width/height))
 	var rows: int = ceil(ndices/float(first_cols))
-	# If we are using the row, fully use it
 	var cols: int = ceil(ndices/float(rows))
 	return Vector2i(cols, rows)
 
 func reposition_dices():
-	""" Position dices evenly distributed along the roller """
 	var span_x := roller_size.x - margin * 2
 	var span_z := roller_size.z - margin * 2
 	var arrangement: Vector2i = dices_arrangement(dices.size(), span_x, span_x)
@@ -156,10 +146,9 @@ func reposition_dices():
 	var rows: int = arrangement.y
 	var last_row_cols: int = dices.size()%cols if dices.size()%cols else  cols
 	for i in range(dices.size()):
-		var dice = dices[i] # TODO: use polymorfism
+		var dice = dices[i] 
 		var col: int = i%cols
 		var row: int = floor(i/cols)
-		# Center last row with less columns
 		var actual_cols = last_row_cols if row == rows-1 else cols
 		var dice_x : float = -span_x/2 + span_x/actual_cols * (0.5 + col)
 		var dice_z : float = -span_z/2 + span_z/rows * (0.5 + row)
@@ -167,29 +156,13 @@ func reposition_dices():
 		dice.original_position = dice.position
 
 func _on_finnished_dice_rolling(number: int, dice_name: String):
-	## One dice communicates has finished its rolling
 	result[dice_name] = number
-	#print("Dice done: ", dice_name, " value ", number)
 	if result.size() < dices.size():
-		# Not all dices finished
 		return
-	#print("Roll finished: ", result, " -> ", total_value)
 	rolling = false
 	roll_finnished.emit(total_value)
 
-func _input(event: InputEvent) -> void:
-	if rolling: return
-	if not interactive: return
-	if event is InputEventMouseButton:
-		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-			prepare()
-		elif not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-			roll()
-		elif event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-			quick_roll()
-
 func quick_roll():
-	"""Turn dices toward computer generated random values (non-physics)"""
 	var values: Array[int] = []
 	for dice: Dice in dices:
 		var dice_values := dice.sides.keys()
@@ -199,7 +172,6 @@ func quick_roll():
 	roll_started.emit()
 
 func show_faces(faces: Array[int]):
-	"""Shows given faces by rotating them up"""
 	if rolling: return
 	assert(faces.size() == dices.size())
 	result={}

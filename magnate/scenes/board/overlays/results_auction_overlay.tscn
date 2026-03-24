@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://by8ymobr7asbh"]
 
 [ext_resource type="Script" uid="uid://tjog2jt3xsxl" path="res://scripts/board/overlays/results_auction_overlay.gd" id="1_1havd"]
-[ext_resource type="Texture2D" uid="uid://c0towcf10ju02" path="res://assets/images/bg_city.jpg" id="2_iuea6"]
 [ext_resource type="Shader" uid="uid://dk6h3t6f17nd" path="res://styles/shaders/strip_background.gdshader" id="3_1u2hh"]
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="4_hdh73"]
 [ext_resource type="FontFile" uid="uid://b3216w4ia8it8" path="res://assets/fonts/LTSuperior/LTSuperior-BoldItalic.ttf" id="5_88ixc"]
@@ -104,15 +103,6 @@ expand_margin_bottom = 20.0
 
 [node name="ResultsAuctionOverlay" type="CanvasLayer" unique_id=417320456]
 script = ExtResource("1_1havd")
-
-[node name="temporal_para_ver_efecto" type="TextureRect" parent="." unique_id=248528354]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_iuea6")
-expand_mode = 1
 
 [node name="Dimmer" type="ColorRect" parent="." unique_id=1096305439]
 unique_name_in_owner = true

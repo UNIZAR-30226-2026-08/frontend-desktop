@@ -18,7 +18,6 @@ offset_right = 160.0
 offset_bottom = 160.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-mouse_filter = 2
 theme = ExtResource("1_brol5")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1283559629]
@@ -28,13 +27,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2dxen")
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer" unique_id=394837070]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="BackgroundWhite" type="ColorRect" parent="PanelContainer" unique_id=1293432889]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="PanelContainer2" type="PanelContainer" parent="." unique_id=1004195216]
 layout_mode = 1
@@ -45,10 +47,12 @@ offset_right = -31.0
 offset_bottom = -33.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2dxen")
 
 [node name="BackgroundOrange" type="ColorRect" parent="PanelContainer2" unique_id=1695962800]
 layout_mode = 2
+mouse_filter = 2
 color = Color(0.76371557, 0.95428234, 0.9999998, 1)
 
 [node name="Secretary Label" type="Label" parent="." unique_id=434294299]
@@ -102,5 +106,6 @@ offset_top = 59.0
 offset_right = 98.82401
 offset_bottom = 126.23091
 rotation = -0.7853982
+mouse_filter = 2
 texture = ExtResource("2_x1856")
 expand_mode = 1

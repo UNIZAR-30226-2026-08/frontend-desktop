@@ -54,28 +54,27 @@ func set_rent_2(p_amount: int) -> void:
 		
 func set_rent_3(p_amount: int) -> void:
 	if(p_amount < 100):
-		property_rent_2.text = "Con 3 Casas . . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_3.text = "Con 3 Casas . . . . . . . . . . {valor}€".format({"valor": p_amount})
 	elif(p_amount < 1000):
-		property_rent_2.text = "Con 3 Casas . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_3.text = "Con 3 Casas . . . . . . . . . {valor}€".format({"valor": p_amount})
 	else:
-		property_rent_2.text = "Con 3 Casas . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_3.text = "Con 3 Casas . . . . . . . . {valor}€".format({"valor": p_amount})
 		
 func set_rent_4(p_amount: int) -> void:
 	if(p_amount < 100):
-		property_rent_2.text = "Con 4 Casas . . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_4.text = "Con 4 Casas . . . . . . . . . . {valor}€".format({"valor": p_amount})
 	elif(p_amount < 1000):
-		property_rent_2.text = "Con 4 Casas . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_4.text = "Con 4 Casas . . . . . . . . . {valor}€".format({"valor": p_amount})
 	else:
-		property_rent_2.text = "Con 4 Casas . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_4.text = "Con 4 Casas . . . . . . . . {valor}€".format({"valor": p_amount})
 		
 func set_rent_hotel(p_amount: int) -> void:
 	if(p_amount < 100):
-		property_rent_2.text = "Con HOTEL . . . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_hotel.text = "Con HOTEL . . . . . . . . . . . {valor}€".format({"valor": p_amount})
 	elif(p_amount < 1000):
-		property_rent_2.text = "Con HOTEL . . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_hotel.text = "Con HOTEL . . . . . . . . . . {valor}€".format({"valor": p_amount})
 	else:
-		property_rent_2.text = "Con HOTEL . . . . . . . . . {valor}€".format({"valor": p_amount})
-		
+		property_rent_hotel.text = "Con HOTEL . . . . . . . . . {valor}€".format({"valor": p_amount})
 func set_house_price(p_amount: int) -> void:
 	property_house_price.text = "Cada Casa cuesta {valor}€\n El Hotel cuesta 5 Casas".format({"valor": p_amount})
 
@@ -85,9 +84,9 @@ func set_mortgage_price(p_price: int) -> void:
 # --- Función Maestra ---
 
 func update_all_data(data: Dictionary) -> void:
-	# Esto permite actualizar toda la tarjeta pasando un diccionario de datos
 	set_property_name(data.get("name", "Propiedad"))
-	set_property_color(data.get("color", Color.WHITE))
+	# Convertimos el string del JSON a un Color real
+	set_property_color(Color(data.get("color", "#FFFFFF"))) 
 	set_basic_rent(data.get("rent_0", 0))
 	set_rent_1(data.get("rent_1", 0))
 	set_rent_2(data.get("rent_2", 0))

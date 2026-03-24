@@ -25,22 +25,65 @@ signal auction_finished
 signal player_withdrawn 
 
 func _ready() -> void:
-	# Forzamos el color verde inicial para la puja
+	# 1. Inicializamos visibilidad de las cartas (Viene del script anterior)
+	visible = false
+	card.visible = false
+	server_card.visible = false
+
+	# 2. Forzamos el color verde inicial para la puja
 	current_bid_label.add_theme_color_override("font_color", color_verde_puja)
 	current_bid_label.text = str(current_bid) + "€"
 	update_placeholder()
 	
 	set_price_button.disabled = true
 	
+	# 3. Conectamos señales
 	auction_price_input.text_changed.connect(_on_text_changed)
+	auction_price_input.text_submitted.connect(_on_text_submitted)
+	set_price_button.pressed.connect(_on_set_price_button_pressed)
 	
 	add_10_button.pressed.connect(_on_add_10_pressed)
 	add_50_button.pressed.connect(_on_add_50_pressed)
 	withdraw_button.pressed.connect(_on_withdraw_pressed)
 	
+	# Empezamos la subasta (el tablero llamará a abrir_carta al instanciarlo)
 	start_auction(15)
 
-# --- LÓGICA DEL TIEMPO ---
+# ==========================================
+# INICIALIZACIÓN DE LA CARTA (Desde el Tablero)
+# ==========================================
+func abrir_carta(prop_data: Dictionary) -> void:
+	var is_server = prop_data.get("type", "") == "server"
+	
+	if is_server:
+		card.visible = false
+		server_card.update_all_data(prop_data)
+		aparecer(server_card)
+	else:
+		server_card.visible = false
+		card.update_all_data(prop_data)
+		aparecer(card)
+
+func aparecer(tarjeta: Control) -> void:
+	tarjeta.visible = true
+	show()
+	dimmer.color.a = 0.0
+	tarjeta.modulate.a = 0.0
+	
+	var pos_original = tarjeta.position.y
+	tarjeta.position.y = pos_original + 20 
+
+	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property(dimmer, "color:a", 0.8, 0.4)
+	tween.tween_property(tarjeta, "modulate:a", 1.0, 0.4)
+	tween.tween_property(tarjeta, "position:y", pos_original, 0.4)
+
+func cerrar_y_destruir() -> void:
+	queue_free()
+
+# ==========================================
+# LÓGICA DEL TIEMPO
+# ==========================================
 func start_auction(seconds: int) -> void:
 	time_left = seconds
 	update_label_text()
@@ -50,6 +93,10 @@ func start_auction(seconds: int) -> void:
 func _tick() -> void:
 	if time_left > 0:
 		await get_tree().create_timer(1.0).timeout
+		
+		# Evita errores si la escena se destruye mientras el timer corría
+		if not is_inside_tree(): return 
+		
 		time_left -= 1
 		update_label_text()
 		
@@ -72,10 +119,17 @@ func flash_warning() -> void:
 func _on_timeout() -> void:
 	print("¡Tiempo agotado!")
 	countdown_label.add_theme_color_override("font_color", Color.BLACK)
-	desactivar_controles() # Bloqueamos por si no se había rendido
-	auction_finished.emit()
+	desactivar_controles() 
+	
+	# Esperamos 2 segundos para que se vea la puja final
+	await get_tree().create_timer(2.0).timeout
+	if is_inside_tree():
+		auction_finished.emit() # <--- AVISAMOS AHORA, JUSTO ANTES DE CERRAR
+		cerrar_y_destruir()
 
-# --- LÓGICA CENTRAL DE PUJAS ---
+# ==========================================
+# LÓGICA CENTRAL DE PUJAS
+# ==========================================
 func intentar_pujar(nueva_puja: int) -> void:
 	if nueva_puja > current_bid and nueva_puja <= maxmoney:
 		current_bid = nueva_puja
@@ -98,7 +152,9 @@ func update_placeholder() -> void:
 	var min_bid = current_bid + 1
 	auction_price_input.placeholder_text = "Min: " + str(min_bid) + "€   Max: " + str(maxmoney) + "€"
 
-# --- EVENTOS DE LA UI ---
+# ==========================================
+# EVENTOS DE LA UI
+# ==========================================
 func _on_text_changed(new_text: String) -> void:
 	set_price_button.disabled = new_text.strip_edges().is_empty()
 
@@ -110,7 +166,9 @@ func _on_set_price_button_pressed() -> void:
 func _on_text_submitted(_new_text: String) -> void:
 	_on_set_price_button_pressed()
 
-# --- BOTONES RÁPIDOS Y RETIRADA ---
+# ==========================================
+# BOTONES RÁPIDOS Y RETIRADA
+# ==========================================
 func _on_add_10_pressed() -> void:
 	intentar_pujar(current_bid + 10)
 

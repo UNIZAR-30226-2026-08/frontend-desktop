@@ -17,22 +17,24 @@ offset_right = 80.0
 offset_bottom = 120.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-mouse_filter = 2
 theme = ExtResource("1_dy4r7")
 theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
 script = ExtResource("2_jumo5")
 
 [node name="VerticalAlign" type="VBoxContainer" parent="." unique_id=820974535]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="InteriorAlign" type="VBoxContainer" parent="VerticalAlign" unique_id=966003394]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="TopSpace" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=144419178]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
+mouse_filter = 2
 
 [node name="ServerName" type="Label" parent="VerticalAlign/InteriorAlign" unique_id=893882161]
 unique_name_in_owner = true
@@ -52,6 +54,7 @@ custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
+mouse_filter = 2
 texture = ExtResource("3_jumo5")
 expand_mode = 1
 stretch_mode = 5
@@ -69,3 +72,4 @@ vertical_alignment = 1
 [node name="BottomSpace" type="Control" parent="VerticalAlign/InteriorAlign" unique_id=424352800]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
+mouse_filter = 2

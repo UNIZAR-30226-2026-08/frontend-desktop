@@ -19,7 +19,6 @@ offset_right = 160.0
 offset_bottom = 160.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-mouse_filter = 2
 theme = ExtResource("1_2dxen")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1283559629]
@@ -29,15 +28,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2dxen")
 
 [node name="background_betan" type="TextureRect" parent="PanelContainer" unique_id=901401817]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_2dxen")
 expand_mode = 3
 
 [node name="dimmer" type="ColorRect" parent="PanelContainer" unique_id=1293432889]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="ParkingLabel" type="Label" parent="." unique_id=148657105]
 layout_mode = 0
@@ -75,4 +77,5 @@ offset_right = 380.0
 offset_bottom = 312.0
 rotation = -0.7853982
 scale = Vector2(0.3, 0.3)
+mouse_filter = 2
 texture = ExtResource("3_66t5l")

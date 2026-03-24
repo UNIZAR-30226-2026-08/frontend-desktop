@@ -14,17 +14,18 @@ border_color = Color(0, 0, 0, 1)
 [node name="FantasyTile" type="PanelContainer" unique_id=589823767]
 offset_right = 80.0
 offset_bottom = 120.0
-mouse_filter = 2
 theme = ExtResource("1_rbomd")
 theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
 
 [node name="VerticalAlign" type="VBoxContainer" parent="." unique_id=820974535]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="TopSpace" type="Control" parent="VerticalAlign" unique_id=144419178]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
+mouse_filter = 2
 
 [node name="FantasyText" type="Label" parent="VerticalAlign" unique_id=893882161]
 layout_mode = 2
@@ -38,6 +39,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 size_flags_vertical = 6
+mouse_filter = 2
 texture = ExtResource("2_xxn4n")
 expand_mode = 3
 stretch_mode = 5

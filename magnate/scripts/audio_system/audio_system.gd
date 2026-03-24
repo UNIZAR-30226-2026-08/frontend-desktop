@@ -123,7 +123,7 @@ func toggle_mute_ui() -> void:
 func toggle_mute_general() -> void:
 	_toggle_mute_bus(_GENERAL_BUS_NAME)
 
-func _create_new_audio_player(audio: AudioResource) -> int:
+func _create_new_audio_player(audio: AudioResource, is_positional: bool = false) -> int:
 	var ticket
 	if audio.bus == AudioResource.AudioResourceType.MUSIC:
 		ticket = 0
@@ -139,7 +139,14 @@ func _create_new_audio_player(audio: AudioResource) -> int:
 	else:
 		ticket = _next_ticket
 		_next_ticket += 1
-	var new_audio_player = AudioStreamPlayer.new()
+		
+	# --- AQUÍ ESTÁ LA MAGIA ---
+	var new_audio_player: Node
+	if is_positional:
+		new_audio_player = AudioStreamPlayer2D.new()
+	else:
+		new_audio_player = AudioStreamPlayer.new()
+		
 	add_child(new_audio_player)
 	
 	new_audio_player.stream = audio.audio_track
@@ -177,7 +184,8 @@ func play_audio(audio: AudioResource) -> int:
 
 # Returns ticket number
 func play_audio_with_position(audio: AudioResource, _position: Vector2) -> int:
-	var ticket = await _create_new_audio_player(audio)
+	# Le pasamos "true" para que sepa que necesitamos un AudioStreamPlayer2D
+	var ticket = await _create_new_audio_player(audio, true) 
 	_audio_players[ticket].position = _position
 	_start_audio(_audio_players[ticket], audio.bus == AudioResource.AudioResourceType.MUSIC)
 	

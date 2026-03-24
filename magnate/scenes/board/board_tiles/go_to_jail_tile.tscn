@@ -18,7 +18,6 @@ offset_right = 120.0
 offset_bottom = 120.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-mouse_filter = 2
 theme = ExtResource("1_yfmb7")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1283559629]
@@ -28,10 +27,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2dxen")
 
 [node name="bg" type="ColorRect" parent="PanelContainer" unique_id=1293432889]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="GoToLabel" type="Label" parent="." unique_id=148657105]
 layout_mode = 0
@@ -68,4 +69,5 @@ offset_right = 408.0
 offset_bottom = 470.0
 rotation = -0.7853982
 scale = Vector2(0.2, 0.2)
+mouse_filter = 2
 texture = ExtResource("2_jrpyf")
