@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://y3ygivvqdgj8"]
+
+[ext_resource type="StyleBox" uid="uid://cnvygwbyqya08" path="res://styles/ingame/colordot.tres" id="1_lt1c0"]
+[ext_resource type="StyleBox" uid="uid://cdb2i2qip8v2j" path="res://styles/ingame/tradebox.tres" id="1_prftw"]
+[ext_resource type="Script" uid="uid://bmyk6kn1mfrhs" path="res://scripts/board/trading/trade_property_item.gd" id="2_2nyeb"]
+[ext_resource type="FontFile" uid="uid://q5s1rdm0i0yu" path="res://assets/fonts/LTSuperior/LTSuperior-Medium.ttf" id="2_prftw"]
+
+[node name="TradePropertyItem" type="PanelContainer" unique_id=458250389]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = ExtResource("1_prftw")
+script = ExtResource("2_2nyeb")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=739554069]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBox" type="VBoxContainer" parent="Margin" unique_id=710971216]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="Margin/VBox" unique_id=900368753]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="MidSpace" type="Control" parent="Margin/VBox/HBox" unique_id=1435199170]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GroupColor" type="Panel" parent="Margin/VBox/HBox" unique_id=2143249438]
+unique_name_in_owner = true
+modulate = Color(0.4023285, 0.73046875, 0.49974513, 1)
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("1_lt1c0")
+
+[node name="PropertyName" type="Label" parent="Margin/VBox/HBox" unique_id=44909691]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_prftw")
+theme_override_font_sizes/font_size = 20
+text = "SALA DE TRABAJO 2 JJAAajajajajdsaj"
+autowrap_mode = 2
+
+[node name="RemoveButton" type="Button" parent="Margin/VBox/HBox" unique_id=1256104259]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.93359375, 0.16775513, 0.16775513, 1)
+theme_override_fonts/font = ExtResource("2_prftw")
+theme_override_font_sizes/font_size = 20
+text = "X"
+flat = true
+
+[node name="MidSpace2" type="Control" parent="Margin/VBox/HBox" unique_id=972598024]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="pressed" from="Margin/VBox/HBox/RemoveButton" to="." method="_on_remove_button_pressed"]

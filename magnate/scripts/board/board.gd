@@ -1,5 +1,7 @@
 extends Node2D
 
+const DEBUG_MODE: int = 2
+
 @onready var camera_system: MagnateCameraSystem = %CameraSystem
 @onready var tile_parent_node: Node2D = %Tiles
 @onready var dice_roller_overlay: DiceRollerOverlay = %DiceRollerOverlay 
@@ -11,10 +13,18 @@ var player_hud: PlayerHUD
 var clickable_tile_ids: Array[String] = []
 var board_data_list: Array = []
 
+# ==========================================
+# VARIABLES DE TRADEO
+# ==========================================
+var current_trade_overlay: CanvasLayer = null
+var _in_trade_selection_mode: bool = false
+var _trade_selecting_for_p1: bool = true
+
 const NEW_PROPERTY_OVERLAY = preload("res://scenes/board/overlays/new_property_overlay.tscn")
 const FANTASY_OVERLAY = preload("res://scenes/board/overlays/fantasy_overlay.tscn")
 const AUCTION_OVERLAY = preload("res://scenes/board/overlays/auction_overlay.tscn")
 const RESULTS_AUCTION_OVERLAY = preload("res://scenes/board/overlays/results_auction_overlay.tscn")
+const TRADE_OVERLAY = preload("res://scenes/board/overlays/trade_overlay.tscn")
 
 func _ready() -> void:
 	# Spawn the board
@@ -28,7 +38,6 @@ func _ready() -> void:
 		tile_node.gui_input.connect(_on_tile_gui_input.bind(tile_id))
 	
 	var json_path = "res://assets/game_info/board.json"
-	# 2. NUEVO: Cargamos el JSON en memoria para tener los datos de las cartas
 	_load_board_data(json_path)
 	players = PlayerSpawner.spawn_players(self, tiles, json_path)
 	
@@ -36,7 +45,6 @@ func _ready() -> void:
 		var token: PlayerToken = player_data["token"]
 		token.on_token_clicked.connect(_on_player_token_clicked.bind(player_data))
 	
-	# Prepare the player HUD
 	player_hud = PlayerHUD.new()
 	add_child(player_hud)
 	player_hud.setup_players(players)
@@ -47,10 +55,19 @@ func _ready() -> void:
 	var music = AudioResource.from_type(Globals.AUDIO_BOARDMUSIC, AudioResource.AudioResourceType.MUSIC)
 	AudioSystem.play_audio(music)
 	
-	# Conectar la señal de los dados al tablero y mostrar los dados para simular el turno
-	if dice_roller_overlay:
-		dice_roller_overlay.roll_finished.connect(_on_dice_result_received)
-		dice_roller_overlay.show() # Mostramos el overlay esperando tu click para tirar
+	# ==========================================
+	# MODO DEBUG PARA SIMULAR TIRADA DE DADOS
+	# ==========================================
+	if DEBUG_MODE == 1:
+		if dice_roller_overlay:
+			dice_roller_overlay.roll_finished.connect(_on_dice_result_received)
+			dice_roller_overlay.show() # Mostramos el overlay esperando tu click para tirar
+	
+	# ==========================================
+	# MODO DEBUG PARA TRADEO
+	# ==========================================
+	if DEBUG_MODE == 2:
+		_run_debug_trade_scenario()
 
 func _load_board_data(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -110,9 +127,18 @@ func _on_tile_gui_input(event: InputEvent, tile_id: String) -> void:
 
 func _on_highlighted_tile_clicked(tile_id: String) -> void:
 	print("👉 Casilla seleccionada por el jugador: ", tile_id)
-	reset_tile_highlight()
+	reset_tile_highlight() # Apaga las luces y quita el cursor de manita
 	
-	# Mover al jugador
+	# --- NUEVO: INTERCEPTOR DE TRADEO ---
+	if _in_trade_selection_mode:
+		_in_trade_selection_mode = false # Salimos del modo selección
+		if current_trade_overlay:
+			# Le devolvemos el ID seleccionado al Overlay
+			current_trade_overlay.property_selected_from_board(_trade_selecting_for_p1, tile_id)
+		return # ⛔ IMPORTANTE: Salimos de la función aquí para no mover al jugador ni abrir overlays
+	# ------------------------------------
+	
+	# --- LÓGICA ORIGINAL DE MOVIMIENTO ---
 	if players.size() > 0:
 		var model: PlayerModel = players[0]["model"]
 		model.move_to_tile(tile_id)
@@ -334,7 +360,7 @@ var _dummy_fantasy_cards = [
 ]
 
 
-func _start_fantasy_overlay(tile_id: String) -> void:
+func _start_fantasy_overlay(_tile_id: String) -> void:
 	print("✨ Iniciando evento de Fantasía...")
 	
 	# 1. Instanciar el overlay
@@ -355,8 +381,8 @@ func _start_fantasy_overlay(tile_id: String) -> void:
 	)
 	
 # Función de finalización (Placeholder)
-func _on_fantasy_card_resolved(tile_id: String, card_data: Dictionary) -> void:
-	print("✅ Carta resuelta en ", tile_id, ". Pasamos turno.")
+func _on_fantasy_card_resolved(_tile_id: String, _card_data: Dictionary) -> void:
+	print("✅ Carta resuelta en ", _tile_id, ". Pasamos turno.")
 	# TODO: Aquí va la lógica de cobrar dinero/moverse según card_data["action"]
 
 func _start_tram_overlay(tile_id: String) -> void:
@@ -382,3 +408,62 @@ func _start_parking_overlay(tile_id: String) -> void:
 func _start_bridge_overlay(tile_id: String) -> void:
 	print("🌉 Has cruzado un puente: ", tile_id)
 	# TODO: Según tus reglas, los puentes podrían ser solo decorativos, cobrar peaje, o moverte al otro lado del tablero.
+
+# ==========================================
+# SISTEMA DE TRADEO
+# ==========================================
+
+func _start_trade(p1_name: String, p2_name: String, p1_money: int, p2_money: int, p1_props: Array[Dictionary], p2_props: Array[Dictionary]) -> void:
+	print("🤝 Iniciando overlay de tradeo...")
+	current_trade_overlay = TRADE_OVERLAY.instantiate()
+	add_child(current_trade_overlay)
+	
+	# Conectamos la señal que emite el TradeOverlay cuando pide iluminar casillas
+	current_trade_overlay.request_board_selection.connect(_on_trade_selection_requested)
+	
+	# Le pasamos los datos iniciales
+	current_trade_overlay.setup_trade(p1_name, p2_name, p1_money, p2_money, p1_props, p2_props)
+
+func _on_trade_selection_requested(is_player_1: bool, available_ids: Array) -> void:
+	print("🔎 TradeOverlay pide seleccionar casilla. IDs válidos: ", available_ids)
+	
+	# Activamos el estado de tradeo
+	_in_trade_selection_mode = true
+	_trade_selecting_for_p1 = is_player_1
+	
+	# Convertimos el array genérico a Array[String] porque tu función lo exige
+	var valid_ids_string: Array[String] = []
+	valid_ids_string.assign(available_ids)
+	
+	# Aprovechamos tu función existente que ya ilumina y pone la manita del ratón
+	prompt_player_tile_selection(valid_ids_string)
+
+# ==========================================
+# FUNCION DE DEBUG PARA PROBAR LOS TRADEOS
+# ==========================================
+func _run_debug_trade_scenario() -> void:
+	print("🐛 DEBUG MODE: Preparando escenario de tradeo ficticio...")
+	
+	# Esperamos 1.5 segundos para que la cámara y el tablero terminen de cargar visualmente
+	await get_tree().create_timer(1.5).timeout
+	
+	# Ocultamos los dados si estaban visibles para que no molesten en la prueba
+	if dice_roller_overlay:
+		dice_roller_overlay.hide()
+	
+	# IMPORTANTE: Asegúrate de que los "id" coincidan con casillas reales de tu tablero 
+	# (por ejemplo, si usas "001", "002" como vi en tu código). 
+	# Si pones IDs que no existen, no se iluminarán en el tablero.
+	var p1_mock_props: Array[Dictionary] = [
+		{"id": "001", "name": "Sala de Estudio A", "color": Color.BROWN},
+		{"id": "003", "name": "Laboratorio de Física", "color": Color.BROWN},
+		{"id": "006", "name": "Cafetería Central", "color": Color.LIGHT_BLUE}
+	]
+	
+	var p2_mock_props: Array[Dictionary] = [
+		{"id": "008", "name": "Biblioteca Norte", "color": Color.PINK},
+		{"id": "009", "name": "Aula Magna", "color": Color.PINK}
+	]
+	
+	# Lanzamos el tradeo: Jugador 1 (1500€) vs Jugador 2 (800€)
+	_start_trade("Tu Nombre", "Rival Ficticio", 1500, 800, p1_mock_props, p2_mock_props)
