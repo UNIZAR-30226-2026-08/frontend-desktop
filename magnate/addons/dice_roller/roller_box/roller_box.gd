@@ -111,7 +111,7 @@ func addDebugTokens() -> void:
 
 func resize_children() -> void:
 	if !is_node_ready(): return
-	position = Vector3.UP * height/2
+	position = Vector3.UP# * height/2
 	$CSGBox3D.size = Vector3(width, height, depth)
 	adapt_colliders()
 	focus_camera()
@@ -139,5 +139,5 @@ func focus_camera() -> void:
 	var camera_to_floor = $OverCamera.position.y + box_size.y/2
 	var wider_viewport := viewport_size.aspect() > floor_aspect
 	camera.keep_aspect = Camera3D.KEEP_HEIGHT if wider_viewport else Camera3D.KEEP_WIDTH
-	var dimension_to_adapt := floor_height if wider_viewport else floor_width
-	camera.fov = rad_to_deg(atan2(dimension_to_adapt/2, camera_to_floor))*2
+	#var dimension_to_adapt := floor_height if wider_viewport else floor_width
+	#camera.fov = rad_to_deg(atan2(dimension_to_adapt/2, camera_to_floor))*2

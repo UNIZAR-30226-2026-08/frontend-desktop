@@ -1,9 +1,9 @@
-extends SubViewportContainer
+extends Control
 class_name DiceRollerOverlay
 
 signal roll_finished(total_value: int)
 
-@onready var dice_roller_3d: DiceRoller = $SubViewport/DiceRoller
+@onready var dice_roller_3d: DiceRoller = $DiceRoller
 
 # NUEVA VARIABLE: Controla si ya se ha hecho una tirada
 var has_rolled: bool = false

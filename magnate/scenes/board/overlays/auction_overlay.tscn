@@ -272,8 +272,6 @@ theme_override_styles/disabled = ExtResource("13_dd6nk")
 theme_override_styles/focus = ExtResource("13_dd6nk")
 text = "RETIRARSE DE LA SUBASTA"
 
-[connection signal="text_submitted" from="AuctionPriceContainer" to="." method="_on_text_submitted"]
-[connection signal="pressed" from="SetPriceButton" to="." method="_on_set_price_button_pressed"]
 [connection signal="pressed" from="Add10Button" to="." method="_on_set_price_button_pressed"]
 [connection signal="pressed" from="Add50Button" to="." method="_on_set_price_button_pressed"]
 [connection signal="pressed" from="WithdrawButton" to="." method="_on_set_price_button_pressed"]
