@@ -1,10 +1,10 @@
 extends Node2D
 
-const DEBUG_MODE: int = 2
+const DEBUG_MODE: int = 1
 
 @onready var camera_system: MagnateCameraSystem = %CameraSystem
 @onready var tile_parent_node: Node2D = %Tiles
-@onready var dice_roller_overlay: DiceRollerOverlay = %DiceRollerOverlay 
+@onready var dice_roller_overlay: DiceRollerOverlay = %DiceRoller
 
 var tiles: Dictionary[String, Control]
 var players: Array[Dictionary] = []
@@ -95,9 +95,6 @@ func _on_dice_result_received(total: int) -> void:
 		var model: PlayerModel = players[0]["model"]
 		var current_id: int = model.current_tile_id.to_int()
 		var target_id: int = current_id + total
-		
-		# OJO: Si tu tablero da la vuelta (ej. 40 casillas), descomenta esta línea y pon el número correcto:
-		# target_id = target_id % 40
 		
 		var target_tile_string: String = "%03d" % target_id
 		
