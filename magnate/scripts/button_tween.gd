@@ -1,3 +1,4 @@
+class_name MagnateTweenButton
 extends Button
 
 @export_category("Animation")
@@ -10,7 +11,7 @@ func _ready() -> void:
 	mouse_exited.connect(_button_exit)
 	focus_entered.connect(_button_enter)
 	focus_exited.connect(_button_exit)
-	pressed.connect(_on_confirm_button_pressed)
+	pressed.connect(_on_button_pressed)
 	
 	call_deferred("_init_pivot")
 
@@ -25,7 +26,7 @@ func _button_exit() -> void:
 	create_tween().tween_property(self, "scale", Vector2.ONE, 0.1).set_trans(Tween.TRANS_SINE)
 
 
-func _on_confirm_button_pressed() -> void:
+func _on_button_pressed() -> void:
 	# Audio
 	var audio = AudioResource.from_type(Globals.AUDIO_CLICK, AudioResource.AudioResourceType.UI)
 	AudioSystem.play_audio(audio)
