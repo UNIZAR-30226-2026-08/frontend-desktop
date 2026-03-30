@@ -261,7 +261,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("9_pu3pd")
 theme_override_font_sizes/font_size = 60
-text = "180€"
+text = "180M"
 
 [node name="InSpace3" type="Control" parent="SquarePanel/VBoxContainer/WinnerPanel/HBoxContainer" unique_id=924611130]
 custom_minimum_size = Vector2(50, 0)
@@ -342,7 +342,7 @@ size_flags_vertical = 6
 theme_override_colors/font_color = Color(0.453125, 0.44604492, 0.44604492, 1)
 theme_override_fonts/font = ExtResource("9_pu3pd")
 theme_override_font_sizes/font_size = 25
-text = "50€"
+text = "50M"
 
 [node name="InSpace3" type="Control" parent="SquarePanel/VBoxContainer/SecondBidderPanel/HBoxContainer" unique_id=1855229669]
 custom_minimum_size = Vector2(50, 0)
@@ -410,7 +410,7 @@ size_flags_vertical = 6
 theme_override_colors/font_color = Color(0.453125, 0.44604492, 0.44604492, 1)
 theme_override_fonts/font = ExtResource("9_pu3pd")
 theme_override_font_sizes/font_size = 25
-text = "30€"
+text = "30M"
 
 [node name="InSpace3" type="Control" parent="SquarePanel/VBoxContainer/ThirdBidderPanel/HBoxContainer" unique_id=1159758180]
 custom_minimum_size = Vector2(50, 0)
@@ -478,7 +478,7 @@ size_flags_vertical = 6
 theme_override_colors/font_color = Color(0.453125, 0.44604492, 0.44604492, 1)
 theme_override_fonts/font = ExtResource("9_pu3pd")
 theme_override_font_sizes/font_size = 25
-text = "10€"
+text = "10M"
 
 [node name="InSpace3" type="Control" parent="SquarePanel/VBoxContainer/ForthBidderPanel/HBoxContainer" unique_id=1473516866]
 custom_minimum_size = Vector2(50, 0)

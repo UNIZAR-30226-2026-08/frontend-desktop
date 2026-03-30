@@ -179,7 +179,7 @@ size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0.5411765, 0.36078432, 1)
 theme_override_fonts/font = ExtResource("8_2x0xy")
 theme_override_font_sizes/font_size = 80
-text = "100€"
+text = "100M"
 horizontal_alignment = 1
 
 [node name="AuctionPriceContainer" parent="." unique_id=1768335443 instance=ExtResource("7_g2f6o")]

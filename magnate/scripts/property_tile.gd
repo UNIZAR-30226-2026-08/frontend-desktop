@@ -8,7 +8,7 @@ func set_property_name(prop_name: String) -> void:
 	property_name.text = prop_name
 
 func set_property_price(price: int) -> void:
-	property_price.text = str(price)
+	property_price.text = Utils.to_currency_text(price)
 
 func set_property_color(color: Color) -> void:
 	property_color.color = color

@@ -35,7 +35,7 @@ func mostrar_resultados(resultados_ordenados: Array) -> void:
 		
 		dots[i].modulate = data["color"]
 		names[i].text = data["name"]
-		bets[i].text = str(data["bet"]) + "€"
+		bets[i].text = Utils.to_currency_text(data["bet"])
 
 # ==========================================
 # EVENTOS DE BOTONES

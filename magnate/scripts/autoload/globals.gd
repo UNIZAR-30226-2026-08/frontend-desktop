@@ -10,6 +10,9 @@ extends Node
 @export var WHITE: Color = Color('FFFFFF')
 @export var BLACK: Color = Color('222222')
 
+@export_group('Symbols')
+@export var SYMBOL_CURRENCY: String = "M"
+
 @export_group('Build')
 @export var BUILD_TYPE: BuildType = BuildType.DEV
 

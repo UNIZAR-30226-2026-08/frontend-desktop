@@ -59,7 +59,7 @@ size_flags_vertical = 1
 theme = ExtResource("1_61tcq")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 15
-text = "Cobra 200€ al pasar"
+text = "Cobra 200M al pasar"
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=471471109]
 modulate = Color(1, 0, 0, 1)

@@ -81,7 +81,7 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_u38yj")
 theme_override_font_sizes/font_size = 25
-text = "Con 1 Servidor . . . . . . . . . 100€"
+text = "Con 1 Servidor . . . . . . . . . 100M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -102,7 +102,7 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_u38yj")
 theme_override_font_sizes/font_size = 25
-text = "Con 2 Servidores . . . . . . . 250€"
+text = "Con 2 Servidores . . . . . . . 250M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -118,6 +118,6 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_rarnh")
 theme_override_font_sizes/font_size = 25
-text = "Valor de la Hipoteca 70€"
+text = "Valor de la Hipoteca 70M"
 horizontal_alignment = 1
 vertical_alignment = 1

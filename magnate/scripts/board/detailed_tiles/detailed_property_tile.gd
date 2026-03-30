@@ -34,52 +34,52 @@ func set_property_color(p_color: Color) -> void:
 	property_color.color = p_color
 
 func set_basic_rent(p_amount: int) -> void:
-	property_basic_rent.text = "ALQUILERES {valor}€".format({"valor": p_amount})
+	property_basic_rent.text = "ALQUILERES " + Utils.to_currency_text(p_amount)
 	
 func set_rent_1(p_amount: int) -> void:
 	if(p_amount < 100):
-		property_rent_1.text = "Con 1 Casa . . . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_1.text = "Con 1 Casa . . . . . . . . . . . " + Utils.to_currency_text(p_amount)
 	elif(p_amount < 1000):
-		property_rent_1.text = "Con 1 Casa . . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_1.text = "Con 1 Casa . . . . . . . . . . " + Utils.to_currency_text(p_amount)
 	else:
-		property_rent_1.text = "Con 1 Casa . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_1.text = "Con 1 Casa . . . . . . . . . " + Utils.to_currency_text(p_amount)
 
 func set_rent_2(p_amount: int) -> void:
 	if(p_amount < 100):
-		property_rent_2.text = "Con 2 Casas . . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_2.text = "Con 2 Casas . . . . . . . . . . " + Utils.to_currency_text(p_amount)
 	elif(p_amount < 1000):
-		property_rent_2.text = "Con 2 Casas . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_2.text = "Con 2 Casas . . . . . . . . . " + Utils.to_currency_text(p_amount)
 	else:
-		property_rent_2.text = "Con 2 Casas . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_2.text = "Con 2 Casas . . . . . . . . " + Utils.to_currency_text(p_amount)
 		
 func set_rent_3(p_amount: int) -> void:
 	if(p_amount < 100):
-		property_rent_3.text = "Con 3 Casas . . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_3.text = "Con 3 Casas . . . . . . . . . . " + Utils.to_currency_text(p_amount)
 	elif(p_amount < 1000):
-		property_rent_3.text = "Con 3 Casas . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_3.text = "Con 3 Casas . . . . . . . . . " + Utils.to_currency_text(p_amount)
 	else:
-		property_rent_3.text = "Con 3 Casas . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_3.text = "Con 3 Casas . . . . . . . . " + Utils.to_currency_text(p_amount)
 		
 func set_rent_4(p_amount: int) -> void:
 	if(p_amount < 100):
-		property_rent_4.text = "Con 4 Casas . . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_4.text = "Con 4 Casas . . . . . . . . . . " + Utils.to_currency_text(p_amount)
 	elif(p_amount < 1000):
-		property_rent_4.text = "Con 4 Casas . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_4.text = "Con 4 Casas . . . . . . . . . " + Utils.to_currency_text(p_amount)
 	else:
-		property_rent_4.text = "Con 4 Casas . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_4.text = "Con 4 Casas . . . . . . . . " + Utils.to_currency_text(p_amount)
 		
 func set_rent_hotel(p_amount: int) -> void:
 	if(p_amount < 100):
-		property_rent_hotel.text = "Con HOTEL . . . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_hotel.text = "Con HOTEL . . . . . . . . . . . " + Utils.to_currency_text(p_amount)
 	elif(p_amount < 1000):
-		property_rent_hotel.text = "Con HOTEL . . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_hotel.text = "Con HOTEL . . . . . . . . . . " + Utils.to_currency_text(p_amount)
 	else:
-		property_rent_hotel.text = "Con HOTEL . . . . . . . . . {valor}€".format({"valor": p_amount})
+		property_rent_hotel.text = "Con HOTEL . . . . . . . . . " + Utils.to_currency_text(p_amount)
 func set_house_price(p_amount: int) -> void:
-	property_house_price.text = "Cada Casa cuesta {valor}€\n El Hotel cuesta 5 Casas".format({"valor": p_amount})
+	property_house_price.text = "Cada Casa cuesta " + Utils.to_currency_text(p_amount) + "\n El Hotel cuesta 5 Casas"
 
-func set_mortgage_price(p_price: int) -> void:
-	property_mortgage.text = "Valor de la Hipoteca {valor}€".format({"valor": p_price})
+func set_mortgage_price(p_amount: int) -> void:
+	property_mortgage.text = "Valor de la Hipoteca " + Utils.to_currency_text(p_amount)
 
 # --- Función Maestra ---
 

@@ -130,7 +130,7 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_757s4")
 theme_override_font_sizes/font_size = 25
-text = "ALQUILERES 5€"
+text = "ALQUILERES 5M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -153,7 +153,7 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_1krse")
 theme_override_font_sizes/font_size = 25
-text = "Con 1 Casa . . . . . . . . . . . 30€"
+text = "Con 1 Casa . . . . . . . . . . . 30M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -176,7 +176,7 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_1krse")
 theme_override_font_sizes/font_size = 25
-text = "Con 2 Casas . . . . . . . . . 100€"
+text = "Con 2 Casas . . . . . . . . . 100M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -199,7 +199,7 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_1krse")
 theme_override_font_sizes/font_size = 25
-text = "Con 3 Casas . . . . . . . . . 140€"
+text = "Con 3 Casas . . . . . . . . . 140M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -222,7 +222,7 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_1krse")
 theme_override_font_sizes/font_size = 25
-text = "Con 4 Casas . . . . . . . . . 230€"
+text = "Con 4 Casas . . . . . . . . . 230M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -245,7 +245,7 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_1krse")
 theme_override_font_sizes/font_size = 25
-text = "Con HOTEL . . . . . . . . . . 300€"
+text = "Con HOTEL . . . . . . . . . . 300M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -262,7 +262,7 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_757s4")
 theme_override_font_sizes/font_size = 25
-text = "Valor de la Hipoteca 70€"
+text = "Valor de la Hipoteca 70M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -280,7 +280,7 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_1krse")
 theme_override_font_sizes/font_size = 25
-text = "Cada Casa cuesta 50€
+text = "Cada Casa cuesta 50M
 El Hotel cuesta 5 Casas"
 horizontal_alignment = 1
 vertical_alignment = 1

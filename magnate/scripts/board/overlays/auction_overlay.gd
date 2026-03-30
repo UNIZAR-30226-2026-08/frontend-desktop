@@ -32,7 +32,7 @@ func _ready() -> void:
 
 	# 2. Forzamos el color verde inicial para la puja
 	current_bid_label.add_theme_color_override("font_color", color_verde_puja)
-	current_bid_label.text = str(current_bid) + "€"
+	current_bid_label.text = Utils.to_currency_text(current_bid)
 	update_placeholder()
 	
 	set_price_button.disabled = true
@@ -136,7 +136,7 @@ func intentar_pujar(nueva_puja: int) -> void:
 		
 		# Nos aseguramos de que siga siendo verde al pujar (por si acaso)
 		current_bid_label.add_theme_color_override("font_color", color_verde_puja)
-		current_bid_label.text = str(current_bid) + "€"
+		current_bid_label.text = Utils.to_currency_text(current_bid)
 		
 		auction_price_input.text = ""
 		set_price_button.disabled = true 
@@ -150,7 +150,7 @@ func intentar_pujar(nueva_puja: int) -> void:
 
 func update_placeholder() -> void:
 	var min_bid = current_bid + 1
-	auction_price_input.placeholder_text = "Min: " + str(min_bid) + "€   Max: " + str(maxmoney) + "€"
+	auction_price_input.placeholder_text = "Min: " + Utils.to_currency_text(min_bid) + "   Max: " + Utils.to_currency_text(maxmoney)
 
 # ==========================================
 # EVENTOS DE LA UI
