@@ -2,8 +2,19 @@
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_2uhet"]
 [ext_resource type="Script" uid="uid://ch86xv5tm3v2p" path="res://scripts/board/detailed_tiles/detailed_property_tile.gd" id="2_2uhet"]
+[ext_resource type="Shader" uid="uid://8k7h5n683cye" path="res://styles/shaders/card_hover.gdshader" id="2_105pv"]
 [ext_resource type="FontFile" uid="uid://pqt8tux3lbt7" path="res://assets/fonts/LTSuperior/LTSuperior-Light.ttf" id="3_1krse"]
 [ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="3_757s4"]
+[ext_resource type="Script" uid="uid://tasvlsvggvvf" path="res://scripts/board/cards/card_hover.gd" id="3_n3six"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_064md"]
+shader = ExtResource("2_105pv")
+shader_parameter/fov = 30.0
+shader_parameter/cull_back = true
+shader_parameter/y_rot = 0.0
+shader_parameter/x_rot = 0.0
+shader_parameter/inset = 0.0
+shader_parameter/opacity = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gvqww"]
 bg_color = Color(1, 1, 1, 1)
@@ -32,62 +43,81 @@ border_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1krse"]
 bg_color = Color(1, 1, 1, 1)
 
-[node name="PropertyCard" type="PanelContainer" unique_id=589823767]
+[node name="Control" type="Control" unique_id=1212790303]
 custom_minimum_size = Vector2(400, 600)
-offset_right = 380.0
-offset_bottom = 558.0
+layout_mode = 3
+anchors_preset = 0
+offset_right = 400.0
+offset_bottom = 600.0
+script = ExtResource("2_2uhet")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1453556278]
+material = SubResource("ShaderMaterial_064md")
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("3_n3six")
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1672471583]
+handle_input_locally = false
+size = Vector2i(400, 600)
+render_target_update_mode = 4
+
+[node name="PropertyCard" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=589823767]
+custom_minimum_size = Vector2(400, 600)
+offset_right = 400.0
+offset_bottom = 600.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_2uhet")
 theme_override_styles/panel = SubResource("StyleBoxFlat_gvqww")
-script = ExtResource("2_2uhet")
 metadata/_edit_use_anchors_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1459937722]
+[node name="MarginContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/PropertyCard" unique_id=1459937722]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=287705031]
+[node name="PanelContainer" type="PanelContainer" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer" unique_id=287705031]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2uhet")
 
-[node name="VerticalAlign" type="VBoxContainer" parent="MarginContainer/PanelContainer" unique_id=820974535]
+[node name="VerticalAlign" type="VBoxContainer" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer" unique_id=820974535]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/separation = 0
 
-[node name="HeaderContainer" type="MarginContainer" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=1978631930]
+[node name="HeaderContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=1978631930]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/VerticalAlign/HeaderContainer" unique_id=335308188]
+[node name="PanelContainer" type="PanelContainer" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign/HeaderContainer" unique_id=335308188]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_757s4")
 
-[node name="PropertyColor" type="ColorRect" parent="MarginContainer/PanelContainer/VerticalAlign/HeaderContainer/PanelContainer" unique_id=621924419]
+[node name="PropertyColor" type="ColorRect" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign/HeaderContainer/PanelContainer" unique_id=621924419]
 unique_name_in_owner = true
 layout_mode = 2
 color = Color(0.734375, 0.2409668, 0.2409668, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer/VerticalAlign/HeaderContainer/PanelContainer" unique_id=1258342314]
+[node name="MarginContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign/HeaderContainer/PanelContainer" unique_id=1258342314]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/VerticalAlign/HeaderContainer/PanelContainer/MarginContainer" unique_id=408419759]
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign/HeaderContainer/PanelContainer/MarginContainer" unique_id=408419759]
 layout_mode = 2
 
-[node name="Disclaimer" type="Label" parent="MarginContainer/PanelContainer/VerticalAlign/HeaderContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1464319259]
+[node name="Disclaimer" type="Label" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign/HeaderContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1464319259]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -96,11 +126,11 @@ text = "TÍTULO DE PROPIEDAD"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Control" type="Control" parent="MarginContainer/PanelContainer/VerticalAlign/HeaderContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=421516869]
+[node name="Control" type="Control" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign/HeaderContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=421516869]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="PropertyName" type="Label" parent="MarginContainer/PanelContainer/VerticalAlign/HeaderContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1210662706]
+[node name="PropertyName" type="Label" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign/HeaderContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1210662706]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
@@ -111,18 +141,18 @@ text = "PROPERTY NAME EXAMPLE"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Space" type="Control" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=144419178]
+[node name="Space" type="Control" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=144419178]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HighlighterBasic" type="PanelContainer" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=306830363]
+[node name="HighlighterBasic" type="PanelContainer" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=306830363]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_1krse")
 
-[node name="BasicRent" type="Label" parent="MarginContainer/PanelContainer/VerticalAlign/HighlighterBasic" unique_id=1885641114]
+[node name="BasicRent" type="Label" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign/HighlighterBasic" unique_id=1885641114]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -134,18 +164,18 @@ text = "ALQUILERES 5M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Space2" type="Control" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=256721344]
+[node name="Space2" type="Control" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=256721344]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Highlighter1" type="PanelContainer" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=1561954101]
+[node name="Highlighter1" type="PanelContainer" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=1561954101]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_1krse")
 
-[node name="Rent1" type="Label" parent="MarginContainer/PanelContainer/VerticalAlign/Highlighter1" unique_id=521793892]
+[node name="Rent1" type="Label" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign/Highlighter1" unique_id=521793892]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -157,18 +187,18 @@ text = "Con 1 Casa . . . . . . . . . . . 30M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Spcae3" type="Control" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=834015406]
+[node name="Spcae3" type="Control" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=834015406]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Highlighter2" type="PanelContainer" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=1418696168]
+[node name="Highlighter2" type="PanelContainer" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=1418696168]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_1krse")
 
-[node name="Rent2" type="Label" parent="MarginContainer/PanelContainer/VerticalAlign/Highlighter2" unique_id=1164514179]
+[node name="Rent2" type="Label" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign/Highlighter2" unique_id=1164514179]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -180,18 +210,18 @@ text = "Con 2 Casas . . . . . . . . . 100M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Spcae4" type="Control" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=1205670824]
+[node name="Spcae4" type="Control" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=1205670824]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Highlighter3" type="PanelContainer" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=1511741030]
+[node name="Highlighter3" type="PanelContainer" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=1511741030]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_1krse")
 
-[node name="Rent3" type="Label" parent="MarginContainer/PanelContainer/VerticalAlign/Highlighter3" unique_id=1641478031]
+[node name="Rent3" type="Label" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign/Highlighter3" unique_id=1641478031]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -203,18 +233,18 @@ text = "Con 3 Casas . . . . . . . . . 140M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Spcae5" type="Control" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=1404621789]
+[node name="Spcae5" type="Control" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=1404621789]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Highlighter4" type="PanelContainer" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=1510688850]
+[node name="Highlighter4" type="PanelContainer" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=1510688850]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_1krse")
 
-[node name="Rent4" type="Label" parent="MarginContainer/PanelContainer/VerticalAlign/Highlighter4" unique_id=1375283017]
+[node name="Rent4" type="Label" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign/Highlighter4" unique_id=1375283017]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -226,18 +256,18 @@ text = "Con 4 Casas . . . . . . . . . 230M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Spcae6" type="Control" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=833047516]
+[node name="Spcae6" type="Control" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=833047516]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HighlighterHotel" type="PanelContainer" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=1675603045]
+[node name="HighlighterHotel" type="PanelContainer" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=1675603045]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_1krse")
 
-[node name="RentHotel" type="Label" parent="MarginContainer/PanelContainer/VerticalAlign/HighlighterHotel" unique_id=1944022742]
+[node name="RentHotel" type="Label" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign/HighlighterHotel" unique_id=1944022742]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -249,12 +279,12 @@ text = "Con HOTEL . . . . . . . . . . 300M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Spcae7" type="Control" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=777557094]
+[node name="Spcae7" type="Control" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=777557094]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MortgagePrice" type="Label" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=207443741]
+[node name="MortgagePrice" type="Label" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=207443741]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -266,12 +296,12 @@ text = "Valor de la Hipoteca 70M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Spcae8" type="Control" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=1248950241]
+[node name="Spcae8" type="Control" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=1248950241]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HousePrice" type="Label" parent="MarginContainer/PanelContainer/VerticalAlign" unique_id=541206507]
+[node name="HousePrice" type="Label" parent="SubViewportContainer/SubViewport/PropertyCard/MarginContainer/PanelContainer/VerticalAlign" unique_id=541206507]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2

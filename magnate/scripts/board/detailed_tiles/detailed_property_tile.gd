@@ -1,4 +1,4 @@
-extends PanelContainer
+extends Control
 
 @onready var property_color: ColorRect = %PropertyColor
 @onready var property_name: Label = %PropertyName

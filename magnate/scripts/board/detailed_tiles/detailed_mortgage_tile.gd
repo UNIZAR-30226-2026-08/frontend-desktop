@@ -1,4 +1,4 @@
-extends PanelContainer
+extends Control
 
 @onready var mortgage_price: Label = %MortgagePrice
 @onready var property_name: Label = %PropertyName

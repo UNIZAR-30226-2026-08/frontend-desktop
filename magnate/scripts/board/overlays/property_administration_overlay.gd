@@ -1,8 +1,8 @@
 extends CanvasLayer
 
 
-@onready var animated_button: Button = $AnimatedButton
-@onready var property_card: PanelContainer = $HBoxContainer/PropertyCard
+@onready var animated_button: Button = %AnimatedButton
+@onready var property_card: Control = %PropertyCard
 
 var index: int
 var original_index: int

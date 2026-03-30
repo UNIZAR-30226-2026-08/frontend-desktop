@@ -2,9 +2,20 @@
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_q7gwk"]
 [ext_resource type="Script" uid="uid://c42fupb74dvag" path="res://scripts/board/detailed_tiles/detailed_mortgage_tile.gd" id="2_y3yp7"]
+[ext_resource type="Shader" uid="uid://8k7h5n683cye" path="res://styles/shaders/card_hover.gdshader" id="3_hffca"]
 [ext_resource type="StyleBox" uid="uid://b44b3c548nmsj" path="res://styles/tiles/mortgage_style.tres" id="3_mbhnh"]
 [ext_resource type="FontFile" uid="uid://pqt8tux3lbt7" path="res://assets/fonts/LTSuperior/LTSuperior-Light.ttf" id="3_pi5ag"]
+[ext_resource type="Script" uid="uid://tasvlsvggvvf" path="res://scripts/board/cards/card_hover.gd" id="4_5hnra"]
 [ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="5_hffca"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5hnra"]
+shader = ExtResource("3_hffca")
+shader_parameter/fov = 30.0
+shader_parameter/cull_back = true
+shader_parameter/y_rot = 0.0
+shader_parameter/x_rot = 0.0
+shader_parameter/inset = 0.0
+shader_parameter/opacity = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gvqww"]
 bg_color = Color(1, 1, 1, 1)
@@ -17,7 +28,28 @@ border_color = Color(0, 0, 0, 1)
 [sub_resource type="FontVariation" id="FontVariation_5hnra"]
 spacing_glyph = 1
 
-[node name="MortgageCard" type="PanelContainer" unique_id=589823767]
+[node name="Control" type="Control" unique_id=2120902258]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 400.0
+offset_bottom = 600.0
+script = ExtResource("2_y3yp7")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1241891131]
+material = SubResource("ShaderMaterial_5hnra")
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 408.0
+offset_bottom = 608.0
+script = ExtResource("4_5hnra")
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1665116371]
+handle_input_locally = false
+size = Vector2i(400, 600)
+render_target_update_mode = 4
+
+[node name="MortgageCard" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=589823767]
 custom_minimum_size = Vector2(400, 600)
 offset_right = 400.0
 offset_bottom = 600.0
@@ -26,21 +58,20 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_q7gwk")
 theme_override_styles/panel = SubResource("StyleBoxFlat_gvqww")
-script = ExtResource("2_y3yp7")
 metadata/_edit_use_anchors_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1459937722]
+[node name="MarginContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/MortgageCard" unique_id=1459937722]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer" unique_id=621924419]
+[node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer" unique_id=621924419]
 layout_mode = 2
 color = Color(0.953125, 0.2010498, 0.2010498, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/ColorRect" unique_id=161557965]
+[node name="MarginContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect" unique_id=161557965]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -52,19 +83,19 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/ColorRect/MarginContainer" unique_id=145676172]
+[node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer" unique_id=145676172]
 layout_mode = 2
 
-[node name="VerticalAlign" type="VBoxContainer" parent="MarginContainer/ColorRect/MarginContainer" unique_id=820974535]
+[node name="VerticalAlign" type="VBoxContainer" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer" unique_id=820974535]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="TopSpace" type="Control" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=144419178]
+[node name="TopSpace" type="Control" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=144419178]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="Label" type="Label" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=1885641114]
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=1885641114]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -75,12 +106,12 @@ text = "TÍTULO DE PROPIEDAD"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MidSpace6" type="Control" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=333539773]
+[node name="MidSpace6" type="Control" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=333539773]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="PropertyName" type="Label" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=893882161]
+[node name="PropertyName" type="Label" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=893882161]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
@@ -92,26 +123,26 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="MidSpace1" type="Control" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=182019848]
+[node name="MidSpace1" type="Control" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=182019848]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="Line1" type="ColorRect" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=1828097884]
+[node name="Line1" type="ColorRect" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=1828097884]
 custom_minimum_size = Vector2(300, 3)
 layout_mode = 2
 size_flags_horizontal = 4
 color = Color(0, 0, 0, 1)
 
-[node name="MidSpace2" type="Control" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=1009972773]
+[node name="MidSpace2" type="Control" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=1009972773]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=867248217]
+[node name="Control" type="Control" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=867248217]
 layout_mode = 2
 size_flags_vertical = 6
 
-[node name="Label2" type="Label" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign/Control" unique_id=148005981]
+[node name="Label2" type="Label" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign/Control" unique_id=148005981]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 0
 offset_left = 32.0
@@ -127,12 +158,12 @@ text = "     HIPOTECADO     "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MidSpace3" type="Control" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=2048371630]
+[node name="MidSpace3" type="Control" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=2048371630]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 size_flags_vertical = 6
 
-[node name="MortgagePrice" type="Label" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=835884986]
+[node name="MortgagePrice" type="Label" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=835884986]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -143,11 +174,11 @@ text = "HIPOTECADO POR"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MidSpace8" type="Control" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=231841278]
+[node name="MidSpace8" type="Control" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=231841278]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="MortgagePrice2" type="Label" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=1114663276]
+[node name="MortgagePrice2" type="Label" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=1114663276]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -157,26 +188,26 @@ text = "50M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MidSpace4" type="Control" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=1131275427]
+[node name="MidSpace4" type="Control" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=1131275427]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="MidSpace5" type="Control" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=546198545]
+[node name="MidSpace5" type="Control" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=546198545]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
-[node name="Line2" type="ColorRect" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=52886636]
+[node name="Line2" type="ColorRect" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=52886636]
 custom_minimum_size = Vector2(300, 2)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
 color = Color(0.640625, 0.640625, 0.640625, 1)
 
-[node name="MidSpace9" type="Control" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=1906584869]
+[node name="MidSpace9" type="Control" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=1906584869]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="Explanation" type="Label" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=176958285]
+[node name="Explanation" type="Label" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=176958285]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -189,6 +220,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="MidSpace7" type="Control" parent="MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=341422347]
+[node name="MidSpace7" type="Control" parent="SubViewportContainer/SubViewport/MortgageCard/MarginContainer/ColorRect/MarginContainer/VerticalAlign" unique_id=341422347]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
