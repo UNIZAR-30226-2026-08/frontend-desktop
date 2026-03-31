@@ -25,6 +25,12 @@ extends Node
 @export var AUDIO_MENUMUSIC = preload("uid://cgqfmnsjmcjqc")
 @export var AUDIO_BOARDMUSIC = preload("uid://dqwe63a21r68t")
 
+@export_group('Backend URLs')
+@export_subgroup('REST')
+@export var REST_BASE_URL = ""
+@export_subgroup('WS')
+@export var WS_BASE_URL = ""
+
 enum BuildType {
 	DEV,
 	PROD,
