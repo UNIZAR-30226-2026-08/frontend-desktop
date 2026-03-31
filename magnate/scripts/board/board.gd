@@ -31,7 +31,7 @@ func _ready() -> void:
 	tiles = BoardSpawner.spawn_board(tile_parent_node)
 	camera_system.init_camera_system(self)
 	
-	# Conectar los eventos de click de todas las casillas
+	# Connect tile click events
 	for tile_id in tiles:
 		var tile_node = tiles[tile_id]
 		tile_node.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -55,17 +55,17 @@ func _ready() -> void:
 	var music = AudioResource.from_type(Globals.AUDIO_BOARDMUSIC, AudioResource.AudioResourceType.MUSIC)
 	AudioSystem.play_audio(music)
 	
-	# ==========================================
-	# MODO DEBUG PARA SIMULAR TIRADA DE DADOS
-	# ==========================================
+	# =========================================
+	#  MODO DEBUG PARA SIMULAR TIRADA DE DADOS
+	# =========================================
 	if DEBUG_MODE == 1:
 		if dice_roller_overlay:
 			dice_roller_overlay.roll_finished.connect(_on_dice_result_received)
 			dice_roller_overlay.show() # Mostramos el overlay esperando tu click para tirar
 	
-	# ==========================================
-	# MODO DEBUG PARA TRADEO
-	# ==========================================
+	# ========================
+	#  MODO DEBUG PARA TRADEO
+	# ========================
 	if DEBUG_MODE == 2:
 		_run_debug_trade_scenario()
 
@@ -350,10 +350,10 @@ func _start_finished_auction(tile_id: String) -> void:
 
 # Datos temporales para las cartas hasta que tengamos el JSON de Fantasía
 var _dummy_fantasy_cards = [
-	{"name": "Beca por Excelencia", "description": "Tus notas en Programación son increíbles. Ganas 100€.", "deck_type": "suerte"},
-	{"name": "Multa de Biblioteca", "description": "Olvidaste devolver un libro de SQL. Pagas 20€.", "deck_type": "suerte"},
-	{"name": "Cafetería Cerrada", "description": "No hay café hoy. Pierdes 10€ buscando otra máquina.", "deck_type": "caja"},
-	{"name": "Regalo de Graduación", "description": "Tus abuelos están orgullosos de ti. Ganas 200€.", "deck_type": "caja"}
+	{"name": "Beca por Excelencia", "description": "Tus notas en Programación son increíbles. Ganas 100€."},
+	{"name": "Multa de Biblioteca", "description": "Olvidaste devolver un libro de SQL. Pagas 20€."},
+	{"name": "Cafetería Cerrada", "description": "No hay café hoy. Pierdes 10€ buscando otra máquina."},
+	{"name": "Regalo de Graduación", "description": "Tus abuelos están orgullosos de ti. Ganas 200€."}
 ]
 
 

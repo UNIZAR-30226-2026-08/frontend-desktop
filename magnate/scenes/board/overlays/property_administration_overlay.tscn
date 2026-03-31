@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://cptx3705we74j"]
 
 [ext_resource type="Script" uid="uid://bs713lxd7mpb3" path="res://scripts/board/overlays/property_administration_overlay.gd" id="1_yc3b7"]
-[ext_resource type="Texture2D" uid="uid://c0towcf10ju02" path="res://assets/images/bg_city.jpg" id="2_8rrg5"]
 [ext_resource type="PackedScene" uid="uid://vd87r5unxafe" path="res://scenes/board/cards/property_card.tscn" id="3_3crgr"]
 [ext_resource type="PackedScene" uid="uid://cpo0vkocad1pp" path="res://scenes/components/animated_icon_button.tscn" id="3_sxht0"]
 [ext_resource type="Texture2D" uid="uid://bmi6owhq4rn02" path="res://assets/icons/remove_house.svg" id="4_8rrg5"]
@@ -21,24 +20,6 @@ shadow_offset = Vector2(0, 3)
 
 [node name="PropertyAdministrationOverlay" type="CanvasLayer" unique_id=417320456]
 script = ExtResource("1_yc3b7")
-
-[node name="temporal_para_ver_efecto" type="TextureRect" parent="." unique_id=248528354]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_8rrg5")
-expand_mode = 1
-
-[node name="Dimmer" type="ColorRect" parent="." unique_id=1096305439]
-unique_name_in_owner = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.78431374)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1809629072]
 anchors_preset = 10

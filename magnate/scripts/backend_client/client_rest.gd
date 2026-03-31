@@ -19,7 +19,7 @@ extends Node
 var current_request: HTTPRequest = null # Start off with no request
 var waiting_for_response: bool = false
 
-signal response
+signal response(Dictionary)
 
 # The following are the base functions used by the client
 

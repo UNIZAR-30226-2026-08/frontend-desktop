@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends BlurryBgOverlay
 
 # Agrupamos los nodos en Arrays
 @onready var dots: Array[Panel] = [%ColorDot1, %ColorDot2, %ColorDot3, %ColorDot4]
@@ -9,6 +9,7 @@ extends CanvasLayer
 @onready var confirm_button: Button = %ConfirmButton
 
 func _ready() -> void:
+	super()
 	# Ocultamos todo al principio por si hay menos de 4 jugadores
 	for i in range(4):
 		dots[i].visible = false

@@ -78,15 +78,6 @@ expand_margin_bottom = 10.0
 [node name="AuctionOverlay" type="CanvasLayer" unique_id=417320456]
 script = ExtResource("1_7aekb")
 
-[node name="Dimmer" type="ColorRect" parent="." unique_id=1096305439]
-unique_name_in_owner = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.9019608)
-
 [node name="SquarePanel" type="Panel" parent="." unique_id=1611699495]
 material = ExtResource("3_2x0xy")
 anchors_preset = 8
@@ -102,11 +93,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dd6nk")
 
-[node name="AuctionTitle" type="Label" parent="." unique_id=1706409431]
-offset_left = 975.0
-offset_top = 196.0
-offset_right = 1442.0
-offset_bottom = 246.0
+[node name="AuctionTitle" type="Label" parent="SquarePanel" unique_id=1706409431]
+layout_mode = 0
+offset_left = 536.0
+offset_top = 55.0
+offset_right = 1003.0
+offset_bottom = 105.0
 theme = ExtResource("3_g2f6o")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_g6fvv")
@@ -114,11 +106,12 @@ theme_override_font_sizes/font_size = 50
 text = "SUBASTA A CIEGAS"
 horizontal_alignment = 1
 
-[node name="AuctionSubtitle" type="Label" parent="." unique_id=140999038]
-offset_left = 1028.0
-offset_top = 252.0
-offset_right = 1393.0
-offset_bottom = 277.0
+[node name="AuctionSubtitle" type="Label" parent="SquarePanel" unique_id=140999038]
+layout_mode = 0
+offset_left = 589.0
+offset_top = 111.0
+offset_right = 954.0
+offset_bottom = 136.0
 theme = ExtResource("3_g2f6o")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_emv0e")
@@ -126,13 +119,14 @@ theme_override_font_sizes/font_size = 25
 text = "¿Cuánto estás dispuesto a pagar?"
 horizontal_alignment = 1
 
-[node name="CountdownLabel" type="Label" parent="." unique_id=424917656]
+[node name="CountdownLabel" type="Label" parent="SquarePanel" unique_id=424917656]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 101)
-offset_left = 1144.0
-offset_top = 296.0
-offset_right = 1294.0
-offset_bottom = 397.0
+layout_mode = 0
+offset_left = 705.0
+offset_top = 155.0
+offset_right = 855.0
+offset_bottom = 256.0
 theme = ExtResource("3_g2f6o")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 70
@@ -140,27 +134,30 @@ text = "15"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ServerCard" parent="." unique_id=919827841 instance=ExtResource("4_g2f6o")]
+[node name="ServerCard" parent="SquarePanel" unique_id=919827841 instance=ExtResource("4_g2f6o")]
 unique_name_in_owner = true
-offset_left = 489.0
-offset_top = 242.0
-offset_right = 889.0
-offset_bottom = 842.0
+layout_mode = 0
+offset_left = 50.0
+offset_top = 101.0
+offset_right = 450.0
+offset_bottom = 701.0
 rotation = -0.05235988
 
-[node name="PropertyCard" parent="." unique_id=589823767 instance=ExtResource("3_7aekb")]
+[node name="PropertyCard" parent="SquarePanel" unique_id=589823767 instance=ExtResource("3_7aekb")]
 unique_name_in_owner = true
-offset_left = 488.99997
-offset_top = 241.99998
-offset_right = 889.0
-offset_bottom = 842.0
+layout_mode = 0
+offset_left = 49.99997
+offset_top = 100.999985
+offset_right = 450.0
+offset_bottom = 701.0
 rotation = -0.05235988
 
-[node name="ActualBetTitle" type="Label" parent="." unique_id=930830133]
-offset_left = 1038.0
-offset_top = 429.0
-offset_right = 1403.0
-offset_bottom = 454.0
+[node name="ActualBetTitle" type="Label" parent="SquarePanel" unique_id=930830133]
+layout_mode = 0
+offset_left = 599.0
+offset_top = 288.0
+offset_right = 964.0
+offset_bottom = 313.0
 theme = ExtResource("3_g2f6o")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_emv0e")
@@ -168,13 +165,14 @@ theme_override_font_sizes/font_size = 25
 text = "PUJA ACTUAL"
 horizontal_alignment = 1
 
-[node name="CurentBidLabel" type="Label" parent="." unique_id=853981195]
+[node name="CurentBidLabel" type="Label" parent="SquarePanel" unique_id=853981195]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
-offset_left = 1022.0
-offset_top = 464.0
-offset_right = 1422.0
-offset_bottom = 544.0
+layout_mode = 0
+offset_left = 583.0
+offset_top = 323.0
+offset_right = 983.0
+offset_bottom = 403.0
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0.5411765, 0.36078432, 1)
 theme_override_fonts/font = ExtResource("8_2x0xy")
@@ -182,12 +180,13 @@ theme_override_font_sizes/font_size = 80
 text = "100M"
 horizontal_alignment = 1
 
-[node name="AuctionPriceContainer" parent="." unique_id=1768335443 instance=ExtResource("7_g2f6o")]
+[node name="AuctionPriceContainer" parent="SquarePanel" unique_id=1768335443 instance=ExtResource("7_g2f6o")]
 unique_name_in_owner = true
-offset_left = 979.0
-offset_top = 598.0
-offset_right = 1479.0
-offset_bottom = 660.0
+layout_mode = 0
+offset_left = 540.0
+offset_top = 457.0
+offset_right = 1040.0
+offset_bottom = 519.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/caret_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
@@ -196,12 +195,13 @@ theme_override_styles/read_only = ExtResource("10_emv0e")
 theme_override_styles/focus = ExtResource("10_emv0e")
 max_length = 5
 
-[node name="SetPriceButton" parent="." unique_id=175575919 instance=ExtResource("5_h3upp")]
+[node name="SetPriceButton" parent="SquarePanel" unique_id=175575919 instance=ExtResource("5_h3upp")]
 unique_name_in_owner = true
-offset_left = 1355.0
-offset_top = 607.0
-offset_right = 1455.0
-offset_bottom = 647.0
+layout_mode = 0
+offset_left = 916.0
+offset_top = 466.0
+offset_right = 1016.0
+offset_bottom = 506.0
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_5qra4")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_emv0e")
@@ -210,13 +210,14 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_ipjcy")
 theme_override_styles/focus = SubResource("StyleBoxFlat_kpfvs")
 text = "PUJAR"
 
-[node name="Add10Button" parent="." unique_id=1104763514 instance=ExtResource("5_h3upp")]
+[node name="Add10Button" parent="SquarePanel" unique_id=1104763514 instance=ExtResource("5_h3upp")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
-offset_left = 983.0
-offset_top = 716.0
-offset_right = 1183.0
-offset_bottom = 758.0
+layout_mode = 0
+offset_left = 544.0
+offset_top = 575.0
+offset_right = 744.0
+offset_bottom = 617.0
 theme_override_colors/font_color = Color(0.5411765, 0.5411765, 0.5411765, 1)
 theme_override_colors/font_focus_color = Color(0.5411765, 0.5411765, 0.5411765, 1)
 theme_override_colors/font_pressed_color = Color(0.5411765, 0.5411765, 0.5411765, 1)
@@ -231,13 +232,14 @@ theme_override_styles/disabled = ExtResource("10_emv0e")
 theme_override_styles/focus = ExtResource("10_emv0e")
 text = "+10€"
 
-[node name="Add50Button" parent="." unique_id=1189860387 instance=ExtResource("5_h3upp")]
+[node name="Add50Button" parent="SquarePanel" unique_id=1189860387 instance=ExtResource("5_h3upp")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
-offset_left = 1276.0
-offset_top = 716.0
-offset_right = 1476.0
-offset_bottom = 758.0
+layout_mode = 0
+offset_left = 837.0
+offset_top = 575.0
+offset_right = 1037.0
+offset_bottom = 617.0
 theme_override_colors/font_color = Color(0.5411765, 0.5411765, 0.5411765, 1)
 theme_override_colors/font_focus_color = Color(0.5411765, 0.5411765, 0.5411765, 1)
 theme_override_colors/font_pressed_color = Color(0.5411765, 0.5411765, 0.5411765, 1)
@@ -252,12 +254,13 @@ theme_override_styles/disabled = ExtResource("10_emv0e")
 theme_override_styles/focus = ExtResource("10_emv0e")
 text = "+50€"
 
-[node name="WithdrawButton" parent="." unique_id=1367630371 instance=ExtResource("5_h3upp")]
+[node name="WithdrawButton" parent="SquarePanel" unique_id=1367630371 instance=ExtResource("5_h3upp")]
 unique_name_in_owner = true
-offset_left = 1036.0
-offset_top = 827.0
-offset_right = 1428.0
-offset_bottom = 867.0
+layout_mode = 0
+offset_left = 597.0
+offset_top = 686.0
+offset_right = 989.0
+offset_bottom = 726.0
 theme_override_colors/font_color = Color(0.41796875, 0.41796875, 0.41796875, 1)
 theme_override_colors/font_focus_color = Color(0.5411765, 0.5411765, 0.5411765, 1)
 theme_override_colors/font_pressed_color = Color(0.5411765, 0.5411765, 0.5411765, 1)
@@ -272,6 +275,6 @@ theme_override_styles/disabled = ExtResource("13_dd6nk")
 theme_override_styles/focus = ExtResource("13_dd6nk")
 text = "RETIRARSE DE LA SUBASTA"
 
-[connection signal="pressed" from="Add10Button" to="." method="_on_set_price_button_pressed"]
-[connection signal="pressed" from="Add50Button" to="." method="_on_set_price_button_pressed"]
-[connection signal="pressed" from="WithdrawButton" to="." method="_on_set_price_button_pressed"]
+[connection signal="pressed" from="SquarePanel/Add10Button" to="." method="_on_set_price_button_pressed"]
+[connection signal="pressed" from="SquarePanel/Add50Button" to="." method="_on_set_price_button_pressed"]
+[connection signal="pressed" from="SquarePanel/WithdrawButton" to="." method="_on_set_price_button_pressed"]

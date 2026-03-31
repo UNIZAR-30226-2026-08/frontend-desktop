@@ -1,31 +1,12 @@
 [gd_scene format=3 uid="uid://bme7v8a58kf1h"]
 
 [ext_resource type="Script" uid="uid://xtw1ni2dxdhf" path="res://scripts/board/overlays/pay_rent_overlay.gd" id="1_u4ko4"]
-[ext_resource type="Texture2D" uid="uid://c0towcf10ju02" path="res://assets/images/bg_city.jpg" id="2_ak61e"]
 [ext_resource type="PackedScene" uid="uid://vd87r5unxafe" path="res://scenes/board/cards/property_card.tscn" id="3_u4ko4"]
 [ext_resource type="PackedScene" uid="uid://bfcpwq3bljh8g" path="res://scenes/board/cards/server_card.tscn" id="4_ak61e"]
 [ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="4_nxsm0"]
 
 [node name="PayRentOverlay" type="CanvasLayer" unique_id=417320456]
 script = ExtResource("1_u4ko4")
-
-[node name="temporal_para_ver_efecto" type="TextureRect" parent="." unique_id=248528354]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_ak61e")
-expand_mode = 1
-
-[node name="Dimmer" type="ColorRect" parent="." unique_id=1096305439]
-unique_name_in_owner = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0)
 
 [node name="PropertyCard" parent="." unique_id=589823767 instance=ExtResource("3_u4ko4")]
 unique_name_in_owner = true

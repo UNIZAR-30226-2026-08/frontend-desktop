@@ -1,5 +1,4 @@
-extends CanvasLayer
-
+extends BlurryBgOverlay
 
 @onready var animated_button: Button = %AnimatedButton
 @onready var property_card: Control = %PropertyCard
@@ -10,6 +9,7 @@ var price_per_house: int
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	super()
 	index = 0 # TODO: Get real index from backend
 	price_per_house = 50 # TODO: Get real prices from backend
 	if index != 0:
@@ -36,7 +36,11 @@ func _on_remove_house_button_pressed() -> void:
 
 
 func _on_add_house_button_pressed() -> void:
-	index = clamp(index + 1, 0, property_card.highlighters.size() - 1)
+	index = clamp(
+		index + 1,
+		max(0, original_index - 1),
+		min(property_card.highlighters.size() - 1, original_index + 1)
+	)
 	if index != 0:
 		property_card.highlight_rent(index)
 	else:

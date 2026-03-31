@@ -1,7 +1,6 @@
-extends CanvasLayer
+extends BlurryBgOverlay
 
 # --- NODOS DE UI ---
-@onready var dimmer = %Dimmer
 @onready var card = %PropertyCard
 @onready var server_card = %ServerCard
 
@@ -25,6 +24,8 @@ signal auction_finished
 signal player_withdrawn 
 
 func _ready() -> void:
+	super()
+	
 	# 1. Inicializamos visibilidad de las cartas (Viene del script anterior)
 	visible = false
 	card.visible = false
@@ -67,14 +68,12 @@ func abrir_carta(prop_data: Dictionary) -> void:
 func aparecer(tarjeta: Control) -> void:
 	tarjeta.visible = true
 	show()
-	dimmer.color.a = 0.0
 	tarjeta.modulate.a = 0.0
 	
 	var pos_original = tarjeta.position.y
 	tarjeta.position.y = pos_original + 20 
 
 	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC)
-	tween.tween_property(dimmer, "color:a", 0.8, 0.4)
 	tween.tween_property(tarjeta, "modulate:a", 1.0, 0.4)
 	tween.tween_property(tarjeta, "position:y", pos_original, 0.4)
 

@@ -1,8 +1,6 @@
 extends Control
 
-# Usamos % para Scene Unique Nodes según tu jerarquía
 @onready var server_name: Label = %ServerName
-
 @onready var highlighters: Array = [
 	%Highlighter1,
 	%Highlighter2

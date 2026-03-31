@@ -41,15 +41,6 @@ expand_margin_bottom = 10.0
 [node name="NewPropertyOverlay" type="CanvasLayer" unique_id=417320456]
 script = ExtResource("1_eu44f")
 
-[node name="Dimmer" type="ColorRect" parent="." unique_id=1096305439]
-unique_name_in_owner = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0)
-
 [node name="PropertyCard" parent="." unique_id=589823767 instance=ExtResource("2_iwjru")]
 unique_name_in_owner = true
 offset_left = 760.0

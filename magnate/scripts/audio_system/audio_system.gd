@@ -1,22 +1,22 @@
 extends Node2D
 
-# The Audio System manages 3 audio Buses: General bus, SFX bus and Music bus
-# These buses are connected as follows:
-# Music ┐
-#       ├─ General
-#   SFX ┘
-# That is the final volume of an SFX audio track is the volume of the SFX bus
-# times the audio of the General bus.
-# Music is treated somewhat differently, there can only be one music track
-# playing at a time, and it will always play in the same AudioStreamPlayer.
+## <class_doc>
+## The Audio System manages 3 audio Buses: General bus, SFX bus and Music bus
+## These buses are connected as follows:
+## Music ┐
+##       ├─ General
+##   SFX ┘
+## That is the final volume of an SFX audio track is the volume of the SFX bus
+## times the audio of the General bus.
+## Music is treated somewhat differently, there can only be one music track
+## playing at a time, and it will always play in the same AudioStreamPlayer.
+## The Audio System plays Audio resources, this can vary in track, pitch,
+## bus, volume, etc.
 
-# The Audio System plays Audio resources, this can vary in track, pitch,
-# bus, volume, etc.
-
-# To control if a given AudioResource has stopped playing you're
-# returned an int when you play, this is your ticket, when your
-# sound has finished playing the following signal will emit your
-# ticket number:
+## To control if a given AudioResource has stopped playing you're
+## returned an int when you play, this is your ticket, when your
+## sound has finished playing the following signal will emit your
+## ticket number:
 signal audio_finished(int)
 
 const _UI_BUS_NAME: String = "UI"
@@ -44,15 +44,19 @@ func _set_bus_volume(bus_name: String, percentage: float) -> void:
 	var bus_index = AudioServer.get_bus_index(bus_name)
 	AudioServer.set_bus_volume_linear(bus_index, percentage)
 
+## Sets SFX bus volume
 func set_sfx_volume(percentage: float) -> void:
 	_set_bus_volume(_SFX_BUS_NAME, percentage)
 
+## Sets UI bus volume
 func set_ui_volume(percentage: float) -> void:
 	_set_bus_volume(_UI_BUS_NAME, percentage)
 
+## Sets Music bus volume
 func set_music_volume(percentage: float) -> void:
 	_set_bus_volume(_MUSIC_BUS_NAME, percentage)
 
+## Sets General bus volume
 func set_general_volume(percentage: float) -> void:
 	_set_bus_volume(_GENERAL_BUS_NAME, percentage)
 
@@ -60,15 +64,19 @@ func _get_bus_volume(bus_name: String) -> float:
 	var bus_index = AudioServer.get_bus_index(bus_name)
 	return AudioServer.get_bus_volume_linear(bus_index)
 
+## Gets SFX bus volume
 func get_sfx_volume() -> float:
 	return _get_bus_volume(_SFX_BUS_NAME)
 
+## Gets Music bus volume
 func get_music_volume() -> float:
 	return _get_bus_volume(_MUSIC_BUS_NAME)
 
+## Gets UI bus volume
 func get_ui_volume() -> float:
 	return _get_bus_volume(_UI_BUS_NAME)
 
+## Gets General bus volume
 func get_general_volume() -> float:
 	return _get_bus_volume(_GENERAL_BUS_NAME)
 
@@ -76,15 +84,19 @@ func _mute_bus(bus_name: String) -> void:
 	var bus_index = AudioServer.get_bus_index(bus_name)
 	AudioServer.set_bus_mute(bus_index, true)
 
+## Mutes the SFX bus
 func mute_sfx() -> void:
 	_mute_bus(_SFX_BUS_NAME)
 
+## Mutes the Music bus
 func mute_music() -> void:
 	_mute_bus(_MUSIC_BUS_NAME)
 
+## Mutes the UI bus
 func mute_ui() -> void:
 	_mute_bus(_UI_BUS_NAME)
 
+## Mutes the General bus
 func mute_general() -> void:
 	_mute_bus(_GENERAL_BUS_NAME)
 
@@ -92,15 +104,19 @@ func _unmute_bus(bus_name: String) -> void:
 	var bus_index = AudioServer.get_bus_index(bus_name)
 	AudioServer.set_bus_mute(bus_index, false)
 
+## Unmutes the SFX bus
 func unmute_sfx() -> void:
 	_unmute_bus(_SFX_BUS_NAME)
 
+## Unmutes the Music bus
 func unmute_music() -> void:
 	_unmute_bus(_MUSIC_BUS_NAME)
 
+## Unmutes the UI bus
 func unmute_ui() -> void:
 	_unmute_bus(_UI_BUS_NAME)
 
+## Unmutes the General bus
 func unmute_general() -> void:
 	_unmute_bus(_GENERAL_BUS_NAME)
 
@@ -111,15 +127,19 @@ func _toggle_mute_bus(bus_name: String) -> void:
 	else:
 		AudioServer.set_bus_mute(bus_index, true)
 
+## Toggles muting of the SFX bus
 func toggle_mute_sfx() -> void:
 	_toggle_mute_bus(_SFX_BUS_NAME)
 
+## Toggles muting of the Music bus
 func toggle_mute_music() -> void:
 	_toggle_mute_bus(_MUSIC_BUS_NAME)
 
+## Toggles muting of the UI bus
 func toggle_mute_ui() -> void:
 	_toggle_mute_bus(_UI_BUS_NAME)
 
+## Toggles muting of the General bus
 func toggle_mute_general() -> void:
 	_toggle_mute_bus(_GENERAL_BUS_NAME)
 
@@ -140,7 +160,6 @@ func _create_new_audio_player(audio: AudioResource, is_positional: bool = false)
 		ticket = _next_ticket
 		_next_ticket += 1
 		
-	# --- AQUÍ ESTÁ LA MAGIA ---
 	var new_audio_player: Node
 	if is_positional:
 		new_audio_player = AudioStreamPlayer2D.new()
@@ -175,14 +194,16 @@ func _start_audio(player, fadein: bool) -> void:
 		tween.play()
 		await tween.finished
 
-# Returns ticket number
+## Plays <audio>
+## Returns ticket number
 func play_audio(audio: AudioResource) -> int:
 	var ticket = await _create_new_audio_player(audio)
 	_start_audio(_audio_players[ticket], audio.bus == AudioResource.AudioResourceType.MUSIC)
 	
 	return ticket
 
-# Returns ticket number
+## Plays <audio> at given position <_position>
+## Returns ticket number
 func play_audio_with_position(audio: AudioResource, _position: Vector2) -> int:
 	# Le pasamos "true" para que sepa que necesitamos un AudioStreamPlayer2D
 	var ticket = await _create_new_audio_player(audio, true) 

@@ -1,20 +1,25 @@
-extends CanvasLayer
+extends BlurryBgOverlay
 
 # Creamos señales para avisar al tablero de la decisión
 signal property_bought
 signal property_auctioned # (Si tienes un botón de pasar/subastar)
 
-@onready var dimmer = %Dimmer
 @onready var card = %PropertyCard
 @onready var server_card = %ServerCard
 @onready var buy_button = %BuyButton
 @onready var auction_button = %AuctionButton # <--- NUEVO
 
 func _ready() -> void:
+	super()
+	
 	# Solo ocultamos, no animamos nada todavía
 	visible = false
 	card.visible = false
 	server_card.visible = false
+	
+	# Audio
+	var audio = AudioResource.from_type(Globals.AUDIO_CARDFLIP, AudioResource.AudioResourceType.SFX)
+	AudioSystem.play_audio(audio)
 	
 	# Conectamos el botón de compra (asegúrate de que en el nodo se llama BuyButton)
 	buy_button.pressed.connect(_on_buy_button_pressed)
@@ -46,14 +51,12 @@ func abrir_carta(prop_data: Dictionary) -> void:
 func aparecer(tarjeta: Control):
 	tarjeta.visible = true
 	show()
-	dimmer.color.a = 0.0
 	tarjeta.modulate.a = 0.0
 	
 	var pos_original = tarjeta.position.y
 	tarjeta.position.y = pos_original + 20 
 
 	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC)
-	tween.tween_property(dimmer, "color:a", 0.8, 0.4)
 	tween.tween_property(tarjeta, "modulate:a", 1.0, 0.4)
 	tween.tween_property(tarjeta, "position:y", pos_original, 0.4)
 

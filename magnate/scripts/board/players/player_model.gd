@@ -15,5 +15,5 @@ func _init(p_id: String, p_name: String, p_color: Color) -> void:
 	player_name = p_name
 	color = p_color
 
-func move_to_tile(new_tile_id: String) -> void:
+func move_to_tile(new_tile_id: String) -> void:	
 	current_tile_id = new_tile_id

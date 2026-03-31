@@ -6,15 +6,6 @@
 [node name="FantasyOverlay" type="CanvasLayer" unique_id=417320456]
 script = ExtResource("1_w3oti")
 
-[node name="Dimmer" type="ColorRect" parent="." unique_id=1096305439]
-unique_name_in_owner = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.78431374)
-
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1809629072]
 anchors_preset = 15
 anchor_right = 1.0

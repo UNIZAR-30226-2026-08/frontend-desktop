@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends BlurryBgOverlay
 
 signal card_action_resolved
 
@@ -10,11 +10,14 @@ signal card_action_resolved
 const TIEMPO_ESPERA_CIERRE: float = 3.0
 const TIEMPO_DESVANECIMIENTO: float = 1.0
 
-func setup_card(card_data: Dictionary) -> void:
-	# Pasamos el tipo de mazo a la carta trasera (el dorso)
-	if back_card.has_method("set_deck_type"):
-		back_card.set_deck_type(card_data["deck_type"])
+func _ready() -> void:
+	super()
 	
+	# Audio
+	var audio = AudioResource.from_type(Globals.AUDIO_FANTASY, AudioResource.AudioResourceType.SFX)
+	AudioSystem.play_audio(audio)
+
+func setup_card(card_data: Dictionary) -> void:	
 	# Pasamos los textos a la carta delantera
 	if front_card.has_method("setup_content"):
 		front_card.setup_content(card_data)

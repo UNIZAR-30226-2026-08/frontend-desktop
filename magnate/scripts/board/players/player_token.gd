@@ -37,7 +37,7 @@ func _on_mouse_exited() -> void:
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2.ONE, 0.1)
 
-func move_to(target_pos: Vector2) -> void:
+func move_to(target_pos: Vector2) -> void:	
 	var tween = create_tween()
 	tween.tween_property(self, "position", target_pos, 0.6).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 

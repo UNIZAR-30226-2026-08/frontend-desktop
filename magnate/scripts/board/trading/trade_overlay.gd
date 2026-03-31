@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends BlurryBgOverlay
 
 # Avisamos al tablero que queremos seleccionar. Le pasamos si es el Jugador 1 y los IDs válidos
 signal request_board_selection(is_player_1: bool, available_ids: Array)

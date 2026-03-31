@@ -23,15 +23,6 @@ shader_parameter/angle = 1.0
 [node name="TradeOverlay" type="CanvasLayer" unique_id=1262031044]
 script = ExtResource("1_e845h")
 
-[node name="Dimmer" type="ColorRect" parent="." unique_id=1840122629]
-unique_name_in_owner = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.29411766)
-
 [node name="TradeUI" type="Control" parent="." unique_id=826910048]
 layout_mode = 3
 anchors_preset = 15

@@ -29,9 +29,9 @@ func setup_item(property_id: String, property_name: String, color_group: Color) 
 	current_stylebox.bg_color = color_group
 	group_color_panel.add_theme_stylebox_override("panel", current_stylebox)
 
-# ==========================================
-# EVENTOS
-# ==========================================
+# ========
+#  Events
+# ========
 func _on_remove_button_pressed() -> void:
 	print("❌ Solicitando quitar propiedad: ", _current_property_id)
 	# Avisamos al overlay principal. Él se encargará de borrar este nodo.

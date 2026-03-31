@@ -1,30 +1,11 @@
 [gd_scene format=3 uid="uid://cxx4hkwvq4i31"]
 
 [ext_resource type="Script" uid="uid://dvrcdsq4v58qw" path="res://scripts/board/overlays/go_to_jail_overlay.gd" id="1_84exp"]
-[ext_resource type="Texture2D" uid="uid://c0towcf10ju02" path="res://assets/images/bg_city.jpg" id="2_2my8m"]
 [ext_resource type="PackedScene" uid="uid://dyi5gp05ip7iq" path="res://scenes/board/cards/go_to_jail_card.tscn" id="3_2my8m"]
 [ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="4_04e6w"]
 
 [node name="GoToJailOverlay" type="CanvasLayer" unique_id=417320456]
 script = ExtResource("1_84exp")
-
-[node name="temporal_para_ver_efecto" type="TextureRect" parent="." unique_id=248528354]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_2my8m")
-expand_mode = 1
-
-[node name="Dimmer" type="ColorRect" parent="." unique_id=1096305439]
-unique_name_in_owner = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0)
 
 [node name="GoToJailCard" parent="." unique_id=1772909635 instance=ExtResource("3_2my8m")]
 unique_name_in_owner = true

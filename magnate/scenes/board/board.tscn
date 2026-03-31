@@ -30,40 +30,40 @@ physics_object_picking = true
 size = Vector2i(3840, 3840)
 render_target_update_mode = 4
 
-[node name="bg" parent="3DWorld/SubViewPort" unique_id=1520488725 instance=ExtResource("5_kymhv")]
+[node name="bg" parent="3DWorld/SubViewPort" unique_id=160275195 instance=ExtResource("5_kymhv")]
 transform = Transform3D(3.68, 0, 0, 0, 3.68, 0, 0, 0, 3.68, 0, 0, 0)
 
-[node name="train-electric-subway-b" parent="3DWorld/SubViewPort/bg" index="92" unique_id=406757984]
+[node name="train-electric-subway-b" parent="3DWorld/SubViewPort/bg" index="92" unique_id=1305109522]
 transform = Transform3D(-0.005, -4.3312576e-09, 1.8932527e-16, 0, -2.1855694e-10, -0.005, 4.3312576e-09, -0.005, 2.1855694e-10, -7.000006, 0, 15.994117)
 
-[node name="garbage-truck" parent="3DWorld/SubViewPort/bg" index="250" unique_id=1493170192]
+[node name="garbage-truck" parent="3DWorld/SubViewPort/bg" index="249" unique_id=764138701]
 transform = Transform3D(0.003, 9.775242e-10, -4.2728938e-17, 0, -1.3113416e-10, -0.003, -9.775242e-10, 0.003, -1.3113416e-10, 8, 1.1013412e-13, -12)
 
-[node name="police" parent="3DWorld/SubViewPort/bg" index="251" unique_id=1209376351]
+[node name="police" parent="3DWorld/SubViewPort/bg" index="250" unique_id=544312630]
 transform = Transform3D(2.2649371e-10, 0.003, -1.3113416e-10, 0, -1.3113416e-10, -0.003, -0.003, 2.2649371e-10, -9.900354e-18, -15, 0, -2.0000002)
 
-[node name="suv" parent="3DWorld/SubViewPort/bg" index="252" unique_id=805835094]
+[node name="suv" parent="3DWorld/SubViewPort/bg" index="251" unique_id=1635400857]
 transform = Transform3D(-1.5616457e-09, -0.003, 1.3113416e-10, 0, -1.3113416e-10, -0.003, 0.003, -1.5616457e-09, 6.8261704e-17, 14.42366, -9.2723013e-07, 7.9999995)
 
-[node name="taxi" parent="3DWorld/SubViewPort/bg" index="253" unique_id=773164323]
+[node name="taxi" parent="3DWorld/SubViewPort/bg" index="252" unique_id=1752365383]
 transform = Transform3D(5.841216e-10, -0.0030000003, 1.3113416e-10, 0, -1.3113417e-10, -0.003, 0.0030000003, 5.841216e-10, -2.5532763e-17, 14.406095, -7.105431e-15, 4.999999)
 
-[node name="sedan" parent="3DWorld/SubViewPort/bg" index="259" unique_id=1047201515]
+[node name="sedan" parent="3DWorld/SubViewPort/bg" index="258" unique_id=650745762]
 transform = Transform3D(-0.0030000003, -1.1682432e-09, 5.1065525e-17, 0, -1.3113417e-10, -0.003, 1.1682432e-09, -0.0030000003, 1.3113416e-10, -7.971738, -8.609216e-14, 8.989348)
 
-[node name="body" parent="3DWorld/SubViewPort/bg/sedan" index="0" unique_id=19617992]
+[node name="body" parent="3DWorld/SubViewPort/bg/sedan" index="0" unique_id=1391964487]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.832571e-05, -2.5001128, -15)
 
-[node name="wheel-back-left" parent="3DWorld/SubViewPort/bg/sedan" index="1" unique_id=1795286003]
+[node name="wheel-back-left" parent="3DWorld/SubViewPort/bg/sedan" index="1" unique_id=284104795]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.000055, -66.0001, -30)
 
-[node name="wheel-front-left" parent="3DWorld/SubViewPort/bg/sedan" index="3" unique_id=1813292073]
+[node name="wheel-front-left" parent="3DWorld/SubViewPort/bg/sedan" index="3" unique_id=1851859955]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 65.9999, -29.999998)
 
-[node name="boat-speed-a" parent="3DWorld/SubViewPort/bg" index="260" unique_id=1986500349]
-transform = Transform3D(0.003, 0, 0, 0, -1.3113416e-10, -0.003, 0, 0.003, -1.3113416e-10, -4.5, -0.22725089, -4.1997137)
+[node name="boat-speed-a" parent="3DWorld/SubViewPort/bg" index="259" unique_id=710762423]
+transform = Transform3D(0.003, 0, 0, 0, -1.3113416e-10, -0.003, 0, 0.003, -1.3113416e-10, -4.3, -0.22725089, -4.1997237)
 
-[node name="AnimationPlayer" parent="3DWorld/SubViewPort/bg" index="263" unique_id=1755859708]
+[node name="AnimationPlayer" parent="3DWorld/SubViewPort/bg" index="263" unique_id=1462201563]
 autoplay = &"Scene"
 
 [node name="DiceRoller" parent="3DWorld/SubViewPort" unique_id=1073497704 instance=ExtResource("3_q07he")]
