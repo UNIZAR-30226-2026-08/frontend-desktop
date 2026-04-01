@@ -101,9 +101,6 @@ func _on_property_purchased(tile_id: String, color: Variant) -> void:
 		tile_manager.set_tile_owner(tile_id, color)
 	Utils.debug("✅ Fin del turno.")
 
-# ==============
-#  Trade system
-# ==============
 func _on_trade_selection_requested(is_player_1: bool, available_ids: Array) -> void:	
 	# Set the trade state to active
 	overlay_manager.in_trade_selection_mode = true

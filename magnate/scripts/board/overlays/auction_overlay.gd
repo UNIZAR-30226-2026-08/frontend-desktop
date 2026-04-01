@@ -54,7 +54,7 @@ func _ready() -> void:
 # INICIALIZACIÓN DE LA CARTA (Desde el Tablero)
 # ==========================================
 func abrir_carta(prop_data: Dictionary) -> void:
-	var is_server = prop_data.get("type", "") == "server"
+	var is_server = prop_data["type"] == Globals.TileType.SERVER
 	
 	if is_server:
 		card.visible = false
