@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://yrs471pqrhuk"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_3cci0"]
+[ext_resource type="Shader" uid="uid://spbteqj3hxfv" path="res://styles/shaders/transparency.gdshader" id="1_0604v"]
+[ext_resource type="Shader" uid="uid://8k7h5n683cye" path="res://styles/shaders/card_hover.gdshader" id="2_0604v"]
+[ext_resource type="Script" uid="uid://b8dd52unr0nek" path="res://scripts/board/cards/base_card.gd" id="3_qhltg"]
+[ext_resource type="Script" uid="uid://tasvlsvggvvf" path="res://scripts/board/cards/card_hover.gd" id="3_un2mj"]
+[ext_resource type="Texture2D" uid="uid://bq3mn2w7dwyj3" path="res://assets/icons/tram_card_icon.svg" id="4_3cci0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_un2mj"]
+shader = ExtResource("1_0604v")
+shader_parameter/opacity = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6dh24"]
+shader = ExtResource("2_0604v")
+shader_parameter/fov = 30.0
+shader_parameter/cull_back = true
+shader_parameter/y_rot = 0.0
+shader_parameter/x_rot = 0.0
+shader_parameter/inset = 0.0
+shader_parameter/opacity = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dxen"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 1)
+
+[node name="TramCard" type="Control" unique_id=1772909635]
+material = SubResource("ShaderMaterial_un2mj")
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 600.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_3cci0")
+script = ExtResource("3_qhltg")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=959285396]
+material = SubResource("ShaderMaterial_6dh24")
+layout_mode = 0
+offset_right = 600.0
+offset_bottom = 600.0
+script = ExtResource("3_un2mj")
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=24284271]
+handle_input_locally = false
+size = Vector2i(600, 600)
+render_target_update_mode = 4
+
+[node name="PanelContainer" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=1283559629]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2dxen")
+
+[node name="bg" type="ColorRect" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=1293432889]
+layout_mode = 2
+
+[node name="TramText" type="Label" parent="SubViewportContainer/SubViewport" unique_id=148657105]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -113.0
+offset_top = -90.0
+offset_right = 113.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 1
+theme = ExtResource("1_3cci0")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 70
+text = "Tranvía"
+horizontal_alignment = 1
+
+[node name="BodyguardLabel" type="TextureRect" parent="SubViewportContainer/SubViewport" unique_id=1537935622]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -255.0
+offset_top = -293.0
+offset_right = 2309.6426
+offset_bottom = 2043.8828
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_3cci0")

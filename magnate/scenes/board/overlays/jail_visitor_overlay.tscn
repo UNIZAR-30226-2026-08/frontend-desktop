@@ -1,14 +1,15 @@
 [gd_scene format=3 uid="uid://b5r03f2303u5v"]
 
-[ext_resource type="Script" uid="uid://crlvfsk0gt7k8" path="res://scripts/board/overlays/jail_visitor_overlay.gd" id="1_vfog4"]
+[ext_resource type="Script" uid="uid://b1l4jwv2xm3ih" path="res://scripts/board/overlays/basic_overlay.gd" id="1_odigk"]
 [ext_resource type="PackedScene" uid="uid://btc38ol62d2r3" path="res://scenes/board/cards/jail_card.tscn" id="3_aeeyc"]
 [ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="4_yjsua"]
 
-[node name="JailVisitorOverlay" type="CanvasLayer" unique_id=417320456]
-script = ExtResource("1_vfog4")
+[node name="JailVisitorOverlay" type="CanvasLayer" unique_id=417320456 node_paths=PackedStringArray("card")]
+script = ExtResource("1_odigk")
+button_text = "Aceptar"
+card = NodePath("JailCard")
 
 [node name="JailCard" parent="." unique_id=1772909635 instance=ExtResource("3_aeeyc")]
-unique_name_in_owner = true
 offset_left = 660.0
 offset_top = 200.0
 offset_right = 1260.0
