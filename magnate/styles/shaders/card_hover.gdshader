@@ -53,5 +53,5 @@ void fragment(){
 	if (cull_back && p.z <= 0.0) discard;
 	vec2 uv = (p.xy / p.z).xy - o;
     COLOR = texture(TEXTURE, uv + 0.5) * opacity;
-	COLOR.a *= step(max(abs(uv.x), abs(uv.y)), 0.5) / opacity;
+	COLOR.a *= step(max(abs(uv.x), abs(uv.y)), 0.5) * opacity;
 }

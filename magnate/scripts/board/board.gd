@@ -25,6 +25,7 @@ const FANTASY_OVERLAY = preload("res://scenes/board/overlays/fantasy_overlay.tsc
 const AUCTION_OVERLAY = preload("res://scenes/board/overlays/auction_overlay.tscn")
 const RESULTS_AUCTION_OVERLAY = preload("res://scenes/board/overlays/results_auction_overlay.tscn")
 const TRADE_OVERLAY = preload("res://scenes/board/overlays/trade_overlay.tscn")
+const TRAM_OVERLAY = preload("uid://63e2qbbi7ye3")
 
 func _ready() -> void:
 	# Spawn the board
@@ -144,10 +145,6 @@ func _on_highlighted_tile_clicked(tile_id: String) -> void:
 		# LLAMAMOS A LA FUNCIÓN MAESTRA EN VEZ DE A _start_new_property
 		_open_master_overlay(tile_id)
 
-
-# ==========================================
-# CÓDIGO ORIGINAL MANTENIDO
-# ==========================================
 func set_tile_owner(tile_id: String, player_color: Color) -> void:
 	if not tiles.has(tile_id):
 		return
@@ -245,9 +242,6 @@ func _open_master_overlay(tile_id: String) -> void:
 		"fantasy":
 			_start_fantasy_overlay(tile_id)
 			
-		"tram":
-			_start_tram_overlay(tile_id)
-			
 		"start":
 			_start_go_overlay(tile_id)
 			
@@ -262,6 +256,9 @@ func _open_master_overlay(tile_id: String) -> void:
 			
 		"bridge":
 			_start_bridge_overlay(tile_id)
+			
+		"tram":
+			_start_tram_overlay()
 			
 		_: # El guion bajo es el "default"
 			print("⚠️ Tipo de casilla desconocido o sin acción programada: ", tile_type)
@@ -382,9 +379,15 @@ func _on_fantasy_card_resolved(_tile_id: String, _card_data: Dictionary) -> void
 	print("✅ Carta resuelta en ", _tile_id, ". Pasamos turno.")
 	# TODO: Aquí va la lógica de cobrar dinero/moverse según card_data["action"]
 
-func _start_tram_overlay(tile_id: String) -> void:
-	print("🚋 Has caído en el Tranvía: ", tile_id)
-	# TODO: Instanciar overlay de tranvía o aplicar lógica directa (ej: pagar billete o moverse a otro tranvía)
+func _start_tram_overlay() -> void:
+	print("✨ Iniciando tranvía...")
+	var overlay = TRAM_OVERLAY.instantiate()
+	add_child(overlay)
+	var tram_ids: Array[String] = []
+	for tile in board_data_list:
+		if tile["type"] == "tram":
+			tram_ids.append(tile["id"])
+	overlay.connect("button_pressed", func(): prompt_player_tile_selection(tram_ids))
 
 func _start_go_overlay(tile_id: String) -> void:
 	print("🏁 Has caído en la Salida: ", tile_id)

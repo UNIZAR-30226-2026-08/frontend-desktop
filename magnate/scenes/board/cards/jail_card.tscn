@@ -2,6 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_8wqpk"]
 [ext_resource type="Texture2D" uid="uid://cafrfcpfyr8qm" path="res://assets/images/secretary.png" id="2_3kc0e"]
+[ext_resource type="Script" uid="uid://b8dd52unr0nek" path="res://scripts/board/cards/base_card.gd" id="2_3qhqh"]
 [ext_resource type="Shader" uid="uid://8k7h5n683cye" path="res://styles/shaders/card_hover.gdshader" id="2_s1v78"]
 [ext_resource type="Script" uid="uid://tasvlsvggvvf" path="res://scripts/board/cards/card_hover.gd" id="3_3qhqh"]
 
@@ -30,6 +31,7 @@ offset_bottom = 600.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_8wqpk")
+script = ExtResource("2_3qhqh")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1223480586]
 material = SubResource("ShaderMaterial_14fo1")
@@ -39,7 +41,9 @@ offset_bottom = 600.0
 script = ExtResource("3_3qhqh")
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1935516829]
+handle_input_locally = false
 size = Vector2i(600, 600)
+render_target_update_mode = 4
 
 [node name="PanelContainer" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=1283559629]
 anchors_preset = 15

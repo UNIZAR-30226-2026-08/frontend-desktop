@@ -2,7 +2,7 @@ class_name BlurryBgOverlay
 extends CanvasLayer
 
 @export var target_blur = 1.5;
-@export var blur_duration = 2;
+@export var fadein_duration = 2;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

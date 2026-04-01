@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dyi5gp05ip7iq"]
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_peu2u"]
+[ext_resource type="Script" uid="uid://b8dd52unr0nek" path="res://scripts/board/cards/base_card.gd" id="2_evp0r"]
 [ext_resource type="Texture2D" uid="uid://dqkk8w4xxueng" path="res://assets/images/bodyguard_prosegur.png" id="2_r3ua7"]
 [ext_resource type="Shader" uid="uid://8k7h5n683cye" path="res://styles/shaders/card_hover.gdshader" id="2_xywe0"]
 [ext_resource type="Script" uid="uid://tasvlsvggvvf" path="res://scripts/board/cards/card_hover.gd" id="3_6dh24"]
@@ -30,6 +31,7 @@ offset_bottom = 600.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_peu2u")
+script = ExtResource("2_evp0r")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=959285396]
 material = SubResource("ShaderMaterial_6dh24")

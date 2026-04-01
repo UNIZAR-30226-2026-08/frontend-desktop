@@ -1,4 +1,4 @@
-extends Control
+extends MagnateBaseCard
 
 @onready var mortgage_price: Label = %MortgagePrice
 @onready var property_name: Label = %PropertyName
