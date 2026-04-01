@@ -34,7 +34,7 @@ func abrir_carta(prop_data: Dictionary) -> void:
 	
 	# Comprobamos si es un servidor mirando alguna clave de tu JSON
 	# Por ejemplo, si en tu JSON tienes "type": "server"
-	var is_server = prop_data.get("type", "") == "server"
+	var is_server = prop_data["type"] == Globals.TileType.SERVER
 	
 	if is_server:
 		card.visible = false

@@ -1,4 +1,4 @@
-class_name BoardSpawner
+class_name MagnateTileSpawner
 extends RefCounted
 
 const PROPERTY_TILE = preload("uid://cphy0sd46xk4g")
@@ -52,6 +52,7 @@ static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> Control:
 			tile_instance.set_bridge_name(tile_def["name"])
 		Globals.TileType.SERVER:
 			tile_instance.set_server_name(tile_def["name"])
+	tile_instance.mouse_filter = Control.MOUSE_FILTER_STOP
 	return tile_instance
 
 static func spawn_board(parent_scene: Node2D) -> Dictionary[String, Control]:
