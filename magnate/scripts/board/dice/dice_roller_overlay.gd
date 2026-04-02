@@ -4,6 +4,7 @@ class_name DiceRollerOverlay
 signal roll_finished(total_value: int)
 
 @onready var dice_roller_3d: DiceRoller = $DiceRoller
+@onready var FORCED_ROLL_THROW: Array[int] = [1,3,1]
 
 # NUEVA VARIABLE: Controla si ya se ha hecho una tirada
 # TODO: Quizá meter esto en un model para el juego
@@ -27,7 +28,7 @@ func _gui_input(event: InputEvent) -> void:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			dice_roller_3d.prepare()
 		elif not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-			roll_the_dice()
+			roll_the_dice(FORCED_ROLL_THROW)
 		elif event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 			dice_roller_3d.quick_roll()
 			has_rolled = true # Bloqueamos también si usa el botón derecho

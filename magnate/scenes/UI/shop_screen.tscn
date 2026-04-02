@@ -1,0 +1,182 @@
+[gd_scene format=3 uid="uid://du7002wg8dfv"]
+
+[ext_resource type="Shader" uid="uid://dk6h3t6f17nd" path="res://styles/shaders/strip_background.gdshader" id="1_xd5d6"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="2_7aq7s"]
+[ext_resource type="Script" uid="uid://u8ufbcc0gnn" path="res://scripts/lobby_scripts/shop_screen.gd" id="3_dqfv6"]
+[ext_resource type="FontFile" uid="uid://b3216w4ia8it8" path="res://assets/fonts/LTSuperior/LTSuperior-BoldItalic.ttf" id="6_myp1c"]
+[ext_resource type="PackedScene" uid="uid://cpo0vkocad1pp" path="res://scenes/components/animated_icon_button.tscn" id="7_gsweg"]
+[ext_resource type="StyleBox" uid="uid://dc47ejgb5jctj" path="res://styles/shop/scroll_buttons_shop.tres" id="8_ivtsw"]
+[ext_resource type="Texture2D" uid="uid://kr6y2xasktun" path="res://assets/images/left_arrow.png" id="8_sf0no"]
+[ext_resource type="StyleBox" uid="uid://ea3padm8hxn0" path="res://styles/shop/disabled_scroll_buttons_shop.tres" id="9_xd5d6"]
+[ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="11_fnisq"]
+[ext_resource type="Texture2D" uid="uid://bospcqsdrpka" path="res://assets/images/right_arrow.png" id="11_ivtsw"]
+[ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="12_dmsp2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g2gpt"]
+shader = ExtResource("1_xd5d6")
+shader_parameter/color_b = Color(0.95, 0.95, 0.95, 1)
+shader_parameter/color_a = Color(1, 1, 1, 1)
+shader_parameter/divisions = 20.0
+shader_parameter/angle = 0.5
+
+[node name="shop_screen" type="Control" unique_id=723652825]
+material = SubResource("ShaderMaterial_g2gpt")
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_7aq7s")
+script = ExtResource("3_dqfv6")
+
+[node name="Background" type="Panel" parent="." unique_id=279795062]
+material = ExtResource("11_fnisq")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+theme = ExtResource("2_7aq7s")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1982797793]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" parent="VBoxContainer" unique_id=93527095 instance=ExtResource("12_dmsp2")]
+layout_mode = 2
+title = "Tienda"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1206033516]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 70
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=2024753069]
+layout_mode = 2
+
+[node name="TokenSection" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1240853139]
+layout_mode = 2
+
+[node name="SkinsLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection" unique_id=1206806510]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_myp1c")
+theme_override_font_sizes/font_size = 50
+text = "            SKINS DE FICHA"
+
+[node name="CarruselHbox" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection" unique_id=1175938903]
+layout_mode = 2
+alignment = 1
+
+[node name="TokensLeftBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/CarruselHbox" unique_id=175575919 instance=ExtResource("7_gsweg")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+theme_override_styles/normal = ExtResource("8_ivtsw")
+theme_override_styles/pressed = ExtResource("8_ivtsw")
+theme_override_styles/hover = ExtResource("8_ivtsw")
+theme_override_styles/disabled = ExtResource("9_xd5d6")
+theme_override_styles/focus = ExtResource("8_ivtsw")
+icon_texture = ExtResource("8_sf0no")
+
+[node name="TokensScroll" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/CarruselHbox" unique_id=1889211074]
+unique_name_in_owner = true
+clip_children = 1
+clip_contents = true
+custom_minimum_size = Vector2(1500, 300)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TokensContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/CarruselHbox/TokensScroll" unique_id=63556932]
+unique_name_in_owner = true
+layout_mode = 0
+theme_override_constants/separation = 25
+
+[node name="TokensRightBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/CarruselHbox" unique_id=762233653 instance=ExtResource("7_gsweg")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+theme_override_styles/normal = ExtResource("8_ivtsw")
+theme_override_styles/pressed = ExtResource("8_ivtsw")
+theme_override_styles/hover = ExtResource("8_ivtsw")
+theme_override_styles/disabled = ExtResource("9_xd5d6")
+theme_override_styles/focus = ExtResource("8_ivtsw")
+icon_texture = ExtResource("11_ivtsw")
+
+[node name="Control" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=382809703]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="EmotesSection" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=643817357]
+layout_mode = 2
+
+[node name="EmotesLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection" unique_id=1421968975]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_myp1c")
+theme_override_font_sizes/font_size = 50
+text = "            EMOTICONOS"
+
+[node name="CarruselHbox" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection" unique_id=826141615]
+layout_mode = 2
+alignment = 1
+
+[node name="EmotesLeftBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/CarruselHbox" unique_id=824275027 instance=ExtResource("7_gsweg")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+theme_override_styles/normal = ExtResource("8_ivtsw")
+theme_override_styles/pressed = ExtResource("8_ivtsw")
+theme_override_styles/hover = ExtResource("8_ivtsw")
+theme_override_styles/disabled = ExtResource("9_xd5d6")
+theme_override_styles/focus = ExtResource("8_ivtsw")
+icon_texture = ExtResource("8_sf0no")
+
+[node name="EmotesScroll" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/CarruselHbox" unique_id=47779363]
+unique_name_in_owner = true
+clip_children = 1
+clip_contents = true
+custom_minimum_size = Vector2(1500, 300)
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="EmotesContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/CarruselHbox/EmotesScroll" unique_id=970603586]
+unique_name_in_owner = true
+layout_mode = 0
+theme_override_constants/separation = 25
+
+[node name="EmotesRightBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/CarruselHbox" unique_id=59170170 instance=ExtResource("7_gsweg")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+theme_override_styles/normal = ExtResource("8_ivtsw")
+theme_override_styles/pressed = ExtResource("8_ivtsw")
+theme_override_styles/hover = ExtResource("8_ivtsw")
+theme_override_styles/disabled = ExtResource("9_xd5d6")
+theme_override_styles/focus = ExtResource("8_ivtsw")
+icon_texture = ExtResource("11_ivtsw")
+
+[node name="BudgetLabel" type="Label" parent="." unique_id=569418588]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 1453.0
+offset_top = 56.0
+offset_right = 1770.0
+offset_bottom = 126.0
+text = "Saldo: X€"
+
+[connection signal="back_action_requested" from="VBoxContainer/Header" to="." method="_on_header_back_action_requested"]

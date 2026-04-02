@@ -7,3 +7,6 @@ func _on_btn_publica_pressed() -> void:
 
 func _on_btn_privada_pressed() -> void:
 	SceneTransition.change_scene("res://scenes/UI/private_play.tscn")
+
+func _on_btn_shop_pressed() -> void:
+	SceneTransition.change_scene("res://scenes/UI/shop_screen.tscn")
