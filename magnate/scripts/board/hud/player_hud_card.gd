@@ -61,3 +61,8 @@ func _draw() -> void:
 	])
 	
 	draw_polygon(points, colors)
+	
+	# Borde blanco para mejorar la visibilidad
+	var border_points = points.duplicate()
+	border_points.append(points[0])
+	draw_polyline(border_points, Color.WHITE, 2.0, true)
