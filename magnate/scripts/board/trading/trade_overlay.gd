@@ -3,7 +3,7 @@ extends BlurryBgOverlay
 # Avisamos al tablero que queremos seleccionar. Le pasamos si es el Jugador 1 y los IDs válidos
 signal request_board_selection(is_player_1: bool, available_ids: Array)
 
-const PROPERTY_ITEM_SCENE = preload("res://scenes/board/hud/trade_property_item.tscn")
+const PROPERTY_ITEM_SCENE = preload("res://scenes/board/players/trade_property_item.tscn")
 
 @onready var trade_ui = $TradeUI # El nodo padre que contiene ambos rectángulos
 @onready var left_list = %LeftPropertiesList

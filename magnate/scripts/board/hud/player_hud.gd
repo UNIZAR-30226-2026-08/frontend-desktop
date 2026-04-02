@@ -1,14 +1,13 @@
 class_name PlayerHUD
 extends CanvasLayer
 
-const CARD_SCENE = preload("res://scenes/board/hud/PlayerHUDCard.tscn")
+const CARD_SCENE = preload("res://scenes/board/players/player_card.tscn")
 
 var container: VBoxContainer
 var cards: Dictionary = {}
 
 func _init() -> void:
 	layer = 1 
-	
 	var screen_filler = Control.new()
 	screen_filler.set_anchors_preset(Control.PRESET_FULL_RECT)
 	screen_filler.mouse_filter = Control.MOUSE_FILTER_IGNORE 
@@ -18,7 +17,7 @@ func _init() -> void:
 	container.name = "HUDCardStack"
 	container.set_anchors_preset(Control.PRESET_CENTER_RIGHT)
 	
-	container.add_theme_constant_override("separation", 30)
+	container.add_theme_constant_override("separation", 75)
 	
 	container.grow_horizontal = Control.GROW_DIRECTION_BEGIN 
 	container.grow_vertical = Control.GROW_DIRECTION_BOTH    
