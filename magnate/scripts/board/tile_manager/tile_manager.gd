@@ -79,11 +79,11 @@ func _reset_all_tiles(_id: String) -> void:
 	tile_pressed.disconnect(_reset_all_tiles)
 
 func prompt_tile_selection(ids: Array[String]) -> void:
-	clickable_tile_ids = ids
+	clickable_tile_ids = ids.duplicate()
 	highlight_tiles(ids)
 
 	tile_pressed.connect(_reset_all_tiles)
 
-	for id in ids:
+	for id in clickable_tile_ids:
 		if tile_entities.has(id):
 			tile_entities[id].mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
