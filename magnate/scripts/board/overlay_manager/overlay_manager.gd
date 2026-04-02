@@ -110,9 +110,10 @@ func _start_finished_auction(tile_id: String) -> void:
 	results_screen.mostrar_resultados(final_bids)
 	
 	# Winner is at the top (index 0)
+	var winner_name = final_bids[0]["name"]
 	var winner_color = final_bids[0]["color"]
 	property_bought.emit(tile_id, winner_color)
-	Utils.debug("✅ La propiedad " + tile_id + " ahora pertenece al color " + winner_color)
+	Utils.debug("✅ La propiedad " + tile_id + " ahora pertenece a " + winner_name)
 
 func _start_fantasy_overlay(_tile_id: String) -> void:
 	Utils.debug("✨ Iniciando evento de Fantasía...")

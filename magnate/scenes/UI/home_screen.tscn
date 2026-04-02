@@ -153,3 +153,4 @@ icon_texture = ExtResource("10_shop")
 
 [connection signal="pressed" from="MainLayout/GridContainer/HBoxContainer/LeftColumn/BtnPublica" to="." method="_on_btn_publica_pressed"]
 [connection signal="pressed" from="MainLayout/GridContainer/HBoxContainer/LeftColumn/BtnPrivada" to="." method="_on_btn_privada_pressed"]
+[connection signal="pressed" from="MainLayout/GridContainer/HBoxContainer/RightColumn/MarginContainer2/BtnTienda" to="." method="_on_btn_shop_pressed"]
