@@ -29,7 +29,7 @@ signal purchase_requested(item_id: String, price: int)
 func _ready() -> void:
 	# 1. Aplicamos los datos visuales al cargar la escena
 	name_label.text = item_name
-	price_label.text = str(item_price) + " €"
+	price_label.text = Utils.to_currency_text(item_price)
 	if item_icon:
 		item_icon_rect.texture = item_icon
 		
@@ -88,7 +88,7 @@ func setup_item(data: Dictionary) -> void:
 		
 	# Refrescamos la UI con los nuevos datos
 	name_label.text = item_name
-	price_label.text = str(item_price) + " €"
+	price_label.text = Utils.to_currency_text(item_price)
 	if item_icon:
 		item_icon_rect.texture = item_icon # Asignamos la textura cargada a la imagen visual
 		

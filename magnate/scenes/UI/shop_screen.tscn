@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://du7002wg8dfv"]
+[gd_scene format=3 uid="uid://dqeodccs1vgfy"]
 
 [ext_resource type="Shader" uid="uid://dk6h3t6f17nd" path="res://styles/shaders/strip_background.gdshader" id="1_xd5d6"]
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="2_7aq7s"]
@@ -6,10 +6,10 @@
 [ext_resource type="FontFile" uid="uid://b3216w4ia8it8" path="res://assets/fonts/LTSuperior/LTSuperior-BoldItalic.ttf" id="6_myp1c"]
 [ext_resource type="PackedScene" uid="uid://cpo0vkocad1pp" path="res://scenes/components/animated_icon_button.tscn" id="7_gsweg"]
 [ext_resource type="StyleBox" uid="uid://dc47ejgb5jctj" path="res://styles/shop/scroll_buttons_shop.tres" id="8_ivtsw"]
-[ext_resource type="Texture2D" uid="uid://kr6y2xasktun" path="res://assets/images/left_arrow.png" id="8_sf0no"]
 [ext_resource type="StyleBox" uid="uid://ea3padm8hxn0" path="res://styles/shop/disabled_scroll_buttons_shop.tres" id="9_xd5d6"]
+[ext_resource type="Texture2D" uid="uid://bem5u5bxowiaq" path="res://assets/icons/back-arrow-green.svg" id="10_ivtsw"]
 [ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="11_fnisq"]
-[ext_resource type="Texture2D" uid="uid://bospcqsdrpka" path="res://assets/images/right_arrow.png" id="11_ivtsw"]
+[ext_resource type="Texture2D" uid="uid://cp5bx3nl5gmj8" path="res://assets/icons/front-arrow-green.svg" id="11_xd5d6"]
 [ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="12_dmsp2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g2gpt"]
@@ -88,7 +88,7 @@ theme_override_styles/pressed = ExtResource("8_ivtsw")
 theme_override_styles/hover = ExtResource("8_ivtsw")
 theme_override_styles/disabled = ExtResource("9_xd5d6")
 theme_override_styles/focus = ExtResource("8_ivtsw")
-icon_texture = ExtResource("8_sf0no")
+icon_texture = ExtResource("10_ivtsw")
 
 [node name="TokensScroll" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/CarruselHbox" unique_id=1889211074]
 unique_name_in_owner = true
@@ -113,7 +113,7 @@ theme_override_styles/pressed = ExtResource("8_ivtsw")
 theme_override_styles/hover = ExtResource("8_ivtsw")
 theme_override_styles/disabled = ExtResource("9_xd5d6")
 theme_override_styles/focus = ExtResource("8_ivtsw")
-icon_texture = ExtResource("11_ivtsw")
+icon_texture = ExtResource("11_xd5d6")
 
 [node name="Control" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=382809703]
 custom_minimum_size = Vector2(0, 30)
@@ -143,7 +143,7 @@ theme_override_styles/pressed = ExtResource("8_ivtsw")
 theme_override_styles/hover = ExtResource("8_ivtsw")
 theme_override_styles/disabled = ExtResource("9_xd5d6")
 theme_override_styles/focus = ExtResource("8_ivtsw")
-icon_texture = ExtResource("8_sf0no")
+icon_texture = ExtResource("10_ivtsw")
 
 [node name="EmotesScroll" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/CarruselHbox" unique_id=47779363]
 unique_name_in_owner = true
@@ -168,7 +168,7 @@ theme_override_styles/pressed = ExtResource("8_ivtsw")
 theme_override_styles/hover = ExtResource("8_ivtsw")
 theme_override_styles/disabled = ExtResource("9_xd5d6")
 theme_override_styles/focus = ExtResource("8_ivtsw")
-icon_texture = ExtResource("11_ivtsw")
+icon_texture = ExtResource("11_xd5d6")
 
 [node name="BudgetLabel" type="Label" parent="." unique_id=569418588]
 unique_name_in_owner = true

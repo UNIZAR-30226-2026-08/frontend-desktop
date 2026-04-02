@@ -7,5 +7,5 @@ extends MagnateTweenButton
 func _ready() -> void:
 	if icon_texture:
 		icon_rect.texture = icon_texture
-	
+
 	super()

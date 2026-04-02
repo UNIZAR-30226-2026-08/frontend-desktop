@@ -39,26 +39,26 @@ func _ready() -> void:
 # Simula la llegada del JSON desde el backend
 func _load_shop_items() -> void:
 	var dummy_backend_json = [
-	# --- SECCIÓN TOKENS ---
-	{"id": "tkn_1", "name": "TOKEN 1", "price": 0, "is_purchased": true, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-	{"id": "tkn_2", "name": "TOKEN 2", "price": 10, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-	{"id": "tkn_3", "name": "TOKEN 3", "price": 50, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-	{"id": "tkn_4", "name": "TOKEN 4", "price": 100, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-	{"id": "tkn_5", "name": "TOKEN 5", "price": 150, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-	{"id": "tkn_6", "name": "TOKEN 6", "price": 200, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-	{"id": "tkn_7", "name": "TOKEN 7", "price": 250, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-	{"id": "tkn_8", "name": "TOKEN 8", "price": 300, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		# --- SECCIÓN TOKENS ---
+		{"id": "tkn_1", "name": "TOKEN 1", "price": 0, "is_purchased": true, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		{"id": "tkn_2", "name": "TOKEN 2", "price": 10, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		{"id": "tkn_3", "name": "TOKEN 3", "price": 50, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		{"id": "tkn_4", "name": "TOKEN 4", "price": 100, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		{"id": "tkn_5", "name": "TOKEN 5", "price": 150, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		{"id": "tkn_6", "name": "TOKEN 6", "price": 200, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		{"id": "tkn_7", "name": "TOKEN 7", "price": 250, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		{"id": "tkn_8", "name": "TOKEN 8", "price": 300, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
 
-	# --- SECCIÓN EMOTICONOS ---
-	{"id": "emo_1", "name": "RISA 1", "price": 0, "is_purchased": true, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-	{"id": "emo_2", "name": "RISA 2", "price": 50, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-	{"id": "emo_3", "name": "RISA 3", "price": 100, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-	{"id": "emo_4", "name": "RISA 4", "price": 150, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-	{"id": "emo_5", "name": "RISA 5", "price": 200, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-	{"id": "emo_6", "name": "RISA 6", "price": 250, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-	{"id": "emo_7", "name": "RISA 7", "price": 300, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-	{"id": "emo_8", "name": "RISA 8", "price": 350, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"}
-]
+		# --- SECCIÓN EMOTICONOS ---
+		{"id": "emo_1", "name": "RISA 1", "price": 0, "is_purchased": true, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		{"id": "emo_2", "name": "RISA 2", "price": 50, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		{"id": "emo_3", "name": "RISA 3", "price": 100, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		{"id": "emo_4", "name": "RISA 4", "price": 150, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		{"id": "emo_5", "name": "RISA 5", "price": 200, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		{"id": "emo_6", "name": "RISA 6", "price": 250, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		{"id": "emo_7", "name": "RISA 7", "price": 300, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
+		{"id": "emo_8", "name": "RISA 8", "price": 350, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"}
+	]
 	
 	_populate_shop(dummy_backend_json)
 
@@ -77,19 +77,19 @@ func _populate_shop(items_data: Array) -> void:
 		card.purchase_requested.connect(_on_item_purchase_requested)
 
 func _on_item_purchase_requested(item_id: String, price: int) -> void:
-	print("El jugador quiere comprar: ", item_id, " por ", price, "€")
+	Utils.debug("El jugador quiere comprar: " + item_id + " por " + Utils.to_currency_text(price))
 	# Aquí meterás tu lógica: comprobar si el jugador tiene dinero suficiente,
 	# avisar al backend, restar el dinero, y si todo sale bien, buscar
 	# la tarjeta en el contenedor y ponerle su `is_purchased = true`
-	buy_item(item_id,price)
+	buy_item(item_id, price)
 	
 func buy_item(item_id: String, price: int) -> void:
-	print("Intentando comprar: ", item_id, " por ", price, "€")
+	Utils.debug("Intentando comprar: " + item_id + " por " + Utils.to_currency_text(price))
 	
 	# 1. Comprobar si hay dinero suficiente
 	if player_money >= price:
 		player_money -= price
-		print("¡Compra exitosa! Nuevo saldo: ", player_money, "€")
+		Utils.debug("¡Compra exitosa! Nuevo saldo: " + Utils.to_currency_text(player_money))
 		
 		# 2. Actualizar la tarjeta visualmente a "Adquirido"
 		_update_card_to_purchased(item_id)
@@ -100,7 +100,7 @@ func buy_item(item_id: String, price: int) -> void:
 		_update_budget_ui()
 		_update_cards_affordability()
 	else:
-		print("No tienes suficiente dinero para comprar esto.")
+		Utils.debug("No tienes suficiente dinero para comprar esto.")
 		# Aquí en el futuro podrías mostrar un popup de error o hacer vibrar el dinero
 
 # Función auxiliar que busca la tarjeta correcta y cambia su estado
@@ -144,7 +144,7 @@ func _scroll_custom_carousel(container: HBoxContainer, direction: int) -> void:
 	tween.tween_property(container, "position:x", target_x, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 func _update_budget_ui() -> void:
-	budget_label.text = "Saldo: " + str(player_money) + "€"
+	budget_label.text = "Saldo: " + Utils.to_currency_text(player_money)
 
 # Esta función recorre todas las tarjetas y les dice si se pueden pagar o no
 func _update_cards_affordability() -> void:
