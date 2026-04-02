@@ -88,12 +88,15 @@ func ensure_valid_and_unique_dice_names():
 		used_names[dice_name] = true
 		dice.name = dice_name
 
-func roll():
+func roll(forced_values: Array[int] = []):
 	if rolling: return
 	result = {}
 	rolling = true
-	for dice in dices:
-		dice.roll()
+	for i in range(dices.size()):
+		if forced_values.size() > i: # Vemos si hay un valor forzado para este dado
+			dices[i].roll(forced_values[i])
+		else:
+			dices[i].roll()
 	roll_started.emit()
 
 func prepare():

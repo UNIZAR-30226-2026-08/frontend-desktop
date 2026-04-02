@@ -24,6 +24,8 @@ var rolling := false
 ## Accomulated roll time
 var roll_time := 0.0
 
+var forced_value := -1 # Esto lo forzamos nosotros
+
 ## Emited when a roll finishes
 signal roll_finished(int)
 
@@ -65,7 +67,8 @@ func stop():
 	linear_velocity = Vector3.ZERO
 	angular_velocity = Vector3.ZERO
 
-func roll():
+func roll(target := -1):
+	forced_value = target
 	"""Roll the dice"""
 	if position.y < dice_size*2: stop()
 	dehighlight()
@@ -108,13 +111,13 @@ func _process(_delta):
 	if position.y > mounted_elevation:
 		return shake("mounted")
 	var side = upper_side()
-	if side == null:
+	if forced_value == -1 and side == null:
 		return shake("tilted")
 
 	#print("Dice %s solved [%s] - %.02fs"%([name, side, roll_time]))
 	freeze = true
 	sleeping = true
-	show_face(side)
+	show_face(forced_value if forced_value != -1 else side) # Forzamos a que salga el valor que queremos (esto está amañadísimo)
 
 func upper_side():
 	"Returns which dice side is up, or 0 when none is clear"

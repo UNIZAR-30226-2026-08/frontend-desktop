@@ -11,6 +11,7 @@ class_name DiceShape
 static var _registry: Dictionary[String, Script] = {
 	'D4': D4Dice,
 	'D6': D6Dice,
+	'BUS': BUSDice,
 	'D8': D8Dice,
 	'D10': D10Dice,
 	'D10x10': D10x10Dice,
@@ -20,6 +21,7 @@ static var _registry: Dictionary[String, Script] = {
 
 static var shapes_to_sides : Dictionary[String, int] = {
 	"D6": 6,
+	'BUS': 6,
 	"D4": 4,
 	"D8": 8,
 	"D10": 10,
