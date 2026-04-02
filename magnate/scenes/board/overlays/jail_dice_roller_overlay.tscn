@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://dyay1s37y6yms"]
+
+[ext_resource type="Script" uid="uid://72ypbq6cg5c0" path="res://scripts/board/dice/dice_roller_overlay.gd" id="1_ebrq6"]
+[ext_resource type="PackedScene" uid="uid://cnlssqpge8erk" path="res://addons/dice_roller/dice_roller/dice_roller.tscn" id="2_yn166"]
+[ext_resource type="Script" uid="uid://cohd4ovwrydr0" path="res://addons/dice_roller/dice_def.gd" id="3_kb7dn"]
+[ext_resource type="Script" uid="uid://xsgh2gwr4gub" path="res://addons/dice_roller/dice_shape.gd" id="4_og7np"]
+
+[sub_resource type="Resource" id="Resource_lmc47"]
+script = ExtResource("4_og7np")
+
+[sub_resource type="Resource" id="Resource_dej46"]
+script = ExtResource("3_kb7dn")
+color = Color(0.980392, 0.921569, 0.843137, 1)
+shape = SubResource("Resource_lmc47")
+metadata/_custom_type_script = "uid://cohd4ovwrydr0"
+
+[sub_resource type="Resource" id="Resource_rpdi3"]
+script = ExtResource("3_kb7dn")
+metadata/_custom_type_script = "uid://cohd4ovwrydr0"
+
+[node name="DiceRoller" type="Control" unique_id=596074291]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1920.0
+offset_bottom = -1080.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ebrq6")
+
+[node name="DiceRoller" parent="." unique_id=1819657779 instance=ExtResource("2_yn166")]
+unique_name_in_owner = true
+top_level = true
+dice_set = Array[ExtResource("3_kb7dn")]([SubResource("Resource_dej46"), SubResource("Resource_rpdi3")])
+roller_color = Color(1, 1, 1, 0)
+
+[node name="RollerBox" parent="DiceRoller" index="0" unique_id=1324775602]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+height = 2.0
+width = 2.0
+
+[editable path="DiceRoller"]

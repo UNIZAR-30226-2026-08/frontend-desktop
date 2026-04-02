@@ -30,6 +30,12 @@ physics_object_picking = true
 size = Vector2i(3840, 3840)
 render_target_update_mode = 4
 
+[node name="DiceRoller" parent="3DWorld/SubViewPort" unique_id=1073497704 instance=ExtResource("3_q07he")]
+unique_name_in_owner = true
+visible = false
+offset_right = 0.0
+offset_bottom = 0.0
+
 [node name="bg" parent="3DWorld/SubViewPort" unique_id=951290491 instance=ExtResource("5_kymhv")]
 transform = Transform3D(3.68, 0, 0, 0, 3.68, 0, 0, 0, 3.68, 0, 0, 0)
 
@@ -65,11 +71,6 @@ transform = Transform3D(0.003, 0, 0, 0, -1.3113416e-10, -0.003, 0, 0.003, -1.311
 
 [node name="AnimationPlayer" parent="3DWorld/SubViewPort/bg" index="294" unique_id=1336528665]
 autoplay = &"Scene"
-
-[node name="DiceRoller" parent="3DWorld/SubViewPort" unique_id=1073497704 instance=ExtResource("3_q07he")]
-unique_name_in_owner = true
-offset_right = 0.0
-offset_bottom = 0.0
 
 [node name="Tiles" type="Node2D" parent="." unique_id=41079374]
 unique_name_in_owner = true
