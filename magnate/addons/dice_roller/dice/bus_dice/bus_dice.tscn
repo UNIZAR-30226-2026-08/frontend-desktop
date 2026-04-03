@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c8g7utxytvsst" path="res://addons/dice_roller/dice/bus_dice/bus.glb" id="1_qf8a6"]
 [ext_resource type="Script" uid="uid://bn0owa113tucp" path="res://addons/dice_roller/dice/bus_dice/bus_dice.gd" id="2_jdn03"]
-[ext_resource type="Texture2D" uid="uid://bwa57gkqupw1s" path="res://addons/dice_roller/dice/bus_dice/bus_dice_texture.png" id="3_bt4n8"]
+[ext_resource type="Texture2D" uid="uid://cgtqrytx2c5gb" path="res://addons/dice_roller/dice/bus_dice/bus_dice_texture.png" id="3_bt4n8"]
 [ext_resource type="Texture2D" uid="uid://bkhonoacuenx" path="res://addons/dice_roller/dice/bus_dice/bus_dice_normal_map.png" id="4_p3hei"]
 [ext_resource type="Shader" uid="uid://bq1qpbhsq3cwd" path="res://addons/dice_roller/dice/bus_dice/highlight_blur.gdshader" id="5_eh7ia"]
 

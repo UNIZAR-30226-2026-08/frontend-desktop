@@ -26,6 +26,10 @@ var current_trade_overlay: CanvasLayer = null
 var in_trade_selection_mode: bool = false
 var trade_selecting_for_p1: bool = true
 
+# Messages
+var toast_instance: CanvasLayer = null
+var banner_instance: CanvasLayer = null
+
 # Overlays
 const AUCTION_OVERLAY = preload("uid://s5i6upd25o0y")
 const FANTASY_OVERLAY = preload("uid://blvke57w4belm")
@@ -34,10 +38,25 @@ const RESULTS_AUCTION_OVERLAY = preload("uid://by8ymobr7asbh")
 const TRAM_OVERLAY = preload("uid://63e2qbbi7ye3")
 const TRADE_OVERLAY = preload("uid://b1ddwdjk7emik")
 
+const BANNER_MESSAGE = preload("uid://g1ccyk0arbkf")
+const TOAST_MESSAGE = preload("uid://dj0br3kdrndit")
+
 func setup_overlays(_board: Node2D) -> void:
 	board = _board
 	tile_data = BoardDefinitionParser.parse_board("res://assets/game_info/board.json")
+	banner_instance = BANNER_MESSAGE.instantiate()
+	board.add_child(banner_instance)
+	toast_instance = TOAST_MESSAGE.instantiate()
+	board.add_child(toast_instance)
 #	_load_board_data()
+
+func show_banner(message: String, bg_color: Color = Color("008a5c"), duration: float = 2.5) -> void:
+	if banner_instance:
+		banner_instance.show_banner(message, bg_color, duration)
+		
+func show_toast(message: String, duration: float = 3.0) -> void:
+	if toast_instance:
+		toast_instance.show_toast(message, duration)
 
 func display_overlay_for_tile(tile_id: String) -> void:
 	Utils.debug("Manejando llegada a la casilla: " + tile_id)

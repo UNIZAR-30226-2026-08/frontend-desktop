@@ -61,6 +61,9 @@ func _on_dice_result_received(total: int) -> void:
 	await get_tree().create_timer(1.0).timeout
 	dice_roller_overlay.hide_overlay()
 	
+	overlay_manager.show_banner("¡Turno de ...!", Color("f94144"))
+	overlay_manager.show_toast("Esto es una prueba")
+	
 	# Get destination
 	if players.size() > 0:
 		var model: PlayerModel = players[0]["model"]

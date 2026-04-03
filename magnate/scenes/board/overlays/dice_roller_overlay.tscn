@@ -24,7 +24,7 @@ name = "BUS"
 
 [sub_resource type="Resource" id="Resource_c6wwm"]
 script = ExtResource("3_2cr3t")
-color = Color(0, 0.5411765, 0.36078432, 1)
+color = Color(1, 0.7882353, 0.44313726, 1)
 shape = SubResource("Resource_d5ri2")
 metadata/_custom_type_script = "uid://cohd4ovwrydr0"
 

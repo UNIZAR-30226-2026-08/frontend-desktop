@@ -32,7 +32,6 @@ render_target_update_mode = 4
 
 [node name="DiceRoller" parent="3DWorld/SubViewPort" unique_id=1073497704 instance=ExtResource("3_q07he")]
 unique_name_in_owner = true
-visible = false
 offset_right = 0.0
 offset_bottom = 0.0
 
