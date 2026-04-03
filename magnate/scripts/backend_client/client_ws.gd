@@ -26,7 +26,6 @@ func _ready() -> void:
 		set_process(false)
 
 func _process(_delta) -> void:
-	# Call this in `_process()` or `_physics_process()`.
 	# Data transfer and state updates will only happen when calling this function.
 	socket.poll()
 
@@ -62,9 +61,11 @@ func send_data(data_to_send: Variant) -> void:
 	socket.send_text(data_to_send)
 
 func _response_dispatcher(response: Dictionary) -> void:
-	var action_code = response.get("action")
+	var action_code = response.get("action") # Get action code
 	if action_code == null:
 		return
+	
+	# Dispatch each action to its handler
 	match action_code:
 		pass
 
@@ -83,6 +84,7 @@ func _build_and_send_action(data: Dictionary) -> void:
 	send_data(action_data)
 
 # Now we get into the specifics of the communication
+## The following functions encapsulate outgoing messages
 
 ## Action: Throw the dice
 func ws_throw_dice() -> void:
@@ -100,14 +102,19 @@ func ws_move_to(tile_id: String) -> void:
 func ws_buy_property(tile_id: String) -> void:
 	_build_and_send_action({"type": "ActionBuySquare", "square": int(tile_id)})
 
-# Missing: ActionSellSquare
+## Action: Build houses in given property
+## @params:
+## - tile_id: ID of the tile where to build
+## - houses: number of houses to build
+func ws_build_house(tile_id: String, houses: int) -> void:
+	_build_and_send_action({"type": "ActionBuild", "square": int(tile_id), "houses": houses})
 
-## Action: Ends current players turn
-func ws_end_turn() -> void:
-	_build_and_send_action({"type": "ActionNextPhase"})
-
-# Missing: ActionBuild
-# Missing: ActionDemolish
+## Action: Demolish houses in given property
+## @params:
+## - tile_id: ID of the tile where to demolish
+## - houses: number of houses to demolish
+func ws_demolish_house(tile_id: String, houses: int) -> void:
+	_build_and_send_action({"type": "ActionDemolish", "square": int(tile_id), "houses": houses})
 
 ## Action: Mortgages a given property
 ## @params:
@@ -121,13 +128,68 @@ func ws_mortgage_property(tile_id: String) -> void:
 func ws_unmortgage_property(tile_id: String) -> void:
 	_build_and_send_action({"type": "ActionMortgageUnset", "square": int(tile_id)})
 
-# Missing ActionDropPurchase
-# Missing ActionTakeTram
-# Missing ActionSkipTram
-# Missing ActionChooseCard
-# Missing ActionBid
-# Missing ActionTradePorposal
-# Missing ActionTradeAnswer
+## Action: Starts an auction on the given tile
+## @params:
+## - tile_id: ID of the tile to auction
+func ws_start_auction(tile_id: String) -> void:
+	_build_and_send_action({"type": "ActionDropPurchase", "square": int(tile_id)})
+
+## Action: Takes the tram to a given tile
+## @params:
+## - tile_id: ID of the tile to travel to
+func ws_take_tram_to(tile_id: String) -> void:
+	_build_and_send_action({"type": "ActionTakeTram", "square": int(tile_id)})
+
+## Action: Chooses a fantasy card
+## @params:
+## - choose_revealed_card: True if the front-facing card is chosen, False otherwise
+func ws_choose_fantasy_card(choose_revealed_card: bool) -> void:
+	_build_and_send_action({"type": "ActionChooseCard", "chosen_revealed_card": choose_revealed_card})
+
+## Action: Bids amount on current auction
+## @params:
+## - amount: amount of money to bid
+func ws_bid(amount: int) -> void:
+	_build_and_send_action({"type": "ActionBid", "amount": amount})
+
+## Action: Ends current phase
+func ws_end_current_phase() -> void:
+	_build_and_send_action({"type": "ActionNextPhase"})
+
+## Action: Starts a trade with user give its id
+## @params:
+## - destination_user_id: ID of the user to send the trade
+## - offered_money: amount of money offered to the destinatary
+## - asked_monery: amount of money asked from the destinatary
+## - offered_properties: list of IDs of the properties offered to the destinatary
+## - asked_properties: list of IDs of the properties asked from the destinatary
+func ws_start_trade(
+	destination_user_id: int,
+	offered_money: int,
+	asked_money: int,
+	offered_properties: Array[String],
+	asked_properties: Array[String]
+) -> void:
+	var _offered_properties: String = ",".join(offered_properties)
+	var _asked_properties: String = ",".join(asked_properties)
+	_build_and_send_action({
+		"type": "ActionTradeProposal",
+		"destination_user": destination_user_id,
+		"offered_money": offered_money,
+		"asked_money": asked_money,
+		"offered_properties": _offered_properties,
+		"asked_properties": _asked_properties,
+	})
+
+## Action: Respond to the current trade
+## @params:
+## - accept: True if the trade was accepted
+func ws_respond_to_trade(proposal_id: int, accept: bool) -> void:
+	_build_and_send_action({
+		"type": "ActionTradeAnswer",
+		"proposal": proposal_id,
+		"choose": accept,
+	})
 
 ## Action: Pays bail for current player
 func ws_pay_bail() -> void:

@@ -1,0 +1,228 @@
+[gd_scene format=3 uid="uid://7c6v7g3dvj0t"]
+
+[ext_resource type="StyleBox" uid="uid://5eir3q5k3k5f" path="res://styles/shop/style_shop_item_card.tres" id="1_lmhnr"]
+[ext_resource type="Script" uid="uid://dbpn8ucvpembw" path="res://scripts/lobby_scripts/past_games_card.gd" id="2_lmhnr"]
+[ext_resource type="FontFile" uid="uid://b78i0vraohs54" path="res://assets/fonts/LTSuperior/LTSuperior-Black.ttf" id="3_oeywy"]
+[ext_resource type="StyleBox" uid="uid://bsqkpoim3yu03" path="res://styles/profile/end_position_style.tres" id="4_p4ta5"]
+[ext_resource type="FontFile" uid="uid://b3216w4ia8it8" path="res://assets/fonts/LTSuperior/LTSuperior-BoldItalic.ttf" id="5_oeywy"]
+[ext_resource type="Texture2D" uid="uid://bk6ss4g333w3s" path="res://assets/icons/multi_player.svg" id="6_f50m0"]
+[ext_resource type="StyleBox" uid="uid://c7ttjubh5wxom" path="res://styles/profile/player_containers_style.tres" id="7_okw1p"]
+[ext_resource type="PackedScene" uid="uid://or3abvma00m4" path="res://scenes/components/out_game_currency.tscn" id="8_f50m0"]
+[ext_resource type="FontFile" uid="uid://bc5ftjuoo88in" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBold.ttf" id="8_tv1yk"]
+[ext_resource type="FontFile" uid="uid://ch6rxfleos2dg" path="res://assets/fonts/LTSuperior/LTSuperior-BlackItalic.ttf" id="10_m8uvs"]
+
+[node name="PastGamesCard" type="PanelContainer" unique_id=1582833854]
+custom_minimum_size = Vector2(355, 300)
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = ExtResource("1_lmhnr")
+script = ExtResource("2_lmhnr")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1490456153]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=598390589]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1376386293]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=925562916]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1523616598]
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_colors/font_color = Color(0.68359375, 0.68359375, 0.68359375, 1)
+theme_override_fonts/font = ExtResource("3_oeywy")
+theme_override_font_sizes/font_size = 10
+text = "INICIO DE PARTIDA"
+
+[node name="TimeStartLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1570116336]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_oeywy")
+theme_override_font_sizes/font_size = 16
+text = "14/03/2026 10:20"
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1843487647]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_styles/panel = ExtResource("4_p4ta5")
+
+[node name="PositionLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer" unique_id=1758228990]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.5411765, 0.36078432, 1)
+theme_override_fonts/font = ExtResource("5_oeywy")
+theme_override_font_sizes/font_size = 20
+text = "#1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Space1" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1191695545]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+
+[node name="Panel" type="ColorRect" parent="MarginContainer/VBoxContainer" unique_id=1676605672]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+color = Color(0.80784315, 0.80784315, 0.80784315, 1)
+
+[node name="Space2" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1268456205]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1511672207]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1269514618]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+texture = ExtResource("6_f50m0")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=600653127]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_oeywy")
+theme_override_font_sizes/font_size = 15
+text = "JUGADORES"
+vertical_alignment = 1
+
+[node name="Space3" type="Control" parent="MarginContainer/VBoxContainer" unique_id=769210775]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=823332936]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("7_okw1p")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer" unique_id=690535017]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer" unique_id=547830117]
+layout_mode = 2
+
+[node name="Place1" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1829020674]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Place1" unique_id=1844279290]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.5411765, 0.36078432, 1)
+theme_override_fonts/font = ExtResource("8_tv1yk")
+theme_override_font_sizes/font_size = 16
+text = "1."
+
+[node name="Name1" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Place1" unique_id=1013360627]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_tv1yk")
+theme_override_font_sizes/font_size = 16
+text = "Lucas"
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1591099009]
+layout_mode = 2
+
+[node name="Place2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=836475070]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Place2" unique_id=221798839]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.5411765, 0.36078432, 1)
+theme_override_fonts/font = ExtResource("8_tv1yk")
+theme_override_font_sizes/font_size = 16
+text = "2."
+
+[node name="Name2" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Place2" unique_id=1758613241]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_tv1yk")
+theme_override_font_sizes/font_size = 16
+text = "Crist"
+
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=963646272]
+layout_mode = 2
+
+[node name="Place3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1928146333]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Place3" unique_id=1806938975]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.5411765, 0.36078432, 1)
+theme_override_fonts/font = ExtResource("8_tv1yk")
+theme_override_font_sizes/font_size = 16
+text = "3."
+
+[node name="Name3" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Place3" unique_id=1941812235]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_tv1yk")
+theme_override_font_sizes/font_size = 16
+text = "July"
+
+[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=703936978]
+layout_mode = 2
+
+[node name="Place4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1080035308]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Place4" unique_id=240058779]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.5411765, 0.36078432, 1)
+theme_override_fonts/font = ExtResource("8_tv1yk")
+theme_override_font_sizes/font_size = 16
+text = "4."
+
+[node name="Name4" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/Place4" unique_id=1355447160]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_tv1yk")
+theme_override_font_sizes/font_size = 16
+text = "Mike"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1098931169]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="OutGameCurrency" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=624306743 instance=ExtResource("8_f50m0")]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="RewardAmountLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=534867760]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_tv1yk")
+theme_override_font_sizes/font_size = 25
+text = "200"
+
+[node name="TimeEndLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=997119178]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_colors/font_color = Color(0.80078125, 0.80078125, 0.80078125, 1)
+theme_override_fonts/font = ExtResource("10_m8uvs")
+theme_override_font_sizes/font_size = 12
+text = "FIN: 14/03/2026 22:05"

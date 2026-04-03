@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://or3abvma00m4"]
+
+[ext_resource type="FontFile" uid="uid://bc5ftjuoo88in" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBold.ttf" id="1_fvs7b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pcloh"]
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0.30859375, 0.20572911, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[node name="OutGameCurrency" type="PanelContainer" unique_id=624306743]
+custom_minimum_size = Vector2(30, 30)
+offset_right = 30.0
+offset_bottom = 30.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pcloh")
+
+[node name="Label" type="Label" parent="." unique_id=2069499182]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.7882353, 0.44313726, 1)
+theme_override_colors/font_shadow_color = Color(0.984375, 0.72701645, 0.3076172, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("1_fvs7b")
+theme_override_font_sizes/font_size = 15
+text = "M"
+horizontal_alignment = 1
