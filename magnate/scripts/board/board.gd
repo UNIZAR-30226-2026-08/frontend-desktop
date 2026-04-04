@@ -6,12 +6,17 @@ const DEBUG_MODE: int = 1
 @onready var tile_parent_node: Node2D = %Tiles
 @onready var dice_roller_overlay: DiceRollerOverlay = %DiceRoller
 
+# TODO: Ya lo siento Nico pero no sé dónde meter esto
+const CONTROLS_HUD_SCENE = preload("uid://cp5cmlsncsi6t")
+const SETTINGS_OVERLAY_SCENE = preload("uid://d31dwv0u5en1g")
+
 # Managers
 var tile_manager: MagnateTileManager = MagnateTileManager.new()
 var overlay_manager: MagnateOverlayManager = MagnateOverlayManager.new()
 
 var players: Array[Dictionary] = []
 var player_hud: PlayerHUD
+var controls_hud: ControlsHUD
 
 const TRAM_IDS: Array[String] = ["010", "030", "100", "107"]
 
@@ -41,6 +46,13 @@ func _ready() -> void:
 	
 	TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
 	
+	# Controls
+	controls_hud = CONTROLS_HUD_SCENE.instantiate()
+	add_child(controls_hud)
+	
+	controls_hud.open_settings_requested.connect(_on_open_settings_requested)
+	controls_hud.roll_dice_requested.connect(_on_hud_roll_requested)
+	
 	# Start playing the board background music
 	var music = AudioResource.from_type(Globals.AUDIO_BOARDMUSIC, AudioResource.AudioResourceType.MUSIC)
 	AudioSystem.play_audio(music)
@@ -51,6 +63,17 @@ func _ready() -> void:
 		dice_roller_overlay.show() # Mostramos el overlay esperando tu click para tirar
 	elif DEBUG_MODE == 2:
 		_run_debug_trade_scenario()
+		
+		
+func _on_open_settings_requested() -> void:
+	var settings = SETTINGS_OVERLAY_SCENE.instantiate()
+	add_child(settings)
+	
+func _on_hud_roll_requested() -> void:
+	controls_hud.set_roll_disabled(true)
+	
+	if dice_roller_overlay:
+		dice_roller_overlay.show()
 
 # ============
 #  Dice logic
@@ -60,6 +83,9 @@ func _on_dice_result_received(total: int) -> void:
 	
 	await get_tree().create_timer(1.0).timeout
 	dice_roller_overlay.hide_overlay()
+	
+	player_hud.toggle_hud_visibility(true)
+	controls_hud.toggle_hud_visibility(true)
 	
 	overlay_manager.show_banner("¡Turno de ...!", Color("f94144"))
 	overlay_manager.show_toast("Esto es una prueba")

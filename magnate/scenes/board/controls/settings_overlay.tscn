@@ -1,0 +1,227 @@
+[gd_scene format=3 uid="uid://d31dwv0u5en1g"]
+
+[ext_resource type="Script" uid="uid://btlb3cwbcaso4" path="res://scripts/board/controls/settigns_overlay.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="2_header"]
+[ext_resource type="FontFile" uid="uid://b78i0vraohs54" path="res://assets/fonts/LTSuperior/LTSuperior-Black.ttf" id="3_0m2wi"]
+[ext_resource type="PackedScene" uid="uid://dep1ru34gfn0m" path="res://scenes/board/controls/mute_button.tscn" id="4_mute_btn"]
+[ext_resource type="Shader" uid="uid://dk6h3t6f17nd" path="res://styles/shaders/strip_background.gdshader" id="5_shader"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 48
+corner_radius_top_right = 48
+corner_radius_bottom_right = 48
+corner_radius_bottom_left = 48
+shadow_color = Color(0, 0, 0, 0.25)
+shadow_size = 40
+shadow_offset = Vector2(0, 20)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mask"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 42
+corner_radius_top_right = 42
+corner_radius_bottom_right = 42
+corner_radius_bottom_left = 42
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_stripes"]
+shader = ExtResource("5_shader")
+shader_parameter/color_b = Color(0.95, 0.95, 0.95, 1)
+shader_parameter/color_a = Color(1, 1, 1, 1)
+shader_parameter/divisions = 20.0
+shader_parameter/angle = 0.5
+
+[sub_resource type="Gradient" id="Gradient_green_circle"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.95)
+colors = PackedColorArray(0, 0.541, 0.361, 1, 0, 0.541, 0.361, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_grabber"]
+gradient = SubResource("Gradient_green_circle")
+width = 56
+height = 56
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Gradient" id="Gradient_green_circle_disabled"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.95)
+colors = PackedColorArray(0.5, 0.77, 0.68, 1, 0.5, 0.77, 0.68, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_grabber_disabled"]
+gradient = SubResource("Gradient_green_circle_disabled")
+width = 56
+height = 56
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_track"]
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.894, 0.894, 0.906, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_grabber_area"]
+
+[node name="SettingsOverlay" type="CanvasLayer" unique_id=1618674292]
+layer = 100
+script = ExtResource("1_script")
+
+[node name="Backdrop" type="ColorRect" parent="." unique_id=837462910]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=472819384]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ModalPanel" type="PanelContainer" parent="CenterContainer" unique_id=192837465]
+custom_minimum_size = Vector2(700, 650)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
+
+[node name="ClipMask" type="PanelContainer" parent="CenterContainer/ModalPanel" unique_id=422350759]
+clip_children = 2
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mask")
+
+[node name="StripedBackground" type="ColorRect" parent="CenterContainer/ModalPanel/ClipMask" unique_id=1724209396]
+material = SubResource("ShaderMaterial_stripes")
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBox" type="VBoxContainer" parent="CenterContainer/ModalPanel/ClipMask" unique_id=564738291]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Header" parent="CenterContainer/ModalPanel/ClipMask/VBox" unique_id=847563920 instance=ExtResource("2_header")]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+title = "Ajustes"
+
+[node name="ContentMargin" type="MarginContainer" parent="CenterContainer/ModalPanel/ClipMask/VBox" unique_id=293847561]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 48
+
+[node name="SlidersVBox" type="VBoxContainer" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin" unique_id=384756102]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="MusicRow" type="VBoxContainer" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox" unique_id=622269279]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Top" type="HBoxContainer" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/MusicRow" unique_id=1308377030]
+layout_mode = 2
+
+[node name="MusicLabel" type="Label" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/MusicRow/Top" unique_id=574839201]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.15, 0.15, 0.15, 1)
+theme_override_fonts/font = ExtResource("3_0m2wi")
+theme_override_font_sizes/font_size = 24
+text = "VOLUMEN DE MÚSICA"
+uppercase = true
+
+[node name="MusicMuteBtn" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/MusicRow/Top" unique_id=1676242890 instance=ExtResource("4_mute_btn")]
+layout_mode = 2
+
+[node name="MusicSlider" type="HSlider" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/MusicRow" unique_id=948573621]
+layout_mode = 2
+theme_override_icons/grabber = SubResource("GradientTexture2D_grabber")
+theme_override_icons/grabber_highlight = SubResource("GradientTexture2D_grabber")
+theme_override_icons/grabber_disabled = SubResource("GradientTexture2D_grabber_disabled")
+theme_override_styles/slider = SubResource("StyleBoxFlat_slider_track")
+theme_override_styles/grabber_area = SubResource("StyleBoxEmpty_grabber_area")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxEmpty_grabber_area")
+max_value = 1.0
+step = 0.01
+value = 0.5
+
+[node name="SFXRow" type="VBoxContainer" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox" unique_id=690498761]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Top" type="HBoxContainer" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/SFXRow" unique_id=1330085228]
+layout_mode = 2
+
+[node name="SFXLabel" type="Label" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/SFXRow/Top" unique_id=102938475]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.15, 0.15, 0.15, 1)
+theme_override_fonts/font = ExtResource("3_0m2wi")
+theme_override_font_sizes/font_size = 24
+text = "VOLUMEN DE EFECTOS"
+uppercase = true
+
+[node name="SFXMuteBtn" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/SFXRow/Top" unique_id=1753709253 instance=ExtResource("4_mute_btn")]
+layout_mode = 2
+
+[node name="SFXSlider" type="HSlider" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/SFXRow" unique_id=564738292]
+layout_mode = 2
+theme_override_icons/grabber = SubResource("GradientTexture2D_grabber")
+theme_override_icons/grabber_highlight = SubResource("GradientTexture2D_grabber")
+theme_override_icons/grabber_disabled = SubResource("GradientTexture2D_grabber_disabled")
+theme_override_styles/slider = SubResource("StyleBoxFlat_slider_track")
+theme_override_styles/grabber_area = SubResource("StyleBoxEmpty_grabber_area")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxEmpty_grabber_area")
+max_value = 1.0
+step = 0.01
+value = 0.5
+
+[node name="UIRow" type="VBoxContainer" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox" unique_id=1622869282]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Top" type="HBoxContainer" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/UIRow" unique_id=1649217800]
+layout_mode = 2
+
+[node name="UILabel" type="Label" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/UIRow/Top" unique_id=938475612]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.15, 0.15, 0.15, 1)
+theme_override_fonts/font = ExtResource("3_0m2wi")
+theme_override_font_sizes/font_size = 24
+text = "VOLUMEN DE INTERFAZ"
+uppercase = true
+
+[node name="UIMuteBtn" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/UIRow/Top" unique_id=519918879 instance=ExtResource("4_mute_btn")]
+layout_mode = 2
+
+[node name="UISlider" type="HSlider" parent="CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/UIRow" unique_id=293847563]
+layout_mode = 2
+theme_override_icons/grabber = SubResource("GradientTexture2D_grabber")
+theme_override_icons/grabber_highlight = SubResource("GradientTexture2D_grabber")
+theme_override_icons/grabber_disabled = SubResource("GradientTexture2D_grabber_disabled")
+theme_override_styles/slider = SubResource("StyleBoxFlat_slider_track")
+theme_override_styles/grabber_area = SubResource("StyleBoxEmpty_grabber_area")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxEmpty_grabber_area")
+max_value = 1.0
+step = 0.01
+value = 0.5

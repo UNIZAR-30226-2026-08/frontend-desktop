@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Magnate"
-run/main_scene="uid://d2twidlaag5qv"
+run/main_scene="uid://osyh1204d63f"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 

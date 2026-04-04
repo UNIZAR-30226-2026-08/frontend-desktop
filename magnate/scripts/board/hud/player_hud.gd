@@ -3,6 +3,9 @@ extends CanvasLayer
 
 const CARD_SCENE = preload("res://scenes/board/players/player_card.tscn")
 
+var is_hidden: bool = false
+var base_x_pos: float = 0.0
+
 var container: VBoxContainer
 var cards: Dictionary = {}
 
@@ -25,6 +28,24 @@ func _init() -> void:
 	container.position.x -= 50 
 	
 	screen_filler.add_child(container)
+	
+func _ready() -> void:
+	await get_tree().process_frame
+	base_x_pos = container.position.x
+	
+func toggle_hud_visibility(hide: bool) -> void:
+	if is_hidden == hide: return
+	is_hidden = hide
+	
+	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	
+	var target_x = base_x_pos + 400.0 if hide else base_x_pos
+	var target_alpha = 0.0 if hide else 1.0
+	
+	tween.tween_property(container, "position:x", target_x, 0.5)
+	tween.parallel().tween_property(container, "modulate:a", target_alpha, 0.5)
+	
+	container.mouse_filter = Control.MOUSE_FILTER_IGNORE if hide else Control.MOUSE_FILTER_PASS
 
 func setup_players(players_data: Array[Dictionary]) -> void:
 	for child in container.get_children():
