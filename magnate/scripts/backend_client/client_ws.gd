@@ -10,6 +10,7 @@ var socket = WebSocketPeer.new()
 var game_id: int
 var player_id: int
 var session_id: int
+var last_trade_proposal_id: int
 
 # The following comes straight from the Godot docs with slight
 # modifications:
@@ -184,10 +185,10 @@ func ws_start_trade(
 ## Action: Respond to the current trade
 ## @params:
 ## - accept: True if the trade was accepted
-func ws_respond_to_trade(proposal_id: int, accept: bool) -> void:
+func ws_respond_to_trade(accept: bool) -> void:
 	_build_and_send_action({
 		"type": "ActionTradeAnswer",
-		"proposal": proposal_id,
+		"proposal": last_trade_proposal_id,
 		"choose": accept,
 	})
 
