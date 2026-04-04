@@ -21,17 +21,19 @@ func _gui_input(event: InputEvent) -> void:
 		return
 		
 	if event is InputEventMouseButton:
-		if event.pressed:
-			# Audio
-			var audio = AudioResource.from_type(Globals.AUDIO_DICE_ROLL, AudioResource.AudioResourceType.SFX)
-			AudioSystem.play_audio(audio)
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			dice_roller_3d.prepare()
 		elif not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			roll_the_dice(FORCED_ROLL_THROW)
+			# Audio
+			var audio = AudioResource.from_type(Globals.AUDIO_DICE_ROLL, AudioResource.AudioResourceType.SFX)
+			AudioSystem.play_audio(audio)
 		elif event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 			dice_roller_3d.quick_roll()
 			has_rolled = true # Bloqueamos también si usa el botón derecho
+			# Audio
+			var audio = AudioResource.from_type(Globals.AUDIO_DICE_ROLL, AudioResource.AudioResourceType.SFX)
+			AudioSystem.play_audio(audio)
 
 func roll_the_dice(forced_values: Array[int] = [1, 3, 6]) -> void:
 	show()
