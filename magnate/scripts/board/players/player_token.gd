@@ -3,6 +3,7 @@ extends Area2D
 
 signal on_token_clicked(token_node: PlayerToken) # DEBUG
 var token_color: Color = Color.WHITE
+var hop_audio: AudioResource
 
 func _ready() -> void:
 	var collision = CollisionShape2D.new()
@@ -15,6 +16,8 @@ func _ready() -> void:
 	mouse_exited.connect(_on_mouse_exited)
 	
 	input_event.connect(_on_input_event)
+	
+	hop_audio = AudioResource.from_type(Globals.AUDIO_PLAYER_HOP, AudioResource.AudioResourceType.SFX)
 
 func setup(color: Color) -> void:
 	token_color = color
@@ -37,9 +40,29 @@ func _on_mouse_exited() -> void:
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2.ONE, 0.1)
 
-func move_to(target_pos: Vector2) -> void:	
-	var tween = create_tween()
-	tween.tween_property(self, "position", target_pos, 0.6).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+#func move_to(target_pos: Vector2) -> void:	
+	#var tween = create_tween()
+	#tween.tween_property(self, "position", target_pos, 0.6).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	
+func move_to(positions: Array[Vector2]) -> void:
+	var hop_height: float = 40.0
+	var duration: float = 0.4
+	
+	for target_pos in positions:
+		AudioSystem.play_audio(hop_audio)
+		
+		var tween = create_tween()
+		var mid_point = position.lerp(target_pos, 0.5)
+		mid_point.y -= hop_height 
+		
+		tween.tween_property(self, "position", mid_point, duration / 2.0) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		
+		tween.tween_property(self, "position", target_pos, duration / 2.0) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+			
+		await tween.finished
+		await get_tree().create_timer(0.05).timeout
 
 # DEBUG
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:

@@ -84,19 +84,40 @@ func _on_dice_result_received(total: int) -> void:
 	await get_tree().create_timer(1.0).timeout
 	dice_roller_overlay.hide_overlay()
 	
-	player_hud.toggle_hud_visibility(true)
-	controls_hud.toggle_hud_visibility(true)
+	# player_hud.toggle_hud_visibility(true)
+	# controls_hud.toggle_hud_visibility(true)
 	
-	overlay_manager.show_banner("¡Turno de ...!", Color("f94144"))
-	overlay_manager.show_toast("Esto es una prueba")
+	# overlay_manager.show_banner("¡Turno de ...!", Color("f94144"))
+	# overlay_manager.show_toast("Esto es una prueba")
 	
 	# Get destination
+	#if players.size() > 0:
+		#var model: PlayerModel = players[0]["model"]
+		#var current_id: int = model.current_tile_id.to_int()
+		#var target_id: int = current_id + total
+		#var target_tile_string: String = "%03d" % target_id
+		#tile_manager.prompt_tile_selection([target_tile_string])
+		
+	# DEBUG
 	if players.size() > 0:
 		var model: PlayerModel = players[0]["model"]
-		var current_id: int = model.current_tile_id.to_int()
-		var target_id: int = current_id + total
-		var target_tile_string: String = "%03d" % target_id
-		tile_manager.prompt_tile_selection([target_tile_string])
+		var token: PlayerToken = players[0]["token"]
+		
+		var test_path: Array[String] = ["000", "001", "002"]
+		var path_positions: Array[Vector2] = []
+		
+		for step_id in test_path:
+			if tile_manager.tile_entities.has(step_id):
+				var step_tile = tile_manager.tile_entities[step_id]
+				path_positions.append(step_tile.position + step_tile.pivot_offset)
+				
+		if not path_positions.is_empty():
+			await token.move_to(path_positions)
+			
+		model.move_to_tile("002")
+		TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
+		overlay_manager.display_overlay_for_tile("002")
+		
 
 # ================
 #  Input handlers
