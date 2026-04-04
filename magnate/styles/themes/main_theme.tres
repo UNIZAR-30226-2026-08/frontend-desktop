@@ -97,6 +97,22 @@ expand_margin_top = 10.0
 expand_margin_right = 20.0
 expand_margin_bottom = 10.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i85vh"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 7
+border_width_top = 7
+border_width_right = 7
+border_width_bottom = 7
+border_color = Color(1, 0.4117647, 0.38039216, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 40.0
+expand_margin_top = 10.0
+expand_margin_right = 20.0
+expand_margin_bottom = 10.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8sfn"]
 bg_color = Color(1, 1, 1, 1)
 
@@ -182,5 +198,14 @@ LineEdit/constants/caret_width = 5
 LineEdit/font_sizes/font_size = 44
 LineEdit/styles/focus = SubResource("StyleBoxFlat_m4b6a")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_m4b6a")
+LineEditError/base_type = &"LineEdit"
+LineEditError/colors/caret_color = Color(0.28627452, 0.3137255, 0.34117648, 1)
+LineEditError/colors/font_color = Color(0.28627452, 0.3137255, 0.34117648, 1)
+LineEditError/colors/font_placeholder_color = Color(0.47058824, 0.50980395, 0.54509807, 1)
+LineEditError/colors/selection_color = Color(0.7607843, 0.9490196, 0.38039216, 1)
+LineEditError/constants/caret_width = 5
+LineEditError/font_sizes/font_size = 44
+LineEditError/styles/focus = SubResource("StyleBoxFlat_i85vh")
+LineEditError/styles/normal = SubResource("StyleBoxFlat_i85vh")
 Panel/styles/panel = SubResource("StyleBoxFlat_i8sfn")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_xuk5p")

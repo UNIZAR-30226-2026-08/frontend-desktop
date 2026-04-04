@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://dlgk2e8g5itqj" path="res://scripts/login_screen/login_screen.gd" id="2_52kn4"]
 [ext_resource type="PackedScene" uid="uid://vxxc8m2hs5mg" path="res://scenes/components/city_background.tscn" id="2_w6wvi"]
 [ext_resource type="PackedScene" uid="uid://5pilfc0bnc3" path="res://scenes/components/lineedit_with_shadow.tscn" id="4_xuk5p"]
-[ext_resource type="Texture2D" uid="uid://d2f4u0460actv" path="res://assets/icons/email.svg" id="5_0krvm"]
 [ext_resource type="Texture2D" uid="uid://k0g5efr3ougq" path="res://assets/icons/lock.svg" id="6_52kn4"]
+[ext_resource type="Texture2D" uid="uid://d1ii7ia4skoem" path="res://assets/icons/single_player.svg" id="6_54ont"]
 [ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="6_w6wvi"]
 [ext_resource type="PackedScene" uid="uid://baktdl26t2tmk" path="res://scenes/components/logo.tscn" id="7_0krvm"]
 
@@ -45,23 +45,21 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
-[node name="MailInput" parent="MainVBox" unique_id=1768335443 instance=ExtResource("4_xuk5p")]
+[node name="UsernameInput" parent="MainVBox" unique_id=1768335443 instance=ExtResource("4_xuk5p")]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../PassInput")
 focus_next = NodePath("../PassInput")
-placeholder_text = "Email"
+placeholder_text = "Nombre de usuario"
 middle_mouse_paste_enabled = false
 drag_and_drop_selection_enabled = false
-right_icon = ExtResource("5_0krvm")
+right_icon = ExtResource("6_54ont")
 icon_expand_mode = 2
 right_icon_scale = 0.8
 
 [node name="PassInput" parent="MainVBox" unique_id=235522331 instance=ExtResource("4_xuk5p")]
 layout_mode = 2
-focus_neighbor_top = NodePath("../MailInput")
 focus_neighbor_bottom = NodePath("../HBoxContainer/AnimatedButton")
 focus_next = NodePath("../HBoxContainer/AnimatedButton")
-focus_previous = NodePath("../MailInput")
 placeholder_text = "Contraseña"
 middle_mouse_paste_enabled = false
 drag_and_drop_selection_enabled = false
@@ -81,7 +79,6 @@ size_flags_horizontal = 3
 [node name="AnimatedButton" parent="MainVBox/HBoxContainer" unique_id=175575919 instance=ExtResource("6_w6wvi")]
 layout_mode = 2
 focus_neighbor_top = NodePath("../../PassInput")
-focus_next = NodePath("../../MailInput")
 focus_previous = NodePath("../../PassInput")
 text = "ENTRAR"
 
