@@ -25,6 +25,7 @@ extends Node
 @export var AUDIO_TRAM = preload("uid://tl68fssfd15t")
 @export var AUDIO_TOKEN_MOVE = preload("uid://ckr1ila7b38qf")
 @export var AUDIO_DICE_ROLL = preload("uid://b5qpsxiqhbtcf")
+@export var AUDIO_PLAYER_HOP = preload("uid://ckr1ila7b38qf")
 @export_subgroup('Music')
 @export var AUDIO_MENUMUSIC = preload("uid://cgqfmnsjmcjqc")
 @export var AUDIO_BOARDMUSIC = preload("uid://dqwe63a21r68t")
