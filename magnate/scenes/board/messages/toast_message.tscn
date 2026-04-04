@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://dj0br3kdrndit"]
+
+[ext_resource type="Script" uid="uid://bsqcxg6a0c3an" path="res://scripts/board/messages/toast_message.gd" id="1_abcde"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toast"]
+content_margin_left = 32.0
+content_margin_top = 16.0
+content_margin_right = 32.0
+content_margin_bottom = 16.0
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.2)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+shadow_color = Color(0, 0, 0, 0.25)
+shadow_size = 12
+shadow_offset = Vector2(0, 8)
+
+[node name="ToastMessage" type="CanvasLayer" unique_id=859872986]
+layer = 100
+script = ExtResource("1_abcde")
+
+[node name="Container" type="Control" parent="." unique_id=1810340944]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ToastPanel" type="PanelContainer" parent="Container" unique_id=1295037583]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 96.0
+offset_right = 150.0
+offset_bottom = 152.0
+grow_horizontal = 2
+pivot_offset = Vector2(150, 28)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_toast")
+
+[node name="MessageLabel" type="Label" parent="Container/ToastPanel" unique_id=1791013232]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "Esto es un mensaje de prueba..."
+horizontal_alignment = 1
+vertical_alignment = 1

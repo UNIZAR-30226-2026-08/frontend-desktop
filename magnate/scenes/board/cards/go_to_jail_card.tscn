@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://dyi5gp05ip7iq"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_peu2u"]
+[ext_resource type="Script" uid="uid://b8dd52unr0nek" path="res://scripts/board/cards/base_card.gd" id="2_evp0r"]
+[ext_resource type="Texture2D" uid="uid://dqkk8w4xxueng" path="res://assets/images/bodyguard_prosegur.png" id="2_r3ua7"]
+[ext_resource type="Shader" uid="uid://8k7h5n683cye" path="res://styles/shaders/card_hover.gdshader" id="2_xywe0"]
+[ext_resource type="Script" uid="uid://tasvlsvggvvf" path="res://scripts/board/cards/card_hover.gd" id="3_6dh24"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6dh24"]
+shader = ExtResource("2_xywe0")
+shader_parameter/fov = 30.0
+shader_parameter/cull_back = true
+shader_parameter/y_rot = 0.0
+shader_parameter/x_rot = 0.0
+shader_parameter/inset = 0.0
+shader_parameter/opacity = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dxen"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 1)
+
+[node name="GoToJailCard" type="Control" unique_id=1772909635]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 600.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_peu2u")
+script = ExtResource("2_evp0r")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=959285396]
+material = SubResource("ShaderMaterial_6dh24")
+layout_mode = 0
+offset_right = 600.0
+offset_bottom = 600.0
+script = ExtResource("3_6dh24")
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=24284271]
+handle_input_locally = false
+size = Vector2i(600, 600)
+render_target_update_mode = 4
+
+[node name="PanelContainer" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=1283559629]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2dxen")
+
+[node name="bg" type="ColorRect" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=1293432889]
+layout_mode = 2
+
+[node name="GoToLabel" type="Label" parent="SubViewportContainer/SubViewport" unique_id=148657105]
+offset_left = 475.0
+offset_top = 26.0
+offset_right = 614.0
+offset_bottom = 96.0
+rotation = 0.7853982
+size_flags_vertical = 1
+theme = ExtResource("1_peu2u")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 70
+text = "Ve a"
+horizontal_alignment = 1
+
+[node name="SecretaryLabel" type="Label" parent="SubViewportContainer/SubViewport" unique_id=434294299]
+offset_left = 61.00003
+offset_top = 311.00006
+offset_right = 388.00003
+offset_bottom = 381.00006
+rotation = 0.7853982
+size_flags_vertical = 1
+theme = ExtResource("1_peu2u")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 70
+text = "Secretaria"
+
+[node name="BodyguardLabel" type="TextureRect" parent="SubViewportContainer/SubViewport" unique_id=1537935622]
+offset_left = 330.0
+offset_top = -93.99997
+offset_right = 2894.6426
+offset_bottom = 2242.8828
+rotation = 0.7853982
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_r3ua7")

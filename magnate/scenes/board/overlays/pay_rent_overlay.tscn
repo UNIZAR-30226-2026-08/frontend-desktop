@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bme7v8a58kf1h"]
+
+[ext_resource type="Script" uid="uid://xtw1ni2dxdhf" path="res://scripts/board/overlays/pay_rent_overlay.gd" id="1_u4ko4"]
+[ext_resource type="PackedScene" uid="uid://vd87r5unxafe" path="res://scenes/board/cards/property_card.tscn" id="3_u4ko4"]
+[ext_resource type="PackedScene" uid="uid://bfcpwq3bljh8g" path="res://scenes/board/cards/server_card.tscn" id="4_ak61e"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="4_nxsm0"]
+
+[node name="PayRentOverlay" type="CanvasLayer" unique_id=417320456]
+script = ExtResource("1_u4ko4")
+
+[node name="PropertyCard" parent="." unique_id=589823767 instance=ExtResource("3_u4ko4")]
+unique_name_in_owner = true
+offset_left = 760.0
+offset_top = 200.0
+offset_right = 1160.0
+offset_bottom = 800.0
+
+[node name="ServerCard" parent="." unique_id=1408998470 instance=ExtResource("4_ak61e")]
+unique_name_in_owner = true
+offset_left = 760.0
+offset_top = 200.0
+offset_right = 1160.0
+offset_bottom = 800.0
+
+[node name="AnimatedButton" parent="." unique_id=175575919 instance=ExtResource("4_nxsm0")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -113.5
+offset_top = 360.0
+offset_right = 113.5
+offset_bottom = 410.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+text = "Pagar"

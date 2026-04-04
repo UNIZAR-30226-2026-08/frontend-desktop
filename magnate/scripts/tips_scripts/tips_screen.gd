@@ -73,3 +73,7 @@ func update_carousel(animate: bool):
 			card.scale = target_scale
 			card.modulate.a = target_alpha
 			card.position = Vector2(target_x - (card.size.x * target_scale.x / 2), center_y - (card.size.y * target_scale.y / 2))
+
+
+func _on_back_button_requested() -> void:
+	pass # Replace with function body.

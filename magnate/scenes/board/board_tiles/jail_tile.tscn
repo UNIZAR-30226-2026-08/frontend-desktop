@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://dtdx4dou1ljl6"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_brol5"]
+[ext_resource type="Texture2D" uid="uid://cafrfcpfyr8qm" path="res://assets/images/secretary.png" id="2_x1856"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dxen"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+
+[node name="JailTile" type="Control" unique_id=1772909635]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 160.0
+offset_bottom = 160.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_brol5")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1283559629]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2dxen")
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer" unique_id=394837070]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BackgroundWhite" type="ColorRect" parent="PanelContainer" unique_id=1293432889]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=1004195216]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -31.0
+offset_bottom = -33.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2dxen")
+
+[node name="BackgroundOrange" type="ColorRect" parent="PanelContainer2" unique_id=1695962800]
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.76371557, 0.95428234, 0.9999998, 1)
+
+[node name="Secretary Label" type="Label" parent="." unique_id=434294299]
+z_index = 1
+layout_mode = 0
+offset_left = 46.000004
+offset_top = 106.000015
+offset_right = 140.0
+offset_bottom = 126.000015
+rotation = -0.7853982
+size_flags_vertical = 1
+theme = ExtResource("1_brol5")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Secretaría"
+horizontal_alignment = 1
+
+[node name="CorridorLabel1" type="Label" parent="." unique_id=72071592]
+z_index = 1
+layout_mode = 0
+offset_left = 14.0
+offset_top = 139.0
+offset_right = 114.0
+offset_bottom = 154.0
+size_flags_vertical = 1
+theme = ExtResource("1_brol5")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 15
+text = "Acompañando"
+horizontal_alignment = 1
+
+[node name="CorridorLabel2" type="Label" parent="." unique_id=1541938273]
+z_index = 1
+layout_mode = 0
+offset_left = 139.0
+offset_top = 99.0
+offset_right = 212.0
+offset_bottom = 114.0
+rotation = -1.5707964
+size_flags_vertical = 1
+theme = ExtResource("1_brol5")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 15
+text = "a un amigo"
+horizontal_alignment = 1
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=1537935622]
+layout_mode = 0
+offset_left = -9.0
+offset_top = 59.0
+offset_right = 98.82401
+offset_bottom = 126.23091
+rotation = -0.7853982
+mouse_filter = 2
+texture = ExtResource("2_x1856")
+expand_mode = 1

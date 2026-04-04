@@ -2,6 +2,7 @@
 
 [ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="1_t60bq"]
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="2_0d83e"]
+[ext_resource type="Script" uid="uid://0qaq1s7nv1pv" path="res://scripts/home_scripts/home_screen.gd" id="3_yo4tc"]
 [ext_resource type="PackedScene" uid="uid://cpo0vkocad1pp" path="res://scenes/components/animated_icon_button.tscn" id="5_0d83e"]
 [ext_resource type="Texture2D" uid="uid://djd6n1vv7wucv" path="res://assets/images/logo.png" id="5_logo"]
 [ext_resource type="PackedScene" uid="uid://bipbji0mtu678" path="res://scenes/components/animated_icon_text_button.tscn" id="6_text_btn"]
@@ -34,6 +35,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_0d83e")
+script = ExtResource("3_yo4tc")
 
 [node name="MainLayout" type="VBoxContainer" parent="." unique_id=1795813452]
 layout_mode = 1
@@ -118,29 +120,14 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 32
 
-[node name="MarginContainer" type="MarginContainer" parent="MainLayout/GridContainer/HBoxContainer/RightColumn" unique_id=1529537715]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 45
-
-[node name="BtnAmigos" parent="MainLayout/GridContainer/HBoxContainer/RightColumn/MarginContainer" unique_id=601224972 instance=ExtResource("12_btn_scene")]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_base")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_base")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_base")
-theme_override_styles/focus = SubResource("StyleBoxFlat_btn_base")
-title_text = "AMIGOS"
-subtitle_text = "GESTIONA TU RED"
-icon_texture = ExtResource("9_friends")
-
 [node name="MarginContainer2" type="MarginContainer" parent="MainLayout/GridContainer/HBoxContainer/RightColumn" unique_id=342232460]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_bottom = 45
 
 [node name="BtnTienda" parent="MainLayout/GridContainer/HBoxContainer/RightColumn/MarginContainer2" unique_id=731100831 instance=ExtResource("12_btn_scene")]
+custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_base")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_base")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_base")
@@ -148,3 +135,7 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_btn_base")
 title_text = "TIENDA"
 subtitle_text = "COMPRA DE COSMÉTICOS"
 icon_texture = ExtResource("10_shop")
+
+[connection signal="pressed" from="MainLayout/GridContainer/HBoxContainer/LeftColumn/BtnPublica" to="." method="_on_btn_publica_pressed"]
+[connection signal="pressed" from="MainLayout/GridContainer/HBoxContainer/LeftColumn/BtnPrivada" to="." method="_on_btn_privada_pressed"]
+[connection signal="pressed" from="MainLayout/GridContainer/HBoxContainer/RightColumn/MarginContainer2/BtnTienda" to="." method="_on_btn_shop_pressed"]

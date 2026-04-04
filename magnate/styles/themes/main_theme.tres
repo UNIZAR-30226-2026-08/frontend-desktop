@@ -2,6 +2,31 @@
 
 [ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="1_ark2o"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hper1"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.365, 0.365, 1)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4plbq"]
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 120
+corner_radius_top_right = 120
+corner_radius_bottom_right = 120
+corner_radius_bottom_left = 120
+
 [sub_resource type="ImageTexture" id="ImageTexture_ark2o"]
 
 [sub_resource type="ImageTexture" id="ImageTexture_m4b6a"]
@@ -72,6 +97,22 @@ expand_margin_top = 10.0
 expand_margin_right = 20.0
 expand_margin_bottom = 10.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i85vh"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 7
+border_width_top = 7
+border_width_right = 7
+border_width_bottom = 7
+border_color = Color(1, 0.4117647, 0.38039216, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 40.0
+expand_margin_top = 10.0
+expand_margin_right = 20.0
+expand_margin_bottom = 10.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8sfn"]
 bg_color = Color(1, 1, 1, 1)
 
@@ -91,17 +132,56 @@ corner_radius_bottom_left = 100
 default_font = ExtResource("1_ark2o")
 BigButton/base_type = &"Button"
 BigButton/colors/font_color = Color(1, 1, 1, 1)
+BigButton/colors/font_disabled_color = Color(0, 0, 0, 1)
+BigButton/colors/font_focus_color = Color(0, 0, 0, 1)
+BigButton/colors/font_hover_color = Color(0, 0, 0, 1)
+BigButton/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+BigButton/colors/font_outline_color = Color(0, 0, 0, 1)
+BigButton/colors/font_pressed_color = Color(0, 0, 0, 1)
+BigButton/colors/icon_disabled_color = Color(0, 0, 0, 1)
+BigButton/colors/icon_focus_color = Color(0, 0, 0, 1)
+BigButton/colors/icon_hover_color = Color(0, 0, 0, 1)
+BigButton/colors/icon_hover_pressed_color = Color(0, 0, 0, 1)
+BigButton/colors/icon_normal_color = Color(0, 0, 0, 1)
+BigButton/colors/icon_pressed_color = Color(0, 0, 0, 1)
+BigButton/constants/align_to_largest_stylebox = 0
+BigButton/constants/h_separation = 0
+BigButton/constants/icon_max_width = 0
+BigButton/constants/outline_size = 0
 BigButton/font_sizes/font_size = 57
 BigButton/fonts/font = ExtResource("1_ark2o")
-BigButton/icons/checked = SubResource("ImageTexture_ark2o")
-BigButton/icons/unchecked = SubResource("ImageTexture_m4b6a")
-BigButton/styles/hover = SubResource("StyleBoxFlat_qj67h")
-BigButton/styles/hover_pressed = SubResource("StyleBoxFlat_y204k")
-BigButton/styles/normal = SubResource("StyleBoxFlat_qj67h")
-BigButton/styles/pressed = SubResource("StyleBoxFlat_y204k")
+BigButton/styles/disabled = SubResource("StyleBoxFlat_hper1")
+BigButton/styles/focus = SubResource("StyleBoxFlat_4plbq")
+BigButton/styles/hover = SubResource("StyleBoxFlat_4plbq")
+BigButton/styles/normal = SubResource("StyleBoxFlat_4plbq")
+BigButton/styles/pressed = SubResource("StyleBoxFlat_4plbq")
+BigButtonToggle/base_type = &"Button"
+BigButtonToggle/colors/font_color = Color(1, 1, 1, 1)
+BigButtonToggle/font_sizes/font_size = 57
+BigButtonToggle/fonts/font = ExtResource("1_ark2o")
+BigButtonToggle/icons/checked = SubResource("ImageTexture_ark2o")
+BigButtonToggle/icons/unchecked = SubResource("ImageTexture_m4b6a")
+BigButtonToggle/styles/hover = SubResource("StyleBoxFlat_qj67h")
+BigButtonToggle/styles/hover_pressed = SubResource("StyleBoxFlat_y204k")
+BigButtonToggle/styles/normal = SubResource("StyleBoxFlat_qj67h")
+BigButtonToggle/styles/pressed = SubResource("StyleBoxFlat_y204k")
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_disabled_color = Color(1, 1, 1, 1)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
 Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
 Button/font_sizes/font_size = 50
 Button/styles/disabled = SubResource("StyleBoxFlat_86xmx")
 Button/styles/focus = SubResource("StyleBoxFlat_ark2o")
@@ -118,5 +198,14 @@ LineEdit/constants/caret_width = 5
 LineEdit/font_sizes/font_size = 44
 LineEdit/styles/focus = SubResource("StyleBoxFlat_m4b6a")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_m4b6a")
+LineEditError/base_type = &"LineEdit"
+LineEditError/colors/caret_color = Color(0.28627452, 0.3137255, 0.34117648, 1)
+LineEditError/colors/font_color = Color(0.28627452, 0.3137255, 0.34117648, 1)
+LineEditError/colors/font_placeholder_color = Color(0.47058824, 0.50980395, 0.54509807, 1)
+LineEditError/colors/selection_color = Color(0.7607843, 0.9490196, 0.38039216, 1)
+LineEditError/constants/caret_width = 5
+LineEditError/font_sizes/font_size = 44
+LineEditError/styles/focus = SubResource("StyleBoxFlat_i85vh")
+LineEditError/styles/normal = SubResource("StyleBoxFlat_i85vh")
 Panel/styles/panel = SubResource("StyleBoxFlat_i8sfn")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_xuk5p")

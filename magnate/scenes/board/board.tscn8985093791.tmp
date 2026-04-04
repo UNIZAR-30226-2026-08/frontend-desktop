@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://osyh1204d63f"]
+
+[ext_resource type="Script" uid="uid://65ckidct12lw" path="res://scripts/board/board.gd" id="1_s78fa"]
+[ext_resource type="PackedScene" uid="uid://vldp6gc5cesj" path="res://scenes/board/camera_system.tscn" id="2_knosr"]
+[ext_resource type="Texture2D" uid="uid://67747f3hkkg" path="res://assets/images/background_ingame.jpg" id="2_q07he"]
+[ext_resource type="PackedScene" uid="uid://q4hdf1y6cwab" path="res://scenes/board/overlays/dice_roller_overlay.tscn" id="3_q07he"]
+
+[node name="Board" type="Node2D" unique_id=392167778]
+script = ExtResource("1_s78fa")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1876886405]
+custom_minimum_size = Vector2(1920, 1080)
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_q07he")
+
+[node name="Tiles" type="Node2D" parent="." unique_id=41079374]
+unique_name_in_owner = true
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=892608519]
+
+[node name="DiceRollerOverlay" parent="UI" unique_id=1117352625 instance=ExtResource("3_q07he")]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -300.0
+offset_right = 300.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CameraSystem" parent="." unique_id=250162375 instance=ExtResource("2_knosr")]
+unique_name_in_owner = true

@@ -2,7 +2,6 @@
 
 [ext_resource type="Theme" uid="uid://duaci3g2svraq" path="res://styles/themes/aux_teme.tres" id="1_7qrm5"]
 [ext_resource type="Script" uid="uid://bsy84ixv74js7" path="res://scripts/icon_button_tween.gd" id="2_new_script"]
-[ext_resource type="AudioStream" uid="uid://dv18pd6ydtscm" path="res://assets/audio/click.ogg" id="3_r14qg"]
 [ext_resource type="Texture2D" uid="uid://c13n3umufco8c" path="res://assets/icons/back-arrow1.svg" id="4_3c3w2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3c3w2"]
@@ -51,17 +50,12 @@ offset_right = 96.0
 offset_bottom = 96.0
 pivot_offset = Vector2(48, 48)
 theme = ExtResource("1_7qrm5")
-theme_override_styles/focus = SubResource("StyleBoxFlat_hwxbp")
-theme_override_styles/hover = SubResource("StyleBoxFlat_2bvsl")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_u7p0u")
 theme_override_styles/normal = SubResource("StyleBoxFlat_3c3w2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_u7p0u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2bvsl")
+theme_override_styles/focus = SubResource("StyleBoxFlat_hwxbp")
 script = ExtResource("2_new_script")
 icon_texture = ExtResource("4_3c3w2")
-
-[node name="ClickSFXStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2021435628]
-stream = ExtResource("3_r14qg")
-pitch_scale = 0.5
-bus = &"SFX"
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=2097752716]
 layout_mode = 1

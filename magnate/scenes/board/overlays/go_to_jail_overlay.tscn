@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://cxx4hkwvq4i31"]
+
+[ext_resource type="Script" uid="uid://b1l4jwv2xm3ih" path="res://scripts/board/overlays/basic_overlay.gd" id="1_6fh4l"]
+[ext_resource type="PackedScene" uid="uid://dyi5gp05ip7iq" path="res://scenes/board/cards/go_to_jail_card.tscn" id="3_2my8m"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="4_04e6w"]
+
+[node name="GoToJailOverlay" type="CanvasLayer" unique_id=417320456 node_paths=PackedStringArray("card", "button")]
+script = ExtResource("1_6fh4l")
+button_text = "Aceptar"
+card = NodePath("GoToJailCard")
+button = NodePath("AnimatedButton")
+
+[node name="GoToJailCard" parent="." unique_id=1772909635 instance=ExtResource("3_2my8m")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -325.0
+offset_right = 300.0
+offset_bottom = 275.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimatedButton" parent="." unique_id=175575919 instance=ExtResource("4_04e6w")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -113.5
+offset_top = 360.0
+offset_right = 113.5
+offset_bottom = 410.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+text = "Aceptar"

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ciy5qxnho1tlx"]
 
-[ext_resource type="Script" uid="uid://cronbsf4ku44s" path="res://scripts/lobby_scripts/player_row.gd" id="1_wmoqm"]
+[ext_resource type="Script" uid="uid://cronbsf4ku44s" path="res://scripts/ending_results/player_row.gd" id="1_wmoqm"]
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="2_0es8g"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0es8g"]
@@ -31,13 +31,14 @@ layout_mode = 2
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 
-[node name="player_icon" type="TextureRect" parent="HBoxContainer" unique_id=1481942632]
-custom_minimum_size = Vector2(100, 100)
+[node name="medal" type="TextureRect" parent="HBoxContainer" unique_id=775689904]
+custom_minimum_size = Vector2(66.66, 100)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
+expand_mode = 1
 
-[node name="Control2" type="Control" parent="HBoxContainer" unique_id=1255224128]
+[node name="Control4" type="Control" parent="HBoxContainer" unique_id=1523597431]
 custom_minimum_size = Vector2(15, 0)
 layout_mode = 2
 
@@ -48,7 +49,7 @@ theme = ExtResource("2_0es8g")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 50
 
-[node name="player_info" type="Label" parent="HBoxContainer" unique_id=1536375586]
+[node name="player_points" type="Label" parent="HBoxContainer" unique_id=1536375586]
 layout_mode = 2
 size_flags_horizontal = 10
 theme = ExtResource("2_0es8g")

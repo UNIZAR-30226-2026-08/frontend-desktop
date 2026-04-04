@@ -4,8 +4,13 @@
 [ext_resource type="FontFile" uid="uid://cel767gfqwf3q" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBoldItalic.ttf" id="2_eiykd"]
 
 [node name="LogoShadow" type="Label" unique_id=1697976471]
-offset_right = 831.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -415.5
+offset_right = 415.5
 offset_bottom = 170.0
+grow_horizontal = 2
 theme = ExtResource("1_hwfsq")
 theme_override_colors/font_color = Color(0.7107477, 0.49731326, 3.85046e-07, 1)
 theme_override_fonts/font = ExtResource("2_eiykd")
@@ -16,9 +21,14 @@ vertical_alignment = 1
 
 [node name="Logo" type="Label" parent="." unique_id=1131835336]
 layout_mode = 1
-offset_top = -6.0
-offset_right = 831.0
-offset_bottom = 164.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -415.5
+offset_top = -5.0
+offset_right = 415.5
+offset_bottom = 165.0
+grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 0.7882353, 0.44313726, 1)
 theme_override_fonts/font = ExtResource("2_eiykd")
 theme_override_font_sizes/font_size = 170

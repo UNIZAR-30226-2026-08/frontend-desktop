@@ -22,11 +22,14 @@ buses/default_bus_layout="uid://olwy1fnpvxcd"
 [autoload]
 
 Globals="*uid://b4pmg3hfq0uag"
+SceneTransition="*uid://t0m5rvjixvms"
+AudioSystem="*uid://ch72ng0eupl0o"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/mode=3
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
@@ -35,6 +38,10 @@ window/stretch/aspect="expand"
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/dice_roller/plugin.cfg")
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
@@ -42,5 +49,4 @@ version_control/autoload_on_startup=true
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+anti_aliasing/quality/msaa_2d=3

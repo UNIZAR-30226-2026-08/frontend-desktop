@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bdwovms75w8l7"]
+[gd_scene format=3 uid="uid://bdwovms75w8l7"]
 
 [ext_resource type="Script" uid="uid://dpyds4nbonkiu" path="res://scripts/home_scripts/mode_button.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://cbmxs65jj0bgh" path="res://assets/images/bg_city_white.jpg" id="2_bg"]
 [ext_resource type="Texture2D" uid="uid://cwrxutje1ufwq" path="res://assets/icons/gamepad.svg" id="3_icon"]
 [ext_resource type="FontFile" uid="uid://cel767gfqwf3q" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBoldItalic.ttf" id="4_5nakb"]
-[ext_resource type="AudioStream" uid="uid://dv18pd6ydtscm" path="res://assets/audio/click.ogg" id="4_e31iq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mask"]
 bg_color = Color(1, 1, 1, 1)
@@ -32,8 +31,8 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_mask")
-theme_override_styles/hover = SubResource("StyleBoxFlat_mask")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_mask")
+theme_override_styles/hover = SubResource("StyleBoxFlat_mask")
 theme_override_styles/focus = SubResource("StyleBoxFlat_mask")
 script = ExtResource("1_script")
 title_text = "MODE"
@@ -106,6 +105,3 @@ theme_override_constants/outline_size = 0
 theme_override_font_sizes/font_size = 18
 text = "Description"
 horizontal_alignment = 1
-
-[node name="ClickSFXStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1461197883]
-stream = ExtResource("4_e31iq")

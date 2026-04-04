@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://38yhgyxt25m4"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_7mk8p"]
+[ext_resource type="Texture2D" uid="uid://bc8h4r4noye3d" path="res://assets/images/tram.png" id="2_7mk8p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dxen"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+
+[node name="TramTile" type="Control" unique_id=1772909635]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 120.0
+offset_bottom = 120.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_7mk8p")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1283559629]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2dxen")
+
+[node name="bg" type="ColorRect" parent="PanelContainer" unique_id=1293432889]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="GoToLabel" type="Label" parent="." unique_id=148657105]
+layout_mode = 0
+offset_left = 6.000004
+offset_top = 63.0
+offset_right = 86.0
+offset_bottom = 86.0
+rotation = -0.7853982
+size_flags_vertical = 1
+theme = ExtResource("1_7mk8p")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 19
+text = "TRANVÍA"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=471471109]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 31.0
+offset_top = 45.0
+offset_right = -10.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_7mk8p")
+expand_mode = 1

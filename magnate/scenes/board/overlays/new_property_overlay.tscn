@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://bormjc5jqq80j"]
+
+[ext_resource type="Script" uid="uid://d1w6ev76b7ide" path="res://scripts/board/overlays/new_property_overlay.gd" id="1_eu44f"]
+[ext_resource type="PackedScene" uid="uid://vd87r5unxafe" path="res://scenes/board/cards/property_card.tscn" id="2_iwjru"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="4_eu44f"]
+[ext_resource type="PackedScene" uid="uid://bfcpwq3bljh8g" path="res://scenes/board/cards/server_card.tscn" id="4_iwjru"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iwjru"]
+bg_color = Color(0.3372549, 0.38039216, 0.3647059, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 45.0
+expand_margin_top = 10.0
+expand_margin_right = 45.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eu44f"]
+bg_color = Color(0.3372549, 0.38039216, 0.3647059, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 45.0
+expand_margin_top = 10.0
+expand_margin_right = 45.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0m1iy"]
+bg_color = Color(0.3372549, 0.38039216, 0.3647059, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 45.0
+expand_margin_top = 10.0
+expand_margin_right = 45.0
+expand_margin_bottom = 10.0
+
+[node name="NewPropertyOverlay" type="CanvasLayer" unique_id=417320456]
+script = ExtResource("1_eu44f")
+
+[node name="PropertyCard" parent="." unique_id=589823767 instance=ExtResource("2_iwjru")]
+unique_name_in_owner = true
+offset_left = 760.0
+offset_top = 200.0
+offset_right = 1160.0
+offset_bottom = 800.0
+
+[node name="ServerCard" parent="." unique_id=919827841 instance=ExtResource("4_iwjru")]
+unique_name_in_owner = true
+offset_left = 760.0
+offset_top = 200.0
+offset_right = 1160.0
+offset_bottom = 800.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2146086424]
+offset_left = 500.0
+offset_top = 900.0
+offset_right = 1487.0
+offset_bottom = 970.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="BuyButton" parent="HBoxContainer" unique_id=175575919 instance=ExtResource("4_eu44f")]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Comprar por 100€"
+
+[node name="Control" type="Control" parent="HBoxContainer" unique_id=737730637]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="AuctionButton" parent="HBoxContainer" unique_id=1018487489 instance=ExtResource("4_eu44f")]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_iwjru")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_eu44f")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0m1iy")
+text = "Poner a subasta"

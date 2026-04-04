@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://br42lbhn0hqum"]
+
+[ext_resource type="Script" uid="uid://b1l4jwv2xm3ih" path="res://scripts/board/overlays/basic_overlay.gd" id="1_rjcgp"]
+[ext_resource type="PackedScene" uid="uid://bx7ia06uadx86" path="res://scenes/board/cards/parking_card.tscn" id="3_pc0x5"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="4_eqsbh"]
+
+[node name="ParkingOverlay" type="CanvasLayer" unique_id=417320456 node_paths=PackedStringArray("card")]
+script = ExtResource("1_rjcgp")
+button_text = "Recolectar"
+card = NodePath("ParkingCard")
+
+[node name="ParkingCard" parent="." unique_id=1772909635 instance=ExtResource("3_pc0x5")]
+offset_left = 660.0
+offset_top = 200.0
+offset_right = 1260.0
+offset_bottom = 800.0
+
+[node name="AnimatedButton" parent="." unique_id=175575919 instance=ExtResource("4_eqsbh")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -113.5
+offset_top = 360.0
+offset_right = 113.5
+offset_bottom = 410.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+text = "Recolectar"

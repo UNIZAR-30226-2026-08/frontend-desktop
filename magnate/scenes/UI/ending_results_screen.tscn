@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://b04a4l0a8vgfr"]
+
+[ext_resource type="Script" uid="uid://bg4ecfpwnrfii" path="res://scripts/ending_results/results_screen.gd" id="1_xlktk"]
+[ext_resource type="PackedScene" uid="uid://ciy5qxnho1tlx" path="res://scenes/components/player_row.tscn" id="2_mnjdn"]
+[ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="3_hlbtm"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="4_k35iv"]
+[ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="5_obo4n"]
+
+[node name="ending_results_screen" type="Control" unique_id=1463536821]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xlktk")
+player_row_scene = ExtResource("2_mnjdn")
+
+[node name="Background" type="Panel" parent="." unique_id=243336356]
+material = ExtResource("3_hlbtm")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_k35iv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1440373406]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" parent="VBoxContainer" unique_id=93527095 instance=ExtResource("5_obo4n")]
+layout_mode = 2
+title = "Final de partida"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=379726644]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/margin_top = 75
+theme_override_constants/margin_bottom = 75
+
+[node name="PlayerList" type="VBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=2024311381]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 20

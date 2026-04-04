@@ -1,0 +1,375 @@
+[gd_scene format=3 uid="uid://b1ddwdjk7emik"]
+
+[ext_resource type="Shader" uid="uid://dk6h3t6f17nd" path="res://styles/shaders/strip_background.gdshader" id="1_8xlq0"]
+[ext_resource type="Script" uid="uid://cfs8n8yacdmbt" path="res://scripts/board/trading/trade_overlay.gd" id="1_e845h"]
+[ext_resource type="StyleBox" uid="uid://b6a3pudck6j8k" path="res://styles/ingame/big_box_trading.tres" id="2_w501p"]
+[ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="3_e845h"]
+[ext_resource type="StyleBox" uid="uid://cnvygwbyqya08" path="res://styles/ingame/colordot.tres" id="4_fdl27"]
+[ext_resource type="FontFile" uid="uid://ch6rxfleos2dg" path="res://assets/fonts/LTSuperior/LTSuperior-BlackItalic.ttf" id="5_c0aso"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="7_elayv"]
+[ext_resource type="StyleBox" uid="uid://dfygdwn62tpph" path="res://styles/ingame/cancel_button.tres" id="8_bmfss"]
+[ext_resource type="StyleBox" uid="uid://cdb2i2qip8v2j" path="res://styles/ingame/tradebox.tres" id="9_cga7a"]
+[ext_resource type="StyleBox" uid="uid://wrogv65gicpm" path="res://styles/ingame/trade_line_edit.tres" id="9_e845h"]
+[ext_resource type="FontFile" uid="uid://pqt8tux3lbt7" path="res://assets/fonts/LTSuperior/LTSuperior-Light.ttf" id="10_u30tb"]
+[ext_resource type="StyleBox" uid="uid://dsj8j0m143ej3" path="res://styles/ingame/add_property_button.tres" id="11_w501p"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p3geo"]
+shader = ExtResource("1_8xlq0")
+shader_parameter/color_b = Color(0.95, 0.95, 0.95, 1)
+shader_parameter/color_a = Color(1, 1, 1, 1)
+shader_parameter/divisions = 10.0000004275
+shader_parameter/angle = 1.0
+
+[node name="TradeOverlay" type="CanvasLayer" unique_id=1262031044]
+script = ExtResource("1_e845h")
+
+[node name="TradeUI" type="Control" parent="." unique_id=826910048]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftMarginBox" type="MarginContainer" parent="TradeUI" unique_id=1728989837]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 500.0
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="LeftPlayerBox" type="PanelContainer" parent="TradeUI/LeftMarginBox" unique_id=683455346]
+material = SubResource("ShaderMaterial_p3geo")
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_w501p")
+
+[node name="Margin" type="MarginContainer" parent="TradeUI/LeftMarginBox/LeftPlayerBox" unique_id=162729751]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBox" type="VBoxContainer" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin" unique_id=1660605484]
+layout_mode = 2
+
+[node name="Label1" type="Label" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox" unique_id=1106838480]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.40625, 0.40625, 0.40625, 1)
+theme_override_fonts/font = ExtResource("3_e845h")
+theme_override_font_sizes/font_size = 20
+text = "TUS ACTIVOS"
+
+[node name="MidSpace" type="Control" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox" unique_id=1364722091]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="HeaderInfo" type="HBoxContainer" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox" unique_id=1536269393]
+layout_mode = 2
+
+[node name="PlayerColor1" type="Panel" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox/HeaderInfo" unique_id=446229698]
+unique_name_in_owner = true
+modulate = Color(1, 0.16015625, 0.16015625, 1)
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("4_fdl27")
+
+[node name="MidSpace" type="Control" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox/HeaderInfo" unique_id=1402664308]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="PlayerName1" type="Label" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox/HeaderInfo" unique_id=1235944556]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_c0aso")
+theme_override_font_sizes/font_size = 50
+text = "PLAYER 1"
+vertical_alignment = 1
+
+[node name="MidSpace2" type="Control" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox" unique_id=1201314534]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox" unique_id=851440568]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.40625, 0.40625, 0.40625, 1)
+theme_override_fonts/font = ExtResource("3_e845h")
+theme_override_font_sizes/font_size = 20
+text = "TU DINERO A OFRECER"
+
+[node name="MidSpace3" type="Control" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox" unique_id=2144325583]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
+[node name="OfferLineEdit" type="LineEdit" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox" unique_id=380271886]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.27058825, 0.27058825, 0.27058825, 1)
+theme_override_colors/font_placeholder_color = Color(0.72265625, 0.72265625, 0.72265625, 1)
+theme_override_fonts/font = ExtResource("3_e845h")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = ExtResource("9_e845h")
+theme_override_styles/read_only = ExtResource("9_e845h")
+theme_override_styles/focus = ExtResource("9_e845h")
+placeholder_text = "Max. 870"
+max_length = 5
+
+[node name="MidSpace4" type="Control" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox" unique_id=820704884]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+
+[node name="TitleProps" type="Label" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox" unique_id=805731370]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.40625, 0.40625, 0.40625, 1)
+theme_override_fonts/font = ExtResource("3_e845h")
+theme_override_font_sizes/font_size = 20
+text = "TUS PROPIEDADES EN EL TRATO"
+
+[node name="MidSpace5" type="Control" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox" unique_id=1932067757]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="TradeBox" type="PanelContainer" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox" unique_id=979027318]
+custom_minimum_size = Vector2(0, 500)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("9_cga7a")
+
+[node name="Margin" type="MarginContainer" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox/TradeBox" unique_id=1263593182]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 30
+
+[node name="VBox" type="VBoxContainer" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox/TradeBox/Margin" unique_id=447174427]
+layout_mode = 2
+
+[node name="Scroll" type="ScrollContainer" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox/TradeBox/Margin/VBox" unique_id=947139069]
+custom_minimum_size = Vector2(0, 370)
+layout_mode = 2
+
+[node name="LeftPropertiesList" type="VBoxContainer" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox/TradeBox/Margin/VBox/Scroll" unique_id=35156068]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MidSpace6" type="Control" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox/TradeBox/Margin/VBox" unique_id=763563809]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="AddPropertyButton1" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox/TradeBox/Margin/VBox" unique_id=175575919 instance=ExtResource("7_elayv")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("10_u30tb")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = ExtResource("11_w501p")
+theme_override_styles/pressed = ExtResource("11_w501p")
+theme_override_styles/hover = ExtResource("11_w501p")
+theme_override_styles/disabled = ExtResource("11_w501p")
+theme_override_styles/focus = ExtResource("11_w501p")
+text = "+ AÑADIR PROPIEDADES"
+
+[node name="CancelTradeButton" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox" unique_id=2002657997 instance=ExtResource("7_elayv")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_colors/font_color = Color(0.8392157, 0.09803922, 0.09803922, 1)
+theme_override_colors/font_focus_color = Color(0.8392157, 0.09803922, 0.09803922, 1)
+theme_override_colors/font_pressed_color = Color(0.8392157, 0.09803922, 0.09803922, 1)
+theme_override_colors/font_hover_color = Color(0.8392157, 0.09803922, 0.09803922, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.8392157, 0.09803922, 0.09803922, 1)
+theme_override_colors/font_disabled_color = Color(0.8392157, 0.09803922, 0.09803922, 1)
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = ExtResource("8_bmfss")
+theme_override_styles/pressed = ExtResource("8_bmfss")
+theme_override_styles/hover = ExtResource("8_bmfss")
+theme_override_styles/disabled = ExtResource("8_bmfss")
+theme_override_styles/focus = ExtResource("8_bmfss")
+text = "CANCELAR NEGOCIACIÓN"
+
+[node name="RightMarginBox" type="MarginContainer" parent="TradeUI" unique_id=21825662]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -500.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="RightPlayerBox" type="PanelContainer" parent="TradeUI/RightMarginBox" unique_id=297506142]
+material = SubResource("ShaderMaterial_p3geo")
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_w501p")
+
+[node name="Margin" type="MarginContainer" parent="TradeUI/RightMarginBox/RightPlayerBox" unique_id=1844716652]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBox" type="VBoxContainer" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin" unique_id=466186195]
+layout_mode = 2
+
+[node name="Label1" type="Label" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox" unique_id=127709543]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.40625, 0.40625, 0.40625, 1)
+theme_override_fonts/font = ExtResource("3_e845h")
+theme_override_font_sizes/font_size = 20
+text = "SUS ACTIVOS"
+
+[node name="MidSpace" type="Control" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox" unique_id=1835941330]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="HeaderInfo" type="HBoxContainer" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox" unique_id=1925325428]
+layout_mode = 2
+
+[node name="PlayerColor2" type="Panel" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox/HeaderInfo" unique_id=1142815062]
+unique_name_in_owner = true
+modulate = Color(1, 0.5541667, 0.1607843, 1)
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("4_fdl27")
+
+[node name="MidSpace" type="Control" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox/HeaderInfo" unique_id=1074479335]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="PlayerName2" type="Label" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox/HeaderInfo" unique_id=1019860699]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_c0aso")
+theme_override_font_sizes/font_size = 50
+text = "PLAYER 2"
+vertical_alignment = 1
+
+[node name="MidSpace2" type="Control" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox" unique_id=1792911437]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox" unique_id=375469017]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.40625, 0.40625, 0.40625, 1)
+theme_override_fonts/font = ExtResource("3_e845h")
+theme_override_font_sizes/font_size = 20
+text = "SU DINERO A OFRECER"
+
+[node name="MidSpace3" type="Control" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox" unique_id=802124778]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
+[node name="RequestLineEdit" type="LineEdit" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox" unique_id=100834171]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.27058825, 0.27058825, 0.27058825, 1)
+theme_override_colors/font_placeholder_color = Color(0.72265625, 0.72265625, 0.72265625, 1)
+theme_override_fonts/font = ExtResource("3_e845h")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = ExtResource("9_e845h")
+theme_override_styles/read_only = ExtResource("9_e845h")
+theme_override_styles/focus = ExtResource("9_e845h")
+placeholder_text = "Max. 1550"
+max_length = 5
+
+[node name="MidSpace4" type="Control" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox" unique_id=971930953]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+
+[node name="TitleProps" type="Label" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox" unique_id=1780166586]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.40625, 0.40625, 0.40625, 1)
+theme_override_fonts/font = ExtResource("3_e845h")
+theme_override_font_sizes/font_size = 20
+text = "SUS PROPIEDADES EN EL TRATO"
+
+[node name="MidSpace5" type="Control" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox" unique_id=1597532324]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="TradeBox" type="PanelContainer" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox" unique_id=137628945]
+custom_minimum_size = Vector2(0, 500)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("9_cga7a")
+
+[node name="Margin" type="MarginContainer" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox/TradeBox" unique_id=2107086776]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 30
+
+[node name="VBox" type="VBoxContainer" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox/TradeBox/Margin" unique_id=610622599]
+layout_mode = 2
+
+[node name="Scroll" type="ScrollContainer" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox/TradeBox/Margin/VBox" unique_id=719295146]
+custom_minimum_size = Vector2(0, 370)
+layout_mode = 2
+
+[node name="RightPropertiesList" type="VBoxContainer" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox/TradeBox/Margin/VBox/Scroll" unique_id=680621232]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MidSpace6" type="Control" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox/TradeBox/Margin/VBox" unique_id=1856968022]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="AddPropertyButton2" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox/TradeBox/Margin/VBox" unique_id=1013359151 instance=ExtResource("7_elayv")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("10_u30tb")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = ExtResource("11_w501p")
+theme_override_styles/pressed = ExtResource("11_w501p")
+theme_override_styles/hover = ExtResource("11_w501p")
+theme_override_styles/disabled = ExtResource("11_w501p")
+theme_override_styles/focus = ExtResource("11_w501p")
+text = "+ AÑADIR PROPIEDADES"
+
+[node name="SendOfferButton" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox" unique_id=978308264 instance=ExtResource("7_elayv")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_font_sizes/font_size = 25
+text = "PROPONER TRATO"
+
+[connection signal="pressed" from="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox/TradeBox/Margin/VBox/AddPropertyButton1" to="." method="_on_add_left_btn_pressed"]
+[connection signal="pressed" from="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox/TradeBox/Margin/VBox/AddPropertyButton2" to="." method="_on_add_right_btn_pressed"]

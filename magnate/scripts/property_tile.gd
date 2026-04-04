@@ -1,21 +1,14 @@
-extends Container
+extends PanelContainer
 
-# Children references
-@export var child_property_color: ColorRect
-@export var child_property_name: Label
-@export var child_property_price: Label
+@onready var property_price: Label = %PropertyPrice
+@onready var property_name: Label = %PropertyName
+@onready var property_color: ColorRect = %PropertyColor
 
-# Exported values
-@export_multiline var property_name: String = "Property\nname"
-@export var property_color: Color = Globals.BLACK
-@export_range(0, 1000000) var property_price: int = 999
+func set_property_name(_name: String) -> void:
+	property_name.text = _name
 
-# Initializes children values to external
-func init_children() -> void:
-	child_property_color.color = property_color
-	child_property_name.text = property_name
-	child_property_price.text = "$" + str(property_price)
+func set_property_price(price: int) -> void:
+	property_price.text = Utils.to_currency_text(price)
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	init_children()
+func set_property_color(color: Color) -> void:
+	property_color.color = color
