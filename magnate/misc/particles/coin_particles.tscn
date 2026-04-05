@@ -36,7 +36,6 @@ corner_radius_bottom_left = 50
 [node name="BillParticles" type="Node2D" unique_id=503271189]
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1351523169]
-position = Vector2(697, 338)
 texture = SubResource("ViewportTexture_bfuom")
 lifetime = 1.5
 process_material = SubResource("ParticleProcessMaterial_n6p08")

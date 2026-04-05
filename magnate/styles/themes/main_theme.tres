@@ -128,6 +128,23 @@ corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lfl0x"]
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_go3kq"]
+bg_color = Color(1, 0.30479145, 0.49194324, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
 [resource]
 default_font = ExtResource("1_ark2o")
 BigButton/base_type = &"Button"
@@ -209,3 +226,5 @@ LineEditError/styles/focus = SubResource("StyleBoxFlat_i85vh")
 LineEditError/styles/normal = SubResource("StyleBoxFlat_i85vh")
 Panel/styles/panel = SubResource("StyleBoxFlat_i8sfn")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_xuk5p")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_lfl0x")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_go3kq")
