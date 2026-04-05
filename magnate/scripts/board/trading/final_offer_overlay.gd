@@ -5,7 +5,6 @@ signal offer_accepted
 signal offer_rejected
 
 # === REFERENCIA AL COMPONENTE DE PROPIEDAD ===
-# ¡Asegúrate de poner la ruta correcta a tu escena de la fila de propiedad!
 const PROPERTY_ITEM_SCENE = preload("res://scenes/board/players/offer_property_item.tscn")
 
 # === REFERENCIAS: COLUMNA IZQUIERDA (TÚ) ===
@@ -24,6 +23,8 @@ const PROPERTY_ITEM_SCENE = preload("res://scenes/board/players/offer_property_i
 @onready var accept_trade_butt: Button = %AcceptTradeButton
 
 func _ready() -> void:
+	super()
+	
 	# Conectamos los botones a sus funciones
 	cancel_trade_butt.pressed.connect(_on_cancel_pressed)
 	accept_trade_butt.pressed.connect(_on_accept_pressed)
@@ -98,11 +99,11 @@ func _clear_lists() -> void:
 # ==========================================
 
 func _on_accept_pressed() -> void:
-	print("Trato aceptado")
+	Utils.debug("Trato aceptado")
 	offer_accepted.emit()
-	hide() # O queue_free(), según cómo gestiones la UI
+	queue_free()
 
 func _on_cancel_pressed() -> void:
-	print("Trato rechazado")
+	Utils.debug("Trato rechazado")
 	offer_rejected.emit()
-	hide() # O queue_free()
+	queue_free()

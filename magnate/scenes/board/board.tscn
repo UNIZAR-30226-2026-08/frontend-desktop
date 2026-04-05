@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://65ckidct12lw" path="res://scripts/board/board.gd" id="1_s78fa"]
 [ext_resource type="PackedScene" uid="uid://vldp6gc5cesj" path="res://scenes/board/camera_system.tscn" id="2_knosr"]
-[ext_resource type="PackedScene" path="res://scenes/board/overlays/dice_roller_overlay.tscn" id="3_q07he"]
+[ext_resource type="PackedScene" uid="uid://q4hdf1y6cwab" path="res://scenes/board/overlays/dice_roller_overlay.tscn" id="3_q07he"]
 [ext_resource type="PackedScene" uid="uid://cmb27vcs4ag61" path="res://assets/models/bg/bg.glb" id="5_kymhv"]
 
 [node name="Board" type="Node2D" unique_id=392167778]
@@ -38,37 +38,37 @@ offset_bottom = 0.0
 [node name="bg" parent="3DWorld/SubViewPort" unique_id=794365271 instance=ExtResource("5_kymhv")]
 transform = Transform3D(3.68, 0, 0, 0, 3.68, 0, 0, 0, 3.68, 0, 0, 0)
 
-[node name="train-electric-subway-b" parent="3DWorld/SubViewPort/bg" index="91" unique_id=137601570]
+[node name="train-electric-subway-b" parent="3DWorld/SubViewPort/bg" index="91" unique_id=2002399408]
 transform = Transform3D(-0.005, -4.3312576e-09, 1.8932527e-16, 0, -2.1855694e-10, -0.005, 4.3312576e-09, -0.005, 2.1855694e-10, -7.000006, 0, 15.994117)
 
-[node name="garbage-truck" parent="3DWorld/SubViewPort/bg" index="248" unique_id=1045665301]
+[node name="garbage-truck" parent="3DWorld/SubViewPort/bg" index="248" unique_id=1667786609]
 transform = Transform3D(0.003, 9.775242e-10, -4.2728938e-17, 0, -1.3113416e-10, -0.003, -9.775242e-10, 0.003, -1.3113416e-10, 8, 1.1013412e-13, -12)
 
-[node name="police" parent="3DWorld/SubViewPort/bg" index="249" unique_id=1304641122]
+[node name="police" parent="3DWorld/SubViewPort/bg" index="249" unique_id=561666384]
 transform = Transform3D(2.2649371e-10, 0.003, -1.3113416e-10, 0, -1.3113416e-10, -0.003, -0.003, 2.2649371e-10, -9.900354e-18, -15, 0, -2.0000002)
 
-[node name="suv" parent="3DWorld/SubViewPort/bg" index="250" unique_id=1108356580]
+[node name="suv" parent="3DWorld/SubViewPort/bg" index="250" unique_id=1246962854]
 transform = Transform3D(-1.5616457e-09, -0.003, 1.3113416e-10, 0, -1.3113416e-10, -0.003, 0.003, -1.5616457e-09, 6.8261704e-17, 14.42366, -9.2723013e-07, 7.9999995)
 
-[node name="taxi" parent="3DWorld/SubViewPort/bg" index="251" unique_id=146692518]
+[node name="taxi" parent="3DWorld/SubViewPort/bg" index="251" unique_id=1584623482]
 transform = Transform3D(5.841216e-10, -0.0030000003, 1.3113416e-10, 0, -1.3113417e-10, -0.003, 0.0030000003, 5.841216e-10, -2.5532763e-17, 14.406095, -7.105431e-15, 4.999999)
 
-[node name="sedan" parent="3DWorld/SubViewPort/bg" index="257" unique_id=855079852]
+[node name="sedan" parent="3DWorld/SubViewPort/bg" index="257" unique_id=59829109]
 transform = Transform3D(-0.0030000003, -1.1682432e-09, 5.1065525e-17, 0, -1.3113417e-10, -0.003, 1.1682432e-09, -0.0030000003, 1.3113416e-10, -7.971738, -8.609216e-14, 8.989348)
 
-[node name="body" parent="3DWorld/SubViewPort/bg/sedan" index="0" unique_id=122190857]
+[node name="body" parent="3DWorld/SubViewPort/bg/sedan" index="0" unique_id=214199262]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.832571e-05, -2.5001128, -15)
 
-[node name="wheel-back-left" parent="3DWorld/SubViewPort/bg/sedan" index="1" unique_id=1868112390]
+[node name="wheel-back-left" parent="3DWorld/SubViewPort/bg/sedan" index="1" unique_id=1115822773]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.000055, -66.0001, -30)
 
-[node name="wheel-front-left" parent="3DWorld/SubViewPort/bg/sedan" index="3" unique_id=456586761]
+[node name="wheel-front-left" parent="3DWorld/SubViewPort/bg/sedan" index="3" unique_id=1188768225]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 65.9999, -29.999998)
 
-[node name="boat-speed-a" parent="3DWorld/SubViewPort/bg" index="258" unique_id=1386953369]
+[node name="boat-speed-a" parent="3DWorld/SubViewPort/bg" index="258" unique_id=1436743836]
 transform = Transform3D(0.003, 0, 0, 0, -1.3113416e-10, -0.003, 0, 0.003, -1.3113416e-10, -4.3, -0.22725089, -4.1997237)
 
-[node name="AnimationPlayer" parent="3DWorld/SubViewPort/bg" index="296" unique_id=1343021439]
+[node name="AnimationPlayer" parent="3DWorld/SubViewPort/bg" index="296" unique_id=1023336638]
 autoplay = &"Scene"
 
 [node name="Tiles" type="Node2D" parent="." unique_id=41079374]

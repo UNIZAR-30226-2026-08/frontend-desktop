@@ -1,6 +1,6 @@
 extends Node2D
 
-const DEBUG_MODE: int = 3
+const DEBUG_MODE: int = 1
 
 @onready var camera_system: MagnateCameraSystem = %CameraSystem
 @onready var tile_parent_node: Node2D = %Tiles
@@ -75,6 +75,16 @@ func _ready() -> void:
 	elif DEBUG_MODE == 3:
 		_run_debug_offer_scenario() # NUEVO MODO DE DEBUG
 
+func _on_open_settings_requested() -> void:
+	var settings = SETTINGS_OVERLAY_SCENE.instantiate()
+	add_child(settings)
+	
+func _on_hud_roll_requested() -> void:
+	controls_hud.set_roll_disabled(true)
+	
+	if dice_roller_overlay:
+		dice_roller_overlay.show()
+
 # ============
 #  Dice logic
 # ============
@@ -103,17 +113,20 @@ func _on_dice_result_received(total: int) -> void:
 		var model: PlayerModel = players[0]["model"]
 		var token: PlayerToken = players[0]["token"]
 		
-		var test_path: Array[String] = ["000", "001", "002", "020"]
+		var test_path: Array[String] = ["001", "002", "003", "004", "011", "012", "013", "014", "020"]
 		var path_positions: Array[Vector2] = []
 		
 		for step_id in test_path:
 			if tile_manager.tile_entities.has(step_id):
 				var step_tile = tile_manager.tile_entities[step_id]
 				path_positions.append(step_tile.position + step_tile.pivot_offset)
-				
+		
 		if not path_positions.is_empty():
+			camera_system.follow_node(token, Vector2(2, 2))
+			await camera_system.stopped
 			await token.move_to(path_positions)
-			
+			camera_system.main_camera()
+		
 		model.move_to_tile("020")
 		TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
 		overlay_manager.display_overlay_for_tile("020")
@@ -126,6 +139,10 @@ func _on_dice_result_received(total: int) -> void:
 		chat_hud.add_player_message(p2_id, "Pero vamos a ver, si la ventana está cerrada. Eso no vale nada.", false)
 		chat_hud.add_player_message(p3_id, "Que sí, que se puede salir por ahí mientras que no te pille ninguna señora.", false)
 		
+		await overlay_manager.overlay_closed
+		
+	player_hud.toggle_hud_visibility(false)
+	controls_hud.toggle_hud_visibility(false)
 
 # ================
 #  Input handlers

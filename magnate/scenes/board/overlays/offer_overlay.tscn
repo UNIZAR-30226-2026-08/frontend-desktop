@@ -22,6 +22,7 @@ shader_parameter/angle = 1.0
 script = ExtResource("1_cc0s4")
 
 [node name="TradeUI" type="Control" parent="." unique_id=826910048]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,14 +30,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginBox" type="MarginContainer" parent="TradeUI" unique_id=1728989837]
-layout_mode = 1
+[node name="MarginBox" type="MarginContainer" parent="." unique_id=1728989837]
+visible = false
 anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -300.0
-offset_right = 300.0
+offset_left = -494.0
+offset_top = -1.5
+offset_right = 494.0
+offset_bottom = 1.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 70
@@ -44,23 +47,33 @@ theme_override_constants/margin_top = 70
 theme_override_constants/margin_right = 70
 theme_override_constants/margin_bottom = 70
 
-[node name="Box" type="PanelContainer" parent="TradeUI/MarginBox" unique_id=683455346]
+[node name="Box" type="PanelContainer" parent="." unique_id=683455346]
 material = SubResource("ShaderMaterial_p3geo")
 custom_minimum_size = Vector2(500, 0)
-layout_mode = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -424.0
+offset_top = -471.5
+offset_right = 424.0
+offset_bottom = 471.5
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/panel = ExtResource("3_45l7i")
 
-[node name="Margin" type="MarginContainer" parent="TradeUI/MarginBox/Box" unique_id=162729751]
+[node name="Margin" type="MarginContainer" parent="Box" unique_id=162729751]
 layout_mode = 2
 theme_override_constants/margin_left = 60
 theme_override_constants/margin_top = 60
 theme_override_constants/margin_right = 60
 theme_override_constants/margin_bottom = 60
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TradeUI/MarginBox/Box/Margin" unique_id=921046066]
+[node name="VBoxContainer" type="VBoxContainer" parent="Box/Margin" unique_id=921046066]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer" unique_id=1695864276]
+[node name="Title" type="Label" parent="Box/Margin/VBoxContainer" unique_id=1695864276]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_docl7")
@@ -69,52 +82,52 @@ text = "PROPUESTA DE TRATO"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MidSpace6" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer" unique_id=1974234333]
+[node name="MidSpace6" type="Control" parent="Box/Margin/VBoxContainer" unique_id=1974234333]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer" unique_id=1567388992]
+[node name="ColorRect" type="ColorRect" parent="Box/Margin/VBoxContainer" unique_id=1567388992]
 custom_minimum_size = Vector2(400, 5)
 layout_mode = 2
 size_flags_horizontal = 4
 color = Color(0.7109375, 0.7109375, 0.7109375, 1)
 
-[node name="MidSpace7" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer" unique_id=340951771]
+[node name="MidSpace7" type="Control" parent="Box/Margin/VBoxContainer" unique_id=340951771]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer" unique_id=1122448336]
+[node name="HBoxContainer" type="HBoxContainer" parent="Box/Margin/VBoxContainer" unique_id=1122448336]
 layout_mode = 2
 
-[node name="VBox" type="VBoxContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer" unique_id=1660605484]
+[node name="VBox" type="VBoxContainer" parent="Box/Margin/VBoxContainer/HBoxContainer" unique_id=1660605484]
 layout_mode = 2
 
-[node name="Label1" type="Label" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=1106838480]
+[node name="Label1" type="Label" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=1106838480]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.40625, 0.40625, 0.40625, 1)
 theme_override_fonts/font = ExtResource("4_uhvgs")
 theme_override_font_sizes/font_size = 20
 text = "LO QUE ENTREGAS"
 
-[node name="MidSpace" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=1364722091]
+[node name="MidSpace" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=1364722091]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="HeaderInfo" type="HBoxContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=1536269393]
+[node name="HeaderInfo" type="HBoxContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=1536269393]
 layout_mode = 2
 
-[node name="PlayerColor1" type="Panel" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox/HeaderInfo" unique_id=446229698]
+[node name="PlayerColor1" type="Panel" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox/HeaderInfo" unique_id=446229698]
 unique_name_in_owner = true
 modulate = Color(1, 0.16015625, 0.16015625, 1)
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("5_cr1ri")
 
-[node name="MidSpace" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox/HeaderInfo" unique_id=1402664308]
+[node name="MidSpace" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox/HeaderInfo" unique_id=1402664308]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="PlayerName1" type="Label" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox/HeaderInfo" unique_id=1235944556]
+[node name="PlayerName1" type="Label" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox/HeaderInfo" unique_id=1235944556]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
@@ -125,24 +138,24 @@ text = "TÚ"
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="MidSpace2" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=1201314534]
+[node name="MidSpace2" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=1201314534]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="Money1Box" type="PanelContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=1307857076]
+[node name="Money1Box" type="PanelContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=1307857076]
 custom_minimum_size = Vector2(350, 120)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = ExtResource("8_6bvjy")
 
-[node name="VBoxContainer" type="HBoxContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox/Money1Box" unique_id=1213272077]
+[node name="VBoxContainer" type="HBoxContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox/Money1Box" unique_id=1213272077]
 layout_mode = 2
 
-[node name="MidSpace5" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox/Money1Box/VBoxContainer" unique_id=876083255]
+[node name="MidSpace5" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox/Money1Box/VBoxContainer" unique_id=876083255]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
-[node name="Money1" type="Label" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox/Money1Box/VBoxContainer" unique_id=1347668378]
+[node name="Money1" type="Label" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox/Money1Box/VBoxContainer" unique_id=1347668378]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.16078432, 0.16078432, 1)
@@ -151,7 +164,7 @@ theme_override_font_sizes/font_size = 50
 text = "20"
 horizontal_alignment = 1
 
-[node name="M" type="Label" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox/Money1Box/VBoxContainer" unique_id=2082007559]
+[node name="M" type="Label" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox/Money1Box/VBoxContainer" unique_id=2082007559]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_colors/font_color = Color(0.80078125, 0.80078125, 0.80078125, 1)
@@ -160,43 +173,43 @@ theme_override_font_sizes/font_size = 50
 text = "M"
 horizontal_alignment = 1
 
-[node name="MidSpace6" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox/Money1Box/VBoxContainer" unique_id=1781535064]
+[node name="MidSpace6" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox/Money1Box/VBoxContainer" unique_id=1781535064]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
-[node name="MidSpace4" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=820704884]
+[node name="MidSpace4" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=820704884]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="TradeBox" type="PanelContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=979027318]
+[node name="TradeBox" type="PanelContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=979027318]
 custom_minimum_size = Vector2(350, 300)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = ExtResource("8_6bvjy")
 
-[node name="Margin" type="MarginContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox/TradeBox" unique_id=1263593182]
+[node name="Margin" type="MarginContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox/TradeBox" unique_id=1263593182]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 30
 
-[node name="VBox" type="VBoxContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox/TradeBox/Margin" unique_id=447174427]
+[node name="VBox" type="VBoxContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox/TradeBox/Margin" unique_id=447174427]
 layout_mode = 2
 
-[node name="Scroll" type="ScrollContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox/TradeBox/Margin/VBox" unique_id=947139069]
+[node name="Scroll" type="ScrollContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox/TradeBox/Margin/VBox" unique_id=947139069]
 custom_minimum_size = Vector2(0, 270)
 layout_mode = 2
 
-[node name="LeftPropertiesList" type="VBoxContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox/TradeBox/Margin/VBox/Scroll" unique_id=35156068]
+[node name="LeftPropertiesList" type="VBoxContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox/TradeBox/Margin/VBox/Scroll" unique_id=35156068]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="MidSpace7" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=1117202053]
+[node name="MidSpace7" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=1117202053]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
-[node name="CancelTradeButton" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=2002657997 instance=ExtResource("9_nhp5e")]
+[node name="CancelTradeButton" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox" unique_id=2002657997 instance=ExtResource("9_nhp5e")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
@@ -216,14 +229,14 @@ theme_override_styles/disabled = ExtResource("12_xkqsq")
 theme_override_styles/focus = ExtResource("12_xkqsq")
 text = "RECHAZAR"
 
-[node name="Control" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer" unique_id=2036131713]
+[node name="Control" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer" unique_id=2036131713]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
-[node name="VBox2" type="VBoxContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer" unique_id=466186195]
+[node name="VBox2" type="VBoxContainer" parent="Box/Margin/VBoxContainer/HBoxContainer" unique_id=466186195]
 layout_mode = 2
 
-[node name="Label1" type="Label" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=127709543]
+[node name="Label1" type="Label" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=127709543]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.40625, 0.40625, 0.40625, 1)
 theme_override_fonts/font = ExtResource("4_uhvgs")
@@ -231,15 +244,15 @@ theme_override_font_sizes/font_size = 20
 text = "LO QUE RECIBES"
 horizontal_alignment = 2
 
-[node name="MidSpace" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=1835941330]
+[node name="MidSpace" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=1835941330]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="HeaderInfo" type="HBoxContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=1925325428]
+[node name="HeaderInfo" type="HBoxContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=1925325428]
 layout_mode = 2
 alignment = 2
 
-[node name="PlayerName2" type="Label" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2/HeaderInfo" unique_id=1019860699]
+[node name="PlayerName2" type="Label" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2/HeaderInfo" unique_id=1019860699]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
@@ -251,35 +264,35 @@ horizontal_alignment = 2
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="MidSpace" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2/HeaderInfo" unique_id=1074479335]
+[node name="MidSpace" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2/HeaderInfo" unique_id=1074479335]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="PlayerColor2" type="Panel" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2/HeaderInfo" unique_id=1142815062]
+[node name="PlayerColor2" type="Panel" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2/HeaderInfo" unique_id=1142815062]
 unique_name_in_owner = true
 modulate = Color(1, 0.5541667, 0.1607843, 1)
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("5_cr1ri")
 
-[node name="MidSpace2" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=1792911437]
+[node name="MidSpace2" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=1792911437]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="Money2Box" type="PanelContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=943820814]
+[node name="Money2Box" type="PanelContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=943820814]
 custom_minimum_size = Vector2(350, 120)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = ExtResource("8_6bvjy")
 
-[node name="VBoxContainer2" type="HBoxContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2/Money2Box" unique_id=1900973355]
+[node name="VBoxContainer2" type="HBoxContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2/Money2Box" unique_id=1900973355]
 layout_mode = 2
 
-[node name="MidSpace5" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2/Money2Box/VBoxContainer2" unique_id=129324016]
+[node name="MidSpace5" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2/Money2Box/VBoxContainer2" unique_id=129324016]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
-[node name="Money2" type="Label" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2/Money2Box/VBoxContainer2" unique_id=1802218575]
+[node name="Money2" type="Label" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2/Money2Box/VBoxContainer2" unique_id=1802218575]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0.5411765, 0.36078432, 1)
@@ -288,7 +301,7 @@ theme_override_font_sizes/font_size = 50
 text = "500"
 horizontal_alignment = 1
 
-[node name="M" type="Label" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2/Money2Box/VBoxContainer2" unique_id=1367538336]
+[node name="M" type="Label" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2/Money2Box/VBoxContainer2" unique_id=1367538336]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_colors/font_color = Color(0.80078125, 0.80078125, 0.80078125, 1)
@@ -297,42 +310,42 @@ theme_override_font_sizes/font_size = 50
 text = "M"
 horizontal_alignment = 1
 
-[node name="MidSpace6" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2/Money2Box/VBoxContainer2" unique_id=875643409]
+[node name="MidSpace6" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2/Money2Box/VBoxContainer2" unique_id=875643409]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
-[node name="MidSpace4" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=971930953]
+[node name="MidSpace4" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=971930953]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="TradeBox" type="PanelContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=137628945]
+[node name="TradeBox" type="PanelContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=137628945]
 custom_minimum_size = Vector2(350, 300)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("8_6bvjy")
 
-[node name="Margin" type="MarginContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2/TradeBox" unique_id=2107086776]
+[node name="Margin" type="MarginContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2/TradeBox" unique_id=2107086776]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 30
 
-[node name="VBox" type="VBoxContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2/TradeBox/Margin" unique_id=610622599]
+[node name="VBox" type="VBoxContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2/TradeBox/Margin" unique_id=610622599]
 layout_mode = 2
 
-[node name="Scroll" type="ScrollContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2/TradeBox/Margin/VBox" unique_id=719295146]
+[node name="Scroll" type="ScrollContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2/TradeBox/Margin/VBox" unique_id=719295146]
 custom_minimum_size = Vector2(0, 270)
 layout_mode = 2
 
-[node name="RightPropertiesList" type="VBoxContainer" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2/TradeBox/Margin/VBox/Scroll" unique_id=680621232]
+[node name="RightPropertiesList" type="VBoxContainer" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2/TradeBox/Margin/VBox/Scroll" unique_id=680621232]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="MidSpace6" type="Control" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=1400856984]
+[node name="MidSpace6" type="Control" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=1400856984]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
-[node name="AcceptTradeButton" parent="TradeUI/MarginBox/Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=978308264 instance=ExtResource("9_nhp5e")]
+[node name="AcceptTradeButton" parent="Box/Margin/VBoxContainer/HBoxContainer/VBox2" unique_id=978308264 instance=ExtResource("9_nhp5e")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 60)
 layout_mode = 2

@@ -16,6 +16,10 @@ var _dummy_fantasy_cards = [
 ]
 # ================ END OF MOCK DATA ================
 
+# common signals
+signal overlay_closed
+
+# specific signals
 signal trade_selection_request
 signal tram_ok
 signal property_bought(String, Variant) # tile id + color (null if current players color)

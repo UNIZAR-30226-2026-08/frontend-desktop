@@ -39,13 +39,14 @@ func toggle_hud_visibility(to_hide: bool) -> void:
 	
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	
-	var target_x = base_x_pos + 400.0 if hide else base_x_pos
-	var target_alpha = 0.0 if hide else 1.0
-	
+	var target_x = base_x_pos + 400.0 if to_hide else base_x_pos
+	var target_alpha = 0.0 if to_hide else 1.0
+	Utils.debug(str(target_x))
+	Utils.debug(str(target_alpha))
 	tween.tween_property(container, "position:x", target_x, 0.5)
 	tween.parallel().tween_property(container, "modulate:a", target_alpha, 0.5)
 	
-	container.mouse_filter = Control.MOUSE_FILTER_IGNORE if hide else Control.MOUSE_FILTER_PASS
+	container.mouse_filter = Control.MOUSE_FILTER_IGNORE if to_hide else Control.MOUSE_FILTER_PASS
 
 func setup_players(players_data: Array[Dictionary]) -> void:
 	for child in container.get_children():

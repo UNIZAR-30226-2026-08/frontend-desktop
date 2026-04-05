@@ -4,6 +4,10 @@ extends Area2D
 signal on_token_clicked(token_node: PlayerToken) # DEBUG
 var token_color: Color = Color.WHITE
 var hop_audio: AudioResource
+var offset: Vector2 = Vector2.ZERO:
+	set(value):
+		offset = value
+		queue_redraw() # This makes the hop actually visible!
 
 func _ready() -> void:
 	var collision = CollisionShape2D.new()
@@ -25,6 +29,8 @@ func setup(color: Color) -> void:
 
 func _draw() -> void:
 	var radius = 20.0
+	
+	draw_set_transform(offset, 0, Vector2.ONE)
 	
 	draw_circle(Vector2(3, 3), radius, Color(0, 0, 0, 0.3))
 	draw_circle(Vector2.ZERO, radius, token_color)
@@ -51,15 +57,23 @@ func move_to(positions: Array[Vector2]) -> void:
 	for target_pos in positions:
 		AudioSystem.play_audio(hop_audio)
 		
-		var tween = create_tween()
-		var mid_point = position.lerp(target_pos, 0.5)
-		mid_point.y -= hop_height 
+		var movement_vector = (target_pos - position).abs()
+		var is_vertical = movement_vector.y > movement_vector.x
 		
-		tween.tween_property(self, "position", mid_point, duration / 2.0) \
-			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		
-		tween.tween_property(self, "position", target_pos, duration / 2.0) \
-			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		var hop_tween = create_tween().set_trans(Tween.TRANS_QUAD)
+		var hop_target: Vector2
+		if is_vertical:
+			hop_target = Vector2(-hop_height, 0)
+		else:
+			hop_target = Vector2(0, -hop_height)
+		hop_tween.tween_property(self, "offset", hop_target, duration / 2.0) \
+				.set_ease(Tween.EASE_OUT)
+		hop_tween.tween_property(self, "offset", Vector2.ZERO, duration / 2.0) \
+			.set_ease(Tween.EASE_IN)
+			
+		var tween = create_tween().set_trans(Tween.TRANS_QUAD)
+		tween.tween_property(self, "position", target_pos, duration) \
+			.set_ease(Tween.EASE_IN)
 			
 		await tween.finished
 		await get_tree().create_timer(0.05).timeout
