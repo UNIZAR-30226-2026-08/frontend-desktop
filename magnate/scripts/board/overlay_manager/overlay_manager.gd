@@ -37,6 +37,7 @@ const NEW_PROPERTY_OVERLAY = preload("uid://bormjc5jqq80j")
 const RESULTS_AUCTION_OVERLAY = preload("uid://by8ymobr7asbh")
 const TRAM_OVERLAY = preload("uid://63e2qbbi7ye3")
 const TRADE_OVERLAY = preload("uid://b1ddwdjk7emik")
+const SECRETARY_ANIMATION = preload("uid://b1bn1f5bjievo")
 
 const BANNER_MESSAGE = preload("uid://g1ccyk0arbkf")
 const TOAST_MESSAGE = preload("uid://dj0br3kdrndit")
@@ -157,7 +158,18 @@ func _start_tram_overlay() -> void:
 	overlay.button_pressed.connect(tram_ok.emit)
 
 func _start_go_to_jail_overlay(tile_id: String) -> void:
+	# Dejo el icono pero xd
 	Utils.debug("🚨 Has caído en 'Ve a secretaría': " + tile_id)
+	
+	var overlay = SECRETARY_ANIMATION.instantiate()
+	board.add_child(overlay)
+	
+	overlay.animation_complete.connect(func():
+		Utils.debug("Termina animación de secretaría")
+		overlay.queue_free()
+	)
+	
+	overlay.play_animation()
 
 func _start_jail_overlay(tile_id: String) -> void:
 	Utils.debug("🔒 Estás de visita en Secretaría: " + tile_id)

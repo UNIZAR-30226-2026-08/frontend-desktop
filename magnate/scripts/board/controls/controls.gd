@@ -22,9 +22,9 @@ func _ready() -> void:
 	settings_button.pressed.connect(func(): open_settings_requested.emit())
 	roll_button.pressed.connect(func(): roll_dice_requested.emit())
 
-func toggle_hud_visibility(hide: bool) -> void:
-	if is_hidden == hide: return
-	is_hidden = hide
+func toggle_hud_visibility(to_hide: bool) -> void:
+	if is_hidden == to_hide: return
+	is_hidden = to_hide
 	
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	var target_x = base_x_pos - 400.0 if hide else base_x_pos

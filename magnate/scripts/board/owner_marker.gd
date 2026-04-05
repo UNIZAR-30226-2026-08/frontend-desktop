@@ -25,4 +25,4 @@ func _draw() -> void:
 	draw_polygon(points, PackedColorArray([marker_color]))
 	
 	points.append(points[0]) 
-	draw_polyline(points, Color.BLACK, 1.0, true)
+	draw_polyline(points, Color.WHITE, 2.0, true)
