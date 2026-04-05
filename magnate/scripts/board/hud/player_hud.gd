@@ -33,9 +33,9 @@ func _ready() -> void:
 	await get_tree().process_frame
 	base_x_pos = container.position.x
 	
-func toggle_hud_visibility(hide: bool) -> void:
-	if is_hidden == hide: return
-	is_hidden = hide
+func toggle_hud_visibility(to_hide: bool) -> void:
+	if is_hidden == to_hide: return
+	is_hidden = to_hide
 	
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	

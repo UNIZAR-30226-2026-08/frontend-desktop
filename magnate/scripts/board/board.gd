@@ -84,8 +84,8 @@ func _on_dice_result_received(total: int) -> void:
 	await get_tree().create_timer(1.0).timeout
 	dice_roller_overlay.hide_overlay()
 	
-	# player_hud.toggle_hud_visibility(true)
-	# controls_hud.toggle_hud_visibility(true)
+	player_hud.toggle_hud_visibility(true)
+	controls_hud.toggle_hud_visibility(true)
 	
 	# overlay_manager.show_banner("¡Turno de ...!", Color("f94144"))
 	# overlay_manager.show_toast("Esto es una prueba")
@@ -103,7 +103,7 @@ func _on_dice_result_received(total: int) -> void:
 		var model: PlayerModel = players[0]["model"]
 		var token: PlayerToken = players[0]["token"]
 		
-		var test_path: Array[String] = ["000", "001", "002"]
+		var test_path: Array[String] = ["000", "001", "002", "020"]
 		var path_positions: Array[Vector2] = []
 		
 		for step_id in test_path:
@@ -114,9 +114,9 @@ func _on_dice_result_received(total: int) -> void:
 		if not path_positions.is_empty():
 			await token.move_to(path_positions)
 			
-		model.move_to_tile("002")
+		model.move_to_tile("020")
 		TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
-		overlay_manager.display_overlay_for_tile("002")
+		overlay_manager.display_overlay_for_tile("020")
 		
 
 # ================

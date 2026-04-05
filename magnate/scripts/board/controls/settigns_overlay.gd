@@ -2,7 +2,6 @@ extends CanvasLayer
 
 @onready var backdrop: ColorRect = $Backdrop
 @onready var header = $CenterContainer/ModalPanel/ClipMask/VBox/Header
-@onready var close_button: Button = $CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/CloseButton
 
 @onready var music_slider: HSlider = $CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/MusicRow/MusicSlider
 @onready var music_mute_btn: Button = $CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/MusicRow/Top/MusicMuteBtn
