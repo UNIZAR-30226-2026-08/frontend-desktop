@@ -19,6 +19,7 @@ extends Node
 @export_group('Audio')
 @export_subgroup('UI')
 @export var AUDIO_CLICK = preload("uid://dv18pd6ydtscm")
+@export var BUTTON_BACK = preload("uid://c4fu6i4iyerwh")
 @export_subgroup('SFX')
 @export var AUDIO_CARDFLIP = preload("uid://cmr3nua1ihvr3")
 @export var AUDIO_FANTASY = preload("uid://bqdmfnsvr8hjv")
