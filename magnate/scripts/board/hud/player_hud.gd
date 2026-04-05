@@ -41,8 +41,6 @@ func toggle_hud_visibility(to_hide: bool) -> void:
 	
 	var target_x = base_x_pos + 400.0 if to_hide else base_x_pos
 	var target_alpha = 0.0 if to_hide else 1.0
-	Utils.debug(str(target_x))
-	Utils.debug(str(target_alpha))
 	tween.tween_property(container, "position:x", target_x, 0.5)
 	tween.parallel().tween_property(container, "modulate:a", target_alpha, 0.5)
 	
