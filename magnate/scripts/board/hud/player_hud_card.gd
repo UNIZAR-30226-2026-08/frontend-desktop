@@ -5,8 +5,14 @@ extends MarginContainer
 @onready var balance_label = $MainVBox/TopRow/BalancePanel/BalanceHBox/BalanceMargin/BalanceLabel
 @onready var props_label = $MainVBox/BottomRow/PropsLabel
 @onready var id_label = $MainVBox/BottomRow/IDLabel
+@onready var bill_particles: Node2D = %BillParticles
+@onready var balance_difference: Label = %BalanceDifference
+
+const animation_duration: int = 2
+const animation_label_offset: int = 40
 
 var base_color: Color = Color.WHITE
+var balance: int = 0
 
 func _ready() -> void:
 	add_theme_constant_override("margin_left", 50)
@@ -26,16 +32,47 @@ func setup(p_id: String, p_name: String, p_color: Color, p_balance: int) -> void
 	name_label.text = p_name.to_upper()
 	id_label.text = "#" + p_id.right(4)
 	
-	update_balance(p_balance)
+	_update_balance_label(p_balance)
 	queue_redraw()
 
-func update_balance(amount: int) -> void:
+func _update_balance_label(amount: int) -> void:
 	var formatted_money = str(amount)
 	if amount >= 1000:
 		var s = str(amount)
 		formatted_money = s.left(s.length() - 3) + "," + s.right(3)
-	
 	balance_label.text = formatted_money
+
+func update_balance(amount: int) -> void:
+	var difference = amount - balance
+	var formatted_difference = Utils.to_currency_text(difference)
+
+	var initial_y = balance_difference.position.y
+	balance_difference.text = formatted_difference
+	balance_difference.show()
+	balance_difference.modulate.a = 0
+	bill_particles.set_emit(true)
+	
+	var tween = get_tree().create_tween().set_parallel().set_ease(Tween.EASE_IN_OUT)
+	tween.tween_method(_update_balance_label, balance, amount, animation_duration)\
+		.set_trans(Tween.TRANS_CUBIC)
+	var target_y = balance_difference.position.y
+	if difference > 0:
+		balance_difference.add_theme_color_override("font_color", Color("#90be6d"))
+		target_y -= animation_label_offset
+	else:
+		balance_difference.add_theme_color_override("font_color", Color("#f94144"))
+		target_y += animation_label_offset
+	tween.tween_property(balance_difference, "position:y", target_y, animation_duration)\
+		.set_trans(Tween.TRANS_LINEAR)
+	tween.tween_property(balance_difference, "modulate:a", 1, animation_duration)\
+		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_OUT)
+	
+	balance = amount
+	
+	await tween.finished
+	bill_particles.set_emit(false)
+	balance_difference.hide()
+	balance_difference.position.y = initial_y
 
 func update_properties(count: int) -> void:
 	props_label.text = str(count) + " PROPIEDADES"
