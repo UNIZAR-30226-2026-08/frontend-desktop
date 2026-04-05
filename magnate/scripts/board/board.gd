@@ -9,6 +9,7 @@ const DEBUG_MODE: int = 1
 # TODO: Ya lo siento Nico pero no sé dónde meter esto
 const CONTROLS_HUD_SCENE = preload("uid://cp5cmlsncsi6t")
 const SETTINGS_OVERLAY_SCENE = preload("uid://d31dwv0u5en1g")
+const CHAT_SCENE = preload("uid://bb3relwhb88sa")
 
 # Managers
 var tile_manager: MagnateTileManager = MagnateTileManager.new()
@@ -17,6 +18,7 @@ var overlay_manager: MagnateOverlayManager = MagnateOverlayManager.new()
 var players: Array[Dictionary] = []
 var player_hud: PlayerHUD
 var controls_hud: ControlsHUD
+var chat_hud: CanvasLayer
 
 const TRAM_IDS: Array[String] = ["010", "030", "100", "107"]
 
@@ -52,6 +54,11 @@ func _ready() -> void:
 	
 	controls_hud.open_settings_requested.connect(_on_open_settings_requested)
 	controls_hud.roll_dice_requested.connect(_on_hud_roll_requested)
+	
+	# Chat
+	chat_hud = CHAT_SCENE.instantiate()
+	add_child(chat_hud)
+	chat_hud.init_chat(players)
 	
 	# Start playing the board background music
 	var music = AudioResource.from_type(Globals.AUDIO_BOARDMUSIC, AudioResource.AudioResourceType.MUSIC)
@@ -117,6 +124,14 @@ func _on_dice_result_received(total: int) -> void:
 		model.move_to_tile("020")
 		TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
 		overlay_manager.display_overlay_for_tile("020")
+		
+		# TODO: Es un poco lío lo del estado global
+		var p1_id = players[0]["model"].id
+		var p2_id = players[1]["model"].id
+		var p3_id = players[2]["model"].id
+		chat_hud.add_player_message(p1_id, "Ofrezco el baño de chicas con terraza por 500M!", true)
+		chat_hud.add_player_message(p2_id, "Pero vamos a ver, si la ventana está cerrada. Eso no vale nada.", false)
+		chat_hud.add_player_message(p3_id, "Que sí, que se puede salir por ahí mientras que no te pille ninguna señora.", false)
 		
 
 # ================
