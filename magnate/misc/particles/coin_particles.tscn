@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c0bdv545ufwa7"]
 
-[ext_resource type="Script" uid="uid://sxnn5a1b4f6i" path="res://scripts/misc_scripts/coin_particles.gd" id="1_tdx8t"]
+[ext_resource type="Script" uid="uid://sxnn5a1b4f6i" path="res://scripts/misc_scripts/particles.gd" id="1_tdx8t"]
 [ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="2_433c4"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_bfuom"]
