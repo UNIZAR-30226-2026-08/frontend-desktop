@@ -19,6 +19,8 @@ var _dummy_fantasy_cards = [
 signal trade_selection_request
 signal tram_ok
 signal property_bought(String, Variant) # tile id + color (null if current players color)
+signal offer_accepted
+signal offer_rejected
 
 var board: Node2D
 var tile_data: Dictionary
@@ -37,6 +39,7 @@ const NEW_PROPERTY_OVERLAY = preload("uid://bormjc5jqq80j")
 const RESULTS_AUCTION_OVERLAY = preload("uid://by8ymobr7asbh")
 const TRAM_OVERLAY = preload("uid://63e2qbbi7ye3")
 const TRADE_OVERLAY = preload("uid://b1ddwdjk7emik")
+const OFFER_OVERLAY = preload("uid://cx4al1avjtxqc")
 
 const BANNER_MESSAGE = preload("uid://g1ccyk0arbkf")
 const TOAST_MESSAGE = preload("uid://dj0br3kdrndit")
@@ -178,3 +181,25 @@ func _start_trade(p1_name: String, p2_name: String, p1_money: int, p2_money: int
 	
 	# Initialize overlay with data
 	current_trade_overlay.setup_trade(p1_name, p2_name, p1_money, p2_money, p1_props, p2_props)
+
+func start_offer(left_data: Dictionary, right_data: Dictionary) -> void:
+	Utils.debug("⚖️ Mostrando propuesta de trato...")
+	
+	# 1. Instanciamos el overlay
+	var overlay = OFFER_OVERLAY.instantiate()
+	board.add_child(overlay)
+	
+	# 2. Conectamos las señales del overlay hacia nuestro manager
+	# Usamos funciones anónimas (func) para poder hacer un print de debug y emitir la señal a la vez
+	overlay.offer_accepted.connect(func():
+		offer_accepted.emit()
+		Utils.debug("✅ Trato aceptado por el jugador")
+	)
+	
+	overlay.offer_rejected.connect(func():
+		offer_rejected.emit()
+		Utils.debug("❌ Trato rechazado por el jugador")
+	)
+	
+	# 3. Le pasamos los datos para que dibuje la interfaz
+	overlay.setup_offer(left_data, right_data)

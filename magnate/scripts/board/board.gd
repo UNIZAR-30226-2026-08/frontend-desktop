@@ -1,6 +1,6 @@
 extends Node2D
 
-const DEBUG_MODE: int = 1
+const DEBUG_MODE: int = 3
 
 @onready var camera_system: MagnateCameraSystem = %CameraSystem
 @onready var tile_parent_node: Node2D = %Tiles
@@ -24,6 +24,8 @@ func _ready() -> void:
 	overlay_manager.tram_ok.connect(tile_manager.prompt_tile_selection.bind(TRAM_IDS))
 	overlay_manager.trade_selection_request.connect(_on_trade_selection_requested)
 	overlay_manager.property_bought.connect(_on_property_purchased)
+	overlay_manager.offer_accepted.connect(_on_offer_accepted)
+	overlay_manager.offer_rejected.connect(_on_offer_rejected)
 
 	# Setup camera system
 	camera_system.init_camera_system(self)
@@ -51,6 +53,8 @@ func _ready() -> void:
 		dice_roller_overlay.show() # Mostramos el overlay esperando tu click para tirar
 	elif DEBUG_MODE == 2:
 		_run_debug_trade_scenario()
+	elif DEBUG_MODE == 3:
+		_run_debug_offer_scenario() # NUEVO MODO DE DEBUG
 
 # ============
 #  Dice logic
@@ -115,6 +119,13 @@ func _on_trade_selection_requested(is_player_1: bool, available_ids: Array) -> v
 	
 	# Highlight tiles
 	tile_manager.prompt_tile_selection(valid_ids_string)
+	
+func _on_offer_accepted() -> void:
+	Utils.debug("🤝 BOARD: El intercambio ha sido ACEPTADO. Ejecutando lógica de transferencia de bienes...")
+	# Aquí en el futuro harás que el tile_manager cambie los dueños de las propiedades y restes el dinero.
+
+func _on_offer_rejected() -> void:
+	Utils.debug("❌ BOARD: El intercambio ha sido RECHAZADO. Fin del turno.")
 
 # ==========================================
 # FUNCION DE DEBUG PARA PROBAR LOS TRADEOS
@@ -142,3 +153,42 @@ func _run_debug_trade_scenario() -> void:
 	
 	# Lanzamos el tradeo: Jugador 1 (1500€) vs Jugador 2 (800€)
 	overlay_manager._start_trade("Tu Nombre", "Rival Ficticio", 1500, 800, p1_mock_props, p2_mock_props)
+	
+# ==========================================
+# FUNCION DE DEBUG PARA PROBAR LA OFERTA DE TRADEO
+# ==========================================
+func _run_debug_offer_scenario() -> void:
+	Utils.debug("🐛 DEBUG MODE 3: Preparando escenario de PROPUESTA de trato...")
+	
+	await get_tree().create_timer(1.5).timeout
+	
+	if dice_roller_overlay:
+		dice_roller_overlay.hide()
+
+	# Simulamos los datos que habrían salido del panel de tradeo anterior
+	var left_data = {
+		"name": "TÚ",
+		"color": Color("f2b705"), # Amarillo
+		"money_offered": 20,
+		"properties": [
+			{"name": "CIRCE", "color": Color("3b82f6")},
+			{"name": "LABORATORIO DE FÍSICA Y ELECTRÓNICA", "color": Color("7c3aed")},
+			{"name": "SALÓN DE ACTOS TORRES Q.", "color": Color("7c3aed")},
+			{"name": "BAÑO DE CHICAS CON TERRAZA", "color": Color("3b82f6")},
+			{"name": "BAÑO DE CHICAS CON TERRAZA", "color": Color("3b82f6")},
+			{"name": "BAÑO DE CHICAS CON TERRAZA", "color": Color("3b82f6")}
+		]
+	}
+
+	var right_data = {
+		"name": "PLAYER 1",
+		"color": Color("ef4444"), # Rojo
+		"money_offered": 500,
+		"properties": [
+			{"name": "LAB 0.05B", "color": Color("475569")},
+			{"name": "MICROONDAS BETANCOURT", "color": Color("22c55e")}
+		]
+	}
+	
+	# Llamamos a la función que creaste en tu overlay_manager.gd
+	overlay_manager.start_offer(left_data, right_data)
