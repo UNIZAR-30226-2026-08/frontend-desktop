@@ -36,11 +36,12 @@ func _ready() -> void:
 func toggle_hud_visibility(to_hide: bool) -> void:
 	if is_hidden == to_hide: return
 	is_hidden = to_hide
-	
+
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	
+
 	var target_x = base_x_pos + 400.0 if to_hide else base_x_pos
 	var target_alpha = 0.0 if to_hide else 1.0
+
 	tween.tween_property(container, "position:x", target_x, 0.5)
 	tween.parallel().tween_property(container, "modulate:a", target_alpha, 0.5)
 	

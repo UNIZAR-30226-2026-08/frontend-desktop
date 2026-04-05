@@ -7,7 +7,11 @@ var hop_audio: AudioResource
 var offset: Vector2 = Vector2.ZERO:
 	set(value):
 		offset = value
-		queue_redraw() # This makes the hop actually visible!
+		queue_redraw()
+var radius: float = 20.0:
+	set(value):
+		radius = value
+		queue_redraw()
 
 func _ready() -> void:
 	var collision = CollisionShape2D.new()
@@ -28,8 +32,6 @@ func setup(color: Color) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	var radius = 20.0
-	
 	draw_set_transform(offset, 0, Vector2.ONE)
 	
 	draw_circle(Vector2(3, 3), radius, Color(0, 0, 0, 0.3))
@@ -61,15 +63,16 @@ func move_to(positions: Array[Vector2]) -> void:
 		var is_vertical = movement_vector.y > movement_vector.x
 		
 		var hop_tween = create_tween().set_trans(Tween.TRANS_QUAD)
-		var hop_target: Vector2
 		if is_vertical:
-			hop_target = Vector2(-hop_height, 0)
+			hop_tween.tween_property(self, "radius", 22.0, duration / 2.0) \
+					.set_ease(Tween.EASE_OUT)
+			hop_tween.tween_property(self, "radius", 20.0, duration / 2.0) \
+				.set_ease(Tween.EASE_IN)
 		else:
-			hop_target = Vector2(0, -hop_height)
-		hop_tween.tween_property(self, "offset", hop_target, duration / 2.0) \
-				.set_ease(Tween.EASE_OUT)
-		hop_tween.tween_property(self, "offset", Vector2.ZERO, duration / 2.0) \
-			.set_ease(Tween.EASE_IN)
+			hop_tween.tween_property(self, "offset", Vector2(0, -hop_height), duration / 2.0) \
+					.set_ease(Tween.EASE_OUT)
+			hop_tween.tween_property(self, "offset", Vector2.ZERO, duration / 2.0) \
+				.set_ease(Tween.EASE_IN)
 			
 		var tween = create_tween().set_trans(Tween.TRANS_QUAD)
 		tween.tween_property(self, "position", target_pos, duration) \

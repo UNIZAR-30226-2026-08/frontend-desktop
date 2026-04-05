@@ -2,7 +2,9 @@
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_2dxen"]
 [ext_resource type="Texture2D" uid="uid://qb2ajads1kun" path="res://assets/images/parking_picture.jpg" id="2_2dxen"]
+[ext_resource type="Script" uid="uid://bkofbufq8bo84" path="res://scripts/board/detailed_tiles/parking_tile.gd" id="2_x2wuu"]
 [ext_resource type="Texture2D" uid="uid://8q5qxi87a7a5" path="res://assets/images/caravana.png" id="3_66t5l"]
+[ext_resource type="PackedScene" uid="uid://c0bdv545ufwa7" path="res://misc/particles/coin_particles.tscn" id="4_1upfb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dxen"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -20,6 +22,7 @@ offset_bottom = 160.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_2dxen")
+script = ExtResource("2_x2wuu")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1283559629]
 layout_mode = 1
@@ -79,3 +82,8 @@ rotation = -0.7853982
 scale = Vector2(0.3, 0.3)
 mouse_filter = 2
 texture = ExtResource("3_66t5l")
+
+[node name="CoinParticles" parent="." unique_id=1351523169 instance=ExtResource("4_1upfb")]
+unique_name_in_owner = true
+position = Vector2(80, 60)
+rotation = 1.5707964

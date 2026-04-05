@@ -78,6 +78,9 @@ func _reset_all_tiles(_id: String) -> void:
 	reset_clickable_tiles()
 	tile_pressed.disconnect(_reset_all_tiles)
 
+func parking_money() -> void:
+	tile_entities["111"].emit_coins()
+
 func prompt_tile_selection(ids: Array[String]) -> void:
 	clickable_tile_ids = ids.duplicate()
 	highlight_tiles(ids)
