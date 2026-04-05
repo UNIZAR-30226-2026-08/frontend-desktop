@@ -19,10 +19,10 @@ func _ready() -> void:
 func _update_button() -> void:
 	if index < original_index:
 		var price = price_per_house * (original_index - index) / 2 # TODO: Is it division by 2?
-		animated_button.text = "Recibir {valor}€".format({"valor": price})
+		animated_button.text = "Recibir " + Utils.to_currency_text(price)
 	elif index > original_index:
 		var price = price_per_house * (index - original_index)
-		animated_button.text = "Pagar {valor}€".format({"valor": price})
+		animated_button.text = "Pagar " + Utils.to_currency_text(price)
 	else:
 		animated_button.text = "Confirmar"
 
