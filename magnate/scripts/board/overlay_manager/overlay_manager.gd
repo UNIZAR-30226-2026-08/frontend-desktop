@@ -47,6 +47,10 @@ const TRADE_OVERLAY = preload("uid://b1ddwdjk7emik")
 const OFFER_OVERLAY = preload("uid://cx4al1avjtxqc")
 const SECRETARY_ANIMATION = preload("uid://b1bn1f5bjievo")
 const PARKING_OVERLAY = preload("uid://br42lbhn0hqum")
+const SCOREBOARD_OVERLAY = preload("uid://njtmnh67mrt5")
+const PROPERTY_ADMINISTRATION_OVERLAY = preload("uid://cptx3705we74j")
+const MORTGAGE_OVERLAY = preload("uid://iip2p7fd0k63")
+const PAY_RENT_OVERLAY = preload("uid://bme7v8a58kf1h")
 
 const BANNER_MESSAGE = preload("uid://g1ccyk0arbkf")
 const TOAST_MESSAGE = preload("uid://dj0br3kdrndit")
@@ -112,8 +116,49 @@ func _start_new_property(tile_id: String) -> void:
 	overlay.property_bought.connect(property_bought.emit.bind(tile_id, null))
 	overlay.property_bought.connect(overlay_closed.emit)
 	overlay.property_auctioned.connect(_start_auction.bind(tile_id))
-	overlay.property_auctioned.connect(overlay_closed.emit)
 	overlay.abrir_carta(current_tile)
+
+func _start_property_administration(tile_id: String) -> void:
+	Utils.debug("Abriendo overlay de propiedad para la casilla: " + tile_id)
+	
+	# Look for the tile
+	var current_tile = tile_data.get(tile_id, {})
+			
+	if current_tile.is_empty():
+		Utils.debug("⚠️ Error: No se encontraron datos en el JSON para la casilla " + tile_id)
+		return
+	
+	# Initialize the overlay
+	var overlay = PROPERTY_ADMINISTRATION_OVERLAY.instantiate()
+	board.add_child(overlay)
+
+func _start_property_with_mortgage(tile_id: String) -> void:
+	Utils.debug("Abriendo overlay de propiedad para la casilla: " + tile_id)
+	
+	# Look for the tile
+	var current_tile = tile_data.get(tile_id, {})
+			
+	if current_tile.is_empty():
+		Utils.debug("⚠️ Error: No se encontraron datos en el JSON para la casilla " + tile_id)
+		return
+	
+	# Initialize the overlay
+	var overlay = MORTGAGE_OVERLAY.instantiate()
+	board.add_child(overlay)
+
+func _start_pay_rent(tile_id: String) -> void:
+	Utils.debug("Abriendo overlay de propiedad para la casilla: " + tile_id)
+	
+	# Look for the tile
+	var current_tile = tile_data.get(tile_id, {})
+			
+	if current_tile.is_empty():
+		Utils.debug("⚠️ Error: No se encontraron datos en el JSON para la casilla " + tile_id)
+		return
+	
+	# Initialize the overlay
+	var overlay = PAY_RENT_OVERLAY.instantiate()
+	board.add_child(overlay)
 
 func _start_auction(tile_id: String) -> void:
 	Utils.debug("🔨 Empezando subasta para la casilla: " + tile_id)
@@ -169,7 +214,7 @@ func _start_tram_overlay() -> void:
 	var overlay = TRAM_OVERLAY.instantiate()
 	board.add_child(overlay)
 	overlay.button_pressed.connect(tram_ok.emit)
-	overlay.button_pressed.connect(overlay_closed.emit)
+	# overlay.button_pressed.connect(overlay_closed.emit)
 
 func _start_go_to_jail_overlay(tile_id: String) -> void:
 	# Dejo el icono pero xd
@@ -212,6 +257,10 @@ func _start_trade(p1_name: String, p2_name: String, p1_money: int, p2_money: int
 	
 	# Initialize overlay with data
 	current_trade_overlay.setup_trade(p1_name, p2_name, p1_money, p2_money, p1_props, p2_props)
+
+func start_scoreboard_overlay() -> void:
+	var current_overlay = SCOREBOARD_OVERLAY.instantiate()
+	board.add_child(current_overlay)
 
 func start_offer(left_data: Dictionary, right_data: Dictionary) -> void:
 	Utils.debug("⚖️ Mostrando propuesta de trato...")

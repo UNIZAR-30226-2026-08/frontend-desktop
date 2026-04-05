@@ -39,7 +39,7 @@ func _ready() -> void:
 	camera_system.init_camera_system(self)
 
 	# Connect tile click events
-	tile_manager.connect("tile_pressed", _on_highlighted_tile_clicked)
+	tile_manager.tile_pressed.connect(_on_highlighted_tile_clicked)
 
 	# Setup players
 	var json_path = "res://assets/game_info/board.json"
@@ -72,9 +72,18 @@ func _ready() -> void:
 		dice_roller_overlay.roll_finished.connect(_on_dice_result_received)
 		dice_roller_overlay.show() # Mostramos el overlay esperando tu click para tirar
 	elif DEBUG_MODE == 2:
+		player_hud.toggle_hud_visibility(true)
+		controls_hud.toggle_hud_visibility(true)
 		_run_debug_trade_scenario()
 	elif DEBUG_MODE == 3:
-		_run_debug_offer_scenario() # NUEVO MODO DE DEBUG
+		player_hud.toggle_hud_visibility(true)
+		controls_hud.toggle_hud_visibility(true)
+		_run_debug_offer_scenario()
+	elif DEBUG_MODE == 4:
+		player_hud.toggle_hud_visibility(true)
+		controls_hud.toggle_hud_visibility(true)
+		await get_tree().create_timer(2).timeout
+		overlay_manager.start_scoreboard_overlay()
 
 func _on_open_settings_requested() -> void:
 	var settings = SETTINGS_OVERLAY_SCENE.instantiate()
@@ -114,7 +123,9 @@ func _on_dice_result_received(total: int) -> void:
 		var model: PlayerModel = players[0]["model"]
 		var token: PlayerToken = players[0]["token"]
 		
-		var test_path: Array[String] = ["001", "002", "003", "004", "011", "012", "013", "014", "111"]
+		# var test_path: Array[String] = ["001", "002", "003", "004", "011", "012", "013", "014", "111"]
+		# var test_path: Array[String] = ["108", "109", "110", "111"]
+		var test_path: Array[String] = ["008", "009", "010"]
 		var path_positions: Array[Vector2] = []
 		
 		for step_id in test_path:
@@ -128,9 +139,9 @@ func _on_dice_result_received(total: int) -> void:
 			await token.move_to(path_positions)
 			camera_system.main_camera()
 		
-		model.move_to_tile("111")
+		model.move_to_tile("010")
 		TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
-		overlay_manager.display_overlay_for_tile("111")
+		overlay_manager.display_overlay_for_tile("010")
 		
 		# TODO: Es un poco lío lo del estado global
 		var p1_id = players[0]["model"].id
@@ -165,8 +176,6 @@ func _on_highlighted_tile_clicked(tile_id: String) -> void:
 		var model: PlayerModel = players[0]["model"]
 		model.move_to_tile(tile_id)
 		TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
-		
-		overlay_manager.display_overlay_for_tile(tile_id)
 
 func _on_property_purchased(tile_id: String, color: Variant) -> void:
 	Utils.debug("💰 ¡El jugador ha comprado la casilla " + tile_id)

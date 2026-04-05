@@ -1,30 +1,33 @@
-extends CanvasLayer
+extends BlurryBgOverlay
 
 @onready var category_name = %TitleLabel
 @onready var unnamed_scores = [%ScoreboardEntry, %ScoreboardEntry2, %ScoreboardEntry3, %ScoreboardEntry4]
 @onready var confirm_button = %ConfirmButton
 var named_scores = {}
 
-# Working example
-#func _ready() -> void:
-#	add_player("Nico", Color("#ff0000"))
-#	add_player("Luquín", Color("#ffff00"))
-#	add_player("Cris", Color("#ff00ff"))
-#	add_player("Julia", Color("#00ffff"))
+func _ready() -> void:
+	super()
+	
+	# Working example
+	add_player("Nico", Color("#f94144"))
+	add_player("Luquín", Color("#f9c74f"))
+	add_player("Cris", Color("#90be6d"))
+	add_player("Julia", Color("#2c7da0"))
 
-#	await score_category("Más pasos dados", {
-#		"Nico": 100,
-##		"Luquín": 110,
-#		"Cris": 80,
-#		"Julia": 140
-#	})
-#	await score_category("Más transacciones", {
-#		"Nico": 70,
-#		"Luquín": 110,
-#		"Cris": 60,
-#		"Julia": 70
-#	})
-#	finish()
+	await get_tree().create_timer(2).timeout
+	await score_category("Más pasos dados", {
+		"Nico": 100,
+		"Luquín": 110,
+		"Cris": 80,
+		"Julia": 140
+	})
+	await score_category("Más transacciones", {
+		"Nico": 70,
+		"Luquín": 110,
+		"Cris": 60,
+		"Julia": 70
+	})
+	finish()
 
 func finish() -> void:
 	confirm_button.disabled = false

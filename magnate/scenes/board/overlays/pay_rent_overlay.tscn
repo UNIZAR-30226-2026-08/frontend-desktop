@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://bme7v8a58kf1h"]
 
-[ext_resource type="Script" uid="uid://xtw1ni2dxdhf" path="res://scripts/board/overlays/pay_rent_overlay.gd" id="1_u4ko4"]
+[ext_resource type="Script" uid="uid://b1l4jwv2xm3ih" path="res://scripts/board/overlays/basic_overlay.gd" id="1_u4ko4"]
 [ext_resource type="PackedScene" uid="uid://vd87r5unxafe" path="res://scenes/board/cards/property_card.tscn" id="3_u4ko4"]
 [ext_resource type="PackedScene" uid="uid://bfcpwq3bljh8g" path="res://scenes/board/cards/server_card.tscn" id="4_ak61e"]
 [ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="4_nxsm0"]
 
-[node name="PayRentOverlay" type="CanvasLayer" unique_id=417320456]
+[node name="PayRentOverlay" type="CanvasLayer" unique_id=417320456 node_paths=PackedStringArray("card")]
 script = ExtResource("1_u4ko4")
+button_text = "Pagar"
+card = NodePath("PropertyCard")
 
 [node name="PropertyCard" parent="." unique_id=589823767 instance=ExtResource("3_u4ko4")]
 unique_name_in_owner = true
@@ -17,6 +19,7 @@ offset_bottom = 800.0
 
 [node name="ServerCard" parent="." unique_id=1408998470 instance=ExtResource("4_ak61e")]
 unique_name_in_owner = true
+visible = false
 offset_left = 760.0
 offset_top = 200.0
 offset_right = 1160.0

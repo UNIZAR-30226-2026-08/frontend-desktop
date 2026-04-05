@@ -165,7 +165,7 @@ theme = ExtResource("4_hdh73")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("7_1u2hh")
 theme_override_font_sizes/font_size = 25
-text = "CONSERJERÍA DEL ADA BYRON LORE IPSUM"
+text = "CONSERJERÍA DEL ADA BYRON"
 horizontal_alignment = 1
 autowrap_mode = 2
 
