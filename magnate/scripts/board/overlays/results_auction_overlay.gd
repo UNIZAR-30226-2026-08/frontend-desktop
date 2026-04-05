@@ -1,11 +1,12 @@
 extends BlurryBgOverlay
 
+signal finished
+
 # Agrupamos los nodos en Arrays
 @onready var dots: Array[Panel] = [%ColorDot1, %ColorDot2, %ColorDot3, %ColorDot4]
 @onready var names: Array[Label] = [%Player1Label, %Player2Label, %Player3Label, %Player4Label]
 @onready var bets: Array[Label] = [%Player1Bet, %Player2Bet, %Player3Bet, %Player4Bet]
 
-# NUEVO: Referencia al botón
 @onready var confirm_button: Button = %ConfirmButton
 
 func _ready() -> void:
@@ -42,6 +43,6 @@ func mostrar_resultados(resultados_ordenados: Array) -> void:
 # EVENTOS DE BOTONES
 # ==========================================
 func _on_confirm_button_pressed() -> void:
-	print("Saliendo de la pantalla de resultados...")
-	# Destruimos el overlay y volvemos a ver el tablero limpio
+	Utils.debug("Saliendo de la pantalla de resultados...")
+	finished.emit()
 	queue_free()

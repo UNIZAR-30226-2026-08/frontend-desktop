@@ -25,6 +25,7 @@ signal tram_ok
 signal property_bought(String, Variant) # tile id + color (null if current players color)
 signal offer_accepted
 signal offer_rejected
+signal get_parking_money
 
 var board: Node2D
 var tile_data: Dictionary
@@ -45,6 +46,7 @@ const TRAM_OVERLAY = preload("uid://63e2qbbi7ye3")
 const TRADE_OVERLAY = preload("uid://b1ddwdjk7emik")
 const OFFER_OVERLAY = preload("uid://cx4al1avjtxqc")
 const SECRETARY_ANIMATION = preload("uid://b1bn1f5bjievo")
+const PARKING_OVERLAY = preload("uid://br42lbhn0hqum")
 
 const BANNER_MESSAGE = preload("uid://g1ccyk0arbkf")
 const TOAST_MESSAGE = preload("uid://dj0br3kdrndit")
@@ -108,7 +110,9 @@ func _start_new_property(tile_id: String) -> void:
 	var overlay = NEW_PROPERTY_OVERLAY.instantiate()
 	board.add_child(overlay)
 	overlay.property_bought.connect(property_bought.emit.bind(tile_id, null))
+	overlay.property_bought.connect(overlay_closed.emit)
 	overlay.property_auctioned.connect(_start_auction.bind(tile_id))
+	overlay.property_auctioned.connect(overlay_closed.emit)
 	overlay.abrir_carta(current_tile)
 
 func _start_auction(tile_id: String) -> void:
@@ -140,6 +144,7 @@ func _start_finished_auction(tile_id: String) -> void:
 	var winner_name = final_bids[0]["name"]
 	var winner_color = final_bids[0]["color"]
 	property_bought.emit(tile_id, winner_color)
+	results_screen.finished.connect(overlay_closed.emit)
 	Utils.debug("✅ La propiedad " + tile_id + " ahora pertenece a " + winner_name)
 
 func _start_fantasy_overlay(_tile_id: String) -> void:
@@ -154,6 +159,7 @@ func _start_fantasy_overlay(_tile_id: String) -> void:
 	
 	# 3. Setup overlay with card data
 	overlay.setup_card(random_card)
+	overlay.card_action_resolved.connect(overlay_closed.emit)
 	
 	# 4. Log final event
 	overlay.card_action_resolved.connect(func(): Utils.debug("Fin del evento Fantasía. Continuando juego..."))
@@ -163,6 +169,7 @@ func _start_tram_overlay() -> void:
 	var overlay = TRAM_OVERLAY.instantiate()
 	board.add_child(overlay)
 	overlay.button_pressed.connect(tram_ok.emit)
+	overlay.button_pressed.connect(overlay_closed.emit)
 
 func _start_go_to_jail_overlay(tile_id: String) -> void:
 	# Dejo el icono pero xd
@@ -175,18 +182,26 @@ func _start_go_to_jail_overlay(tile_id: String) -> void:
 		Utils.debug("Termina animación de secretaría")
 		overlay.queue_free()
 	)
+	overlay.animation_complete.connect(overlay_closed.emit)
 	
 	overlay.play_animation()
 
+# TODO: Remeber to emit overlay_closed at the end
 func _start_jail_overlay(tile_id: String) -> void:
 	Utils.debug("🔒 Estás de visita en Secretaría: " + tile_id)
 
 func _start_parking_overlay(tile_id: String) -> void:
 	Utils.debug("🅿️ Has caído en el Parking Libre: " + tile_id)
+	var overlay = PARKING_OVERLAY.instantiate()
+	board.add_child(overlay)
+	overlay.button_pressed.connect(overlay_closed.emit)
+	overlay.button_pressed.connect(get_parking_money.emit)
 
+# TODO: Remeber to emit overlay_closed at the end
 func _start_bridge_overlay(tile_id: String) -> void:
 	Utils.debug("🌉 Has cruzado un puente: " + tile_id)
 
+# TODO: Remeber to emit overlay_closed at the end
 func _start_trade(p1_name: String, p2_name: String, p1_money: int, p2_money: int, p1_props: Array[Dictionary], p2_props: Array[Dictionary]) -> void:
 	Utils.debug("🤝 Iniciando overlay de tradeo...")
 	current_trade_overlay = TRADE_OVERLAY.instantiate()
@@ -211,11 +226,13 @@ func start_offer(left_data: Dictionary, right_data: Dictionary) -> void:
 		offer_accepted.emit()
 		Utils.debug("✅ Trato aceptado por el jugador")
 	)
+	overlay.offer_accepted.connect(overlay_closed.emit)
 	
 	overlay.offer_rejected.connect(func():
 		offer_rejected.emit()
 		Utils.debug("❌ Trato rechazado por el jugador")
 	)
+	overlay.offer_rejected.connect(overlay_closed.emit)
 	
 	# 3. Le pasamos los datos para que dibuje la interfaz
 	overlay.setup_offer(left_data, right_data)

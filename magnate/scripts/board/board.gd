@@ -33,6 +33,7 @@ func _ready() -> void:
 	overlay_manager.property_bought.connect(_on_property_purchased)
 	overlay_manager.offer_accepted.connect(_on_offer_accepted)
 	overlay_manager.offer_rejected.connect(_on_offer_rejected)
+	overlay_manager.get_parking_money.connect(tile_manager.parking_money)
 
 	# Setup camera system
 	camera_system.init_camera_system(self)
@@ -113,7 +114,7 @@ func _on_dice_result_received(total: int) -> void:
 		var model: PlayerModel = players[0]["model"]
 		var token: PlayerToken = players[0]["token"]
 		
-		var test_path: Array[String] = ["001", "002", "003", "004", "011", "012", "013", "014", "020"]
+		var test_path: Array[String] = ["001", "002", "003", "004", "011", "012", "013", "014", "111"]
 		var path_positions: Array[Vector2] = []
 		
 		for step_id in test_path:
@@ -127,9 +128,9 @@ func _on_dice_result_received(total: int) -> void:
 			await token.move_to(path_positions)
 			camera_system.main_camera()
 		
-		model.move_to_tile("020")
+		model.move_to_tile("111")
 		TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
-		overlay_manager.display_overlay_for_tile("020")
+		overlay_manager.display_overlay_for_tile("111")
 		
 		# TODO: Es un poco lío lo del estado global
 		var p1_id = players[0]["model"].id
