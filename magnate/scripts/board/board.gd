@@ -6,12 +6,19 @@ const DEBUG_MODE: int = 3
 @onready var tile_parent_node: Node2D = %Tiles
 @onready var dice_roller_overlay: DiceRollerOverlay = %DiceRoller
 
+# TODO: Ya lo siento Nico pero no sé dónde meter esto
+const CONTROLS_HUD_SCENE = preload("uid://cp5cmlsncsi6t")
+const SETTINGS_OVERLAY_SCENE = preload("uid://d31dwv0u5en1g")
+const CHAT_SCENE = preload("uid://bb3relwhb88sa")
+
 # Managers
 var tile_manager: MagnateTileManager = MagnateTileManager.new()
 var overlay_manager: MagnateOverlayManager = MagnateOverlayManager.new()
 
 var players: Array[Dictionary] = []
 var player_hud: PlayerHUD
+var controls_hud: ControlsHUD
+var chat_hud: CanvasLayer
 
 const TRAM_IDS: Array[String] = ["010", "030", "100", "107"]
 
@@ -43,6 +50,18 @@ func _ready() -> void:
 	
 	TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
 	
+	# Controls
+	controls_hud = CONTROLS_HUD_SCENE.instantiate()
+	add_child(controls_hud)
+	
+	controls_hud.open_settings_requested.connect(_on_open_settings_requested)
+	controls_hud.roll_dice_requested.connect(_on_hud_roll_requested)
+	
+	# Chat
+	chat_hud = CHAT_SCENE.instantiate()
+	add_child(chat_hud)
+	chat_hud.init_chat(players)
+	
 	# Start playing the board background music
 	var music = AudioResource.from_type(Globals.AUDIO_BOARDMUSIC, AudioResource.AudioResourceType.MUSIC)
 	AudioSystem.play_audio(music)
@@ -65,16 +84,48 @@ func _on_dice_result_received(total: int) -> void:
 	await get_tree().create_timer(1.0).timeout
 	dice_roller_overlay.hide_overlay()
 	
-	overlay_manager.show_banner("¡Turno de ...!", Color("f94144"))
-	overlay_manager.show_toast("Esto es una prueba")
+	player_hud.toggle_hud_visibility(true)
+	controls_hud.toggle_hud_visibility(true)
+	
+	# overlay_manager.show_banner("¡Turno de ...!", Color("f94144"))
+	# overlay_manager.show_toast("Esto es una prueba")
 	
 	# Get destination
+	#if players.size() > 0:
+		#var model: PlayerModel = players[0]["model"]
+		#var current_id: int = model.current_tile_id.to_int()
+		#var target_id: int = current_id + total
+		#var target_tile_string: String = "%03d" % target_id
+		#tile_manager.prompt_tile_selection([target_tile_string])
+		
+	# DEBUG
 	if players.size() > 0:
 		var model: PlayerModel = players[0]["model"]
-		var current_id: int = model.current_tile_id.to_int()
-		var target_id: int = current_id + total
-		var target_tile_string: String = "%03d" % target_id
-		tile_manager.prompt_tile_selection([target_tile_string])
+		var token: PlayerToken = players[0]["token"]
+		
+		var test_path: Array[String] = ["000", "001", "002", "020"]
+		var path_positions: Array[Vector2] = []
+		
+		for step_id in test_path:
+			if tile_manager.tile_entities.has(step_id):
+				var step_tile = tile_manager.tile_entities[step_id]
+				path_positions.append(step_tile.position + step_tile.pivot_offset)
+				
+		if not path_positions.is_empty():
+			await token.move_to(path_positions)
+			
+		model.move_to_tile("020")
+		TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
+		overlay_manager.display_overlay_for_tile("020")
+		
+		# TODO: Es un poco lío lo del estado global
+		var p1_id = players[0]["model"].id
+		var p2_id = players[1]["model"].id
+		var p3_id = players[2]["model"].id
+		chat_hud.add_player_message(p1_id, "Ofrezco el baño de chicas con terraza por 500M!", true)
+		chat_hud.add_player_message(p2_id, "Pero vamos a ver, si la ventana está cerrada. Eso no vale nada.", false)
+		chat_hud.add_player_message(p3_id, "Que sí, que se puede salir por ahí mientras que no te pille ninguna señora.", false)
+		
 
 # ================
 #  Input handlers
