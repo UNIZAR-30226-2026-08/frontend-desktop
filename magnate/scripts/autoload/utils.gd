@@ -8,4 +8,14 @@ static func debug(msg: String) -> void:
 
 
 static func to_currency_text(value: int) -> String:
-	return str(value) + Globals.SYMBOL_CURRENCY
+	var s = str(value)
+	var result = ""
+	var count = 0
+	
+	for i in range(s.length() - 1, -1, -1):
+		if count != 0 and count % 3 == 0:
+			result = "." + result
+		result = s[i] + result
+		count += 1
+		
+	return result + Globals.SYMBOL_CURRENCY
