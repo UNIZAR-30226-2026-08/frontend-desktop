@@ -35,6 +35,17 @@ layout_mode = 2
 mouse_filter = 2
 color = Color(6.6420434e-06, 0.7986126, 0.6671381, 1)
 
+[node name="BuildingContainer" type="HBoxContainer" parent="VerticalAlign/PropertyColor" unique_id=553292337]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
 [node name="Separator" type="HSeparator" parent="VerticalAlign" unique_id=84761007]
 custom_minimum_size = Vector2(0, 3)
 layout_mode = 2
