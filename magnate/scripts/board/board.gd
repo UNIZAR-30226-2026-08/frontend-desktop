@@ -34,6 +34,8 @@ func _ready() -> void:
 	overlay_manager.offer_accepted.connect(_on_offer_accepted)
 	overlay_manager.offer_rejected.connect(_on_offer_rejected)
 	overlay_manager.get_parking_money.connect(tile_manager.parking_money)
+	overlay_manager.overlay_open.connect(_on_overlay_open)
+	overlay_manager.overlay_closed.connect(_on_overlay_close)
 
 	# Setup camera system
 	camera_system.init_camera_system(self)
@@ -72,18 +74,22 @@ func _ready() -> void:
 		dice_roller_overlay.roll_finished.connect(_on_dice_result_received)
 		dice_roller_overlay.show() # Mostramos el overlay esperando tu click para tirar
 	elif DEBUG_MODE == 2:
-		player_hud.toggle_hud_visibility(true)
-		controls_hud.toggle_hud_visibility(true)
 		_run_debug_trade_scenario()
 	elif DEBUG_MODE == 3:
-		player_hud.toggle_hud_visibility(true)
-		controls_hud.toggle_hud_visibility(true)
 		_run_debug_offer_scenario()
 	elif DEBUG_MODE == 4:
-		player_hud.toggle_hud_visibility(true)
-		controls_hud.toggle_hud_visibility(true)
 		await get_tree().create_timer(2).timeout
 		overlay_manager.start_scoreboard_overlay()
+
+# Hide the HUD when an overlay opens
+func _on_overlay_open() -> void:
+	player_hud.toggle_hud_visibility(true)
+	controls_hud.toggle_hud_visibility(true)
+
+# Show the HUD when an overlay closes
+func _on_overlay_close() -> void:
+	player_hud.toggle_hud_visibility(false)
+	controls_hud.toggle_hud_visibility(false)
 
 func _on_open_settings_requested() -> void:
 	var settings = SETTINGS_OVERLAY_SCENE.instantiate()
@@ -104,9 +110,6 @@ func _on_dice_result_received(total: int) -> void:
 	await get_tree().create_timer(1.0).timeout
 	dice_roller_overlay.hide_overlay()
 	
-	player_hud.toggle_hud_visibility(true)
-	controls_hud.toggle_hud_visibility(true)
-	
 	# overlay_manager.show_banner("¡Turno de ...!", Color("f94144"))
 	# overlay_manager.show_toast("Esto es una prueba")
 	
@@ -123,8 +126,6 @@ func _on_dice_result_received(total: int) -> void:
 		var model: PlayerModel = players[0]["model"]
 		var token: PlayerToken = players[0]["token"]
 		
-		# var test_path: Array[String] = ["001", "002", "003", "004", "011", "012", "013", "014", "111"]
-		# var test_path: Array[String] = ["108", "109", "110", "111"]
 		var test_path: Array[String] = ["001", "002", "003"]
 		var path_positions: Array[Vector2] = []
 		
@@ -152,9 +153,6 @@ func _on_dice_result_received(total: int) -> void:
 		chat_hud.add_player_message(p3_id, "Que sí, que se puede salir por ahí mientras que no te pille ninguna señora.", false)
 		
 		await overlay_manager.overlay_closed
-		
-	player_hud.toggle_hud_visibility(false)
-	controls_hud.toggle_hud_visibility(false)
 
 # ================
 #  Input handlers

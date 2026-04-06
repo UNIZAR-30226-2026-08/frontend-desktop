@@ -18,6 +18,7 @@ var _dummy_fantasy_cards = [
 
 # common signals
 signal overlay_closed
+signal overlay_open
 
 # specific signals
 signal trade_selection_request
@@ -66,6 +67,7 @@ func setup_overlays(_board: Node2D) -> void:
 
 func show_banner(message: String, bg_color: Color = Color("008a5c"), duration: float = 2.5) -> void:
 	if banner_instance:
+		overlay_open.emit()
 		banner_instance.show_banner(message, bg_color, duration)
 		
 func show_toast(message: String, duration: float = 3.0) -> void:
@@ -73,6 +75,7 @@ func show_toast(message: String, duration: float = 3.0) -> void:
 		toast_instance.show_toast(message, duration)
 
 func display_overlay_for_tile(tile_id: String) -> void:
+	overlay_open.emit()
 	Utils.debug("Manejando llegada a la casilla: " + tile_id)
 
 	# 1. Look for the tile
