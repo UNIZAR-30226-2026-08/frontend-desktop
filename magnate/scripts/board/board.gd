@@ -125,7 +125,7 @@ func _on_dice_result_received(total: int) -> void:
 		
 		# var test_path: Array[String] = ["001", "002", "003", "004", "011", "012", "013", "014", "111"]
 		# var test_path: Array[String] = ["108", "109", "110", "111"]
-		var test_path: Array[String] = ["008", "009", "010"]
+		var test_path: Array[String] = ["001", "002", "003"]
 		var path_positions: Array[Vector2] = []
 		
 		for step_id in test_path:
@@ -139,9 +139,9 @@ func _on_dice_result_received(total: int) -> void:
 			await token.move_to(path_positions)
 			camera_system.main_camera()
 		
-		model.move_to_tile("010")
+		model.move_to_tile("003")
 		TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
-		overlay_manager.display_overlay_for_tile("010")
+		overlay_manager.display_overlay_for_tile("003")
 		
 		# TODO: Es un poco lío lo del estado global
 		var p1_id = players[0]["model"].id

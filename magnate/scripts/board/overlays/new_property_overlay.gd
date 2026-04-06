@@ -2,17 +2,17 @@ extends BlurryBgOverlay
 
 # Creamos señales para avisar al tablero de la decisión
 signal property_bought
-signal property_auctioned # (Si tienes un botón de pasar/subastar)
+signal property_auctioned
 
 @onready var card = %PropertyCard
 @onready var server_card = %ServerCard
 @onready var buy_button = %BuyButton
-@onready var auction_button = %AuctionButton # <--- NUEVO
+@onready var auction_button = %AuctionButton
+@onready var tooltip: PanelContainer = %Tooltip
 
 func _ready() -> void:
 	super()
 	
-	# Solo ocultamos, no animamos nada todavía
 	visible = false
 	card.visible = false
 	server_card.visible = false
@@ -21,19 +21,19 @@ func _ready() -> void:
 	var audio = AudioResource.from_type(Globals.AUDIO_CARDFLIP, AudioResource.AudioResourceType.SFX)
 	AudioSystem.play_audio(audio)
 	
-	# Conectamos el botón de compra (asegúrate de que en el nodo se llama BuyButton)
+	# Conectamos el botón de compra
 	buy_button.pressed.connect(_on_buy_button_pressed)
-	auction_button.pressed.connect(_on_auction_button_pressed) # <--- NUEVO
+	auction_button.pressed.connect(_on_auction_button_pressed)
+
 # ==========================================
 # FUNCIÓN PÚBLICA PARA EL BOARD
 # ==========================================
 func abrir_carta(prop_data: Dictionary) -> void:
 	# Asumimos que el precio base viene en la clave "price" (ajusta si en tu JSON se llama distinto)
 	var prop_price = prop_data.get("price", 0)
-	buy_button.text = "Comprar por %d€" % prop_price
+	buy_button.text = "Comprar por %d" % prop_price + Globals.SYMBOL_CURRENCY
 	
 	# Comprobamos si es un servidor mirando alguna clave de tu JSON
-	# Por ejemplo, si en tu JSON tienes "type": "server"
 	var is_server = prop_data["type"] == Globals.TileType.SERVER
 	
 	if is_server:
@@ -68,9 +68,18 @@ func _on_buy_button_pressed() -> void:
 	cerrar_y_destruir()
 
 func cerrar_y_destruir() -> void:
-	# Puedes hacer un tween inverso aquí si quieres, o simplemente borrarlo:
 	queue_free()
 	
 func _on_auction_button_pressed() -> void:
 	property_auctioned.emit() # Avisamos al Tablero de que no compramos, subastamos
 	cerrar_y_destruir()
+
+const fade_duration = 0.1
+
+func _on_auction_button_mouse_entered() -> void:
+	var tween = get_tree().create_tween()
+	tween.tween_property(tooltip, "modulate:a", 1, fade_duration)
+
+func _on_auction_button_mouse_exited() -> void:
+	var tween = get_tree().create_tween()
+	tween.tween_property(tooltip, "modulate:a", 0, fade_duration)

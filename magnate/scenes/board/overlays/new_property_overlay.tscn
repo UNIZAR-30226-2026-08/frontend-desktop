@@ -38,6 +38,13 @@ expand_margin_top = 10.0
 expand_margin_right = 45.0
 expand_margin_bottom = 10.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1xtby"]
+bg_color = Color(0, 0, 0, 0.39215687)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [node name="NewPropertyOverlay" type="CanvasLayer" unique_id=417320456]
 script = ExtResource("1_eu44f")
 
@@ -81,3 +88,42 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_iwjru")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_eu44f")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0m1iy")
 text = "Poner a subasta"
+
+[node name="Control2" type="Control" parent="HBoxContainer" unique_id=2129435574]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+
+[node name="Tooltip" type="PanelContainer" parent="." unique_id=1782463716]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(250, 0)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 478.0
+offset_top = -187.0
+offset_right = 738.0
+offset_bottom = -102.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1xtby")
+
+[node name="MarginContainer" type="MarginContainer" parent="Tooltip" unique_id=1155804140]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="TooltipText" type="Label" parent="Tooltip/MarginContainer" unique_id=386591734]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 2
+text = "Si decides no adquirir esta propiedad pasará a subasta entre el resto de los jugadores."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[connection signal="mouse_entered" from="HBoxContainer/AuctionButton" to="." method="_on_auction_button_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/AuctionButton" to="." method="_on_auction_button_mouse_exited"]
