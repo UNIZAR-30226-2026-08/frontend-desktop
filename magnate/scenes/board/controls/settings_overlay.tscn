@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d31dwv0u5en1g"]
 
-[ext_resource type="Script" uid="uid://btlb3cwbcaso4" path="res://scripts/board/controls/settigns_overlay.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://btlb3cwbcaso4" path="res://scripts/board/controls/settings_overlay.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="2_header"]
 [ext_resource type="FontFile" uid="uid://b78i0vraohs54" path="res://assets/fonts/LTSuperior/LTSuperior-Black.ttf" id="3_0m2wi"]
 [ext_resource type="PackedScene" uid="uid://dep1ru34gfn0m" path="res://scenes/board/controls/mute_button.tscn" id="4_mute_btn"]

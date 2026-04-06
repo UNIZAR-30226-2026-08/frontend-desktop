@@ -16,7 +16,11 @@ func _ready() -> void:
 	backdrop.gui_input.connect(_on_backdrop_gui_input)
 
 	if header.has_signal("back_action_requested"):
-		header.back_action_requested.connect(queue_free)
+		header.back_action_requested.connect(
+			func():
+				AudioSystem.save_settings()
+				queue_free()
+		)
 	
 	music_slider.value = AudioSystem.get_music_volume()
 	sfx_slider.value = AudioSystem.get_sfx_volume()
@@ -77,4 +81,5 @@ func _on_ui_mute_toggled(toggled_on: bool) -> void:
 
 func _on_backdrop_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		AudioSystem.save_settings()
 		queue_free()

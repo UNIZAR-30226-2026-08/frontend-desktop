@@ -211,3 +211,44 @@ func play_audio_with_position(audio: AudioResource, _position: Vector2) -> int:
 	_start_audio(_audio_players[ticket], audio.bus == AudioResource.AudioResourceType.MUSIC)
 	
 	return ticket
+
+# The following is the settings saving system
+
+const SAVE_PATH: String = "user://audio_settings.cfg"
+var _config: ConfigFile = ConfigFile.new()
+
+func _ready() -> void:
+	load_settings()
+
+## Saves all current bus volumes and mute states to a config file
+func save_settings() -> void:
+	# Gather current values
+	_config.set_value("audio", "music_volume", get_music_volume())
+	_config.set_value("audio", "sfx_volume", get_sfx_volume())
+	_config.set_value("audio", "ui_volume", get_ui_volume())
+	_config.set_value("audio", "general_volume", get_general_volume())
+	
+	_config.set_value("audio", "music_muted", AudioServer.is_bus_mute(AudioServer.get_bus_index(_MUSIC_BUS_NAME)))
+	_config.set_value("audio", "sfx_muted", AudioServer.is_bus_mute(AudioServer.get_bus_index(_SFX_BUS_NAME)))
+	_config.set_value("audio", "ui_muted", AudioServer.is_bus_mute(AudioServer.get_bus_index(_UI_BUS_NAME)))
+	_config.set_value("audio", "general_muted", AudioServer.is_bus_mute(AudioServer.get_bus_index(_GENERAL_BUS_NAME)))
+	
+	_config.save(SAVE_PATH)
+
+## Loads settings from the config file and applies them to the AudioServer
+func load_settings() -> void:
+	var err = _config.load(SAVE_PATH)
+	if err != OK:
+		return # No settings saved yet, use engine defaults
+
+	# Apply Volumes (using current values as fallbacks)
+	set_music_volume(_config.get_value("audio", "music_volume", get_music_volume()))
+	set_sfx_volume(_config.get_value("audio", "sfx_volume", get_sfx_volume()))
+	set_ui_volume(_config.get_value("audio", "ui_volume", get_ui_volume()))
+	set_general_volume(_config.get_value("audio", "general_volume", get_general_volume()))
+
+	# Apply Mute States
+	if _config.get_value("audio", "music_muted", false): mute_music()
+	if _config.get_value("audio", "sfx_muted", false): mute_sfx()
+	if _config.get_value("audio", "ui_muted", false): mute_ui()
+	if _config.get_value("audio", "general_muted", false): mute_general()
