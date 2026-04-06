@@ -52,6 +52,8 @@ static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> Control:
 			tile_instance.set_bridge_name(tile_def["name"])
 		Globals.TileType.SERVER:
 			tile_instance.set_server_name(tile_def["name"])
+		Globals.TileType.TRAM:
+			tile_instance.set_stop_name(tile_def["stop_name"])
 	tile_instance.mouse_filter = Control.MOUSE_FILTER_STOP
 	return tile_instance
 

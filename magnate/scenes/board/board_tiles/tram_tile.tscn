@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://38yhgyxt25m4"]
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_7mk8p"]
+[ext_resource type="FontFile" uid="uid://n3efsq8ypxye" path="res://assets/fonts/LTSuperior/LTSuperior-Regular.ttf" id="2_1grmg"]
+[ext_resource type="Script" uid="uid://c88gnd2it2btt" path="res://scripts/board/detailed_tiles/tram_tile.gd" id="2_4joyo"]
 [ext_resource type="Texture2D" uid="uid://bc8h4r4noye3d" path="res://assets/images/tram.png" id="2_7mk8p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dxen"]
@@ -19,6 +21,7 @@ offset_bottom = 120.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_7mk8p")
+script = ExtResource("2_4joyo")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1283559629]
 layout_mode = 1
@@ -34,12 +37,12 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_2dxen")
 layout_mode = 2
 mouse_filter = 2
 
-[node name="GoToLabel" type="Label" parent="." unique_id=148657105]
+[node name="TramText" type="Label" parent="." unique_id=148657105]
 layout_mode = 0
-offset_left = 6.000004
-offset_top = 63.0
+offset_left = 1.0000019
+offset_top = 57.0
 offset_right = 86.0
-offset_bottom = 86.0
+offset_bottom = 80.0
 rotation = -0.7853982
 size_flags_vertical = 1
 theme = ExtResource("1_7mk8p")
@@ -48,15 +51,32 @@ theme_override_font_sizes/font_size = 19
 text = "TRANVÍA"
 horizontal_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=471471109]
+[node name="StopName" type="Label" parent="." unique_id=312883139]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 4.000004
+offset_top = 87.0
+offset_right = 117.17154
+offset_bottom = 110.0
+rotation = -0.7853982
+size_flags_vertical = 1
+theme = ExtResource("1_7mk8p")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_1grmg")
+theme_override_font_sizes/font_size = 15
+text = "stop name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TramImage" type="TextureRect" parent="." unique_id=471471109]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 31.0
-offset_top = 45.0
-offset_right = -10.0
-offset_bottom = -1.0
+offset_left = 44.0
+offset_top = 60.0
+offset_right = -6.6081085
+offset_bottom = 5.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2

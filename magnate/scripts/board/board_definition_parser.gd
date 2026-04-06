@@ -59,4 +59,6 @@ static func _get_tiles(data: Dictionary) -> Dictionary:
 			tiles_dict[tile["id"]]["color"] = group_color
 		if tile.has("rotation"):
 			tiles_dict[tile["id"]]["rotation"] = tile["rotation"]
+		if tile.has("subText"):
+			tiles_dict[tile["id"]]["stop_name"] = tile["subText"]
 	return tiles_dict
