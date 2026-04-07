@@ -36,18 +36,27 @@ func _gui_input(event: InputEvent) -> void:
 			AudioSystem.play_audio(audio)
 
 func roll_the_dice(forced_values: Array[int] = [1, 3, 6]) -> void:
-	show()
+	show_overlay() # Cambiado de show() a show_overlay()
 	dice_roller_3d.roll(forced_values)
 	# Marcamos que ya se han tirado para no permitir más clicks
-	has_rolled = true 
+	has_rolled = true
 
+# Función nueva para encender la capa 2D y el 3D a la vez
+func show_overlay() -> void:
+	show() # Muestra el Control (2D)
+	if dice_roller_3d:
+		dice_roller_3d.show() # Muestra los dados (3D)
+
+# Modificamos esta para que apague ambas cosas
 func hide_overlay() -> void:
-	hide()
+	hide() # Oculta el Control (2D)
+	if dice_roller_3d:
+		dice_roller_3d.hide() # Oculta los dados (3D)
 
 # Función para volver a habilitar los dados en el siguiente turno
 func reset_dice() -> void:
 	has_rolled = false
-	show()
+	show_overlay() # Cambiado de show() a show_overlay()
 
 func _on_3d_roll_finished(total_value: int) -> void:
 	roll_finished.emit(total_value)

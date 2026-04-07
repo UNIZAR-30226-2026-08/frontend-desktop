@@ -1,0 +1,112 @@
+[gd_scene format=3 uid="uid://bmk83o1g8rbb8"]
+
+[ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="1_f1m4g"]
+[ext_resource type="Script" uid="uid://dum2gphwx1inw" path="res://scripts/board/jail/jail_turn_overlay.gd" id="1_hqr0v"]
+[ext_resource type="FontFile" uid="uid://b3216w4ia8it8" path="res://assets/fonts/LTSuperior/LTSuperior-BoldItalic.ttf" id="2_hqr0v"]
+[ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="3_8madp"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="3_hqr0v"]
+[ext_resource type="StyleBox" uid="uid://dnpy4c64tp2t6" path="res://styles/ingame/red_button_style.tres" id="6_8madp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mfesj"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6640625, 0.6640625, 0.6640625, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[node name="JailTurnOverlay" type="CanvasLayer" unique_id=417320456]
+script = ExtResource("1_hqr0v")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1364402375]
+material = ExtResource("1_f1m4g")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mfesj")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1432071407]
+layout_mode = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 60
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=593344712]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1174250846]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_hqr0v")
+theme_override_font_sizes/font_size = 60
+text = "¿AVANZAR?"
+horizontal_alignment = 1
+
+[node name="Space" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2022878831]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="SubtitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1048592151]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.44140625, 0.44140625, 0.44140625, 1)
+theme_override_fonts/font = ExtResource("3_8madp")
+theme_override_font_sizes/font_size = 40
+text = "Te vas a mover a Plaza de las ingenierías."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Space2" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=529894470]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="ConfirmButton" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=175575919 instance=ExtResource("3_hqr0v")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("3_8madp")
+theme_override_font_sizes/font_size = 40
+text = "CONFIRMAR"
+
+[node name="Space3" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=689828012]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="RejectButton" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=588064525 instance=ExtResource("3_hqr0v")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 0.15234375, 0.15234375, 1)
+theme_override_colors/font_focus_color = Color(1, 0.15294118, 0.15294118, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.15294118, 0.15294118, 1)
+theme_override_colors/font_hover_color = Color(1, 0.15294118, 0.15294118, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 0.15294118, 0.15294118, 1)
+theme_override_fonts/font = ExtResource("3_8madp")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = ExtResource("6_8madp")
+theme_override_styles/pressed = ExtResource("6_8madp")
+theme_override_styles/hover = ExtResource("6_8madp")
+theme_override_styles/disabled = ExtResource("6_8madp")
+theme_override_styles/focus = ExtResource("6_8madp")
+text = "ELEGIR OTRA CASILLA"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/ConfirmButton" to="." method="_on_primary_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/RejectButton" to="." method="_on_secondary_pressed"]

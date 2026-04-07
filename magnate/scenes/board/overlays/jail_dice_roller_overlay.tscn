@@ -18,7 +18,7 @@ metadata/_custom_type_script = "uid://cohd4ovwrydr0"
 script = ExtResource("3_kb7dn")
 metadata/_custom_type_script = "uid://cohd4ovwrydr0"
 
-[node name="DiceRoller" type="Control" unique_id=596074291]
+[node name="JailDiceRoller" type="Control" unique_id=596074291]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

@@ -1,10 +1,11 @@
 extends Node2D
 
-const DEBUG_MODE: int = 1
+const DEBUG_MODE: int = 5 # Cambiado a 5 para probar Secretaría
 
 @onready var camera_system: MagnateCameraSystem = %CameraSystem
 @onready var tile_parent_node: Node2D = %Tiles
 @onready var dice_roller_overlay: DiceRollerOverlay = %DiceRoller
+@onready var jail_dice_roller: DiceRollerOverlay = %JailDiceRoller
 
 # TODO: Ya lo siento Nico pero no sé dónde meter esto
 const CONTROLS_HUD_SCENE = preload("uid://cp5cmlsncsi6t")
@@ -21,6 +22,11 @@ var controls_hud: ControlsHUD
 var chat_hud: CanvasLayer
 
 const TRAM_IDS: Array[String] = ["010", "030", "100", "107"]
+
+# --- Variables de Estado para Cárcel dummy---
+var is_in_jail_roll: bool = false
+var jail_target_tile: String = "108"
+var jail_current_turn: int = 1
 
 func _ready() -> void:
 	# Spawn the board
@@ -60,6 +66,12 @@ func _ready() -> void:
 	controls_hud.open_settings_requested.connect(_on_open_settings_requested)
 	controls_hud.roll_dice_requested.connect(_on_hud_roll_requested)
 	
+	# NUEVO: Conectar señales de Secretaría del overlay_manager
+	overlay_manager.jail_roll_requested.connect(_on_jail_roll_requested)
+	overlay_manager.jail_stay_confirmed.connect(_on_jail_stay_confirmed)
+	overlay_manager.jail_pay_bail_confirmed.connect(_on_jail_pay_bail_confirmed)
+	overlay_manager.jail_reselect_requested.connect(_on_jail_reselect_requested)
+	
 	# Chat
 	chat_hud = CHAT_SCENE.instantiate()
 	add_child(chat_hud)
@@ -68,6 +80,18 @@ func _ready() -> void:
 	# Start playing the board background music
 	var music = AudioResource.from_type(Globals.AUDIO_BOARDMUSIC, AudioResource.AudioResourceType.MUSIC)
 	AudioSystem.play_audio(music)
+	
+	# Asegurarnos de que ambos dados están ocultos por defecto
+	# Apagamos ambos al arrancar usando nuestra nueva función
+	if dice_roller_overlay:
+		dice_roller_overlay.hide_overlay()
+		if not dice_roller_overlay.roll_finished.is_connected(_on_dice_result_received):
+			dice_roller_overlay.roll_finished.connect(_on_dice_result_received)
+			
+	if jail_dice_roller:
+		jail_dice_roller.hide_overlay()
+		if not jail_dice_roller.roll_finished.is_connected(_on_dice_result_received):
+			jail_dice_roller.roll_finished.connect(_on_dice_result_received)
 	
 	#  Debug modes
 	if DEBUG_MODE == 1 and dice_roller_overlay:
@@ -80,6 +104,8 @@ func _ready() -> void:
 	elif DEBUG_MODE == 4:
 		await get_tree().create_timer(2).timeout
 		overlay_manager.start_scoreboard_overlay()
+	elif DEBUG_MODE == 5:
+		_run_debug_jail_scenario() # NUEVO MODO
 
 # Hide the HUD when an overlay opens
 func _on_overlay_open() -> void:
@@ -95,21 +121,51 @@ func _on_open_settings_requested() -> void:
 	var settings = SETTINGS_OVERLAY_SCENE.instantiate()
 	add_child(settings)
 	
+# Tirada normal
 func _on_hud_roll_requested() -> void:
 	controls_hud.set_roll_disabled(true)
 	
+	# 📢 ¡Avisamos para que se oculte la UI!
+	overlay_manager.overlay_open.emit()
+	
+	if jail_dice_roller:
+		jail_dice_roller.hide_overlay()
 	if dice_roller_overlay:
-		dice_roller_overlay.show()
+		dice_roller_overlay.show_overlay()
+		
+# Tirada de la cárcel
+func _on_jail_roll_requested() -> void:
+	is_in_jail_roll = true
+	
+	# 📢 ¡Avisamos para que se oculte la UI!
+	overlay_manager.overlay_open.emit()
+	
+	if dice_roller_overlay:
+		dice_roller_overlay.hide_overlay()
+	if jail_dice_roller:
+		jail_dice_roller.show_overlay()
 
 # ============
 #  Dice logic
 # ============
 func _on_dice_result_received(total: int) -> void:
-	Utils.debug("🎲 RESULTADO FINAL DE LOS DADOS: " + str(total))
+	Utils.debug("🎲 RESULTADO FINAL: " + str(total))
 	
 	await get_tree().create_timer(1.0).timeout
-	dice_roller_overlay.hide_overlay()
 	
+	# Ocultamos los dados (esto sí se queda aquí)
+	if dice_roller_overlay:
+		dice_roller_overlay.hide_overlay()
+	if jail_dice_roller:
+		jail_dice_roller.hide_overlay()
+	
+	# Seguimos con la lógica
+	if is_in_jail_roll:
+		_handle_jail_dice_logic()
+	else:
+		_handle_normal_movement(total)
+
+func _handle_normal_movement(total: int) -> void:
 	# overlay_manager.show_banner("¡Turno de ...!", Color("f94144"))
 	# overlay_manager.show_toast("Esto es una prueba")
 	
@@ -154,12 +210,34 @@ func _on_dice_result_received(total: int) -> void:
 		
 		await overlay_manager.overlay_closed
 
+func _handle_jail_dice_logic() -> void:
+	is_in_jail_roll = false
+	# Simulación: El backend nos diría si hubo par. 
+	var is_pair = false
+	
+	if is_pair:
+		Utils.debug("✨ ¡DOUBLES! Sales de Secretaría gratis.")
+		overlay_manager.show_toast("¡Has sacado par! Sales libre.")
+		_on_jail_pay_bail_confirmed() # Reutilizamos la lógica de movernos al destino
+	else:
+		Utils.debug("🚫 No hubo par. Debes elegir: Quedarte o Pagar.")
+		# Iluminamos la cárcel (ID "010" por ejemplo) y el destino
+		tile_manager.prompt_tile_selection(["104", jail_target_tile])
+
 # ================
 #  Input handlers
 # ================
 func _on_highlighted_tile_clicked(tile_id: String) -> void:
 	Utils.debug("👉 Casilla seleccionada por el jugador: " + tile_id)
-
+	
+	# Si estamos en modo cárcel y el jugador hace clic:
+	if tile_id == "104": # ID de la Cárcel
+		overlay_manager.show_jail_stay_decision(jail_current_turn, 3)
+		return
+	elif tile_id == jail_target_tile:
+		overlay_manager.show_jail_pay_decision(50)
+		return
+	
 	if overlay_manager.in_trade_selection_mode:
 		overlay_manager.in_trade_selection_mode = false
 		if overlay_manager.current_trade_overlay:
@@ -268,3 +346,41 @@ func _run_debug_offer_scenario() -> void:
 	
 	# Llamamos a la función que creaste en tu overlay_manager.gd
 	overlay_manager.start_offer(left_data, right_data)
+
+# ==========================================
+# GESTIÓN DE SEÑALES DE SECRETARÍA
+# ==========================================
+
+func _on_jail_stay_confirmed() -> void:
+	Utils.debug("🔒 El jugador decide quedarse en Secretaría.")
+	tile_manager.reset_tile_highlight() # Limpiamos el tablero
+	overlay_manager.show_toast("Turno terminado en Secretaría.")
+
+func _on_jail_pay_bail_confirmed() -> void:
+	Utils.debug("💰 Fianza pagada o Salida por par. Moviendo a " + jail_target_tile)
+	tile_manager.reset_tile_highlight()
+	
+	if players.size() > 0:
+		var model: PlayerModel = players[0]["model"]
+		model.move_to_tile(jail_target_tile)
+		TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
+		overlay_manager.display_overlay_for_tile(jail_target_tile)
+
+func _on_jail_reselect_requested() -> void:
+	# Simplemente volvemos a iluminar las casillas para que el jugador elija
+	tile_manager.prompt_tile_selection(["104", jail_target_tile])
+
+# ==========================================
+# ESCENARIO DE DEBUG 5: SECRETARÍA
+# ==========================================
+func _run_debug_jail_scenario() -> void:
+	Utils.debug("🐛 DEBUG MODE 5: Iniciando flujo de Secretaría...")
+	await get_tree().create_timer(1.5).timeout
+	
+	if dice_roller_overlay:
+		dice_roller_overlay.hide()
+	
+	# Simulamos que es nuestro turno y estamos en la cárcel
+	# (Asegúrate de que la ID coincide con la de tu JSON para la cárcel)
+	jail_current_turn = 1
+	overlay_manager.show_jail_initial_warning(jail_current_turn, 3)
