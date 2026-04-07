@@ -28,6 +28,12 @@ signal offer_accepted
 signal offer_rejected
 signal get_parking_money
 
+# specific signals (debajo de las que ya tienes)
+signal jail_roll_requested
+signal jail_stay_confirmed
+signal jail_pay_bail_confirmed
+signal jail_reselect_requested
+
 var board: Node2D
 var tile_data: Dictionary
 var current_trade_overlay: CanvasLayer = null
@@ -52,6 +58,7 @@ const SCOREBOARD_OVERLAY = preload("uid://njtmnh67mrt5")
 const PROPERTY_ADMINISTRATION_OVERLAY = preload("uid://cptx3705we74j")
 const MORTGAGE_OVERLAY = preload("uid://iip2p7fd0k63")
 const PAY_RENT_OVERLAY = preload("uid://bme7v8a58kf1h")
+const JAIL_DECISION_OVERLAY = preload("uid://bmk83o1g8rbb8")
 
 const BANNER_MESSAGE = preload("uid://g1ccyk0arbkf")
 const TOAST_MESSAGE = preload("uid://dj0br3kdrndit")
@@ -234,7 +241,6 @@ func _start_go_to_jail_overlay(tile_id: String) -> void:
 	
 	overlay.play_animation()
 
-# TODO: Remeber to emit overlay_closed at the end
 func _start_jail_overlay(tile_id: String) -> void:
 	Utils.debug("🔒 Estás de visita en Secretaría: " + tile_id)
 
@@ -288,3 +294,52 @@ func start_offer(left_data: Dictionary, right_data: Dictionary) -> void:
 	
 	# 3. Le pasamos los datos para que dibuje la interfaz
 	overlay.setup_offer(left_data, right_data)
+	
+# ==========================================
+# LÓGICA DE SECRETARÍA / CÁRCEL
+# ==========================================
+
+func show_jail_initial_warning(turn: int, max_turns: int = 3) -> void:
+	Utils.debug("🚨 Mostrando advertencia inicial de Secretaría...")
+	var overlay = JAIL_DECISION_OVERLAY.instantiate()
+	board.add_child(overlay)
+	overlay.setup_initial(turn, max_turns)
+	
+	# Al darle a "Tirar Dados", avisamos al board y destruimos este pop-up específico
+	overlay.primary_action.connect(func():
+		jail_roll_requested.emit()
+		overlay.queue_free() # Destruimos la ventanita de la cárcel visualmente
+		# (Y ya no emitimos overlay_closed, de eso se encargará el board cuando muevas la ficha)
+	)
+	overlay_open.emit()
+
+func show_jail_stay_decision(turn: int, max_turns: int = 3) -> void:
+	Utils.debug("🔒 Jugador hizo clic en Secretaría. Mostrando confirmación...")
+	var overlay = JAIL_DECISION_OVERLAY.instantiate()
+	board.add_child(overlay)
+	overlay.setup_jail_selected(turn, max_turns)
+	
+	overlay.primary_action.connect(func():
+		jail_stay_confirmed.emit()
+		overlay_closed.emit()
+	)
+	overlay.secondary_action.connect(func():
+		jail_reselect_requested.emit()
+		# Aquí no emitimos overlay_closed porque sigue en la fase de elegir
+	)
+	overlay_open.emit()
+
+func show_jail_pay_decision(bail_price: int = 50) -> void:
+	Utils.debug("💸 Jugador hizo clic en otra casilla. Mostrando pago de fianza...")
+	var overlay = JAIL_DECISION_OVERLAY.instantiate()
+	board.add_child(overlay)
+	overlay.setup_pay_bail(bail_price)
+	
+	overlay.primary_action.connect(func():
+		jail_pay_bail_confirmed.emit()
+		overlay.queue_free() # ✅ Destruimos el menú visualmente sin devolver el HUD
+	)
+	overlay.secondary_action.connect(func():
+		jail_reselect_requested.emit()
+	)
+	overlay_open.emit()
