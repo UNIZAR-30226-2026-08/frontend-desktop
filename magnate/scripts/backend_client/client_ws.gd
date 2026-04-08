@@ -245,17 +245,19 @@ signal action_bid(Dictionary)
 var socket = WebSocketPeer.new() # WS instance
 var game_id: int # ID of the current playing game (Only valid if _conn_state = IN_GAME)
 var player_id: int # ID of the player (Only valid if _conn_state = IN_GAME)
-var session_id: int # ID of the session
+var session_id: String # ID of the session
 var player_username: String # Username of the player
 var _conn_state: ConnState = ConnState.START # Internal state of the connection
 
 # The following comes straight from the Godot docs with slight modifications:
 # https://docs.godotengine.org/en/stable/tutorials/networking/websocket.html#using-websocket-in-godot
 
-func _safe_connect(url: String) -> void:
+func _safe_connect(url: String, headers: PackedStringArray = []) -> void:
 	# Initiate connection to the given URL.
+	socket.handshake_headers = headers
 	var err = socket.connect_to_url(url)
 	if err == OK:
+		Utils.debug("Started WS in URL: " + url)
 		set_process(true)
 	else:
 		Utils.debug("ERROR: Unable to connect to " + url)
@@ -267,7 +269,10 @@ func send_data(data_to_send: Variant) -> void:
 	socket.send_text(data_to_send)
 
 func start_client_public_queue() -> void:
-	_safe_connect(Globals.WS_BASE_URL + "/queue")
+	_safe_connect(
+		Globals.WS_BASE_URL + "/queue/public/",
+		["Cookie: sessionid=" + session_id]
+	)
 	_conn_state = ConnState.IN_PUBLIC_QUEUE
 
 func start_client_private_lobby(lobby_code: String) -> void:
@@ -281,27 +286,29 @@ func _process(_delta) -> void:
 	# Data transfer and state updates will only happen when calling this function.
 	socket.poll()
 
+	while socket.get_available_packet_count():
+		var packet = socket.get_packet()
+		if socket.was_string_packet():
+			var packet_text: String = packet.get_string_from_utf8()
+			var response: Dictionary = JSON.parse_string(packet_text)
+			Utils.debug("Got response " + str(response))
+			if _conn_state == ConnState.IN_GAME:
+				_game_dispatcher(response)
+			elif _conn_state  == ConnState.IN_PUBLIC_QUEUE:
+				_public_queue_dispatcher(response)
+			elif _conn_state  == ConnState.IN_PRIVATE_QUEUE:
+				_private_queue_dispatcher(response)
+			else:
+				Utils.debug("ERROR: Invalid _conn_state with open socket")
+		else: # This shouldn't happen to us
+			Utils.debug("ERROR: Got a binary packet")
+	
 	# get_ready_state() tells you what state the socket is in.
 	var state = socket.get_ready_state()
-
 	# `WebSocketPeer.STATE_OPEN` means the socket is connected and ready
 	# to send and receive data.
 	if state == WebSocketPeer.STATE_OPEN:
-		while socket.get_available_packet_count():
-			var packet = socket.get_packet()
-			if socket.was_string_packet():
-				var packet_text: String = packet.get_string_from_utf8()
-				var response: Dictionary = JSON.parse_string(packet_text)
-				if _conn_state == ConnState.IN_GAME:
-					_game_dispatcher(response)
-				elif _conn_state  == ConnState.IN_PUBLIC_QUEUE:
-					_public_queue_dispatcher(response)
-				elif _conn_state  == ConnState.IN_PRIVATE_QUEUE:
-					_private_queue_dispatcher(response)
-				else:
-					Utils.debug("ERROR: Invalid _conn_state with open socket")
-			else: # This shouldn't happen to us
-				Utils.debug("ERROR: Got a binary packed")
+		pass
 	# `WebSocketPeer.STATE_CLOSING` means the socket is closing.
 	# It is important to keep polling for a clean close.
 	elif state == WebSocketPeer.STATE_CLOSING:
@@ -309,10 +316,14 @@ func _process(_delta) -> void:
 	# `WebSocketPeer.STATE_CLOSED` means the connection has fully closed.
 	# It is now safe to stop polling.
 	elif state == WebSocketPeer.STATE_CLOSED:
-		if _conn_state == ConnState.GO_TO_GAME:
-			_safe_connect(Globals.WS_BASE_URL + "/game/" + str(game_id))
+		var code = socket.get_close_code()
+		var reason = socket.get_close_reason()
+		Utils.debug("Socket closed. Code: %d, Reason: %s" % [code, reason])
+		if code == 4001 and _conn_state == ConnState.GO_TO_GAME:
+			Utils.debug("Connecting to game: " + str(game_id))
+			_safe_connect(Globals.WS_BASE_URL + "/game/" + str(game_id) + "/")
 			_conn_state = ConnState.IN_GAME
-		else:
+		else: # Reset the state
 			_conn_state = ConnState.START
 			set_process(false) # Stop processing.
 			match_finished.emit()
