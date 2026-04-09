@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://df7l4312ldpad"]
 
-[ext_resource type="Script" uid="uid://crf2y21jgte7c" path="res://scripts/header.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/header.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://cwxhcbn6fvsiy" path="res://assets/icons/money.svg" id="2_pattern"]
 [ext_resource type="PackedScene" uid="uid://cpo0vkocad1pp" path="res://scenes/components/animated_icon_button.tscn" id="3_8iqth"]
 

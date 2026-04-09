@@ -6,6 +6,7 @@ signal property_auctioned
 
 @onready var card = %PropertyCard
 @onready var server_card = %ServerCard
+@onready var bridge_card = %BridgeCard
 @onready var buy_button = %BuyButton
 @onready var auction_button = %AuctionButton
 @onready var tooltip: PanelContainer = %Tooltip
@@ -16,6 +17,7 @@ func _ready() -> void:
 	visible = false
 	card.visible = false
 	server_card.visible = false
+	bridge_card.visible = false
 	
 	# Audio
 	var audio = AudioResource.from_type(Globals.AUDIO_CARDFLIP, AudioResource.AudioResourceType.SFX)
@@ -35,13 +37,21 @@ func abrir_carta(prop_data: Dictionary) -> void:
 	
 	# Comprobamos si es un servidor mirando alguna clave de tu JSON
 	var is_server = prop_data["type"] == Globals.TileType.SERVER
+	var is_bridge = prop_data["type"] == Globals.TileType.BRIDGE
 	
 	if is_server:
 		card.visible = false
+		bridge_card.visible = false
 		server_card.update_all_data(prop_data)
 		aparecer(server_card)
+	elif is_bridge:
+		card.visible = false
+		server_card.visible = false
+		bridge_card.update_all_data(prop_data)
+		aparecer(bridge_card)
 	else:
 		server_card.visible = false
+		bridge_card.visible = false
 		card.update_all_data(prop_data)
 		aparecer(card)
 

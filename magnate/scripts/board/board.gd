@@ -1,25 +1,18 @@
 extends Node2D
 
-const DEBUG_MODE: int = 5 # Cambiado a 5 para probar Secretaría
+const DEBUG_MODE: int = 6
 
 @onready var camera_system: MagnateCameraSystem = %CameraSystem
 @onready var tile_parent_node: Node2D = %Tiles
 @onready var dice_roller_overlay: DiceRollerOverlay = %DiceRoller
 @onready var jail_dice_roller: DiceRollerOverlay = %JailDiceRoller
 
-# TODO: Ya lo siento Nico pero no sé dónde meter esto
-const CONTROLS_HUD_SCENE = preload("uid://cp5cmlsncsi6t")
-const SETTINGS_OVERLAY_SCENE = preload("uid://d31dwv0u5en1g")
-const CHAT_SCENE = preload("uid://bb3relwhb88sa")
-
 # Managers
 var tile_manager: MagnateTileManager = MagnateTileManager.new()
 var overlay_manager: MagnateOverlayManager = MagnateOverlayManager.new()
+var model_manager: ModelManager = ModelManager.new()
 
 var players: Array[Dictionary] = []
-var player_hud: PlayerHUD
-var controls_hud: ControlsHUD
-var chat_hud: CanvasLayer
 
 const TRAM_IDS: Array[String] = ["010", "030", "100", "107"]
 
@@ -28,61 +21,75 @@ var is_in_jail_roll: bool = false
 var jail_target_tile: String = "108"
 var jail_current_turn: int = 1
 
+# --- Variables de Estado para indicar si estoy eligiendo casilla en administración---
+var is_selecting_for_admin: bool = false
+var is_player_in_jail: bool = false
+var is_selecting_for_train: bool = false
+
 func _ready() -> void:
-	# Spawn the board
+	# 1. Mundo físico y Cámara
 	tile_manager.setup_tiles(tile_parent_node)
-	
-	# Prepare overlays
-	overlay_manager.setup_overlays(self)
-	overlay_manager.tram_ok.connect(tile_manager.prompt_tile_selection.bind(TRAM_IDS))
-	overlay_manager.trade_selection_request.connect(_on_trade_selection_requested)
-	overlay_manager.property_bought.connect(_on_property_purchased)
-	overlay_manager.offer_accepted.connect(_on_offer_accepted)
-	overlay_manager.offer_rejected.connect(_on_offer_rejected)
-	overlay_manager.get_parking_money.connect(tile_manager.parking_money)
-	overlay_manager.overlay_open.connect(_on_overlay_open)
-	overlay_manager.overlay_closed.connect(_on_overlay_close)
-
-	# Setup camera system
 	camera_system.init_camera_system(self)
-
-	# Connect tile click events
-	tile_manager.tile_pressed.connect(_on_highlighted_tile_clicked)
-
-	# Setup players
+	
+	# 👇 2. Inicializar los datos del juego 
+	_setup_game_data()
+	
+	# 3. Jugadores y posiciones
 	var json_path = "res://assets/game_info/board.json"
 	players = PlayerSpawner.spawn_players(self, tile_manager.tile_entities, json_path)
-	
-	player_hud = PlayerHUD.new()
-	add_child(player_hud)
-	player_hud.setup_players(players)
-	
 	TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
 	
-	# Controls
-	controls_hud = CONTROLS_HUD_SCENE.instantiate()
-	add_child(controls_hud)
+	# 4. Interfaz de Usuario y Overlays
+	overlay_manager.setup_overlays(self)
+	overlay_manager.setup_huds(players)
+	_setup_dice_rollers()
 	
-	controls_hud.open_settings_requested.connect(_on_open_settings_requested)
-	controls_hud.roll_dice_requested.connect(_on_hud_roll_requested)
+	# 5. Conectar tooooodas las señales
+	_connect_all_signals()
 	
-	# NUEVO: Conectar señales de Secretaría del overlay_manager
-	overlay_manager.jail_roll_requested.connect(_on_jail_roll_requested)
-	overlay_manager.jail_stay_confirmed.connect(_on_jail_stay_confirmed)
-	overlay_manager.jail_pay_bail_confirmed.connect(_on_jail_pay_bail_confirmed)
-	overlay_manager.jail_reselect_requested.connect(_on_jail_reselect_requested)
-	
-	# Chat
-	chat_hud = CHAT_SCENE.instantiate()
-	add_child(chat_hud)
-	chat_hud.init_chat(players)
-	
-	# Start playing the board background music
+	# 6. Música
 	var music = AudioResource.from_type(Globals.AUDIO_BOARDMUSIC, AudioResource.AudioResourceType.MUSIC)
 	AudioSystem.play_audio(music)
 	
-	# Asegurarnos de que ambos dados están ocultos por defecto
-	# Apagamos ambos al arrancar usando nuestra nueva función
+	# 7. Modo Debug
+	_begin_debug(DEBUG_MODE)
+
+# ==========================================
+# SETUP DE DATOS DE PARTIDA
+# ==========================================
+
+func _setup_game_data() -> void:
+	var json_path = "res://assets/game_info/board.json"
+	var file = FileAccess.open(json_path, FileAccess.READ)
+	
+	if not file:
+		push_error("No se pudo abrir el board.json para iniciar el ModelManager")
+		return
+		
+	var json_data = JSON.parse_string(file.get_as_text())
+	
+	# Extraemos las casillas que sean propiedades (las que tienen el campo "group")
+	var properties_list: Array[Dictionary] = []
+	for tile in json_data["tiles"]:
+		if tile.has("group"): 
+			properties_list.append(tile)
+			
+	# MOCK: Información falsa de los jugadores (Sustituir por la que mande el backend)
+	var mock_players: Array[Dictionary] = [
+		{"id": "p1", "name": "Jugador 1", "color": json_data["playerColors"][0], "balance": 1500},
+		{"id": "p2", "name": "Jugador 2", "color": json_data["playerColors"][1], "balance": 1500}
+	]
+	
+	# Le pasamos todo a nuestro cerebro central
+	model_manager.initialize_game("partida_id_123", mock_players, properties_list)
+	Utils.debug("💾 ModelManager inicializado con las reglas cargadas desde JSON")
+
+# ==========================================
+# SETUP DE INICIALIZACIÓN
+# ==========================================
+
+func _setup_dice_rollers() -> void:
+	# Asegurarnos de que ambos dados están ocultos por defecto y conectados
 	if dice_roller_overlay:
 		dice_roller_overlay.hide_overlay()
 		if not dice_roller_overlay.roll_finished.is_connected(_on_dice_result_received):
@@ -92,38 +99,63 @@ func _ready() -> void:
 		jail_dice_roller.hide_overlay()
 		if not jail_dice_roller.roll_finished.is_connected(_on_dice_result_received):
 			jail_dice_roller.roll_finished.connect(_on_dice_result_received)
+
+func _connect_all_signals() -> void:
+	# Señales del Tile Manager
+	tile_manager.tile_pressed.connect(_on_highlighted_tile_clicked)
 	
-	#  Debug modes
-	if DEBUG_MODE == 1 and dice_roller_overlay:
-		dice_roller_overlay.roll_finished.connect(_on_dice_result_received)
-		dice_roller_overlay.show() # Mostramos el overlay esperando tu click para tirar
-	elif DEBUG_MODE == 2:
+	if not model_manager.property_updated.is_connected(_on_model_property_updated):
+		model_manager.property_updated.connect(_on_model_property_updated)
+	
+	# Señales Generales del Overlay Manager
+	overlay_manager.tram_ok.connect(_on_tram_ok_received)
+	overlay_manager.tram_travel_confirmed.connect(_on_tram_travel_confirmed)
+	overlay_manager.tram_travel_cancelled.connect(_on_tram_travel_cancelled)
+	overlay_manager.trade_selection_request.connect(_on_trade_selection_requested)
+	overlay_manager.property_bought.connect(_on_property_purchased)
+	overlay_manager.offer_accepted.connect(_on_offer_accepted)
+	overlay_manager.offer_rejected.connect(_on_offer_rejected)
+	overlay_manager.get_parking_money.connect(tile_manager.parking_money)
+	overlay_manager.property_houses_changed.connect(_on_property_houses_changed)
+	
+	# Señales de Controles (Dados normales)
+	overlay_manager.normal_roll_requested.connect(_on_hud_roll_requested)
+	overlay_manager.request_admin_selection.connect(_on_admin_selection_requested)
+	
+	# Señales de Secretaría (Cárcel)
+	overlay_manager.jail_roll_requested.connect(_on_jail_roll_requested)
+	overlay_manager.jail_stay_confirmed.connect(_on_jail_stay_confirmed)
+	overlay_manager.jail_pay_bail_confirmed.connect(_on_jail_pay_bail_confirmed)
+	overlay_manager.jail_reselect_requested.connect(_on_jail_reselect_requested)
+
+# ==========================================
+# MODO DEBUG
+# ==========================================
+
+func _begin_debug(mode: int) -> void:
+	if mode == 0:
+		return # Juego normal, no hacemos nada de debug
+		
+	Utils.debug("🔧 Ejecutando Modo Debug: " + str(mode))
+	
+	if mode == 1 and dice_roller_overlay:
+		pass
+	elif mode == 2:
 		_run_debug_trade_scenario()
-	elif DEBUG_MODE == 3:
+	elif mode == 3:
 		_run_debug_offer_scenario()
-	elif DEBUG_MODE == 4:
+	elif mode == 4:
 		await get_tree().create_timer(2).timeout
 		overlay_manager.start_scoreboard_overlay()
-	elif DEBUG_MODE == 5:
-		_run_debug_jail_scenario() # NUEVO MODO
+	elif mode == 5:
+		is_player_in_jail = true
+		_run_debug_jail_scenario()
+	elif mode == 6:
+		_run_debug_train_scenario()
 
-# Hide the HUD when an overlay opens
-func _on_overlay_open() -> void:
-	player_hud.toggle_hud_visibility(true)
-	controls_hud.toggle_hud_visibility(true)
-
-# Show the HUD when an overlay closes
-func _on_overlay_close() -> void:
-	player_hud.toggle_hud_visibility(false)
-	controls_hud.toggle_hud_visibility(false)
-
-func _on_open_settings_requested() -> void:
-	var settings = SETTINGS_OVERLAY_SCENE.instantiate()
-	add_child(settings)
-	
 # Tirada normal
 func _on_hud_roll_requested() -> void:
-	controls_hud.set_roll_disabled(true)
+	overlay_manager.set_roll_disabled(true)
 	
 	# 📢 ¡Avisamos para que se oculte la UI!
 	overlay_manager.overlay_open.emit()
@@ -145,6 +177,29 @@ func _on_jail_roll_requested() -> void:
 	if jail_dice_roller:
 		jail_dice_roller.show_overlay()
 
+# ==========================================
+# PUENTE: MODELO -> VISUAL (ACTUALIZAR CASILLAS)
+# ==========================================
+func _on_model_property_updated(property_id: String) -> void:
+	Utils.debug("🔄 BOARD: El modelo ha actualizado la propiedad " + property_id + ". Actualizando tablero...")
+	
+	# 1. Conseguimos los datos puros desde el cerebro
+	var prop_data = model_manager.get_property(property_id)
+	if not prop_data: 
+		return
+		
+	# 2. Buscamos la casilla física en el tablero
+	if tile_manager.tile_entities.has(property_id):
+		var tile = tile_manager.tile_entities[property_id]
+		
+		# 3. Le mandamos la orden visual de la hipoteca
+		if tile.has_method("update_mortgage_visuals"):
+			tile.update_mortgage_visuals(prop_data.is_mortgaged)
+			
+		# EXTRA: Ya que estamos aquí, le actualizamos las casas también por si acaso
+		if tile.has_method("set_number_of_houses"):
+			tile.set_number_of_houses(prop_data.house_count)
+
 # ============
 #  Dice logic
 # ============
@@ -165,7 +220,7 @@ func _on_dice_result_received(total: int) -> void:
 	else:
 		_handle_normal_movement(total)
 
-func _handle_normal_movement(total: int) -> void:
+func _handle_normal_movement(_total: int) -> void:
 	# overlay_manager.show_banner("¡Turno de ...!", Color("f94144"))
 	# overlay_manager.show_toast("Esto es una prueba")
 	
@@ -176,13 +231,14 @@ func _handle_normal_movement(total: int) -> void:
 		#var target_id: int = current_id + total
 		#var target_tile_string: String = "%03d" % target_id
 		#tile_manager.prompt_tile_selection([target_tile_string])
+		#return
 		
-	# DEBUG
+	# DEBUG PARA IR AL PUENTE
 	if players.size() > 0:
 		var model: PlayerModel = players[0]["model"]
 		var token: PlayerToken = players[0]["token"]
 		
-		var test_path: Array[String] = ["001", "002", "003"]
+		var test_path: Array[String] = ["001", "002"]
 		var path_positions: Array[Vector2] = []
 		
 		for step_id in test_path:
@@ -196,17 +252,17 @@ func _handle_normal_movement(total: int) -> void:
 			await token.move_to(path_positions)
 			camera_system.main_camera()
 		
-		model.move_to_tile("003")
+		model.move_to_tile("010")
 		TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
-		overlay_manager.display_overlay_for_tile("003")
+		overlay_manager.display_overlay_for_tile("010")
 		
 		# TODO: Es un poco lío lo del estado global
 		var p1_id = players[0]["model"].id
 		var p2_id = players[1]["model"].id
 		var p3_id = players[2]["model"].id
-		chat_hud.add_player_message(p1_id, "Ofrezco el baño de chicas con terraza por 500M!", true)
-		chat_hud.add_player_message(p2_id, "Pero vamos a ver, si la ventana está cerrada. Eso no vale nada.", false)
-		chat_hud.add_player_message(p3_id, "Que sí, que se puede salir por ahí mientras que no te pille ninguna señora.", false)
+		overlay_manager.add_chat_message(p1_id, "Ofrezco el baño de chicas con terraza por 500M!", true)
+		overlay_manager.add_chat_message(p2_id, "Pero vamos a ver, si la ventana está cerrada. Eso no vale nada.", false)
+		overlay_manager.add_chat_message(p3_id, "Que sí, que se puede salir por ahí mientras que no te pille ninguna señora.", false)
 		
 		await overlay_manager.overlay_closed
 
@@ -230,13 +286,21 @@ func _handle_jail_dice_logic() -> void:
 func _on_highlighted_tile_clicked(tile_id: String) -> void:
 	Utils.debug("👉 Casilla seleccionada por el jugador: " + tile_id)
 	
-	# Si estamos en modo cárcel y el jugador hace clic:
-	if tile_id == "104": # ID de la Cárcel
-		overlay_manager.show_jail_stay_decision(jail_current_turn, 3)
-		return
-	elif tile_id == jail_target_tile:
-		overlay_manager.show_jail_pay_decision(50)
-		return
+	if is_selecting_for_admin:
+		is_selecting_for_admin = false # Apagamos el modo
+		tile_manager.reset_tile_highlight() # Limpiamos las luces del tablero
+		
+		# Abrimos el menú pasándole el ID que acabamos de tocar
+		overlay_manager._start_property_administration(tile_id) 
+		return # Cortamos la función aquí para que no mueva la ficha
+	
+	if is_player_in_jail:
+		if tile_id == "104": # ID de la Cárcel
+			overlay_manager.show_jail_stay_decision(jail_current_turn, 3)
+			return
+		elif tile_id == jail_target_tile:
+			overlay_manager.show_jail_pay_decision(50)
+			return
 	
 	if overlay_manager.in_trade_selection_mode:
 		overlay_manager.in_trade_selection_mode = false
@@ -247,11 +311,116 @@ func _on_highlighted_tile_clicked(tile_id: String) -> void:
 			)
 		return
 	
+	if is_selecting_for_train:
+		_handle_tram_selection(tile_id)
+		return
+	
 	# --- LÓGICA ORIGINAL DE MOVIMIENTO ---
 	if players.size() > 0:
 		var model: PlayerModel = players[0]["model"]
 		model.move_to_tile(tile_id)
 		TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
+		
+func _on_admin_selection_requested() -> void:
+	Utils.debug("🛠️ Entrando en modo selección para administrar propiedades...")
+	is_selecting_for_admin = true
+	
+	if overlay_manager.player_hud:
+		overlay_manager.player_hud.toggle_hud_visibility(true) 
+	if overlay_manager.controls_hud:
+		overlay_manager.controls_hud.hide() 
+	
+	# 👇 1. Sacamos quién está jugando ahora mismo PRIMERO
+	var current_player_id = model_manager.get_current_turn_player_id()
+	
+	# 👇 2. Hardcodeamos propiedades para ese jugador
+	# (Asegúrate de poner aquí los IDs de TODAS las casillas que formen 
+	# un grupo/color en tu board.json, o los botones no se verán)
+	model_manager.set_property_owner("001", current_player_id)
+	model_manager.set_property_owner("003", current_player_id)
+	model_manager.set_property_owner("006", current_player_id)
+	
+	# 👇 3. Le pedimos al manager las propiedades REALES de ese jugador
+	var mis_propiedades_ids: Array[String] = model_manager.get_player_properties(current_player_id)
+	
+	# Y se las pasamos a tu tile_manager para que las resalte
+	tile_manager.prompt_tile_selection(mis_propiedades_ids)
+
+
+# ESTASS SON UNA GUARRADA GOOOOORDA PARA QUE FUNCIONE LO DE DAR CLICK FUERA DE LA PANTALLA PARA CANCELAR
+# LA SELECCION
+func _input(event: InputEvent) -> void:
+	if is_selecting_for_admin and event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			# Esperamos al final del frame. Si el clic fue en una casilla, 
+			# la casilla apagará 'is_selecting_for_admin' antes de que esto se ejecute.
+			call_deferred("_check_cancel_admin_click")
+func _check_cancel_admin_click() -> void:
+	# Si seguimos en modo admin después del frame, es que el clic fue en el césped
+	if is_selecting_for_admin:
+		Utils.debug("↩️ Clic fuera de casilla. Cancelando administración...")
+		_cancel_admin_selection()
+		
+func _handle_tram_selection(clicked_tile_id: String) -> void:
+		var current_player_id = model_manager.get_current_turn_player_id()
+		var current_tile_id = "010" #HARDCODEADO
+		var tile_name = "Estación" # Aquí puedes sacar el nombre real si lo tienes en el PropertyModel
+		
+		overlay_manager.show_tram_selection(clicked_tile_id, current_tile_id, tile_name)
+
+func _on_tram_ok_received() -> void:
+	Utils.debug("🚂 El jugador ha decidido usar el tranvía. Iluminando paradas...")
+	
+	# 1. Activamos el modo selección para que el click en la casilla sea interceptado
+	is_selecting_for_train = true 
+	
+	# 2. Iluminamos las casillas del tranvía usando tu constante TRAM_IDS
+	tile_manager.prompt_tile_selection(TRAM_IDS)
+
+# Respuestas a los botones del Overlay
+func _on_tram_travel_confirmed(target_tile_id: String, cost: int) -> void:
+	is_selecting_for_train = false # Salimos del modo selección
+	var current_player_id = model_manager.get_current_turn_player_id()
+	
+	if cost > 0:
+		model_manager.add_player_balance(current_player_id, -cost)
+		
+	# Movemos al jugador (usando la función que arreglamos antes)
+	print(current_player_id)
+	print(target_tile_id)
+	model_manager.update_player_position(current_player_id, target_tile_id)
+	
+	TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
+	
+	overlay_manager.overlay_closed.emit()
+
+func _on_tram_travel_cancelled() -> void:
+	# El usuario eligió "Elegir otra parada". Se cierra el overlay pero seguimos en modo selección.
+	print("Elige otra estación...")
+	_on_tram_ok_received()
+####################################################################################
+
+func _cancel_admin_selection() -> void:
+	is_selecting_for_admin = false
+	tile_manager.reset_tile_highlight()
+	
+	# 👇 USAMOS TUS FUNCIONES EXISTENTES PARA MOSTRAR
+	if overlay_manager.player_hud:
+		overlay_manager.player_hud.toggle_hud_visibility(false) 
+	if overlay_manager.controls_hud:
+		overlay_manager.controls_hud.show()
+		
+func _on_property_houses_changed(tile_id: String, new_houses: int, is_mortgaged: bool) -> void:
+	if tile_manager.tile_entities.has(tile_id):
+		var tile = tile_manager.tile_entities[tile_id]
+		
+		# 1. Actualizamos las casas visualmente
+		if tile.has_method("set_number_of_houses"):
+			tile.set_number_of_houses(new_houses)
+		
+		# 2. Actualizamos el estado de hipoteca visualmente
+		if tile.has_method("set_mortgaged"):
+			tile.set_mortgaged(is_mortgaged)
 
 func _on_property_purchased(tile_id: String, color: Variant) -> void:
 	Utils.debug("💰 ¡El jugador ha comprado la casilla " + tile_id)
@@ -273,6 +442,8 @@ func _on_trade_selection_requested(is_player_1: bool, available_ids: Array) -> v
 	
 	# Highlight tiles
 	tile_manager.prompt_tile_selection(valid_ids_string)
+
+
 	
 func _on_offer_accepted() -> void:
 	Utils.debug("🤝 BOARD: El intercambio ha sido ACEPTADO. Ejecutando lógica de transferencia de bienes...")
@@ -384,3 +555,20 @@ func _run_debug_jail_scenario() -> void:
 	# (Asegúrate de que la ID coincide con la de tu JSON para la cárcel)
 	jail_current_turn = 1
 	overlay_manager.show_jail_initial_warning(jail_current_turn, 3)
+	
+# ==========================================
+# ESCENARIO DE DEBUG 6: TRANVIAS
+# ==========================================
+func _run_debug_train_scenario() -> void:
+	# 1. Conseguir al jugador que queremos mover
+	# (Usamos la función que ya tienes en ModelManager para el turno actual)
+	var target_player_id = model_manager.get_current_turn_player_id()
+	
+	# Si por algún motivo el juego acaba de arrancar y no hay turno asignado, forzamos el Jugador 1
+	if target_player_id == "":
+		target_player_id = "p1" 
+		
+	print("🚂 [DEBUG] Ejecutando escenario de Tranvía para el jugador: ", target_player_id)
+
+	# 2. Mover al jugador usando tu función del ModelManager
+	_handle_normal_movement(112)

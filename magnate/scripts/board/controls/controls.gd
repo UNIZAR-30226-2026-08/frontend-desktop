@@ -3,6 +3,9 @@ class_name ControlsHUD
 
 signal open_settings_requested
 signal roll_dice_requested
+signal bankrupt_requested
+signal trade_requested
+signal admin_requested
 
 @onready var slide_container: Control = $SlideContainer
 
@@ -21,6 +24,10 @@ func _ready() -> void:
 	
 	settings_button.pressed.connect(func(): open_settings_requested.emit())
 	roll_button.pressed.connect(func(): roll_dice_requested.emit())
+	
+	admin_button.pressed.connect(func(): admin_requested.emit())
+	bankrupt_button.pressed.connect(func(): bankrupt_requested.emit())
+	trade_button.pressed.connect(func(): trade_requested.emit())
 
 func toggle_hud_visibility(to_hide: bool) -> void:
 	if is_hidden == to_hide: return

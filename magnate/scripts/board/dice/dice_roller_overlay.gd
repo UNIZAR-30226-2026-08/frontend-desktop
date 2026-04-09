@@ -4,7 +4,7 @@ class_name DiceRollerOverlay
 signal roll_finished(total_value: int)
 
 @onready var dice_roller_3d: DiceRoller = $DiceRoller
-@onready var FORCED_ROLL_THROW: Array[int] = [1,3,1]
+@onready var FORCED_ROLL_THROW: Array[int] = [6,6,3]
 
 # NUEVA VARIABLE: Controla si ya se ha hecho una tirada
 # TODO: Quizá meter esto en un model para el juego
@@ -16,6 +16,10 @@ func _ready() -> void:
 		dice_roller_3d.roll_finnished.connect(_on_3d_roll_finished)
 
 func _gui_input(event: InputEvent) -> void:
+	# CERROJO PARA EVITAR BUGS
+	if not visible:
+		return
+		
 	# Si ya hemos tirado, o los dados están rodando, IGNORAMOS el click
 	if has_rolled or not dice_roller_3d or dice_roller_3d.rolling or not dice_roller_3d.interactive:
 		return
@@ -46,12 +50,16 @@ func show_overlay() -> void:
 	show() # Muestra el Control (2D)
 	if dice_roller_3d:
 		dice_roller_3d.show() # Muestra los dados (3D)
+		# ✅ DESPERTAMOS EL NODO 3D:
+		dice_roller_3d.process_mode = Node.PROCESS_MODE_INHERIT 
 
 # Modificamos esta para que apague ambas cosas
 func hide_overlay() -> void:
 	hide() # Oculta el Control (2D)
 	if dice_roller_3d:
 		dice_roller_3d.hide() # Oculta los dados (3D)
+		# 🛑 APAGÓN TOTAL: Ignora inputs, físicas y código mientras esté oculto
+		dice_roller_3d.process_mode = Node.PROCESS_MODE_DISABLED
 
 # Función para volver a habilitar los dados en el siguiente turno
 func reset_dice() -> void:

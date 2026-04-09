@@ -12,3 +12,7 @@ func _on_btn_shop_pressed() -> void:
 
 func _on_btn_profile_pressed() -> void:
 	SceneTransition.change_scene("res://scenes/UI/profile_screen.tscn")
+
+
+func _on_help_button_pressed() -> void:
+	SceneTransition.change_scene("res://scenes/UI/rules_screen.tscn")
