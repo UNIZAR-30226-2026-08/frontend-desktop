@@ -36,7 +36,7 @@ extends Node
 @export_subgroup('REST')
 @export var REST_BASE_URL = ""
 @export_subgroup('WS')
-@export var WS_BASE_URL = ""
+@export var WS_BASE_URL = "ws://127.0.0.1:8000/ws"
 
 enum BuildType {
 	DEV,
