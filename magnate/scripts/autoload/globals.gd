@@ -34,7 +34,7 @@ extends Node
 
 @export_group('Backend URLs')
 @export_subgroup('REST')
-@export var REST_BASE_URL = ""
+@export var REST_BASE_URL = "http://127.0.0.1:8000"
 @export_subgroup('WS')
 @export var WS_BASE_URL = "ws://127.0.0.1:8000/ws"
 
