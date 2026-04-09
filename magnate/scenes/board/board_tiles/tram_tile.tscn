@@ -39,10 +39,10 @@ mouse_filter = 2
 
 [node name="TramText" type="Label" parent="." unique_id=148657105]
 layout_mode = 0
-offset_left = 1.0000019
-offset_top = 57.0
-offset_right = 86.0
-offset_bottom = 80.0
+offset_left = 3.0
+offset_top = 60.0
+offset_right = 88.0
+offset_bottom = 83.0
 rotation = -0.7853982
 size_flags_vertical = 1
 theme = ExtResource("1_7mk8p")

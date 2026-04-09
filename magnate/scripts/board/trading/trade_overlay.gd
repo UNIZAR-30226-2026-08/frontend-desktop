@@ -3,6 +3,9 @@ extends BlurryBgOverlay
 # Avisamos al tablero que queremos seleccionar. Le pasamos si es el Jugador 1 y los IDs válidos
 signal request_board_selection(is_player_1: bool, available_ids: Array)
 
+signal trade_cancelled
+signal offer_sent
+
 const PROPERTY_ITEM_SCENE = preload("res://scenes/board/players/trade_property_item.tscn")
 
 @onready var trade_ui = $TradeUI # El nodo padre que contiene ambos rectángulos
@@ -10,13 +13,21 @@ const PROPERTY_ITEM_SCENE = preload("res://scenes/board/players/trade_property_i
 @onready var right_list = %RightPropertiesList
 @onready var add_left_btn = %AddPropertyButton1
 @onready var add_right_btn = %AddPropertyButton2
-@onready var offer_line_edit = %OfferLineEdit # Donde se escribe el dinero
+@onready var offer_line_edit = %OfferLineEdit
 @onready var request_line_edit = %RequestLineEdit
+@onready var cancel_btn = %CancelTradeButton
+@onready var send_btn = %SendOfferButton
 
 # Guardamos el estado de las propiedades internamente
 # Suponemos que cada prop es un diccionario: {"id": "p1", "name": "Sala", "color": Color.RED}
 var _p1_available_props: Array[Dictionary] = []
 var _p2_available_props: Array[Dictionary] = []
+
+func _ready() -> void:
+	super()
+	
+	cancel_btn.pressed.connect(func(): trade_cancelled.emit())
+	send_btn.pressed.connect(func(): offer_sent.emit())
 
 # ==========================================
 # INICIO (Llamado desde el Board)

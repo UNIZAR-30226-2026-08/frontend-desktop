@@ -173,3 +173,7 @@ func _scroll_skins_carousel(direction: int) -> void:
 	
 	var tween = create_tween()
 	tween.tween_property(skins_container, "position:x", target_x, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+# (Tu función de salir del header que ya tenías)
+func _on_header_back_action_requested() -> void:
+	SceneTransition.change_scene("res://scenes/UI/home_screen.tscn")

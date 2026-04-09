@@ -3,6 +3,9 @@ extends CanvasLayer
 
 const CARD_SCENE = preload("res://scenes/board/players/player_card.tscn")
 
+# Para hacerlo clickable
+signal player_selected(p_id: String)
+
 var is_hidden: bool = false
 var base_x_pos: float = 0.0
 
@@ -54,11 +57,11 @@ func setup_players(players_data: Array[Dictionary]) -> void:
 		
 	for p in players_data:
 		var model = p["model"]
-		
 		var p_id: String = str(model.get("id")) if model.get("id") != null else "0"
-		
 		var raw_name = model.get("player_name") if model.get("player_name") != null else model.get("name")
 		var p_name: String = str(raw_name) if raw_name != null else "Player"
+		
+		print("✅ Jugador creado -> Nombre: ", p_name, " | ID exacto: '", p_id, "'")
 		
 		var p_color: Color = model.get("color") if model.get("color") != null else Color.WHITE
 		
@@ -69,6 +72,9 @@ func setup_players(players_data: Array[Dictionary]) -> void:
 		
 		card.setup(p_id, p_name, p_color, p_balance)
 		
+		# 👇 Conectamos el clic de la tarjeta hacia el HUD general
+		card.clicked.connect(func(id): player_selected.emit(id))
+		
 		cards[p_id] = card
 
 func update_player_stats(p_id: String, new_balance: int, property_count: int) -> void:
@@ -76,3 +82,30 @@ func update_player_stats(p_id: String, new_balance: int, property_count: int) ->
 		var card = cards[p_id]
 		card.update_balance(new_balance)
 		card.update_properties(property_count)
+
+func set_selection_mode(active: bool, my_player_id: String = "") -> void:
+	if active:
+		layer = 100 # Lo ponemos por encima del BlurryBg
+		
+		# Recorremos todas las tarjetas usando sus IDs
+		for id in cards:
+			var card = cards[id]
+			
+			if id == my_player_id:
+				# ❌ TU TARJETA: La oscurecemos y bloqueamos clics
+				card.modulate.a = 0.5 
+				card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				card.mouse_default_cursor_shape = Control.CURSOR_ARROW
+			else:
+				# ✅ LAS DEMÁS: Brillantes y con la "manita" para hacer clic
+				card.modulate.a = 1.0
+				card.mouse_filter = Control.MOUSE_FILTER_STOP
+				card.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	else:
+		layer = 1 # Lo devolvemos a su sitio
+		
+		# Restauramos todas las tarjetas a la normalidad
+		for card in cards.values():
+			card.modulate.a = 1.0
+			card.mouse_filter = Control.MOUSE_FILTER_STOP
+			card.mouse_default_cursor_shape = Control.CURSOR_ARROW

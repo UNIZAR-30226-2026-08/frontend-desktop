@@ -85,7 +85,9 @@ func prompt_tile_selection(ids: Array[String]) -> void:
 	clickable_tile_ids = ids.duplicate()
 	highlight_tiles(ids)
 
-	tile_pressed.connect(_reset_all_tiles)
+	# 👇 Solo conectamos si NO está conectado ya
+	if not tile_pressed.is_connected(_reset_all_tiles):
+		tile_pressed.connect(_reset_all_tiles)
 
 	for id in clickable_tile_ids:
 		if tile_entities.has(id):

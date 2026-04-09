@@ -27,12 +27,21 @@ signal property_bought(String, Variant) # tile id + color (null if current playe
 signal offer_accepted
 signal offer_rejected
 signal get_parking_money
+signal property_houses_changed(tile_id: String, new_houses: int, final_mortgage: bool)
 
-# specific signals (debajo de las que ya tienes)
+# jail signals
 signal jail_roll_requested
 signal jail_stay_confirmed
 signal jail_pay_bail_confirmed
 signal jail_reselect_requested
+
+# train signals
+signal tram_travel_confirmed(target_tile_id: String, cost: int)
+signal tram_travel_cancelled()
+
+# HUD signals
+signal normal_roll_requested
+signal request_admin_selection
 
 var board: Node2D
 var tile_data: Dictionary
@@ -40,9 +49,21 @@ var current_trade_overlay: CanvasLayer = null
 var in_trade_selection_mode: bool = false
 var trade_selecting_for_p1: bool = true
 
-# Messages
+# messages
 var toast_instance: CanvasLayer = null
 var banner_instance: CanvasLayer = null
+
+# HUD
+var controls_hud: ControlsHUD
+var chat_hud: CanvasLayer
+var player_hud: PlayerHUD
+
+# trade
+var is_selecting_trade_target: bool = false
+var trade_selection_instance: Node = null
+
+# Menu principal
+const HOME_PAGE = preload("uid://d2twidlaag5qv")
 
 # Overlays
 const AUCTION_OVERLAY = preload("uid://s5i6upd25o0y")
@@ -59,6 +80,12 @@ const PROPERTY_ADMINISTRATION_OVERLAY = preload("uid://cptx3705we74j")
 const MORTGAGE_OVERLAY = preload("uid://iip2p7fd0k63")
 const PAY_RENT_OVERLAY = preload("uid://bme7v8a58kf1h")
 const JAIL_DECISION_OVERLAY = preload("uid://bmk83o1g8rbb8")
+const CONTROLS_HUD_SCENE = preload("uid://cp5cmlsncsi6t")
+const SETTINGS_OVERLAY_SCENE = preload("uid://d31dwv0u5en1g")
+const CHAT_SCENE = preload("uid://bb3relwhb88sa")
+const SURRENDER_OVERLAY = preload("uid://r7wff0p1ra5x")
+const TRADE_SELECTION_OVERLAY = preload("uid://cf7vsw1q85viu")
+const TRAIN_SELECTION_OVERLAY = preload("uid://dbleh2dgxratm")
 
 const BANNER_MESSAGE = preload("uid://g1ccyk0arbkf")
 const TOAST_MESSAGE = preload("uid://dj0br3kdrndit")
@@ -102,7 +129,7 @@ func display_overlay_for_tile(tile_id: String) -> void:
 		Globals.TileType.GO_TO_JAIL: _start_go_to_jail_overlay.bind(tile_id),
 		Globals.TileType.JAIL: _start_jail_overlay.bind(tile_id),
 		Globals.TileType.PARKING: _start_parking_overlay.bind(tile_id),
-		Globals.TileType.BRIDGE: _start_bridge_overlay.bind(tile_id),
+		Globals.TileType.BRIDGE: _start_new_property.bind(tile_id),
 		Globals.TileType.TRAM: _start_tram_overlay
 	}
 	if handlers.has(tile_type):
@@ -140,7 +167,30 @@ func _start_property_administration(tile_id: String) -> void:
 	
 	# Initialize the overlay
 	var overlay = PROPERTY_ADMINISTRATION_OVERLAY.instantiate()
+	
+	# 👇 LA MAGIA OCURRE AQUÍ 👇
+	# Obtenemos los datos desde el manager de nuestro board
+	var manager = board.model_manager
+	var current_player_id = manager.get_current_turn_player_id()
+	var current_houses = manager.get_property_houses(tile_id)
+	
 	board.add_child(overlay)
+	
+	# Le pasamos los 5 parámetros que configuramos en tu script del overlay
+	overlay.setup(current_tile, current_houses, tile_id, current_player_id, manager)
+	
+	overlay.administration_confirmed.connect(func(final_houses: int, final_mortgage: bool):
+		property_houses_changed.emit(tile_id, final_houses, final_mortgage)
+	)
+	
+	overlay.tree_exited.connect(func():
+		if player_hud:
+			player_hud.toggle_hud_visibility(false)
+		if controls_hud:
+			controls_hud.show()
+			
+		overlay_closed.emit()
+	)
 
 func _start_property_with_mortgage(tile_id: String) -> void:
 	Utils.debug("Abriendo overlay de propiedad para la casilla: " + tile_id)
@@ -252,19 +302,35 @@ func _start_parking_overlay(tile_id: String) -> void:
 	overlay.button_pressed.connect(get_parking_money.emit)
 
 # TODO: Remeber to emit overlay_closed at the end
-func _start_bridge_overlay(tile_id: String) -> void:
-	Utils.debug("🌉 Has cruzado un puente: " + tile_id)
 
-# TODO: Remeber to emit overlay_closed at the end
 func _start_trade(p1_name: String, p2_name: String, p1_money: int, p2_money: int, p1_props: Array[Dictionary], p2_props: Array[Dictionary]) -> void:
 	Utils.debug("🤝 Iniciando overlay de tradeo...")
 	current_trade_overlay = TRADE_OVERLAY.instantiate()
 	board.add_child(current_trade_overlay)
 	
-	# Propagate signal
+	# Propagar señales de selección del tablero
 	current_trade_overlay.request_board_selection.connect(trade_selection_request.emit)
 	
-	# Initialize overlay with data
+	# 👇 NUEVO: Qué hacer si cancela
+	current_trade_overlay.trade_cancelled.connect(func():
+		Utils.debug("🚫 Tradeo cancelado. Cerrando menú...")
+		current_trade_overlay.queue_free()
+		current_trade_overlay = null
+		overlay_closed.emit() # Magia: vuelven los HUDs normales
+	)
+	
+	# 👇 NUEVO: Qué hacer si envía (de momento lo mismo)
+	current_trade_overlay.offer_sent.connect(func():
+		Utils.debug("📤 Oferta enviada al backend (mock). Cerrando menú...")
+		
+		# TODO: En el futuro aquí cogerás los diccionarios y emitirás algo hacia el servidor
+		
+		current_trade_overlay.queue_free()
+		current_trade_overlay = null
+		overlay_closed.emit() # Magia: vuelven los HUDs normales
+	)
+	
+	# Inicializar overlay con datos
 	current_trade_overlay.setup_trade(p1_name, p2_name, p1_money, p2_money, p1_props, p2_props)
 
 func start_scoreboard_overlay() -> void:
@@ -343,3 +409,173 @@ func show_jail_pay_decision(bail_price: int = 50) -> void:
 		jail_reselect_requested.emit()
 	)
 	overlay_open.emit()
+
+# ==========================================
+# GESTIÓN DE HUDS PRINCIPALES Y CHAT
+# ==========================================
+
+func setup_huds(players_data: Array) -> void:
+	# 1. Inicializar PlayerHUD (La barra de los jugadores)
+	player_hud = PlayerHUD.new()
+	board.add_child(player_hud)
+	player_hud.setup_players(players_data)
+	
+	# 2. Inicializar Controles (Dados, ajustes...)
+	controls_hud = CONTROLS_HUD_SCENE.instantiate()
+	board.add_child(controls_hud)
+	controls_hud.open_settings_requested.connect(_open_settings)
+	controls_hud.roll_dice_requested.connect(func(): normal_roll_requested.emit())
+	controls_hud.bankrupt_requested.connect(_start_surrender_overlay)
+	controls_hud.trade_requested.connect(_start_trade_target_selection)
+	controls_hud.admin_requested.connect(func(): request_admin_selection.emit())
+	player_hud.player_selected.connect(_on_trade_target_selected)
+	
+	# 3. Inicializar Chat
+	chat_hud = CHAT_SCENE.instantiate()
+	board.add_child(chat_hud)
+	chat_hud.init_chat(players_data)
+
+	# 4. GESTIÓN AUTOMÁTICA DE VISIBILIDAD
+	overlay_open.connect(func():
+		if not is_selecting_trade_target:
+			player_hud.toggle_hud_visibility(true)
+		controls_hud.toggle_hud_visibility(true)
+	)
+	
+	# Cuando se cierra, los volvemos a mostrar
+	overlay_closed.connect(func():
+		player_hud.toggle_hud_visibility(false)
+		controls_hud.toggle_hud_visibility(false)
+	)
+
+func _open_settings() -> void:
+	var settings = SETTINGS_OVERLAY_SCENE.instantiate()
+	board.add_child(settings)
+
+func set_roll_disabled(disabled: bool) -> void:
+	if controls_hud:
+		controls_hud.set_roll_disabled(disabled)
+
+func add_chat_message(player_id: String, msg: String, is_important: bool = false) -> void:
+	if chat_hud:
+		chat_hud.add_player_message(player_id, msg, is_important)
+
+func _start_surrender_overlay() -> void:
+	Utils.debug("🏳️ Abriendo overlay de rendición...")
+	overlay_open.emit() 
+	
+	var overlay = SURRENDER_OVERLAY.instantiate()
+	board.add_child(overlay)
+	
+	# Si se arrepiente:
+	overlay.cancel_surrender.connect(func():
+		Utils.debug("🔙 Botón cancelar pulsado. Destruyendo overlay...")
+		overlay.queue_free() # Esto es lo que lo destruye
+		overlay_closed.emit() # Esto devuelve el HUD
+	)
+	
+	# Si confirma salir:
+	overlay.exit_game_confirmed.connect(func():
+		Utils.debug("🏠 Botón salir pulsado. Cambiando escena...")
+		
+		board.get_tree().change_scene_to_packed(HOME_PAGE)
+		
+	)
+
+# ==========================================
+# GESTIÓN DE TRADEOS
+# ==========================================
+
+func _start_trade_target_selection() -> void:
+	Utils.debug("🔍 Entrando en modo selección de jugador para tradeo...")
+	
+	# 👇 AÑADE ESTO PARA VER LOS IDs EXISTENTES
+	print("👀 IDs de las tarjetas actuales: ", player_hud.cards.keys())
+	
+	is_selecting_trade_target = true
+	overlay_open.emit() 
+	
+	var my_local_id = "0001" # (Luego cambiaremos esto por el que veas en la consola)
+	player_hud.set_selection_mode(true, my_local_id)
+	
+	trade_selection_instance = TRADE_SELECTION_OVERLAY.instantiate()
+	board.add_child(trade_selection_instance)
+	
+	trade_selection_instance.cancel_selection.connect(_cancel_trade_selection)
+
+func _cancel_trade_selection() -> void:
+	Utils.debug("🚫 Selección de tradeo cancelada.")
+	is_selecting_trade_target = false
+	player_hud.set_selection_mode(false)
+	
+	if trade_selection_instance:
+		trade_selection_instance.queue_free()
+		trade_selection_instance = null
+		
+	overlay_closed.emit() # Devuelve los controles a la pantalla
+
+func _on_trade_target_selected(target_id: String) -> void:
+	# Ignoramos clics si no estamos en modo selección
+	if not is_selecting_trade_target: return
+	
+	Utils.debug("🤝 ¡Jugador " + target_id + " seleccionado!")
+	
+	# Limpiamos el overlay de selección sin emitir overlay_closed 
+	# para que el fondo siga borroso para el tradeo
+	is_selecting_trade_target = false
+	player_hud.set_selection_mode(false)
+	player_hud.toggle_hud_visibility(true) # Ahora sí ocultamos las tarjetas
+	
+	if trade_selection_instance:
+		trade_selection_instance.queue_free()
+		trade_selection_instance = null
+	
+	# TODO: Aquí debes obtener los datos reales del jugador en el futuro
+	#var p1_props: Array[Dictionary] = []
+	#var p2_props: Array[Dictionary] = []
+	
+	var p1_props: Array[Dictionary] = [
+		{"id": "001", "name": "Microondas Ada Byron", "color": "#FC5C65"},
+		{"id": "003", "name": "Microondas Betancourt", "color": "#FC5C65"}
+	]
+	var p2_props: Array[Dictionary] = [
+		{"id": "005", "name": "Pilgor", "color": Color.GRAY}
+	]
+	
+	# Llamamos a tu función existente de tradeo (con datos de prueba de momento)
+	_start_trade("TÚ", "JUGADOR #" + target_id.right(4), 1500, 800, p1_props, p2_props)
+
+# ==========================================
+# GESTIÓN DE TRANVIA
+# ==========================================
+
+func show_tram_selection(target_tile_id: String, current_tile_id: String, tile_name: String) -> void:
+	# 1. Creamos la instancia del overlay a partir de tu constante
+	var overlay = TRAIN_SELECTION_OVERLAY.instantiate()
+	
+	# 2. Conectamos las señales ANTES de añadirlo al árbol de nodos
+	# (Estas son las señales que definiste en tram_turn_overlay.gd)
+	overlay.confirm_travel.connect(_on_tram_travel_confirmed)
+	overlay.cancel_travel.connect(_on_tram_travel_cancelled)
+	
+	# 3. Lo añadimos a la pantalla para que el jugador lo vea
+	board.add_child(overlay)
+	
+	# 4. Le pasamos los datos para que actualice sus textos
+	print(target_tile_id)
+	print(current_tile_id)
+	var is_same_station = (target_tile_id == current_tile_id)
+	overlay.setup_tram_selection(target_tile_id, is_same_station, tile_name)
+
+# ==========================================
+# 🎧 RECEPTORES DE LAS SEÑALES DEL OVERLAY
+# ==========================================
+
+func _on_tram_travel_confirmed(target_tile_id: String, cost: int) -> void:
+	# El overlay ya ha hecho queue_free() por su cuenta, así que solo 
+	# tenemos que avisar al tablero de lo que ha decidido el jugador.
+	tram_travel_confirmed.emit(target_tile_id, cost)
+
+func _on_tram_travel_cancelled() -> void:
+	# Igual que arriba, avisamos al tablero de que se ha cancelado
+	tram_travel_cancelled.emit()

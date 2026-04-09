@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d1w6ev76b7ide" path="res://scripts/board/overlays/new_property_overlay.gd" id="1_eu44f"]
 [ext_resource type="PackedScene" uid="uid://vd87r5unxafe" path="res://scenes/board/cards/property_card.tscn" id="2_iwjru"]
+[ext_resource type="PackedScene" uid="uid://cvlvp87utk4kx" path="res://scenes/board/cards/bridge_card.tscn" id="4_0m1iy"]
 [ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="4_eu44f"]
 [ext_resource type="PackedScene" uid="uid://bfcpwq3bljh8g" path="res://scenes/board/cards/server_card.tscn" id="4_iwjru"]
 
@@ -56,6 +57,13 @@ offset_right = 1160.0
 offset_bottom = 800.0
 
 [node name="ServerCard" parent="." unique_id=919827841 instance=ExtResource("4_iwjru")]
+unique_name_in_owner = true
+offset_left = 760.0
+offset_top = 200.0
+offset_right = 1160.0
+offset_bottom = 800.0
+
+[node name="BridgeCard" parent="." unique_id=617245605 instance=ExtResource("4_0m1iy")]
 unique_name_in_owner = true
 offset_left = 760.0
 offset_top = 200.0

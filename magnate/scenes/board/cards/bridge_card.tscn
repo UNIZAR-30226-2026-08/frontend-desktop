@@ -1,0 +1,152 @@
+[gd_scene format=3 uid="uid://cvlvp87utk4kx"]
+
+[ext_resource type="Script" uid="uid://cpvyrqfwufhl0" path="res://scripts/board/cards/bridge_card.gd" id="1_61tbc"]
+[ext_resource type="Shader" uid="uid://8k7h5n683cye" path="res://styles/shaders/card_hover.gdshader" id="2_x82kp"]
+[ext_resource type="Script" uid="uid://tasvlsvggvvf" path="res://scripts/board/cards/card_hover.gd" id="3_ox6nk"]
+[ext_resource type="Texture2D" uid="uid://edu42cfc0tyw" path="res://assets/icons/bridge.svg" id="4_llvn7"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="4_to1o0"]
+[ext_resource type="FontFile" uid="uid://pqt8tux3lbt7" path="res://assets/fonts/LTSuperior/LTSuperior-Light.ttf" id="6_fyyvx"]
+[ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="7_hy0ey"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_piu0q"]
+shader = ExtResource("2_x82kp")
+shader_parameter/fov = 30.0
+shader_parameter/cull_back = true
+shader_parameter/y_rot = 0.0
+shader_parameter/x_rot = 0.0
+shader_parameter/inset = 0.0
+shader_parameter/opacity = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llvu5"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5bwru"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="BridgeCard" type="Control" unique_id=617245605]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 400.0
+offset_bottom = 600.0
+script = ExtResource("1_61tbc")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=555355565]
+material = SubResource("ShaderMaterial_piu0q")
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 600.0
+script = ExtResource("3_ox6nk")
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=2139188462]
+handle_input_locally = false
+size = Vector2i(400, 600)
+render_target_update_mode = 4
+
+[node name="BridgeCard" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=589823767]
+offset_right = 400.0
+offset_bottom = 600.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("4_to1o0")
+theme_override_styles/panel = SubResource("StyleBoxFlat_llvu5")
+
+[node name="VerticalAlign" type="VBoxContainer" parent="SubViewportContainer/SubViewport/BridgeCard" unique_id=820974535]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="InteriorAlign" type="VBoxContainer" parent="SubViewportContainer/SubViewport/BridgeCard/VerticalAlign" unique_id=966003394]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TopSpace" type="Control" parent="SubViewportContainer/SubViewport/BridgeCard/VerticalAlign/InteriorAlign" unique_id=144419178]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="BridgeName" type="Label" parent="SubViewportContainer/SubViewport/BridgeCard/VerticalAlign/InteriorAlign" unique_id=893882161]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_font_sizes/font_size = 45
+text = "Puente"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TopSpace2" type="Control" parent="SubViewportContainer/SubViewport/BridgeCard/VerticalAlign/InteriorAlign" unique_id=697644569]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="BridgeImage" type="TextureRect" parent="SubViewportContainer/SubViewport/BridgeCard/VerticalAlign/InteriorAlign" unique_id=600507432]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_llvn7")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TopSpace3" type="Control" parent="SubViewportContainer/SubViewport/BridgeCard/VerticalAlign/InteriorAlign" unique_id=798622439]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Highlighter1" type="PanelContainer" parent="SubViewportContainer/SubViewport/BridgeCard/VerticalAlign/InteriorAlign" unique_id=1445696810]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_5bwru")
+
+[node name="Rent1" type="Label" parent="SubViewportContainer/SubViewport/BridgeCard/VerticalAlign/InteriorAlign/Highlighter1" unique_id=330677059]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_fyyvx")
+theme_override_font_sizes/font_size = 25
+text = "Con 1 Puente . . . . . . . . . 100M"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spcae9" type="Control" parent="SubViewportContainer/SubViewport/BridgeCard/VerticalAlign/InteriorAlign" unique_id=1259723228]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Highlighter2" type="PanelContainer" parent="SubViewportContainer/SubViewport/BridgeCard/VerticalAlign/InteriorAlign" unique_id=1339499314]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_5bwru")
+
+[node name="Rent2" type="Label" parent="SubViewportContainer/SubViewport/BridgeCard/VerticalAlign/InteriorAlign/Highlighter2" unique_id=1519041513]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_fyyvx")
+theme_override_font_sizes/font_size = 25
+text = "Con 2 Puentes . . . . . . . . 250M"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spcae8" type="Control" parent="SubViewportContainer/SubViewport/BridgeCard/VerticalAlign/InteriorAlign" unique_id=801151661]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="MortgagePrice" type="Label" parent="SubViewportContainer/SubViewport/BridgeCard/VerticalAlign/InteriorAlign" unique_id=1717327232]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("7_hy0ey")
+theme_override_font_sizes/font_size = 25
+text = "Valor de la Hipoteca 70M"
+horizontal_alignment = 1
+vertical_alignment = 1
