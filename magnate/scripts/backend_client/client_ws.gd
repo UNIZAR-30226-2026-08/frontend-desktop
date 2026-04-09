@@ -18,6 +18,30 @@ extends Node
 # =======
 #  ENUMS
 # =======
+## Possible types of fantasy card events
+enum FantasyEventType {
+	WIN_PLAIN_MONEY, # Gives the player money in absolute terms
+	WIN_RATION_MONEY, # Gives the player money in percetages (relative to their current wealth)
+	LOSE_PLAIN_MONEY, # Takes money from the player in absolute terms
+	LOSE_RATIO_MONEY, # Takes money from the player in percentages (relative to their current wealth)
+	SHARE_MONEY_ALL, # The player sends money to all other players
+	EVERYBODY_SENDS_YOU_MONEY, # Receive money (absolute) from all the players
+	DOUBLE_OR_NOTHING, # Toss a coin to see if you double your money or lose it all
+	GET_PARKING_MONEY, # Receive the money stored in the parking
+	GO_TO_JAIL, # Go to the jail tile
+	SEND_TO_JAIL, # Send someone to the jail tile # TODO: Choose who to send?
+	SHUFFLE_POSITIONS, # Randomly shuffle all player positions TODO: Randomly?
+	MOVE_ANYWHERE_RANDOM, # Randomly move somewhere
+	MOVE_OPPONENT_ANYWHERE_RANDOM, # Randomly move an opponent somewhere
+	MAGNETISM, # All players move to the players tile
+	GO_TO_START, # Move to the start tile and get the start tile money
+	BREAK_OPPONENT_HOUSE, # Break an opponents house (lastest built)
+	BREAK_OWN_HOUSE, # Break one of the players houses (lastest built)
+	FREE_HOUSE, # Build a free house (priciest house the player could build if it had the money)
+	REVIVE_PROPERTY, # Unmortgages a property TODO: Choose property? Can it be opponent properties?
+	EARTHQUAKE, # All streets miss a property
+}
+
 ## Phases of the game
 enum Phase {
 	ROLL_THE_DICES, # A dice roll is needed
@@ -117,6 +141,11 @@ signal match_finished
 ## - "phase": Enum <Phase> above			- phase of the game
 signal response_general(Dictionary)
 
+## For the following 2 signals define FantasyEvent as a Dictionary with:
+## - "fantasy_type": FantasyEventType	- Enum type of fantasy event
+## - "value": int | None					- value to apply the effect, might not apply
+## - "card_cost": int					- Cost of buying the card
+
 ## Response to a dice throw, contains result of the throw
 ## Response Dictionary includes:
 ## - "path": Array[String],			- Movement path to follow (list of ids),
@@ -128,18 +157,31 @@ signal response_general(Dictionary)
 ## - "destinations": Array[String],	- Possible destinations for the player (list of ids)
 ## - "triple": bool,					- If the throw is a triple
 ## - "streak": int					- Streak of doubles for the current player
-## - "fantasy_event": TODO
+## - "fantasy_event": FantasyEvent	- See above
 signal response_throw_dices(Dictionary)
 
 ## Response for an square election
 ## Response Dictionary includes:
-## - "path": Array[String]				- Movement path to follow (list of ids)
-## - "fantasy_event": TODO
+## - "path": Array[String]			- Movement path to follow (list of ids)
+## - "fantasy_event": FantasyEvent	- See above
 signal response_choose_square(Dictionary)
+
+## For the following signal define FantasyResult as a Dictionary with:
+## - "fantasy_event": FantasyEvent	- See above
+## - "result": Dictionary | null		- Depends on "fantasy_event"
+##			null for: WIN_PLAIN_MONEY, WIN_RATIO_MONEY, LOSE_PLAIN_MONEY,
+##					LOSE_RATIO_MONEY, SHARE_MONEY_ALL, EVERYBODY_SENDS_YOU_MONEY,
+##					GET_PARKING_MONEY, GO_TO_JAIL, EVERYBODY_TO_JAIL,
+##					SHUFFLE_POSITIONS, MOVE_ANYWHERE_RANDOM, MAGNETISM, GO_TO_START
+##			{"square": custom_id} for: BREAK_OPPONENT_HOUSE, BREAK_OWN_HOUSE,
+##					FREE_HOUSE, RECEIVE_PROPERTY
+##			{"squares": [custom_id, ...]} for: EARTHQUAKE
+##			{"target_player": pk} for: MOVE_OPPONENT_ANYWHERE_RANDOM, SEND_TO_JAIL
+##			{"doubled": bool} for: DOUBLE_OR_NOTHING
 
 ## Response to a fantasy card choice
 ## Response Dictionary includes:
-## - "fantasy_event": TODO
+## - "fantasy_result": FantasyResult
 signal response_choose_fantasy(Dictionary)
 
 ## Response for the result of an auction, shows who won
@@ -393,6 +435,45 @@ func _botlevel_enum_to_string(bot_level: BotLevel) -> String:
 		_: Utils.debug("BotLevel - This is impossible")
 	return ""
 
+func _fantasyeventtype_string_to_enum(event_string: String) -> FantasyEventType:
+	match event_string:
+		"winPlainMoney": return FantasyEventType.WIN_PLAIN_MONEY
+		"winRationMoney": return FantasyEventType.WIN_RATION_MONEY
+		"losePlainMoney": return FantasyEventType.LOSE_PLAIN_MONEY
+		"loseRatioMoney": return FantasyEventType.LOSE_RATIO_MONEY
+		"shareMoneyAll": return FantasyEventType.SHARE_MONEY_ALL
+		"everybodySendsYouMoney": return FantasyEventType.EVERYBODY_SENDS_YOU_MONEY
+		"doubleOrNothing": return FantasyEventType.DOUBLE_OR_NOTHING
+		"getParkingMoney": return FantasyEventType.GET_PARKING_MONEY
+		"goToJail": return FantasyEventType.GO_TO_JAIL
+		"sendToJail": return FantasyEventType.SEND_TO_JAIL
+		"shufflePositions": return FantasyEventType.SHUFFLE_POSITIONS
+		"moveAnywhereRandom": return FantasyEventType.MOVE_ANYWHERE_RANDOM
+		"moveOpponentAnywhereRandom": return FantasyEventType.MOVE_OPPONENT_ANYWHERE_RANDOM
+		"magnetism": return FantasyEventType.MAGNETISM
+		"goToStart": return FantasyEventType.GO_TO_START
+		"breakOpponentHouse": return FantasyEventType.BREAK_OPPONENT_HOUSE
+		"breakOwnHouse": return FantasyEventType.BREAK_OWN_HOUSE
+		"freeHouse": return FantasyEventType.FREE_HOUSE
+		"reviveProperty": return FantasyEventType.REVIVE_PROPERTY
+		"earthquake": return FantasyEventType.EARTHQUAKE
+		_: Utils.debug("Not recognized string fantasy event type: " + event_string)
+		
+	return FantasyEventType.WIN_PLAIN_MONEY
+
+func _parse_fantasy_event(fantasy_event: Dictionary) -> Dictionary:
+	fantasy_event["type"] = _fantasyeventtype_string_to_enum(fantasy_event["type"])
+	return fantasy_event
+
+func _parse_fantasy_result(fantasy_result: Dictionary) -> Dictionary:
+	fantasy_result["fantasy_event"] = _parse_fantasy_event(fantasy_result["fantasy_event"])
+	if not fantasy_result["result"]: return fantasy_result
+	if fantasy_result["result"].has("square"):
+		fantasy_result["result"]["square"] = _normalize_tile_id(fantasy_result["result"]["square"])
+	elif fantasy_result["result"].has("squares"):
+		fantasy_result["result"]["squares"] = _normalize_tile_id(fantasy_result["result"]["squares"])
+	return fantasy_result
+
 func _build_base_action() -> Dictionary:
 	return {"game": game_id, "player": player_id,}
 
@@ -476,11 +557,18 @@ func _game_response_dispatcher(response: Dictionary) -> void:
 		"ResponseThrowDices":
 			response["path"] = _normalize_tile_id(response["path"])
 			response["destinations"] = _normalize_tile_id(response["destinations"])
+			if response["fantasy_event"]:
+				response["fantasy_event"] = _parse_fantasy_event(response["fantasy_event"])
 			response_throw_dices.emit(response)
 		"ResponseChooseSquare":
 			response["path"] = _normalize_tile_id(response["path"])
+			if response["fantasy_event"]:
+				response["fantasy_event"] = _parse_fantasy_event(response["fantasy_event"])
 			response_choose_square.emit(response)
-		"ResponseChooseFantasy": response_choose_fantasy.emit(response)
+		"ResponseChooseFantasy":
+			if response["fantasy_result"]:
+				response["fantasy_result"] = _parse_fantasy_result(response["fantasy_result"])
+			response_choose_fantasy.emit(response)
 		"ResponseAuction": response_auction.emit(response)
 		_: Utils.debug("ERROR: Unknown type in socket response")
 
