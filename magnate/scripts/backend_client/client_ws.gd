@@ -11,8 +11,8 @@ extends Node
 ## - In game: for in game logic and comms
 ## Some explaining about how communication with the backend is designed:
 ## During the game it works with actions (sent by players to the backend)
-## and responses (sent to players from backend), you send actions and
-## recieve all actions and responses (even those from other players).
+## and responses (sent to players from the backend), you send actions and
+## recieve all actions and responses (both actions from other players and yourself).
 ## Outside of the game some messages for queue administration are sent.
 
 # =======
@@ -32,9 +32,17 @@ enum Phase {
 }
 
 ## Levels of difficulty for bots in the private lobby
-enum BotLevel {EASY, MEDIUM, HARD}
+## It works by setting the percentage of moves that the bot makes randomly.
+## The moves that are not random are have an IA implemented. Percentages of random:
+## 100%, 80%, 60%, 40%, 20%, 0%
+enum BotLevel {VERY_EASY, EASY, MEDIUM, HARD, VERY_HARD, EXPERT}
 
-## Internal state enum (Ignore)
+## Internal state of the WS client
+## START is the starting state, not connected anywhere
+## IN_PUBLIC_QUEUE the client is connected to a public queue
+## IN_PRIVATE_QUEUE the client is connected to a private queue
+## GO_TO_GAME a game was found but the client isn't connected yet
+## IN_GAME the client is connected to a game
 enum ConnState {START, IN_PUBLIC_QUEUE, IN_PRIVATE_QUEUE, GO_TO_GAME, IN_GAME}
 
 # =====================
@@ -123,13 +131,6 @@ signal response_general(Dictionary)
 ## - "fantasy_event": TODO
 signal response_throw_dices(Dictionary)
 
-# This is an abstract response and shouldnt be received
-# Base response for an action that moved the player
-# Response Dictionary includes:
-# - "path": Array[String]				- Movement path to follow (list of ids)
-# - "fantasy_event": TODO
-# signal response_movement(Dictionary)
-
 ## Response for an square election
 ## Response Dictionary includes:
 ## - "path": Array[String]				- Movement path to follow (list of ids)
@@ -151,59 +152,73 @@ signal response_auction(Dictionary)
 # ACTION SIGNALS
 ## !IMPORTANT: The following action signals all contain the data from action_general
 
-## General action, comes in every action
+## Action sent when throwing dices
 ## Action dictionary includes:
 ## - "game": int		- ID of the game the action took place in
 ## - "player": int	- ID of the player that took action
-signal action_general(Dictionary)
-
-## Action sent when throwing dices
-## Dictionary doesnt contain additional info
 signal action_throw_dices(Dictionary)
 
 ## Action sent when the player chooses the tile to move to
 ## Action dictionary includes:
+## - "game": int			- ID of the game the action took place in
+## - "player": int		- ID of the player that took action
 ## - "square": String	- ID of the tile the player moved to
 signal action_move_to(Dictionary)
 
 ## Action sent when the tram is taken
 ## Action dictionary includes:
+## - "game": int			- ID of the game the action took place in
+## - "player": int		- ID of the player that took action
 ## - "square": String	- ID of the tile the player moved to
 signal action_take_tram(Dictionary)
 
 ## Action sent when the player declines a property purchase and starts an auction
 ## Action dictionary includes:
+## - "game": int			- ID of the game the action took place in
+## - "player": int		- ID of the player that took action
 ## - "square": String	- ID of the tile the player started an auction on
 signal action_start_auction(Dictionary)
 
 ## Action sent when the player bought a square
 ## Action dictionary includes:
+## - "game": int			- ID of the game the action took place in
+## - "player": int		- ID of the player that took action
 ## - "square": String	- ID of the tile the player bought
 signal action_buy_square(Dictionary)
 
 ## Action sent when buildings are purchased on a tile
 ## Action dictionary includes:
+## - "game": int			- ID of the game the action took place in
+## - "player": int		- ID of the player that took action
 ## - "houses": int		- Number of houses built in the property
 ## - "square": String	- ID of the tile the houses where built
 signal action_build(Dictionary)
 
 ## Action sent when buildings are sold on a tile
 ## Action dictionary includes:
+## - "game": int			- ID of the game the action took place in
+## - "player": int		- ID of the player that took action
 ## - "houses": int		- Number of houses sold in the property
 ## - "square": String	- ID of the tile the houses where sold
 signal action_demolish(Dictionary)
 
 ## Action sent when a fantasy card is chosen
 ## Action dictionary includes:
+## - "game": int						- ID of the game the action took place in
+## - "player": int					- ID of the player that took action
 ## - "chosen_revealed_card": bool	- true if the up-facing card is chosen
 signal action_choose_card(Dictionary)
 
 ## Action sent when surrendering the game
-## Dictionary doesnt contain additional info
+## Action dictionary includes:
+## - "game": int		- ID of the game the action took place in
+## - "player": int	- ID of the player that took action
 signal action_surrender(Dictionary)
 
 ## Action sent when making a trade proposal
 ## Action dictionary includes:
+## - "game": int							- ID of the game the action took place in
+## - "player": int						- ID of the player that took action
 ## - "destination_user": int				- ID of the user to recieve the proposal
 ## - "offered_money": int				- Quantity of money to recieve in the trade
 ## - "asked_money": int					- Quantity of money to lose in the trade
@@ -213,29 +228,41 @@ signal action_trade_proposal(Dictionary)
 
 ## Action sent when responding to a trade proposal
 ## Action dictionary includes:
+## - "game": int			- ID of the game the action took place in
+## - "player": int		- ID of the player that took action
 ## - "choose": bool		- true if the proposal is accepted, false otherwise
 signal action_trade_answer(Dictionary)
 
 ## Action sent when mortgaging a property
 ## Action dictionary includes:
+## - "game": int			- ID of the game the action took place in
+## - "player": int		- ID of the player that took action
 ## - "square": String	- ID of the tile to mortgage
 signal action_mortgage_set(Dictionary)
 
 ## Action sent when paying the mortgage of a property
 ## Action dictionary includes:
+## - "game": int			- ID of the game the action took place in
+## - "player": int		- ID of the player that took action
 ## - "square": String	- ID of the tile to pay the mortgage of
 signal action_mortgage_unset(Dictionary)
 
 ## Action sent when the bail is paid
-## Dictionary doesnt contain additional info
+## Action dictionary includes:
+## - "game": int		- ID of the game the action took place in
+## - "player": int	- ID of the player that took action
 signal action_pay_bail(Dictionary)
 
 ## Action sent when ending the current phase
-## Dictionary doesnt contain additional info
+## Action dictionary includes:
+## - "game": int		- ID of the game the action took place in
+## - "player": int	- ID of the player that took action
 signal action_next_phase(Dictionary)
 
 ## Action sent when bidding on a property
 ## Action dictionary includes:
+## - "game": int		- ID of the game the action took place in
+## - "player": int	- ID of the player that took action
 ## - "amount": int	- Amount bidded on the property
 signal action_bid(Dictionary)
 
@@ -252,7 +279,7 @@ var _conn_state: ConnState = ConnState.START # Internal state of the connection
 # The following comes straight from the Godot docs with slight modifications:
 # https://docs.godotengine.org/en/stable/tutorials/networking/websocket.html#using-websocket-in-godot
 
-func _safe_connect(url: String, headers: PackedStringArray = []) -> void:
+func _safe_connect(url: String, headers: PackedStringArray = ["Cookie: sessionid=" + session_id]) -> void:
 	# Initiate connection to the given URL.
 	socket.handshake_headers = headers
 	var err = socket.connect_to_url(url)
@@ -269,14 +296,11 @@ func send_data(data_to_send: Variant) -> void:
 	socket.send_text(data_to_send)
 
 func start_client_public_queue() -> void:
-	_safe_connect(
-		Globals.WS_BASE_URL + "/queue/public/",
-		["Cookie: sessionid=" + session_id]
-	)
+	_safe_connect(Globals.WS_BASE_URL + "/queue/public/")
 	_conn_state = ConnState.IN_PUBLIC_QUEUE
 
 func start_client_private_lobby(lobby_code: String) -> void:
-	_safe_connect(Globals.WS_BASE_URL + "/room/" + lobby_code)
+	_safe_connect(Globals.WS_BASE_URL + "/queue/private/" + lobby_code + "/")
 	_conn_state = ConnState.IN_PRIVATE_QUEUE
 
 func _ready() -> void:
@@ -319,7 +343,7 @@ func _process(_delta) -> void:
 		var code = socket.get_close_code()
 		var reason = socket.get_close_reason()
 		Utils.debug("Socket closed. Code: %d, Reason: %s" % [code, reason])
-		if code == 4001 and _conn_state == ConnState.GO_TO_GAME:
+		if _conn_state == ConnState.GO_TO_GAME:
 			Utils.debug("Connecting to game: " + str(game_id))
 			_safe_connect(Globals.WS_BASE_URL + "/game/" + str(game_id) + "/")
 			_conn_state = ConnState.IN_GAME
@@ -360,9 +384,12 @@ func _phase_string_to_enum(phase: String) -> Phase:
 
 func _botlevel_enum_to_string(bot_level: BotLevel) -> String:
 	match bot_level:
+		BotLevel.VERY_EASY: return "very_easy"
 		BotLevel.EASY: return "easy"
 		BotLevel.MEDIUM: return "medium"
 		BotLevel.HARD: return "hard"
+		BotLevel.VERY_HARD: return "very_hard"
+		BotLevel.EXPERT: return "expert"
 		_: Utils.debug("BotLevel - This is impossible")
 	return ""
 
@@ -390,6 +417,7 @@ func _public_queue_dispatcher(response: Dictionary) -> void:
 		game_id = response["game_id"]
 		_conn_state = ConnState.GO_TO_GAME
 		public_match_found.emit()
+		socket.close(4001, "Match was found, connecting to game socket") # Close the connection once match_found received
 
 func _private_queue_dispatcher(response: Dictionary) -> void:
 	if not response.has("action"): return
@@ -404,45 +432,73 @@ func _private_queue_dispatcher(response: Dictionary) -> void:
 	elif response["action"] == "ready_status":
 		player_ready.emit(response)
 	elif response["action"] == "game_start":
-		private_match_found.emit()
 		game_id = response["game_id"]
 		_conn_state = ConnState.GO_TO_GAME
+		private_match_found.emit()
+		socket.close(4001, "Match was found, connecting to game socket") # Close the connection once game_start received
 
-# TODO
 func _game_action_dispatcher(action: Dictionary) -> void:
-	pass
-
-# TODO
-func _game_state_dispatcher(state: Dictionary) -> void:
-	pass
+	if not action.has("type"):
+		Utils.debug("ERROR: Action doesnt have a type")
+	
+	if action.has("square"):
+		action["square"] = _normalize_tile_id(action["square"])
+	match action["type"]:
+		"ActionThrowDices": action_throw_dices.emit(action)
+		"ActionMoveTo": action_move_to.emit(action)
+		"ActionTakeTram": action_take_tram.emit(action)
+		"ActionDropPurchase": action_start_auction.emit(action)
+		"ActionBuySquare": action_buy_square.emit(action)
+		"ActionBuild": action_build.emit(action)
+		"ActionDemolish": action_demolish.emit(action)
+		"ActionChooseCard": action_choose_card.emit(action)
+		"ActionSurrender": action_surrender.emit(action)
+		"ActionTradeProposal":
+			action["offered_properties"] = _normalize_tile_id(action["offered_properties"])
+			action["asked_properties"] = _normalize_tile_id(action["asked_properties"])
+			action_trade_proposal.emit(action)
+		"ActionTradeAnswer": action_trade_answer.emit(action)
+		"ActionMortgageSet": action_mortgage_set.emit(action)
+		"ActionMortgageUnset": action_mortgage_unset.emit(action)
+		"ActionPayBail": action_pay_bail.emit(action)
+		"ActionNextPhase": action_next_phase.emit(action)
+		"ActionBid": action_bid.emit(action)
+		_: Utils.debug("ERROR: Unknown type in socket action")
 
 func _game_response_dispatcher(response: Dictionary) -> void:
 	if not response.has("phase") or not response.has("type"):
 		Utils.debug("ERROR: Response doesnt have a phase or type")
-	
-	Utils.debug("Received " + response["type"])
+
 	response["phase"] = _phase_string_to_enum(response["phase"])
 	response_general.emit(response)
 	match response["type"]:
 		"ResponseMovement": Utils.debug("ERROR: Received ResponseMovement, this shouldnt happen")
-		"ResponseThrowDices": response_throw_dices.emit(response)
-		"ResponseChooseSquare": response_choose_square.emit(response)
+		"ResponseThrowDices":
+			response["path"] = _normalize_tile_id(response["path"])
+			response["destinations"] = _normalize_tile_id(response["destinations"])
+			response_throw_dices.emit(response)
+		"ResponseChooseSquare":
+			response["path"] = _normalize_tile_id(response["path"])
+			response_choose_square.emit(response)
 		"ResponseChooseFantasy": response_choose_fantasy.emit(response)
 		"ResponseAuction": response_auction.emit(response)
+		_: Utils.debug("ERROR: Unknown type in socket response")
 
 func _game_dispatcher(response: Dictionary) -> void:
-	if not response.has("event_type"):
-		Utils.debug("ERROR: Response without 'event_type' key")
+	if not response.has("action"):
+		Utils.debug("ERROR: Response without 'action' key")
 		return
-	match response["event_type"]:
+
+	match response["action"]:
 		"error": error.emit(response["data"]["message"])
 		"chat_message": chat_message.emit(response)
 		"init_identity":
 			player_id = response["data"]["player_id"]
 			player_username = response["data"]["username"]
-		"game_state": _game_state_dispatcher(response["game_state"])
+		"game_state": game_state.emit(response["game_state"])
 		"game_response": _game_response_dispatcher(response["data"])
 		"game_action": _game_action_dispatcher(response["data"])
+		_: Utils.debug("ERROR: Unknown action in socket message")
 
 # Now we get into the specifics of the communication
 # The following functions encapsulate outgoing messages
@@ -463,6 +519,7 @@ func ws_private_lobby_readystatus(is_ready: bool) -> void:
 
 ## Send game start message as lobby owner
 func ws_private_lobby_start() -> void:
+	ws_private_lobby_readystatus(true) # Set ready to true
 	send_data({"command": "start_game"})
 
 ## Send new lobby settings as lobby owner
@@ -580,10 +637,7 @@ func ws_action_start_trade(
 ## @params:
 ## - accept: True if the trade was accepted
 func ws_action_respond_to_trade(accept: bool) -> void:
-	_build_and_send_action({
-		"type": "ActionTradeAnswer",
-		"choose": accept,
-	})
+	_build_and_send_action({"type": "ActionTradeAnswer", "choose": accept})
 
 ## Action: Pays bail for current player
 func ws_action_pay_bail() -> void:
