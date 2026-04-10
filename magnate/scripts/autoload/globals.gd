@@ -55,3 +55,9 @@ enum TileType {
 	JAIL,
 	PARKING,
 }
+
+# Logout behaviour, universal
+func _ready() -> void:
+	RestClient.logout.connect(
+		get_tree().change_scene_to_file.bind("res://scenes/UI/landing_screen.tscn")
+	)

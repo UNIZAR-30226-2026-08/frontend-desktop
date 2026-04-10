@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Magnate"
-run/main_scene="uid://osyh1204d63f"
+run/main_scene="uid://c72ahxfhkpr7e"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -24,6 +24,8 @@ buses/default_bus_layout="uid://olwy1fnpvxcd"
 Globals="*uid://b4pmg3hfq0uag"
 SceneTransition="*uid://t0m5rvjixvms"
 AudioSystem="*uid://ch72ng0eupl0o"
+WsClient="*uid://d0npngeu5vu8b"
+RestClient="*uid://b3m5p5uxbd7dc"
 
 [display]
 

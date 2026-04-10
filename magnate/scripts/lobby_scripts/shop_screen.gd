@@ -22,6 +22,8 @@ const SCROLL_STEP = CARD_WIDTH + SPACING # Esto da 280 exactos por saltoflecha
 
 var player_money: int = 500 # Ponle el dinero que quieras para hacer pruebas
 
+var items: Array = []
+
 func _ready() -> void:
 	# Conectamos pasándole el contenedor DIRECTO (ya no le pasamos el "Scroll")
 	# direction: 1 es derecha, -1 es izquierda
@@ -36,6 +38,9 @@ func _ready() -> void:
 	# Actualizamos el texto con el dinero inicial
 	_update_budget_ui()
 	_update_cards_affordability()
+	
+	items = await RestClient.shop_get_items()
+
 # Simula la llegada del JSON desde el backend
 func _load_shop_items() -> void:
 	var dummy_backend_json = [

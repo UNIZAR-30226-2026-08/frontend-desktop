@@ -2,9 +2,11 @@
 
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_qgcvq"]
 [ext_resource type="PackedScene" uid="uid://vxxc8m2hs5mg" path="res://scenes/components/city_background.tscn" id="2_85qbq"]
+[ext_resource type="Script" uid="uid://bifme4hcbn2is" path="res://scripts/loading_screen.gd" id="2_oheac"]
 [ext_resource type="Shader" uid="uid://b8swka4jmmsdt" path="res://styles/shaders/wavy.gdshader" id="2_q74op"]
 [ext_resource type="PackedScene" uid="uid://baktdl26t2tmk" path="res://scenes/components/logo.tscn" id="3_7uno8"]
 [ext_resource type="FontFile" uid="uid://conyee5yte71n" path="res://assets/fonts/LTSuperior/LTSuperior-Italic.ttf" id="5_4x40i"]
+[ext_resource type="PackedScene" uid="uid://cpo0vkocad1pp" path="res://scenes/components/animated_icon_button.tscn" id="7_pbjre"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7uno8"]
 bg_color = Color(0, 0, 0, 0.2)
@@ -35,6 +37,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_qgcvq")
+script = ExtResource("2_oheac")
 
 [node name="CityBackground" parent="." unique_id=1440435364 instance=ExtResource("2_85qbq")]
 layout_mode = 1
@@ -70,3 +73,14 @@ theme_override_font_sizes/font_size = 40
 text = "ESPERANDO JUGADORES..."
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="BackButton" parent="." unique_id=175575919 instance=ExtResource("7_pbjre")]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 42.0
+offset_right = 120.0
+offset_bottom = 138.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]

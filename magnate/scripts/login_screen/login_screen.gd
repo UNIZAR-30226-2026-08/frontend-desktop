@@ -1,6 +1,19 @@
 extends Control
 
-# TODO: Add integrity checks to the fields and communicate with backend
+@onready var username_input: LineEdit = %UsernameInput
+@onready var pass_input: LineEdit = %PassInput
 
 func _on_animated_button_pressed() -> void:
-	SceneTransition.change_scene("res://scenes/UI/home_screen.tscn")
+	var response = await RestClient.user_login({
+		"username": username_input.text,
+		"password": pass_input.text,
+	})
+	if response != {}:
+		SceneTransition.change_scene("res://scenes/UI/home_screen.tscn")
+	else:
+		username_input.text = ""
+		pass_input.text = ""
+
+
+func _on_back_button_pressed() -> void:
+	SceneTransition.change_scene("res://scenes/UI/landing_screen.tscn")

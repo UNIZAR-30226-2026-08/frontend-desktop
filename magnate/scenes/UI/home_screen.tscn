@@ -80,6 +80,7 @@ layout_mode = 2
 button_text = "Perfil"
 
 [node name="SettingsButton" parent="MainLayout/TopBar/HBoxContainer/RightMenu" unique_id=590401790 instance=ExtResource("5_0d83e")]
+unique_name_in_owner = true
 layout_mode = 2
 icon_texture = ExtResource("7_gear_icon")
 
