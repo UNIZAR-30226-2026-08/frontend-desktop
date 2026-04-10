@@ -14,6 +14,12 @@ const SCROLL_STEP_SKINS = CARD_WIDTH + SPACING
 # ==========================================
 # 2. REFERENCIAS A NODOS
 # ==========================================
+@onready var username: Label = %Username
+@onready var games_played_label: Label = %GamesPlayedLabel
+@onready var total_points: Label = %TotalPoints
+@onready var logout_button: Button = %LogoutButton
+@onready var wins_label: Label = %WinsLabel
+
 # Botón general de confirmar
 @onready var confirm_btn: Button = %ConfirmBtn 
 
@@ -32,6 +38,9 @@ const SCROLL_STEP_SKINS = CARD_WIDTH + SPACING
 @onready var skins_container: HBoxContainer = %SkinsContainer
 @onready var skins_left_btn: Button = %SkinsLeftBtn
 @onready var skins_right_btn: Button = %SkinsRightBtn
+
+var user_info: Dictionary = {}
+var user_tokens: Array = []
 
 # Variable para guardar la carta seleccionada temporalmente
 var currently_selected_card: PanelContainer = null
@@ -75,17 +84,28 @@ func _ready() -> void:
 	change_skin_btn2.pressed.connect(_switch_to_face1)
 	confirm_btn.pressed.connect(_on_confirm_pressed)
 	
+	logout_button.pressed.connect(RestClient.user_logout)
+	
 	# Cargar datos
 	_load_game_history()
 	_load_dummy_skins()
 	
 	# Establecer estado visual inicial (mostrar Face1)
 	_switch_to_face1()
+	
+	user_info = await RestClient.user_get_info()
+	if user_info == {}: return
+	username.text = user_info["username"]
+	games_played_label.text = str(user_info["num_played_games"])
+	wins_label.text = str(user_info["num_won_games"])
+	total_points.text = str(user_info["points"])
 
 # ==========================================
 # 5. LÓGICA DE INTERFAZ (CARAS Y BOTONES)
 # ==========================================
 func _switch_to_face2() -> void:
+	user_tokens = await RestClient.shop_get_user_pieces()
+	Utils.debug(str(user_tokens)) # TODO: Aún no sé lo que viene aquí exactamente
 	change_skin_btn1.hide()
 	change_skin_btn2.show()
 	face1.hide()
@@ -100,11 +120,11 @@ func _switch_to_face1() -> void:
 
 func _on_confirm_pressed() -> void:
 	if currently_selected_card != null:
-		print("Guardando skin: ", currently_selected_card.item_id)
+		Utils.debug("Guardando skin: " + str(currently_selected_card.item_id))
 		# TODO: Aquí irá el guardado real en servidor
 		_clear_current_selection()
 	else:
-		print("No hay ninguna skin seleccionada para confirmar")
+		Utils.debug("No hay ninguna skin seleccionada para confirmar")
 
 # ==========================================
 # 6. LÓGICA DE SELECCIÓN DE SKINS
@@ -125,7 +145,7 @@ func _clear_current_selection() -> void:
 	if currently_selected_card != null:
 		currently_selected_card.current_state = currently_selected_card.State.SELECTABLE
 		currently_selected_card = null
-		print("Selección limpiada")
+		Utils.debug("Selección limpiada")
 
 # ==========================================
 # 7. CARGADORES DE CONTENIDO (INSTANCIAR)

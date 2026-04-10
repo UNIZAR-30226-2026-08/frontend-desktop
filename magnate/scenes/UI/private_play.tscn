@@ -15,22 +15,6 @@ resource_local_to_scene = false
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ge38p"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mj240"]
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 7
-border_width_top = 7
-border_width_right = 7
-border_width_bottom = 7
-border_color = Color(1, 0.7882353, 0.44313726, 1)
-corner_radius_top_left = 45
-corner_radius_top_right = 45
-corner_radius_bottom_right = 45
-corner_radius_bottom_left = 45
-expand_margin_left = 20.0
-expand_margin_top = 10.0
-expand_margin_right = 20.0
-expand_margin_bottom = 10.0
-
 [node name="PrivatePlay" type="Panel" unique_id=1569321352]
 material = ExtResource("1_mj240")
 anchors_preset = 15
@@ -94,23 +78,24 @@ expand_mode = 3
 stretch_mode = 5
 metadata/_tab_index = 0
 
-[node name="LineeditWithShadow" parent="VBoxContainer/TabContainer/JoinImage" unique_id=1768335443 instance=ExtResource("2_stftt")]
+[node name="CodeInput" parent="VBoxContainer/TabContainer/JoinImage" unique_id=1768335443 instance=ExtResource("2_stftt")]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -125.0
-offset_top = -125.0
-offset_right = 125.0
-offset_bottom = -51.0
+offset_left = -130.0
+offset_top = -114.0
+offset_right = 130.0
+offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_styles/normal = SubResource("StyleBoxFlat_mj240")
-placeholder_text = "12345"
+placeholder_text = "A2G98R"
 alignment = 1
-max_length = 5
+max_length = 6
+expand_to_text_length = true
 
 [node name="CreateImage" type="TextureRect" parent="VBoxContainer/TabContainer" unique_id=577724660]
 visible = false
@@ -136,4 +121,5 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
 [connection signal="back_action_requested" from="VBoxContainer/Header" to="." method="_on_header_back_action_requested"]
+[connection signal="text_changed" from="VBoxContainer/TabContainer/JoinImage/CodeInput" to="." method="_on_code_input_text_changed"]
 [connection signal="pressed" from="VBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]

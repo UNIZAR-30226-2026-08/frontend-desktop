@@ -9,6 +9,7 @@ extends Node
 
 var needs_login: bool = true
 signal logout
+signal login
 
 # NOTE: If multiple requests at a time need to be implemented remember to do
 # the following:
@@ -28,12 +29,13 @@ var token_access: String = "" # Stores the access token
 var current_request: HTTPRequest = null # Start off with no request
 var waiting_for_response: bool = false
 
+var has_last_data: bool = false
 var last_url: String
 var last_verb: HTTPClient.Method
 var last_data: Variant
-var last_headers: Array[String]
+var last_headers: Array
 
-signal response(Dictionary)
+signal response(Variant)
 
 # The following are the base functions used by the client
 func get_device_key() -> String:
@@ -57,9 +59,9 @@ func _ready() -> void:
 ## it will contain the parsed response
 func make_request(
 	url: String,
-	data_to_send: Variant = "", # String or Dictionary
+	data_to_send: Variant = null, # String or Dictionary
 	verb: HTTPClient.Method = HTTPClient.METHOD_GET,
-	headers: Array[String] = [],
+	headers: Array = [],
 ) -> bool:
 	if waiting_for_response:
 		response.emit({})
@@ -76,6 +78,7 @@ func make_request(
 			waiting_for_response = true
 			return true
 	elif verb == HTTPClient.METHOD_POST:
+		headers += ['Content-Type: application/json']
 		if typeof(data_to_send) == TYPE_DICTIONARY:
 			data_to_send = JSON.stringify(data_to_send)
 		var error = current_request.request(url, headers, HTTPClient.METHOD_POST, data_to_send)
@@ -94,17 +97,16 @@ func make_auth_request(
 	url: String,
 	data_to_send: Variant = null, # String or Dictionary
 	verb: HTTPClient.Method = HTTPClient.METHOD_GET,
-	additional_headers: Array[String] = [],
+	additional_headers: Array = [],
 ):
+	has_last_data = true
 	last_url = url
 	last_verb = verb
 	last_data = data_to_send
 	last_headers = additional_headers
 	
-	var headers = [
-		"Authorization: Bearer " + token_access,
-		"Content-Type: application/json"
-	] + additional_headers
+	var headers: Array = ["Authorization: Bearer " + token_access] + additional_headers
+	Utils.debug(str(typeof(headers)))
 	make_request(url, data_to_send, verb, headers)
 
 func _refresh_access_token():
@@ -130,8 +132,11 @@ func _refresh_access_token():
 	
 	if resp[1] == 200:
 		token_access = refresh_json["access"]
-		Utils.debug("Token refreshed! Retrying last request...")
-		make_auth_request(last_url, last_data, last_verb, last_headers)
+		Utils.debug("Token refreshed!")
+		login.emit()
+		if has_last_data:
+			Utils.debug("Retrying las request")
+			make_auth_request(last_url, last_data, last_verb, last_headers)
 	else:
 		user_logout()
 	
@@ -222,10 +227,25 @@ func user_logout() -> void:
 		DirAccess.remove_absolute(SAVE_PATH)
 	logout.emit()
 
-# TODO
+## Return Dictionary with user info
+## - "username": String		- Username of the user
+## - "points": int			- Points of the user
+## - "exp": float			- Experience of the user
+## - "elo": float			- ELO of the user
+## - "date_joined": String	- String in standard ISO format
+## - "num_played_games": int	- Number of played games
+## - "num_won_games": int	- Number of won games
+## - "user_piece": int		- ID of the piece of the current user
 func user_get_info() -> Dictionary:
 	make_auth_request(Globals.REST_BASE_URL + "/user/info/")
-	return await response
+	var resp = await response
+	if resp.has("points"):
+		resp["points"] = int(resp["points"])
+	if resp.has("num_played_games"):
+		resp["num_won_games"] = int(resp["num_won_games"])
+	if resp.has("num_played_games"):
+		resp["num_played_games"] = int(resp["num_won_games"])
+	return resp
 
 # TODO
 func user_change_piece(piece_id: int) -> Dictionary:
@@ -241,8 +261,8 @@ func fetch_user_name_and_piece(pk: String) -> Dictionary:
 	make_auth_request(Globals.REST_BASE_URL + "/info/user-name-piece/" + pk + "/")
 	return await response
 
-# TODO
-func shop_get_items() -> Dictionary:
+# TODO [{ "custom_id": 1.0, "itemType": "piece", "price": 100.0, "owned": false }, { "custom_id": 2.0, "itemType": "piece", "price": 200.0, "owned": false }, { "custom_id": 3.0, "itemType": "piece", "price": 300.0, "owned": false }, { "custom_id": 4.0, "itemType": "emoji", "price": 150.0, "owned": false }, { "custom_id": 5.0, "itemType": "emoji", "price": 250.0, "owned": false }]
+func shop_get_items() -> Array:
 	make_auth_request(Globals.REST_BASE_URL + "/shop/items/")
 	return await response
 
@@ -256,7 +276,7 @@ func shop_buy_item(item_id: int) -> Dictionary:
 	return await response
 
 # TODO
-func shop_get_user_pieces() -> Dictionary:
+func shop_get_user_pieces() -> Array:
 	make_auth_request(Globals.REST_BASE_URL + "/shop/user-pieces/")
 	return await response
 
@@ -267,5 +287,5 @@ func shop_get_user_emojis() -> Dictionary:
 
 # TODO
 func game_get_private_code() -> Dictionary:
-	make_auth_request(Globals.REST_BASE_URL + "/lobby/get-private-code/")
+	make_auth_request(Globals.REST_BASE_URL + "/lobby/get-private-code")
 	return await response

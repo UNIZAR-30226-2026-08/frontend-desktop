@@ -1,8 +1,11 @@
 extends Control
 
 @export var player_icon_big_scene: PackedScene 
+@onready var room_code_label: Label = %room_code_label
 
 func _ready():
+	room_code_label.text = WsClient.last_private_lobby_code
+	
 	# Datos de prueba
 	var datos_de_prueba = [
 		{
@@ -65,10 +68,11 @@ func update_player_count():
 		$VBoxContainer/player_count_label.text = "Número de jugadores: " + str(count)
 	else:
 		# Si te da este error, revisa si el nodo se llama 'player_number' o 'player_count_label'
-		print("Error: No encuentro el nodo del contador en VBoxContainer")
+		Utils.debug("Error: No encuentro el nodo del contador en VBoxContainer")
 
 
 func _on_header_back_action_requested() -> void:
+	WsClient.socket.close(1000, "Player left lobby")
 	SceneTransition.change_scene("res://scenes/UI/private_play.tscn")
 
 

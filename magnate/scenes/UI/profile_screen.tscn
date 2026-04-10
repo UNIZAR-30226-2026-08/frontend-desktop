@@ -14,10 +14,10 @@
 [ext_resource type="StyleBox" uid="uid://dc47ejgb5jctj" path="res://styles/shop/scroll_buttons_shop.tres" id="8_hudyc"]
 [ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="8_qtibt"]
 [ext_resource type="StyleBox" uid="uid://ea3padm8hxn0" path="res://styles/shop/disabled_scroll_buttons_shop.tres" id="9_n6hus"]
-[ext_resource type="Texture2D" uid="uid://kr6y2xasktun" path="res://assets/images/left_arrow.png" id="10_142ik"]
 [ext_resource type="StyleBox" uid="uid://n6is3jb3ojo7" path="res://styles/profile/calcel_style.tres" id="11_hudyc"]
-[ext_resource type="Texture2D" uid="uid://bospcqsdrpka" path="res://assets/images/right_arrow.png" id="11_jdq1e"]
 [ext_resource type="FontFile" uid="uid://pqt8tux3lbt7" path="res://assets/fonts/LTSuperior/LTSuperior-Light.ttf" id="12_qtibt"]
+[ext_resource type="Texture2D" uid="uid://bem5u5bxowiaq" path="res://assets/icons/back-arrow-green.svg" id="17_142ik"]
+[ext_resource type="Texture2D" uid="uid://cp5bx3nl5gmj8" path="res://assets/icons/front-arrow-green.svg" id="18_jdq1e"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g2gpt"]
 shader = ExtResource("1_rdtry")
@@ -121,7 +121,8 @@ theme_override_fonts/font = ExtResource("7_7w1ml")
 theme_override_font_sizes/font_size = 50
 text = "Nicolas de Rivas"
 
-[node name="Button" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" unique_id=2044040582]
+[node name="LogoutButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" unique_id=2044040582]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(1, 0.58203125, 0.58203125, 1)
@@ -252,6 +253,7 @@ custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
 [node name="WinsLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/HBoxContainer/PanelContainer2/VBoxContainer" unique_id=1375918224]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0.5411765, 0.36078432, 1)
@@ -282,7 +284,8 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="GamesPlayed" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/HBoxContainer/PanelContainer3/VBoxContainer" unique_id=1653681545]
+[node name="TotalPoints" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/HBoxContainer/PanelContainer3/VBoxContainer" unique_id=1653681545]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0.5411765, 0.36078432, 1)
@@ -319,7 +322,7 @@ theme_override_styles/pressed = ExtResource("8_hudyc")
 theme_override_styles/hover = ExtResource("8_hudyc")
 theme_override_styles/disabled = ExtResource("9_n6hus")
 theme_override_styles/focus = ExtResource("8_hudyc")
-icon_texture = ExtResource("10_142ik")
+icon_texture = ExtResource("17_142ik")
 
 [node name="GamesScroll" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/CarruselHbox" unique_id=47779363]
 unique_name_in_owner = true
@@ -344,7 +347,7 @@ theme_override_styles/pressed = ExtResource("8_hudyc")
 theme_override_styles/hover = ExtResource("8_hudyc")
 theme_override_styles/disabled = ExtResource("9_n6hus")
 theme_override_styles/focus = ExtResource("8_hudyc")
-icon_texture = ExtResource("11_jdq1e")
+icon_texture = ExtResource("18_jdq1e")
 
 [node name="Face2" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1573937534]
 unique_name_in_owner = true
@@ -372,7 +375,7 @@ theme_override_styles/pressed = ExtResource("8_hudyc")
 theme_override_styles/hover = ExtResource("8_hudyc")
 theme_override_styles/disabled = ExtResource("9_n6hus")
 theme_override_styles/focus = ExtResource("8_hudyc")
-icon_texture = ExtResource("10_142ik")
+icon_texture = ExtResource("17_142ik")
 
 [node name="SkinsScroll" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2/CarruselHbox2" unique_id=294071604]
 clip_children = 1
@@ -396,7 +399,7 @@ theme_override_styles/pressed = ExtResource("8_hudyc")
 theme_override_styles/hover = ExtResource("8_hudyc")
 theme_override_styles/disabled = ExtResource("9_n6hus")
 theme_override_styles/focus = ExtResource("8_hudyc")
-icon_texture = ExtResource("11_jdq1e")
+icon_texture = ExtResource("18_jdq1e")
 
 [node name="Control5" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2" unique_id=1372872061]
 custom_minimum_size = Vector2(0, 50)

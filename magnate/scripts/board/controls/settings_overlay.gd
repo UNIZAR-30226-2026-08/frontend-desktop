@@ -1,6 +1,5 @@
-extends CanvasLayer
+extends BlurryBgOverlay
 
-@onready var backdrop: ColorRect = $Backdrop
 @onready var header = $CenterContainer/ModalPanel/ClipMask/VBox/Header
 
 @onready var music_slider: HSlider = $CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/MusicRow/MusicSlider
@@ -13,7 +12,8 @@ extends CanvasLayer
 @onready var ui_mute_btn: Button = $CenterContainer/ModalPanel/ClipMask/VBox/ContentMargin/SlidersVBox/UIRow/Top/UIMuteBtn
 
 func _ready() -> void:
-	backdrop.gui_input.connect(_on_backdrop_gui_input)
+	super()
+	blur_filter.gui_input.connect(_on_backdrop_gui_input)
 
 	if header.has_signal("back_action_requested"):
 		header.back_action_requested.connect(

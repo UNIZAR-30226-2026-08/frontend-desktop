@@ -3,6 +3,7 @@
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_pbf7n"]
 [ext_resource type="Script" uid="uid://dlgk2e8g5itqj" path="res://scripts/login_screen/login_screen.gd" id="2_52kn4"]
 [ext_resource type="PackedScene" uid="uid://vxxc8m2hs5mg" path="res://scenes/components/city_background.tscn" id="2_w6wvi"]
+[ext_resource type="PackedScene" uid="uid://cpo0vkocad1pp" path="res://scenes/components/animated_icon_button.tscn" id="4_54ont"]
 [ext_resource type="PackedScene" uid="uid://5pilfc0bnc3" path="res://scenes/components/lineedit_with_shadow.tscn" id="4_xuk5p"]
 [ext_resource type="Texture2D" uid="uid://k0g5efr3ougq" path="res://assets/icons/lock.svg" id="6_52kn4"]
 [ext_resource type="Texture2D" uid="uid://d1ii7ia4skoem" path="res://assets/icons/single_player.svg" id="6_54ont"]
@@ -21,6 +22,15 @@ script = ExtResource("2_52kn4")
 
 [node name="Background" parent="." unique_id=1440435364 instance=ExtResource("2_w6wvi")]
 layout_mode = 1
+
+[node name="BackButton" parent="." unique_id=175575919 instance=ExtResource("4_54ont")]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 42.0
+offset_right = 120.0
+offset_bottom = 138.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
 
 [node name="MainVBox" type="VBoxContainer" parent="." unique_id=1062500680]
 layout_mode = 1
@@ -46,6 +56,7 @@ custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
 [node name="UsernameInput" parent="MainVBox" unique_id=1768335443 instance=ExtResource("4_xuk5p")]
+unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../PassInput")
 focus_next = NodePath("../PassInput")
@@ -57,6 +68,7 @@ icon_expand_mode = 2
 right_icon_scale = 0.8
 
 [node name="PassInput" parent="MainVBox" unique_id=235522331 instance=ExtResource("4_xuk5p")]
+unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../HBoxContainer/AnimatedButton")
 focus_next = NodePath("../HBoxContainer/AnimatedButton")
@@ -76,7 +88,7 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="AnimatedButton" parent="MainVBox/HBoxContainer" unique_id=175575919 instance=ExtResource("6_w6wvi")]
+[node name="AnimatedButton" parent="MainVBox/HBoxContainer" unique_id=598462717 instance=ExtResource("6_w6wvi")]
 layout_mode = 2
 focus_neighbor_top = NodePath("../../PassInput")
 focus_previous = NodePath("../../PassInput")
@@ -86,7 +98,5 @@ text = "ENTRAR"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=189878863]
-bus = &"Music"
-
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="MainVBox/HBoxContainer/AnimatedButton" to="." method="_on_animated_button_pressed"]

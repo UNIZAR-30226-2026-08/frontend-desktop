@@ -55,6 +55,7 @@ layout_mode = 2
 size_flags_vertical = 0
 
 [node name="room_code_label" type="Label" parent="VBoxContainer" unique_id=1269556110]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10

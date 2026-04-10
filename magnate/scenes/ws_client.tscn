@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://d0npngeu5vu8b"]
+
+[ext_resource type="Script" uid="uid://c4kfl3vpul8pd" path="res://scripts/backend_client/client_ws.gd" id="1_qmu7k"]
+
+[node name="WsClient" type="Node2D" unique_id=1866183398]
+script = ExtResource("1_qmu7k")

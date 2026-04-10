@@ -317,6 +317,7 @@ var player_id: int # ID of the player (Only valid if _conn_state = IN_GAME)
 var session_id: String # ID of the session
 var player_username: String # Username of the player
 var _conn_state: ConnState = ConnState.START # Internal state of the connection
+var last_private_lobby_code: String = ""
 
 # The following comes straight from the Godot docs with slight modifications:
 # https://docs.godotengine.org/en/stable/tutorials/networking/websocket.html#using-websocket-in-godot
@@ -338,10 +339,12 @@ func send_data(data_to_send: Variant) -> void:
 	socket.send_text(data_to_send)
 
 func start_client_public_queue() -> void:
+	Utils.debug("Connecting to public queue with session: " + session_id)
 	_safe_connect(Globals.WS_BASE_URL + "/queue/public/")
 	_conn_state = ConnState.IN_PUBLIC_QUEUE
 
 func start_client_private_lobby(lobby_code: String) -> void:
+	last_private_lobby_code = lobby_code
 	_safe_connect(Globals.WS_BASE_URL + "/queue/private/" + lobby_code + "/")
 	_conn_state = ConnState.IN_PRIVATE_QUEUE
 
