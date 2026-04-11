@@ -87,9 +87,7 @@ func _on_auction_button_pressed() -> void:
 const fade_duration = 0.1
 
 func _on_auction_button_mouse_entered() -> void:
-	var tween = get_tree().create_tween()
-	tween.tween_property(tooltip, "modulate:a", 1, fade_duration)
+	tooltip.fadein()
 
 func _on_auction_button_mouse_exited() -> void:
-	var tween = get_tree().create_tween()
-	tween.tween_property(tooltip, "modulate:a", 0, fade_duration)
+	tooltip.fadeout()

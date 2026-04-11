@@ -8,6 +8,8 @@ extends Node
 ## the signal <response> will be emitted with the parsed reponse body.
 
 var needs_login: bool = true
+var last_faulty_response: Variant
+var last_faulty_response_code: int
 signal logout
 signal login
 
@@ -29,6 +31,7 @@ var token_access: String = "" # Stores the access token
 var current_request: HTTPRequest = null # Start off with no request
 var waiting_for_response: bool = false
 
+var _was_auth_request: bool = false
 var has_last_data: bool = false
 var last_url: String
 var last_verb: HTTPClient.Method
@@ -91,6 +94,7 @@ func make_request(
 		push_error("Unsupported verb in HTTP request")
 	current_request.queue_free()
 	response.emit({})
+	_was_auth_request = false
 	return false
 
 func make_auth_request(
@@ -104,6 +108,8 @@ func make_auth_request(
 	last_verb = verb
 	last_data = data_to_send
 	last_headers = additional_headers
+	
+	_was_auth_request = true
 	
 	var headers: Array = ["Authorization: Bearer " + token_access] + additional_headers
 	Utils.debug(str(typeof(headers)))
@@ -147,7 +153,10 @@ func _response_handler(_result, response_code, _headers, body) -> void:
 	current_request = null
 	waiting_for_response = false
 	var response_data = JSON.parse_string(body.get_string_from_utf8())
-	if response_code == 401:
+	if response_code == 401 and _was_auth_request:
+		if not _was_auth_request:
+			last_faulty_response = response_data
+			last_faulty_response_code = response_code
 		if needs_refresh:
 			Utils.debug("Access token expired. Attempting refresh...")
 			_refresh_access_token()
@@ -155,6 +164,8 @@ func _response_handler(_result, response_code, _headers, body) -> void:
 			Utils.debug("Refresh token also expired. Redirecting to login.")
 			user_logout()
 	elif response_code < 200 or response_code >= 300:
+		last_faulty_response = response_data
+		last_faulty_response_code = response_code
 		Utils.debug("Got faulty response: " + str(response_data))
 		response.emit({})
 	else:

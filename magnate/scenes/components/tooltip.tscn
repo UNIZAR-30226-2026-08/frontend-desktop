@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://c1jvwymfhm6pl"]
+
+[ext_resource type="FontFile" uid="uid://n3efsq8ypxye" path="res://assets/fonts/LTSuperior/LTSuperior-Regular.ttf" id="1_lx5dk"]
+[ext_resource type="Script" uid="uid://d3yjhj1os00ew" path="res://scripts/tooltip.gd" id="1_vophl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vophl"]
+bg_color = Color(0, 0, 0, 0.39215687)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Tooltip" type="PanelContainer" unique_id=652872537]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(250, 0)
+offset_right = 260.0
+offset_bottom = 73.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_vophl")
+script = ExtResource("1_vophl")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=292945826]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="TooltipText" type="Label" parent="MarginContainer" unique_id=1886247591]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_lx5dk")
+theme_override_font_sizes/font_size = 30
+text = "Placeholder tooltip"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

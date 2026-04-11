@@ -6,6 +6,7 @@
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="3_qfbvr"]
 [ext_resource type="FontFile" uid="uid://cel767gfqwf3q" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBoldItalic.ttf" id="4_f7vb1"]
 [ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="5_p7x4w"]
+[ext_resource type="Texture2D" uid="uid://da5jxe2v1hc17" path="res://assets/icons/check-solid-full.svg" id="7_y7qoc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qfbvr"]
 bg_color = Color(1, 1, 1, 1)
@@ -171,6 +172,16 @@ theme_override_fonts/font = ExtResource("4_f7vb1")
 theme_override_font_sizes/font_size = 40
 text = "PLAYER_NAME"
 horizontal_alignment = 1
+
+[node name="ReadyIcon" type="TextureRect" parent="." unique_id=159006633]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 11.0
+offset_right = 99.0
+offset_bottom = 91.0
+texture = ExtResource("7_y7qoc")
+expand_mode = 1
+stretch_mode = 5
 
 [connection signal="pressed" from="AddBotButton" to="." method="_on_add_bot_button_pressed"]
 [connection signal="pressed" from="RemoveBotButton" to="." method="_on_remove_bot_button_pressed"]
