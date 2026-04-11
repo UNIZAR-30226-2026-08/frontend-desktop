@@ -56,8 +56,9 @@ enum TileType {
 	PARKING,
 }
 
-# Logout behaviour, universal
+# Universal behaviours
 func _ready() -> void:
-	RestClient.logout.connect(
-		get_tree().change_scene_to_file.bind("res://scenes/UI/landing_screen.tscn")
-	)
+	# On logout go to landing page
+	RestClient.logout.connect(SceneTransition.change_scene.bind("res://scenes/UI/landing_screen.tscn"))
+	# On login go to home page
+	RestClient.login.connect(SceneTransition.change_scene.bind("res://scenes/UI/home_screen.tscn"))

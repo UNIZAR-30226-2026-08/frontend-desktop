@@ -3,6 +3,7 @@
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_pbf7n"]
 [ext_resource type="Script" uid="uid://dlgk2e8g5itqj" path="res://scripts/login_screen/login_screen.gd" id="2_52kn4"]
 [ext_resource type="PackedScene" uid="uid://vxxc8m2hs5mg" path="res://scenes/components/city_background.tscn" id="2_w6wvi"]
+[ext_resource type="PackedScene" uid="uid://c1jvwymfhm6pl" path="res://scenes/components/tooltip.tscn" id="3_hvk13"]
 [ext_resource type="PackedScene" uid="uid://cpo0vkocad1pp" path="res://scenes/components/animated_icon_button.tscn" id="4_54ont"]
 [ext_resource type="PackedScene" uid="uid://5pilfc0bnc3" path="res://scenes/components/lineedit_with_shadow.tscn" id="4_xuk5p"]
 [ext_resource type="Texture2D" uid="uid://k0g5efr3ougq" path="res://assets/icons/lock.svg" id="6_52kn4"]
@@ -22,6 +23,14 @@ script = ExtResource("2_52kn4")
 
 [node name="Background" parent="." unique_id=1440435364 instance=ExtResource("2_w6wvi")]
 layout_mode = 1
+
+[node name="Tooltip" parent="." unique_id=652872537 instance=ExtResource("3_hvk13")]
+layout_mode = 0
+offset_left = 1432.0
+offset_top = 618.0
+offset_right = 1692.0
+offset_bottom = 691.0
+custom_text = "Credenciales incorrectas"
 
 [node name="BackButton" parent="." unique_id=175575919 instance=ExtResource("4_54ont")]
 layout_mode = 0

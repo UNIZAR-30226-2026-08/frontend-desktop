@@ -3,6 +3,7 @@ extends Panel
 enum State {WAITING, PLAYER, BOT}
 var current_state = State.WAITING
 var rotation_tween: Tween
+var _ready: bool = false
 
 const BOT_PHOTO = preload("res://assets/images/bg_city.jpg")
 
@@ -23,6 +24,7 @@ func setup(name_text: String, player_type: String, custom_texture: Texture2D = n
 		# Si custom_texture es null, el icono se verá vacío o con la foto anterior
 		$PlayerIcon.texture = custom_texture
 		$PlayerIcon.scale = Vector2(0.7, 0.7)
+
 func set_state(new_state):
 	current_state = new_state
 	
@@ -79,3 +81,12 @@ func _on_remove_bot_button_pressed():
 	# Al eliminar, volvemos al estado de espera
 	setup("", "waiting")
 	bot_removed_locally.emit()
+
+func set_ready(state: bool) -> void:
+	if state == _ready: return
+	if $ReadyIcon.visible: $ReadyIcon.hide()
+	else: $ReadyIcon.show()
+	_ready = not state
+
+func toggle_ready() -> void:
+	set_ready(not _ready)

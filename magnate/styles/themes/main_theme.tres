@@ -108,10 +108,41 @@ corner_radius_top_left = 45
 corner_radius_top_right = 45
 corner_radius_bottom_right = 45
 corner_radius_bottom_left = 45
-expand_margin_left = 40.0
+expand_margin_left = 20.0
 expand_margin_top = 10.0
 expand_margin_right = 20.0
 expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x66so"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.4862745, 0.4862745, 0.4862745, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j5ypn"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.9019608, 0.9019608, 0.9019608, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lqh3e"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.4862745, 0.4862745, 0.4862745, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8sfn"]
 bg_color = Color(1, 1, 1, 1)
@@ -127,6 +158,13 @@ corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
+
+[sub_resource type="ImageTexture" id="ImageTexture_i8sfn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l5624"]
+bg_color = Color(0.4862745, 0.4862745, 0.4862745, 1)
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lfl0x"]
 corner_radius_top_left = 20
@@ -224,7 +262,27 @@ LineEditError/constants/caret_width = 5
 LineEditError/font_sizes/font_size = 44
 LineEditError/styles/focus = SubResource("StyleBoxFlat_i85vh")
 LineEditError/styles/normal = SubResource("StyleBoxFlat_i85vh")
+OptionButton/colors/font_color = Color(0.48700994, 0.48700887, 0.4870093, 1)
+OptionButton/font_sizes/font_size = 50
+OptionButton/styles/hover = SubResource("StyleBoxFlat_x66so")
+OptionButton/styles/normal = SubResource("StyleBoxFlat_j5ypn")
+OptionButton/styles/pressed = SubResource("StyleBoxFlat_lqh3e")
 Panel/styles/panel = SubResource("StyleBoxFlat_i8sfn")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_xuk5p")
+PopupMenu/colors/font_color = Color(1, 1, 1, 1)
+PopupMenu/font_sizes/font_size = 50
+PopupMenu/icons/checked = SubResource("ImageTexture_i8sfn")
+PopupMenu/icons/checked_disabled = SubResource("ImageTexture_i8sfn")
+PopupMenu/icons/close = SubResource("ImageTexture_i8sfn")
+PopupMenu/icons/close_pressed = SubResource("ImageTexture_i8sfn")
+PopupMenu/icons/radio_checked = SubResource("ImageTexture_i8sfn")
+PopupMenu/icons/radio_checked_disabled = SubResource("ImageTexture_i8sfn")
+PopupMenu/icons/radio_unchecked = SubResource("ImageTexture_i8sfn")
+PopupMenu/icons/radio_unchecked_disabled = SubResource("ImageTexture_i8sfn")
+PopupMenu/icons/submenu = SubResource("ImageTexture_i8sfn")
+PopupMenu/icons/submenu_mirrored = SubResource("ImageTexture_i8sfn")
+PopupMenu/icons/unchecked = SubResource("ImageTexture_i8sfn")
+PopupMenu/icons/unchecked_disabled = SubResource("ImageTexture_i8sfn")
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_l5624")
 ProgressBar/styles/background = SubResource("StyleBoxFlat_lfl0x")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_go3kq")
