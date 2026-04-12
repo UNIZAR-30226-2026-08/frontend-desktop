@@ -7,6 +7,7 @@ signal game_initialized
 signal property_updated(property_id: String)
 signal player_balance_changed(player_id: String, new_balance: int)
 
+# Modelos
 var game: GameModel
 
 func initialize_game(game_id: String, raw_players: Array[Dictionary], properties_data: Array[Dictionary]) -> void:
