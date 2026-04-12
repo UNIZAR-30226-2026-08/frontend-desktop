@@ -2,6 +2,7 @@ extends Control
 
 @export var player_icon_big_scene: PackedScene 
 @onready var room_code_label: Label = %room_code_label
+@onready var copy_code_button: Button = %copy_code_button
 
 func _ready():
 	room_code_label.text = WsClient.last_private_lobby_code
@@ -65,7 +66,7 @@ func update_player_count():
 	
 	# Actualizamos el Label. Asegúrate de que la ruta sea la correcta:
 	if has_node("VBoxContainer/player_count_label"):
-		$VBoxContainer/player_count_label.text = "Número de jugadores: " + str(count)
+		$VBoxContainer/player_count_label.text = "JUGADORES EN SALA: " + str(count) + "/4"
 	else:
 		# Si te da este error, revisa si el nodo se llama 'player_number' o 'player_count_label'
 		Utils.debug("Error: No encuentro el nodo del contador en VBoxContainer")
@@ -75,6 +76,11 @@ func _on_header_back_action_requested() -> void:
 	WsClient.socket.close(1000, "Player left lobby")
 	SceneTransition.change_scene("res://scenes/UI/private_play.tscn")
 
-
 func _on_start_game_button_pressed() -> void:
 	SceneTransition.change_scene("res://scenes/board/board.tscn")
+
+func _on_copy_code_button_pressed() -> void:
+	const COPY_SOLID_FULL = preload("uid://cw3ys8ynq0lcm")
+	DisplayServer.clipboard_set(room_code_label.text)
+	copy_code_button.set_icon(COPY_SOLID_FULL)
+	get_tree().create_timer(5).timeout.connect(copy_code_button.set_icon.bind(copy_code_button.icon_texture))

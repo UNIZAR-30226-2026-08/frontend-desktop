@@ -4,8 +4,10 @@ extends MagnateTweenButton
 
 @onready var icon_rect: TextureRect = $TextureRect
 
-func _ready() -> void:
-	if icon_texture:
-		icon_rect.texture = icon_texture
+func set_icon(icon: Texture2D):
+	if icon:
+		icon_rect.texture = icon
 
+func _ready() -> void:
+	set_icon(icon_texture)
 	super()

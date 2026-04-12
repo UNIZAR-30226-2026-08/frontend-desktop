@@ -29,8 +29,8 @@ enum FantasyEventType {
 	DOUBLE_OR_NOTHING, # Toss a coin to see if you double your money or lose it all
 	GET_PARKING_MONEY, # Receive the money stored in the parking
 	GO_TO_JAIL, # Go to the jail tile
-	SEND_TO_JAIL, # Send someone to the jail tile # TODO: Choose who to send?
-	SHUFFLE_POSITIONS, # Randomly shuffle all player positions TODO: Randomly?
+	SEND_TO_JAIL, # Send someone to the jail tile
+	SHUFFLE_POSITIONS, # Randomly shuffle all player positions
 	MOVE_ANYWHERE_RANDOM, # Randomly move somewhere
 	MOVE_OPPONENT_ANYWHERE_RANDOM, # Randomly move an opponent somewhere
 	MAGNETISM, # All players move to the players tile
@@ -38,7 +38,7 @@ enum FantasyEventType {
 	BREAK_OPPONENT_HOUSE, # Break an opponents house (lastest built)
 	BREAK_OWN_HOUSE, # Break one of the players houses (lastest built)
 	FREE_HOUSE, # Build a free house (priciest house the player could build if it had the money)
-	REVIVE_PROPERTY, # Unmortgages a property TODO: Choose property? Can it be opponent properties?
+	REVIVE_PROPERTY, # Unmortgages a property
 	EARTHQUAKE, # All streets miss a property
 }
 
@@ -82,7 +82,29 @@ signal error(String)
 signal chat_message(Dictionary)
 
 ## Emitted when a game state is received, you should probably set everything to this values
-## Dictionary contains: TODO
+## Dictionary contains:
+## - "id": int										- id of the player (TODO: I think its the player)
+## - "datetime": String								- Timestamp (ISO format) when the game was created
+## - "positions": Dictionary[String, String]			- Maps player ID to tile ID
+## - "money": Dictionary[String, int]				- Maps player ID to money they have
+## - "active_phase_player": int						- ID of the player of the current phase
+## - "active_turn_player": int						- ID of the player of the current turn
+## - "phase": Phase									- Current Phase in play
+## - "players": Array[int]							- IDs of the players
+## - "ordered_players": Array[int]					- IDs of the players in order
+## - "streak": int									- Current streak of doubles in play
+## - "possible_destinations": []						- Current possible destinations of the player
+## - "parking_money": int							- Money stored in the parking
+## - "jail_remaining_turns": Dictionary[String, int]	- Maps player ID to remainint jail turns
+## - "finished": bool								- TODO: No clue
+## - "bonus_response":								- TODO: No clue
+## - "current_turn": int								- Number of the round
+## - "property_relationships": Array[Dictionary]		- Information about properties
+##		- Dictionary contains:
+##			- "owner": int		- ID of the property owner
+##			- "square": String	- ID of the property tile
+##			- "houses": int		- Number of houses in the tile
+##			- "mortgage": bool	- true if the house is mortgages, false otherwise
 signal game_state(Dictionary)
 
 # ======================
@@ -576,6 +598,15 @@ func _game_response_dispatcher(response: Dictionary) -> void:
 		"ResponseAuction": response_auction.emit(response)
 		_: Utils.debug("ERROR: Unknown type in socket response")
 
+func _game_state_dispatcher(_game_state: Dictionary) -> void:
+	for k in _game_state["positions"].keys():
+		_game_state["positions"][k] = _normalize_tile_id(_game_state["positions"][k])
+	_game_state["possible_destinations"] = _normalize_tile_id(_game_state["possible_destinations"])
+	for p in _game_state["property_relationships"]:
+		p["square"] = _normalize_tile_id(p["square"])
+	_game_state["phase"] = _phase_string_to_enum(_game_state["phase"])
+	game_state.emit(_game_state)
+
 func _game_dispatcher(response: Dictionary) -> void:
 	if not response.has("action"):
 		Utils.debug("ERROR: Response without 'action' key")
@@ -587,7 +618,7 @@ func _game_dispatcher(response: Dictionary) -> void:
 		"init_identity":
 			player_id = response["data"]["player_id"]
 			player_username = response["data"]["username"]
-		"game_state": game_state.emit(response["game_state"])
+		"game_state": _game_state_dispatcher(response["game_state"])
 		"game_response": _game_response_dispatcher(response["data"])
 		"game_action": _game_action_dispatcher(response["data"])
 		_: Utils.debug("ERROR: Unknown action in socket message")
