@@ -7,6 +7,9 @@ const DEBUG_MODE: int = 6
 @onready var dice_roller_overlay: DiceRollerOverlay = %DiceRoller
 @onready var jail_dice_roller: DiceRollerOverlay = %JailDiceRoller
 
+# WS Client
+var WSClient: MagnateWSClient = MagnateWSClient.new()
+
 # Managers
 var tile_manager: MagnateTileManager = MagnateTileManager.new()
 var overlay_manager: MagnateOverlayManager = MagnateOverlayManager.new()
@@ -17,7 +20,6 @@ var players: Array[Dictionary] = []
 const TRAM_IDS: Array[String] = ["010", "030", "100", "107"]
 
 # --- Variables de Estado para Cárcel dummy---
-var is_in_jail_roll: bool = false
 var jail_target_tile: String = "108"
 var jail_current_turn: int = 1
 
@@ -85,20 +87,20 @@ func _setup_game_data() -> void:
 	Utils.debug("💾 ModelManager inicializado con las reglas cargadas desde JSON")
 
 # ==========================================
-# SETUP DE INICIALIZACIÓN
+# SETUP DE DADOS INICIAL (OCULTARLOS)
 # ==========================================
 
 func _setup_dice_rollers() -> void:
-	# Asegurarnos de que ambos dados están ocultos por defecto y conectados
+	# Asegurarnos de que ambos dados están ocultos por defecto
 	if dice_roller_overlay:
 		dice_roller_overlay.hide_overlay()
-		if not dice_roller_overlay.roll_finished.is_connected(_on_dice_result_received):
-			dice_roller_overlay.roll_finished.connect(_on_dice_result_received)
 			
 	if jail_dice_roller:
 		jail_dice_roller.hide_overlay()
-		if not jail_dice_roller.roll_finished.is_connected(_on_dice_result_received):
-			jail_dice_roller.roll_finished.connect(_on_dice_result_received)
+
+# ==========================================
+# CONEXIÓN DE SEÑALES
+# ==========================================
 
 func _connect_all_signals() -> void:
 	# Señales del Tile Manager
@@ -119,7 +121,6 @@ func _connect_all_signals() -> void:
 	overlay_manager.property_houses_changed.connect(_on_property_houses_changed)
 	
 	# Señales de Controles (Dados normales)
-	overlay_manager.normal_roll_requested.connect(_on_hud_roll_requested)
 	overlay_manager.request_admin_selection.connect(_on_admin_selection_requested)
 	
 	# Señales de Secretaría (Cárcel)
@@ -127,7 +128,21 @@ func _connect_all_signals() -> void:
 	overlay_manager.jail_stay_confirmed.connect(_on_jail_stay_confirmed)
 	overlay_manager.jail_pay_bail_confirmed.connect(_on_jail_pay_bail_confirmed)
 	overlay_manager.jail_reselect_requested.connect(_on_jail_reselect_requested)
+	
+	
+	# CONEXIONES A LOS OVERLAYS DE DADOS (NO LOS GESTIONA EL OVERLAY MANAGER)
+	# CONECTADOS A NIVEL 1 (sin probar)
+	dice_roller_overlay.roll_finished.connect(_on_dice_result_received)
+	jail_dice_roller.roll_finished.connect(_on_dice_result_received)
 
+	# CONEXIONES A LOS MANAGERS
+	# CONECTADOS A NIVEL 1 (sin probar)
+	overlay_manager.normal_roll_requested.connect(_on_hud_roll_requested) # DONE 1
+	
+	# CONEXIONES AL WS
+	# CONECTADOS A NIVEL 1 (sin probar)
+	WSClient.response_throw_dices.connect(_on_server_throw_dices_received)
+	
 # ==========================================
 # MODO DEBUG
 # ==========================================
@@ -153,21 +168,80 @@ func _begin_debug(mode: int) -> void:
 	elif mode == 6:
 		_run_debug_train_scenario()
 
-# Tirada normal
+# ==========================================
+# LÓGICA DE DADOS - CONEXIÓN: GAME_MODEL <-> BOARD <-> DICE_ROLLER
+# ==========================================
+
+# ACTION - Tirada normal DONE 1
 func _on_hud_roll_requested() -> void:
+	# 1. Bloquear la UI para que el jugador no haga doble click
 	overlay_manager.set_roll_disabled(true)
 	
-	# 📢 ¡Avisamos para que se oculte la UI!
+	# 2. Avisamos al manager de que tiene que esperar a mostrar un overlay
 	overlay_manager.overlay_open.emit()
 	
+	# 3. Le dices al backend: "Oye, quiero tirar los dados" Y esperamos resultados de dados.
+	WSClient.ws_action_throw_dices()
+	
+# RESPONSE - Tirada de dados DONE 1
+func _on_server_throw_dices_received(data: Dictionary) -> void:
+	# 1. ACTUALIZAR EL GAME MODEL CON LA ÚLTIMA TIRADA
+	var game = model_manager.game
+	game.pending_path = data["path"]
+	game.pending_destinations = data["destinations"]
+	game.has_triple = data["triple"]
+	game.current_streak = data["streak"]
+	game.d1 = data["dice1"]
+	game.d2 = data["dice2"]
+	game.dbus = data["dice_bus"]
+	#var fantasy_event: FantasyEvent = data["fantasy_event"]
+	
+	# 2. MOSTRAR LA UI SI ES EL TURNO DEL USUARIO
+	if game.current_turn_player_id == game.my_id:
+		dice_roller_overlay.force_values_in_dice_and_show_dice([game.d1,game.d2,game.dbus])
+	else:
+		#TODO si da tiempo, hacer un diseño de dados lanzándose automáticamente pero que no manden más señales
+		pass
+
+# Devolución por parte del Overlay Manager de los dados
+func _on_dice_result_received() -> void:
+	# 1. EXTRAEMOS EL GAME_MODEL Y EL PLAYER_MODEL QUE HA TIRADO PARA UTILIZAR LA INFORMACIÓN 
+	var game = model_manager.game
+	var current_player: PlayerModel = model_manager.get_player(game.current_turn_player_id)
+	
+	# 2. GESTION DE TIEMPO PARA VER LOS DADOS Y OCULTAR OVERLAYS
+	await get_tree().create_timer(1.0).timeout
+	# Ocultamos los dados
+	if dice_roller_overlay:
+		dice_roller_overlay.hide_overlay()
 	if jail_dice_roller:
 		jail_dice_roller.hide_overlay()
-	if dice_roller_overlay:
-		dice_roller_overlay.show_overlay()
-		
-# Tirada de la cárcel
+	
+	# 3. LÓGICA DE DADOS (SI NO ESTÁ EN LA CÁRCEL)
+	if current_player.is_in_jail: 
+		#_handle_jail_dice_logic()
+		pass
+	else:
+		# Jugador ha sacado triples
+		if game.has_triple:
+			#TODO
+			pass
+		# Jugador ha sacado dobles 3 veces
+		elif game.current_streak == 3:
+			#TODO mandar a la cárcel
+			pass
+		# Jugador ha de seleccionar a dónde ir con el bus
+		elif game.dbus > 3:
+			#TODO
+			pass
+		# Jugador se mueve automáticamente
+		else:
+			_handle_normal_movement()
+			
+
+# Tirada desde la cárcel
 func _on_jail_roll_requested() -> void:
-	is_in_jail_roll = true
+	#is_in_jail_roll = true
 	
 	# 📢 ¡Avisamos para que se oculte la UI!
 	overlay_manager.overlay_open.emit()
@@ -176,6 +250,44 @@ func _on_jail_roll_requested() -> void:
 		dice_roller_overlay.hide_overlay()
 	if jail_dice_roller:
 		jail_dice_roller.show_overlay()
+
+# ==========================================
+# LÓGICA DE MOVIMIENTO - CONEXIÓN: GAME_MODEL, PLAYERMODEL <-> BOARD
+# ==========================================
+
+# Función que actualiza el movimieneto del player a su destino en GAME_MODEL
+func _handle_normal_movement() -> void:
+	# 1. EXTRAEMOS EL GAME_MODEL PARA UTILIZAR LA INFORMACIÓN
+	var game = model_manager.game
+	
+	# 2. EXTRAEMOS EL TOKEN PARA UTILIZAR LA INFORMACIÓN
+	var current_player = model_manager.get_player(game.current_turn_player_id)
+	var current_token = current_player.token
+	
+	# 3. EXTRAEMOS EL PATH
+	var path: Array[String] = game.pending_path
+	var path_positions: Array[Vector2] = []
+	
+	for step_id in path:
+		if tile_manager.tile_entities.has(step_id):
+			var step_tile = tile_manager.tile_entities[step_id]
+			path_positions.append(step_tile.position + step_tile.pivot_offset)
+	
+	if not path_positions.is_empty():
+		camera_system.follow_node(current_token, Vector2(2, 2))
+		await camera_system.stopped
+		await current_token.move_to(path_positions)
+		camera_system.main_camera()
+	
+	# La última posición del path es el destino final
+	current_player.move_to_tile(path[-1])
+	#TODO esta linea comentada ahora irá mal porque players ya no es lo que era
+	#TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities) 
+	overlay_manager.display_overlay_for_tile(path[-1])
+	
+	#TODO este await de abajo no se si está bien
+	await overlay_manager.overlay_closed
+
 
 # ==========================================
 # PUENTE: MODELO -> VISUAL (ACTUALIZAR CASILLAS)
@@ -200,74 +312,11 @@ func _on_model_property_updated(property_id: String) -> void:
 		if tile.has_method("set_number_of_houses"):
 			tile.set_number_of_houses(prop_data.house_count)
 
-# ============
-#  Dice logic
-# ============
-func _on_dice_result_received(total: int) -> void:
-	Utils.debug("🎲 RESULTADO FINAL: " + str(total))
-	
-	await get_tree().create_timer(1.0).timeout
-	
-	# Ocultamos los dados (esto sí se queda aquí)
-	if dice_roller_overlay:
-		dice_roller_overlay.hide_overlay()
-	if jail_dice_roller:
-		jail_dice_roller.hide_overlay()
-	
-	# Seguimos con la lógica
-	if is_in_jail_roll:
-		_handle_jail_dice_logic()
-	else:
-		_handle_normal_movement(total)
+# FUNCIÓN QUE MUEVE A UN PLAYER AL DESTINO AL QUE DEBE IR SEGÚN GAMEMODEL.PENDINGPATH
 
-func _handle_normal_movement(_total: int) -> void:
-	# overlay_manager.show_banner("¡Turno de ...!", Color("f94144"))
-	# overlay_manager.show_toast("Esto es una prueba")
-	
-	# Get destination
-	#if players.size() > 0:
-		#var model: PlayerModel = players[0]["model"]
-		#var current_id: int = model.current_tile_id.to_int()
-		#var target_id: int = current_id + total
-		#var target_tile_string: String = "%03d" % target_id
-		#tile_manager.prompt_tile_selection([target_tile_string])
-		#return
-		
-	# DEBUG PARA IR AL PUENTE
-	if players.size() > 0:
-		var model: PlayerModel = players[0]["model"]
-		var token: PlayerToken = players[0]["token"]
-		
-		var test_path: Array[String] = ["001", "002"]
-		var path_positions: Array[Vector2] = []
-		
-		for step_id in test_path:
-			if tile_manager.tile_entities.has(step_id):
-				var step_tile = tile_manager.tile_entities[step_id]
-				path_positions.append(step_tile.position + step_tile.pivot_offset)
-		
-		if not path_positions.is_empty():
-			camera_system.follow_node(token, Vector2(2, 2))
-			await camera_system.stopped
-			await token.move_to(path_positions)
-			camera_system.main_camera()
-		
-		model.move_to_tile("010")
-		TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
-		overlay_manager.display_overlay_for_tile("010")
-		
-		# TODO: Es un poco lío lo del estado global
-		var p1_id = players[0]["model"].id
-		var p2_id = players[1]["model"].id
-		var p3_id = players[2]["model"].id
-		overlay_manager.add_chat_message(p1_id, "Ofrezco el baño de chicas con terraza por 500M!", true)
-		overlay_manager.add_chat_message(p2_id, "Pero vamos a ver, si la ventana está cerrada. Eso no vale nada.", false)
-		overlay_manager.add_chat_message(p3_id, "Que sí, que se puede salir por ahí mientras que no te pille ninguna señora.", false)
-		
-		await overlay_manager.overlay_closed
 
 func _handle_jail_dice_logic() -> void:
-	is_in_jail_roll = false
+	#is_in_jail_roll = false
 	# Simulación: El backend nos diría si hubo par. 
 	var is_pair = false
 	
@@ -571,4 +620,4 @@ func _run_debug_train_scenario() -> void:
 	print("🚂 [DEBUG] Ejecutando escenario de Tranvía para el jugador: ", target_player_id)
 
 	# 2. Mover al jugador usando tu función del ModelManager
-	_handle_normal_movement(112)
+	_handle_normal_movement()

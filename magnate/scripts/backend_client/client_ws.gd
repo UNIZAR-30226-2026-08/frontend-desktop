@@ -145,6 +145,7 @@ signal response_general(Dictionary)
 ## - "fantasy_type": FantasyEventType	- Enum type of fantasy event
 ## - "value": int | None					- value to apply the effect, might not apply
 ## - "card_cost": int					- Cost of buying the card
+#TODO creo - luquin
 
 ## Response to a dice throw, contains result of the throw
 ## Response Dictionary includes:
@@ -155,7 +156,7 @@ signal response_general(Dictionary)
 ## - "dice2": int,					- Result of the second dice
 ## - "dice_bus": int,				- Result of the bus/third dice
 ## - "destinations": Array[String],	- Possible destinations for the player (list of ids)
-## - "triple": bool,					- If the throw is a triple
+## - "triple": bool,				- If the throw is a triple
 ## - "streak": int					- Streak of doubles for the current player
 ## - "fantasy_event": FantasyEvent	- See above
 signal response_throw_dices(Dictionary)
@@ -196,7 +197,7 @@ signal response_auction(Dictionary)
 
 ## Action sent when throwing dices
 ## Action dictionary includes:
-## - "game": int		- ID of the game the action took place in
+## - "game": int	- ID of the game the action took place in
 ## - "player": int	- ID of the player that took action
 signal action_throw_dices(Dictionary)
 
@@ -303,7 +304,7 @@ signal action_next_phase(Dictionary)
 
 ## Action sent when bidding on a property
 ## Action dictionary includes:
-## - "game": int		- ID of the game the action took place in
+## - "game": int	- ID of the game the action took place in
 ## - "player": int	- ID of the player that took action
 ## - "amount": int	- Amount bidded on the property
 signal action_bid(Dictionary)

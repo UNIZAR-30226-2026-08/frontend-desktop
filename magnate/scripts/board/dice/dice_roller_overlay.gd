@@ -1,14 +1,13 @@
 extends Control
 class_name DiceRollerOverlay
 
-signal roll_finished(total_value: int)
+signal roll_finished
 
 @onready var dice_roller_3d: DiceRoller = $DiceRoller
-@onready var FORCED_ROLL_THROW: Array[int] = [6,6,3]
 
-# NUEVA VARIABLE: Controla si ya se ha hecho una tirada
-# TODO: Quizá meter esto en un model para el juego
+# Variables de estado auxiliares
 var has_rolled: bool = false
+var forced_roll_throw: Array[int]
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -16,49 +15,46 @@ func _ready() -> void:
 		dice_roller_3d.roll_finnished.connect(_on_3d_roll_finished)
 
 func _gui_input(event: InputEvent) -> void:
-	# CERROJO PARA EVITAR BUGS
+	# Para evitar BUGS: clicks invisibles, etc.
 	if not visible:
 		return
-		
-	# Si ya hemos tirado, o los dados están rodando, IGNORAMOS el click
 	if has_rolled or not dice_roller_3d or dice_roller_3d.rolling or not dice_roller_3d.interactive:
 		return
 		
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			dice_roller_3d.prepare()
-		elif not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-			roll_the_dice(FORCED_ROLL_THROW)
-			# Audio
-			var audio = AudioResource.from_type(Globals.AUDIO_DICE_ROLL, AudioResource.AudioResourceType.SFX)
-			AudioSystem.play_audio(audio)
-		elif event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-			dice_roller_3d.quick_roll()
-			has_rolled = true # Bloqueamos también si usa el botón derecho
+		elif not event.pressed and (event.button_index == MOUSE_BUTTON_LEFT or event.button_index == MOUSE_BUTTON_RIGHT):
+			roll_the_dice(forced_roll_throw)
 			# Audio
 			var audio = AudioResource.from_type(Globals.AUDIO_DICE_ROLL, AudioResource.AudioResourceType.SFX)
 			AudioSystem.play_audio(audio)
 
-func roll_the_dice(forced_values: Array[int] = [1, 3, 6]) -> void:
+# Guardamos el resultado de los dados que nos envia el back para usarlo
+func force_values_in_dice_and_show_dice(forced_values: Array[int]) -> void:
+	forced_roll_throw = forced_values
+	# Al final ya mostramos los dados para que el usuario haga click
+	show_overlay()
+
+# Lanzar dados con valor forzado
+func roll_the_dice(forced_values: Array[int]) -> void:
 	show_overlay() # Cambiado de show() a show_overlay()
 	dice_roller_3d.roll(forced_values)
 	# Marcamos que ya se han tirado para no permitir más clicks
 	has_rolled = true
 
-# Función nueva para encender la capa 2D y el 3D a la vez
+# Función para encender las capas 2D y 3D
 func show_overlay() -> void:
-	show() # Muestra el Control (2D)
+	show()
 	if dice_roller_3d:
-		dice_roller_3d.show() # Muestra los dados (3D)
-		# ✅ DESPERTAMOS EL NODO 3D:
+		dice_roller_3d.show()
 		dice_roller_3d.process_mode = Node.PROCESS_MODE_INHERIT 
 
-# Modificamos esta para que apague ambas cosas
+# Función para apagar las capas 2D y 3D
 func hide_overlay() -> void:
-	hide() # Oculta el Control (2D)
+	hide()
 	if dice_roller_3d:
-		dice_roller_3d.hide() # Oculta los dados (3D)
-		# 🛑 APAGÓN TOTAL: Ignora inputs, físicas y código mientras esté oculto
+		dice_roller_3d.hide()
 		dice_roller_3d.process_mode = Node.PROCESS_MODE_DISABLED
 
 # Función para volver a habilitar los dados en el siguiente turno
@@ -66,5 +62,6 @@ func reset_dice() -> void:
 	has_rolled = false
 	show_overlay() # Cambiado de show() a show_overlay()
 
-func _on_3d_roll_finished(total_value: int) -> void:
-	roll_finished.emit(total_value)
+# Función que envía señal de tirada de dados hacia arriba
+func _on_3d_roll_finished() -> void:
+	roll_finished.emit()

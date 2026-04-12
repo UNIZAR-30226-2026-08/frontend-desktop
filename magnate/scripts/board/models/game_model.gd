@@ -2,10 +2,20 @@ class_name GameModel
 extends RefCounted
 
 var game_id: String
+var my_id: String
 var current_turn_player_id: String = ""
 var parking_money: int = 0
 var has_rolled_dice: bool = false
 var is_paused: bool = false
+
+# VARIABLES PARA EL TURNO ACTUAL. VIENEN DE RESPONSE DE LANZAR DADOS
+var current_streak: int = 0
+var has_triple: bool = false
+var pending_destinations: Array[String] = []
+var pending_path: Array[String] = []
+var d1: int
+var d2: int
+var dbus: int
 
 # Diccionarios para simular los 'Record<string, Model>' de TypeScript
 var board_properties: Dictionary = {} 
