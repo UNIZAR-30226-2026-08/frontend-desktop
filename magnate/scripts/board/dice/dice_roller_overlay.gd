@@ -8,6 +8,7 @@ signal roll_finished
 # Variables de estado auxiliares
 var has_rolled: bool = false
 var forced_roll_throw: Array[int]
+var my_throw: bool = false
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -20,9 +21,12 @@ func _gui_input(event: InputEvent) -> void:
 		return
 	if has_rolled or not dice_roller_3d or dice_roller_3d.rolling or not dice_roller_3d.interactive:
 		return
+	# Si no es mi turno no respondo a los clics en los dados
+	if not my_throw:
+		return
 		
 	if event is InputEventMouseButton:
-		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed and (event.button_index == MOUSE_BUTTON_LEFT or event.button_index == MOUSE_BUTTON_RIGHT):
 			dice_roller_3d.prepare()
 		elif not event.pressed and (event.button_index == MOUSE_BUTTON_LEFT or event.button_index == MOUSE_BUTTON_RIGHT):
 			roll_the_dice(forced_roll_throw)
@@ -31,10 +35,16 @@ func _gui_input(event: InputEvent) -> void:
 			AudioSystem.play_audio(audio)
 
 # Guardamos el resultado de los dados que nos envia el back para usarlo
-func force_values_in_dice_and_show_dice(forced_values: Array[int]) -> void:
+func force_values_in_dice_and_show_dice(forced_values: Array[int], user_throw: bool) -> void:
 	forced_roll_throw = forced_values
+	my_throw = user_throw
 	# Al final ya mostramos los dados para que el usuario haga click
 	show_overlay()
+	
+	# Si no es mi turno simulo lanzado de dados automático
+	if not my_throw:
+		roll_the_dice(forced_roll_throw)
+	# else el juego esperará a que el usuario le de a los dados, no hay que hacer nada
 
 # Lanzar dados con valor forzado
 func roll_the_dice(forced_values: Array[int]) -> void:

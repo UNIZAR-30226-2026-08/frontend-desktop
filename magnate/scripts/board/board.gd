@@ -196,12 +196,10 @@ func _on_server_throw_dices_received(data: Dictionary) -> void:
 	game.dbus = data["dice_bus"]
 	#var fantasy_event: FantasyEvent = data["fantasy_event"]
 	
-	# 2. MOSTRAR LA UI SI ES EL TURNO DEL USUARIO
-	if game.current_turn_player_id == game.my_id:
-		dice_roller_overlay.force_values_in_dice_and_show_dice([game.d1,game.d2,game.dbus])
-	else:
-		#TODO si da tiempo, hacer un diseño de dados lanzándose automáticamente pero que no manden más señales
-		pass
+	# 2. MOSTRAR OVERLAY DE DADOS. CLICABLE DEPENDIENDO SI ES TURNO O NO DEL USER
+	var my_throw: bool = game.current_turn_player_id == game.my_id
+	dice_roller_overlay.force_values_in_dice_and_show_dice([game.d1,game.d2,game.dbus], my_throw)
+	
 
 # Devolución por parte del Overlay Manager de los dados
 func _on_dice_result_received() -> void:
@@ -217,29 +215,51 @@ func _on_dice_result_received() -> void:
 	if jail_dice_roller:
 		jail_dice_roller.hide_overlay()
 	
-	# 3. LÓGICA DE DADOS (SI NO ESTÁ EN LA CÁRCEL)
-	if current_player.is_in_jail: 
-		#_handle_jail_dice_logic()
-		pass
-	else:
-		# Jugador ha sacado triples
-		if game.has_triple:
-			#TODO
+	# 3. LÓGICA DE DADOS (PARA EL USUARIO QUE LOS HA LANZADO)
+	var my_throw: bool = game.current_turn_player_id == game.my_id
+	if my_throw:
+		if current_player.is_in_jail: 
+			#_handle_jail_dice_logic()
 			pass
-		# Jugador ha sacado dobles 3 veces
-		elif game.current_streak == 3:
-			#TODO mandar a la cárcel
-			pass
-		# Jugador ha de seleccionar a dónde ir con el bus
-		elif game.dbus > 3:
-			#TODO
-			pass
-		# Jugador se mueve automáticamente
 		else:
-			_handle_normal_movement()
-			
+			# Jugador ha sacado triples
+			if game.has_triple:
+				# TODO marcar todas la casillas para que el player elija donde ir
+				pass
+			# Jugador ha sacado dobles 3 veces
+			elif game.current_streak == 3:
+				# TODO mandar a la cárcel al current_player
+				pass
+			# Jugador ha de seleccionar a dónde ir con el bus
+			elif game.dbus > 3:
+				# TODO marcar las 3 casillas posibles donde puede ir
+				pass
+			# Jugador se mueve automáticamente
+			else:
+				_handle_normal_movement()
+	# 4. LÓGICA DE DADOS (PARA EL RESTO DE USUARIOS)
+	else:
+		if current_player.is_in_jail: 
+			#_handle_jail_dice_logic()
+			pass
+		else:
+			# Jugador ha sacado triples
+			if game.has_triple:
+				# esperar a que el back nos mande a donde quierer ir
+				pass
+			# Jugador ha sacado dobles 3 veces
+			elif game.current_streak == 3:
+				# TODO mandar a la cárcel al current_player
+				pass
+			# Jugador ha de seleccionar a dónde ir con el bus
+			elif game.dbus > 3:
+				# esperar a que el back nos mande a donde quierer ir
+				pass
+			# Jugador se mueve automáticamente a la única casilla posible
+			else:
+				_handle_normal_movement()
 
-# Tirada desde la cárcel
+# Tirada desde la cárcel #TODO
 func _on_jail_roll_requested() -> void:
 	#is_in_jail_roll = true
 	
