@@ -4,13 +4,13 @@ extends RefCounted
 signal game_initialized
 
 # Señales útiles para que la UI reaccione instantáneamente a los cambios
-signal property_updated(property_id: String)
-signal player_balance_changed(player_id: String, new_balance: int)
+signal property_updated(property_id: int)
+signal player_balance_changed(player_id: int, new_balance: int)
 
 # Modelos
 var game: GameModel
 
-func initialize_game(game_id: String, raw_players: Array[Dictionary], properties_data: Array[Dictionary]) -> void:
+func initialize_game(game_id: int, raw_players: Array[Dictionary], properties_data: Array[Dictionary]) -> void:
 	var player_models: Array[PlayerModel] = []
 	for p_data in raw_players:
 		var color = Color(p_data.get("color", "#FFFFFF"))
@@ -30,25 +30,25 @@ func initialize_game(game_id: String, raw_players: Array[Dictionary], properties
 # 🙋‍♂️ CONSULTAS DE JUGADORES
 # ==========================================
 
-func get_player(player_id: String) -> PlayerModel:
+func get_player(player_id: int) -> PlayerModel:
 	if game and game.players.has(player_id):
 		return game.players[player_id]
 	return null
 
-func get_player_balance(player_id: String) -> int:
+func get_player_balance(player_id: int) -> int:
 	var player = get_player(player_id)
 	return player.balance if player else 0
 
-func get_player_properties(player_id: String) -> Array[String]:
+func get_player_properties(player_id: int) -> Array[String]:
 	var player = get_player(player_id)
 	return player.properties if player else []
 
-func get_player_position(player_id: String) -> String:
+func get_player_position(player_id: int) -> String:
 	var player = get_player(player_id)
 	return player.current_tile_id if player else "000"
 
-func get_current_turn_player_id() -> String:
-	return game.current_turn_player_id if game else ""
+func get_current_turn_player_id() -> int:
+	return game.current_turn_player_id if game else 0
 
 # ==========================================
 # 🏠 CONSULTAS DE PROPIEDADES
@@ -79,12 +79,12 @@ func is_property_owned(property_id: String) -> bool:
 # ✏️ MODIFICADORES (Para cuando el Backend te mande actualizaciones)
 # ==========================================
 
-func set_property_owner(property_id: String, new_owner_id: String) -> void:
+func set_property_owner(property_id: String, new_owner_id: int) -> void:
 	var prop = get_property(property_id)
 	var new_owner = get_player(new_owner_id)
 	
 	if prop and new_owner:
-		if prop.owner_id != "":
+		if prop.owner_id != 0:
 			var old_owner = get_player(prop.owner_id)
 			if old_owner and old_owner.properties.has(property_id):
 				old_owner.properties.erase(property_id)
@@ -109,7 +109,7 @@ func set_property_mortgaged(property_id: String, is_mortgaged: bool) -> void:
 		prop.is_mortgaged = is_mortgaged
 		property_updated.emit(property_id)
 
-func update_player_balance(player_id: String, new_balance: int) -> void:
+func update_player_balance(player_id: int, new_balance: int) -> void:
 	var player = get_player(player_id)
 	if player:
 		player.balance = new_balance
@@ -117,14 +117,14 @@ func update_player_balance(player_id: String, new_balance: int) -> void:
 		player_balance_changed.emit(player_id, new_balance)
 
 ## NUEVA FUNCIÓN: Para usar en el Overlay de forma segura (sumar o restar)
-func add_player_balance(player_id: String, amount_to_add: int) -> void:
+func add_player_balance(player_id: int, amount_to_add: int) -> void:
 	var player = get_player(player_id)
 	if player:
 		player.balance += amount_to_add
 		player.emit_update()
 		player_balance_changed.emit(player_id, player.balance)
 
-func update_player_position(player_id: String, new_tile_id: String) -> void:
+func update_player_position(player_id: int, new_tile_id: String) -> void:
 	var player = get_player(player_id)
 	if player:
 		player.move_to_tile(new_tile_id)
@@ -142,7 +142,7 @@ func _get_properties_in_group(group_id: String) -> Array[PropertyModel]:
 			result.append(prop)
 	return result
 
-func get_max_addable_houses(prop_id: String, player_id: String) -> int:
+func get_max_addable_houses(prop_id: String, player_id: int) -> int:
 	var target_prop = get_property(prop_id)
 	if not target_prop or target_prop.house_count >= 5: 
 		return 0
@@ -188,7 +188,7 @@ func get_max_removable_houses(prop_id: String) -> int:
 	
 	return clampi(max_by_rule, 0, target_prop.house_count)
 
-func can_mortgage(property_id: String, player_id: String) -> bool:
+func can_mortgage(property_id: String, player_id: int) -> bool:
 	var target = get_property(property_id)
 	if not target or target.owner_id != player_id: return false
 	
@@ -200,7 +200,7 @@ func can_mortgage(property_id: String, player_id: String) -> bool:
 			
 	return true
 
-func owns_full_group(group_id: String, player_id: String) -> bool:
+func owns_full_group(group_id: String, player_id: int) -> bool:
 	var street = _get_properties_in_group(group_id)
 	if street.is_empty(): return false
 	

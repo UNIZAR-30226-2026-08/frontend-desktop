@@ -1,9 +1,10 @@
 class_name GameModel
 extends RefCounted
 
-var game_id: String
-var my_id: String
-var current_turn_player_id: String = ""
+# VARIABLES GLOBALES ÚTILES INGAME
+var game_id: int
+var my_id: int
+var current_turn_player_id: int
 var parking_money: int = 0
 var has_rolled_dice: bool = false
 var is_paused: bool = false
@@ -16,12 +17,23 @@ var pending_path: Array[String] = []
 var d1: int
 var d2: int
 var dbus: int
+#var fantasy_event: FantasyEvent
 
 # Diccionarios para simular los 'Record<string, Model>' de TypeScript
 var board_properties: Dictionary = {} 
 var players: Dictionary = {}
 
-func _init(_game_id: String, player_list: Array[PlayerModel], property_ids: Array[String]) -> void:
+# Diccionario de casillas importantes
+var important_tiles = {
+	"start": "000",
+	"jail": "104",
+	"go_to_jail": "020"
+}
+
+# Variables relacionadas con la cárcel
+
+
+func _init(_game_id: int, player_list: Array[PlayerModel], property_ids: Array[String]) -> void:
 	game_id = _game_id
 	
 	if player_list.size() > 0:

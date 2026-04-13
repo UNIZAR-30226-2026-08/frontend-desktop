@@ -4,7 +4,7 @@ extends RefCounted
 # Señal añadida de la versión nueva
 signal player_updated(update_data: Dictionary)
 
-var id: String
+var id: int
 var player_name: String
 var color: Color
 var token: PlayerToken
@@ -12,10 +12,10 @@ var token: PlayerToken
 var balance: int = 300 
 var current_tile_id: String = "000"
 var is_in_jail: bool = false
-var jail_turn_count: int = 1 
+var jail_turn_count: int = 0
 var owned_properties: Array[String] = []
 
-func _init(p_id: String, p_name: String, p_color: Color) -> void:
+func _init(p_id: int, p_name: String, p_color: Color) -> void:
 	id = p_id
 	player_name = p_name
 	color = p_color

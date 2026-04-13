@@ -81,6 +81,7 @@ func _reset_all_tiles(_id: String) -> void:
 func parking_money() -> void:
 	tile_entities["111"].emit_coins()
 
+# Función que ilumina casillas clicables para que el usuario clique
 func prompt_tile_selection(ids: Array[String]) -> void:
 	clickable_tile_ids = ids.duplicate()
 	highlight_tiles(ids)
