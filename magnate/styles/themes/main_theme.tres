@@ -113,6 +113,17 @@ expand_margin_top = 10.0
 expand_margin_right = 20.0
 expand_margin_bottom = 10.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g7pkr"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.33333334, 0.33333334, 0.33333334, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x66so"]
 content_margin_left = 5.0
 content_margin_top = 5.0
@@ -263,7 +274,10 @@ LineEditError/font_sizes/font_size = 44
 LineEditError/styles/focus = SubResource("StyleBoxFlat_i85vh")
 LineEditError/styles/normal = SubResource("StyleBoxFlat_i85vh")
 OptionButton/colors/font_color = Color(0.48700994, 0.48700887, 0.4870093, 1)
+OptionButton/colors/font_disabled_color = Color(1, 1, 1, 1)
+OptionButton/colors/icon_disabled_color = Color(0, 0, 0, 0)
 OptionButton/font_sizes/font_size = 50
+OptionButton/styles/disabled = SubResource("StyleBoxFlat_g7pkr")
 OptionButton/styles/hover = SubResource("StyleBoxFlat_x66so")
 OptionButton/styles/normal = SubResource("StyleBoxFlat_j5ypn")
 OptionButton/styles/pressed = SubResource("StyleBoxFlat_lqh3e")

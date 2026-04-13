@@ -3,27 +3,64 @@ extends Control
 @export var player_icon_big_scene: PackedScene 
 @onready var room_code_label: Label = %room_code_label
 @onready var copy_code_button: Button = %copy_code_button
+@onready var start_game_button: MagnateTweenButton = %start_game_button
+@onready var bot_dificulty_selector: OptionButton = %BotDificultySelector
+var is_owner: bool = false
+var player_info: Array[Dictionary] = []
+var num_bots: int = 0
+var bot_level: MagnateWSClient.BotLevel = MagnateWSClient.BotLevel.MEDIUM
 
 func _ready():
 	room_code_label.text = WsClient.last_private_lobby_code
-	
-	# Datos de prueba
-	var datos_de_prueba = [
-		{
-			"name": "Luquinpadawan", 
-			"type": "human", 
-			"custom_texture": preload("res://assets/icons/characters/barco_closeup.png")
-		},
-		{
-			"name": "NdRivas", 
-			"type": "human", 
-			"custom_texture": preload("res://assets/icons/characters/burguer_closeup.png")
-		}
-	]
-	update_lobby(datos_de_prueba)
+	if typeof(WsClient.last_message) == TYPE_DICTIONARY and\
+		WsClient.last_message.get("action", "") in ["joined", "player_left"]:
+		_handle_player_update(WsClient.last_message)
+	WsClient.player_join.connect(_handle_player_update)
+	WsClient.player_leave.connect(_handle_player_update)
+	WsClient.player_ready.connect(_handle_player_ready)
+	WsClient.lobby_settings_changed.connect(_handle_settings_change)
 
-func update_lobby(players_connected: Array):
+func _handle_player_update(info: Dictionary) -> void:
+	if not is_owner and info["is_owner"] and num_bots >= 0 and len(player_info) == 1:
+		WsClient.ws_private_lobby_settings(bot_level, len(player_info) + num_bots)
+	is_owner = info["is_owner"]
+	player_info = []
+	for p in info["players"]:
+		player_info.append({
+			"name": p["username"],
+			"type": "human",
+			"custom_texture": preload("res://assets/icons/characters/barco_closeup.png"),
+			"ready": p["ready_to_play"] or p["username"] == info["owner"]
+		})
+		if is_owner and p["username"] == RestClient.username and not p["ready_to_play"]:
+			WsClient.ws_private_lobby_readystatus(true)
+	update_lobby()
+
+func _handle_player_ready(info: Dictionary) -> void:
+	for p in player_info:
+		if p["name"] == info["user"]: p["ready"] = info["is_ready"]
+	update_lobby()
+
+func _handle_settings_change(settings: Dictionary) -> void:
+	bot_level = settings["bot_level"]
+	num_bots = settings["target_players"] - len(player_info)
+	update_lobby()
+
+func update_lobby():
+	match bot_level:
+		WsClient.BotLevel.VERY_EASY: bot_dificulty_selector.select(0)
+		WsClient.BotLevel.EASY: bot_dificulty_selector.select(1)
+		WsClient.BotLevel.MEDIUM: bot_dificulty_selector.select(2)
+		WsClient.BotLevel.HARD: bot_dificulty_selector.select(3)
+		WsClient.BotLevel.VERY_HARD: bot_dificulty_selector.select(4)
+		WsClient.BotLevel.EXPERT: bot_dificulty_selector.select(5)
 	var player_list = $VBoxContainer/MarginContainer/PlayerList
+	if is_owner:
+		start_game_button.text = "COMENZAR JUEGO"
+		start_game_button.pivot_offset = start_game_button.size / 2.0
+		bot_dificulty_selector.disabled = num_bots == 0
+	else:
+		bot_dificulty_selector.disabled = true
 	
 	# Limpiamos los slots antiguos
 	for child in player_list.get_children():
@@ -34,53 +71,59 @@ func update_lobby(players_connected: Array):
 		var slot = player_icon_big_scene.instantiate()
 		player_list.add_child(slot)
 		
-		# CONECTAMOS LAS SEÑALES: Esto es vital para que el contador responda a los botones
-		slot.bot_added_locally.connect(update_player_count)
-		slot.bot_removed_locally.connect(update_player_count)
-		
-		if i < players_connected.size():
-			var p = players_connected[i]
-			# Extraemos la textura del diccionario
+		if i < len(player_info):
+			var p = player_info[i]
 			var tex = p.get("custom_texture", null) 
-			# Pasamos los 3 parámetros: nombre, tipo y textura personalizada
-			slot.setup(p.name, p.type, tex)
+			slot.setup(p.name, p.type, is_owner, tex, p.ready)
+			if not is_owner and p["name"] == RestClient.username:
+				if p["ready"]:
+					start_game_button.text = "NO LISTO"
+					start_game_button.pivot_offset = start_game_button.size / 2.0
+				else:
+					start_game_button.text = "LISTO"
+					start_game_button.pivot_offset = start_game_button.size / 2.0
+		elif i < len(player_info) + num_bots:
+			slot.setup("", "bot", is_owner)
+			slot.bot_removed_locally.connect(
+				func ():
+					num_bots -= 1
+					WsClient.ws_private_lobby_settings(bot_level, len(player_info) + num_bots)
+			)
 		else:
-			# Estado de espera
-			slot.setup("", "waiting")
+			slot.setup("", "waiting", is_owner)
+			slot.bot_added_locally.connect(
+				func ():
+					num_bots += 1
+					WsClient.ws_private_lobby_settings(bot_level, len(player_info) + num_bots)
+			)
 
-	# Primera actualización del texto al cargar el lobby
-	update_player_count()
-
-# Nueva función que cuenta cuántos slots están ocupados realmente
-func update_player_count():
-	var player_list = $VBoxContainer/MarginContainer/PlayerList
-	var count = 0
-	
-	# Esperamos un frame a que los nodos se procesen si es necesario, 
-	# pero como contamos estados, podemos hacerlo directo:
-	for slot in player_list.get_children():
-		# Accedemos a la variable 'current_state' del script del slot
-		# Si el estado es PLAYER (1) o BOT (2), sumamos. WAITING es (0).
-		if slot.current_state != 0: 
-			count += 1
-	
-	# Actualizamos el Label. Asegúrate de que la ruta sea la correcta:
-	if has_node("VBoxContainer/player_count_label"):
-		$VBoxContainer/player_count_label.text = "JUGADORES EN SALA: " + str(count) + "/4"
-	else:
-		# Si te da este error, revisa si el nodo se llama 'player_number' o 'player_count_label'
-		Utils.debug("Error: No encuentro el nodo del contador en VBoxContainer")
-
+	$VBoxContainer/player_count_label.text = "JUGADORES EN SALA: " + str(len(player_info)) + "/4"
 
 func _on_header_back_action_requested() -> void:
 	WsClient.socket.close(1000, "Player left lobby")
 	SceneTransition.change_scene("res://scenes/UI/private_play.tscn")
 
 func _on_start_game_button_pressed() -> void:
-	SceneTransition.change_scene("res://scenes/board/board.tscn")
+	if not is_owner:
+		if start_game_button.text == "LISTO": WsClient.ws_private_lobby_readystatus(true)
+		else: WsClient.ws_private_lobby_readystatus(false)
+	else:
+		WsClient.ws_private_lobby_start()
+	# SceneTransition.change_scene("res://scenes/board/board.tscn")
 
 func _on_copy_code_button_pressed() -> void:
 	const COPY_SOLID_FULL = preload("uid://cw3ys8ynq0lcm")
 	DisplayServer.clipboard_set(room_code_label.text)
 	copy_code_button.set_icon(COPY_SOLID_FULL)
 	get_tree().create_timer(5).timeout.connect(copy_code_button.set_icon.bind(copy_code_button.icon_texture))
+
+func _on_bot_dificulty_selector_item_selected(index: int) -> void:
+	var bot_dif = [
+		WsClient.BotLevel.VERY_EASY,
+		WsClient.BotLevel.EASY,
+		WsClient.BotLevel.MEDIUM,
+		WsClient.BotLevel.HARD,
+		WsClient.BotLevel.VERY_HARD,
+		WsClient.BotLevel.EXPERT,
+	]
+	WsClient.ws_private_lobby_settings(bot_dif[index], len(player_info) + num_bots)

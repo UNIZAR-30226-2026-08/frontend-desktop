@@ -12,6 +12,12 @@
 [ext_resource type="PackedScene" uid="uid://c1jvwymfhm6pl" path="res://scenes/components/tooltip.tscn" id="6_c17vr"]
 [ext_resource type="Texture2D" uid="uid://cgol567hbives" path="res://assets/icons/key.svg" id="8_ig0j3"]
 
+[sub_resource type="InputEventAction" id="InputEventAction_5fmy7"]
+action = &"ui_ok"
+
+[sub_resource type="Shortcut" id="Shortcut_c17vr"]
+events = [SubResource("InputEventAction_5fmy7")]
+
 [node name="SignupScreen" type="Control" unique_id=734078795]
 layout_mode = 3
 anchors_preset = 15
@@ -139,6 +145,7 @@ custom_minimum_size = Vector2(250, 60)
 layout_mode = 2
 focus_neighbor_top = NodePath("../../PassInput")
 focus_previous = NodePath("../../PassInput")
+shortcut = SubResource("Shortcut_c17vr")
 text = "REGISTRARSE"
 
 [node name="RightSpace" type="Control" parent="MainVBox/HBoxContainer" unique_id=583771450]
@@ -146,6 +153,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="text_submitted" from="MainVBox/UsernameInput" to="." method="_on_username_input_text_submitted"]
 [connection signal="text_changed" from="MainVBox/PassInput" to="." method="_on_pass_input_text_changed"]
+[connection signal="text_submitted" from="MainVBox/PassInput" to="." method="_on_pass_input_text_submitted"]
 [connection signal="text_changed" from="MainVBox/ConfirmPassInput" to="." method="_on_confirm_pass_input_text_changed"]
+[connection signal="text_submitted" from="MainVBox/ConfirmPassInput" to="." method="_on_confirm_pass_input_text_submitted"]
 [connection signal="pressed" from="MainVBox/HBoxContainer/AnimatedButton" to="." method="_on_animated_button_pressed"]

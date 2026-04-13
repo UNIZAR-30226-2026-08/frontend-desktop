@@ -11,6 +11,12 @@
 [ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="6_w6wvi"]
 [ext_resource type="PackedScene" uid="uid://baktdl26t2tmk" path="res://scenes/components/logo.tscn" id="7_0krvm"]
 
+[sub_resource type="InputEventAction" id="InputEventAction_hvk13"]
+action = &"ui_ok"
+
+[sub_resource type="Shortcut" id="Shortcut_yhkqf"]
+events = [SubResource("InputEventAction_hvk13")]
+
 [node name="LoginScreen" type="Control" unique_id=734078795]
 layout_mode = 3
 anchors_preset = 15
@@ -97,10 +103,12 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="AnimatedButton" parent="MainVBox/HBoxContainer" unique_id=598462717 instance=ExtResource("6_w6wvi")]
+[node name="AnimatedButton" parent="MainVBox/HBoxContainer" unique_id=598462717 node_paths=PackedStringArray("shortcut_context") instance=ExtResource("6_w6wvi")]
 layout_mode = 2
 focus_neighbor_top = NodePath("../../PassInput")
 focus_previous = NodePath("../../PassInput")
+shortcut_context = NodePath("../..")
+shortcut = SubResource("Shortcut_yhkqf")
 text = "ENTRAR"
 
 [node name="RightSpace" type="Control" parent="MainVBox/HBoxContainer" unique_id=583771450]
@@ -108,4 +116,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="text_submitted" from="MainVBox/UsernameInput" to="." method="_on_username_input_text_submitted"]
+[connection signal="text_submitted" from="MainVBox/PassInput" to="." method="_on_pass_input_text_submitted"]
 [connection signal="pressed" from="MainVBox/HBoxContainer/AnimatedButton" to="." method="_on_animated_button_pressed"]

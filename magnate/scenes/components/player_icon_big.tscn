@@ -124,6 +124,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="AddBotButton" parent="." unique_id=175575919 instance=ExtResource("5_p7x4w")]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -139,6 +140,7 @@ grow_vertical = 0
 text = "Añadir Bot"
 
 [node name="RemoveBotButton" parent="." unique_id=630031643 instance=ExtResource("5_p7x4w")]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -174,6 +176,7 @@ text = "PLAYER_NAME"
 horizontal_alignment = 1
 
 [node name="ReadyIcon" type="TextureRect" parent="." unique_id=159006633]
+visible = false
 layout_mode = 0
 offset_left = 19.0
 offset_top = 11.0

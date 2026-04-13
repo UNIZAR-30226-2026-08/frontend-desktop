@@ -4,6 +4,7 @@ extends Panel
 @onready var join_button: Button = $VBoxContainer/HBoxContainer/JoinButton
 @onready var confirm_button: Button = $VBoxContainer/ConfirmButton
 @onready var code_input: LineEdit = %CodeInput
+@onready var tooltip: PanelContainer = %Tooltip
 var button_group: ButtonGroup
 
 var _regex = RegEx.new()
@@ -27,6 +28,11 @@ func _on_confirm_button_pressed() -> void:
 	if tab_container.current_tab == 0:
 		if len(code_input.text) != 6: return
 		code = code_input.text
+		var code_exists = await RestClient.game_check_private_code(code)
+		if code_exists == {} or not code_exists.get("exists", false):
+			tooltip.flash()
+			code_input.text = ""
+			return
 	elif tab_container.current_tab == 1:
 		var response = await RestClient.game_get_private_code()
 		if response == {}: return

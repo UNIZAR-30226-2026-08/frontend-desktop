@@ -10,11 +10,11 @@ const BOT_PHOTO = preload("res://assets/images/bg_city.jpg")
 signal bot_added_locally
 signal bot_removed_locally
 
-func setup(name_text: String, player_type: String, custom_texture: Texture2D = null):
+func setup(name_text: String, player_type: String, is_owner: bool, custom_texture: Texture2D = null, is_ready: bool = false):
 	if player_type == "waiting":
-		set_state(State.WAITING)
+		set_state(State.WAITING, is_owner)
 	elif player_type.to_lower() == "bot":
-		set_state(State.BOT)
+		set_state(State.BOT, is_owner)
 		$VBoxContainer/Name.text = name_text
 		$PlayerIcon.texture = BOT_PHOTO
 		$PlayerIcon.scale = Vector2(1, 1)
@@ -24,8 +24,9 @@ func setup(name_text: String, player_type: String, custom_texture: Texture2D = n
 		# Si custom_texture es null, el icono se verá vacío o con la foto anterior
 		$PlayerIcon.texture = custom_texture
 		$PlayerIcon.scale = Vector2(0.7, 0.7)
+		set_ready(is_ready)
 
-func set_state(new_state):
+func set_state(new_state, is_owner: bool = false):
 	current_state = new_state
 	
 	var is_waiting = (new_state == State.WAITING)
@@ -42,10 +43,12 @@ func set_state(new_state):
 	$waiting_label.visible = is_waiting
 	
 	# 3. Lógica de botones (Intercambio)
-	$AddBotButton.visible = is_waiting
-	# El botón de eliminar solo existe si el slot es un BOT
-	if has_node("RemoveBotButton"):
+	if is_owner:
+		$AddBotButton.visible = is_waiting
 		$RemoveBotButton.visible = is_bot
+	else:
+		$AddBotButton.visible = false
+		$RemoveBotButton.visible = false
 	
 	# 4. Animación y Modulate
 	if is_waiting:
@@ -74,19 +77,19 @@ func stop_loading_animation():
 # --- SEÑALES DE BOTONES ---
 
 func _on_add_bot_button_pressed():
-	setup("", "bot")
+	setup("", "bot", true)
 	bot_added_locally.emit()
 
 func _on_remove_bot_button_pressed():
 	# Al eliminar, volvemos al estado de espera
-	setup("", "waiting")
+	setup("", "waiting", true)
 	bot_removed_locally.emit()
 
 func set_ready(state: bool) -> void:
 	if state == _ready: return
-	if $ReadyIcon.visible: $ReadyIcon.hide()
+	if not state: $ReadyIcon.hide()
 	else: $ReadyIcon.show()
-	_ready = not state
+	_ready = state
 
 func toggle_ready() -> void:
 	set_ready(not _ready)

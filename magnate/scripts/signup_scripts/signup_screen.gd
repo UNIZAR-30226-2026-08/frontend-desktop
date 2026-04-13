@@ -27,7 +27,6 @@ func _on_animated_button_pressed() -> void:
 
 	var response = await RestClient.user_signup({
 		"username": username_input.text,
-		"email": "johndoe@gmail.com", # TODO: This field will be removed
 		"password": password_input.text,
 		"password2": confirm_password_input.text
 	})
@@ -69,3 +68,12 @@ func _on_pass_input_text_changed(new_text: String) -> void:
 
 func _on_back_button_pressed() -> void:
 	SceneTransition.change_scene("res://scenes/UI/landing_screen.tscn")
+
+func _on_username_input_text_submitted(_new_text: String) -> void:
+	_on_animated_button_pressed()
+
+func _on_pass_input_text_submitted(_new_text: String) -> void:
+	_on_animated_button_pressed()
+
+func _on_confirm_pass_input_text_submitted(_new_text: String) -> void:
+	_on_animated_button_pressed()

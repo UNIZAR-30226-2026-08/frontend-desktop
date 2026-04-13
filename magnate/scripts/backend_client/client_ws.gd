@@ -142,6 +142,12 @@ signal player_leave(Dictionary)
 ## - "is_owner": bool	- True if I am the owner (NOTE: **I**, not the joined player)
 signal player_ready(Dictionary)
 
+## Emitted when the lobby settings are changed
+## Dictionary contains:
+## - "bot_level": BotLevel	- Level of the bots
+## - "target_players": int	- Total players in the lobby (bots + humans)
+signal lobby_settings_changed(Dictionary)
+
 ## Emitted when a private lobby starts the game
 signal private_match_found
 
@@ -337,15 +343,15 @@ signal action_bid(Dictionary)
 var socket = WebSocketPeer.new() # WS instance
 var game_id: int # ID of the current playing game (Only valid if _conn_state = IN_GAME)
 var player_id: int # ID of the player (Only valid if _conn_state = IN_GAME)
-var session_id: String # ID of the session
 var player_username: String # Username of the player
+var last_message: Variant # Last message received
 var _conn_state: ConnState = ConnState.START # Internal state of the connection
-var last_private_lobby_code: String = ""
+var last_private_lobby_code: String # Last private code received
 
 # The following comes straight from the Godot docs with slight modifications:
 # https://docs.godotengine.org/en/stable/tutorials/networking/websocket.html#using-websocket-in-godot
 
-func _safe_connect(url: String, headers: PackedStringArray = ["Cookie: sessionid=" + session_id]) -> void:
+func _safe_connect(url: String, headers: PackedStringArray = []) -> void:
 	# Initiate connection to the given URL.
 	socket.handshake_headers = headers
 	var err = socket.connect_to_url(url)
@@ -362,13 +368,13 @@ func send_data(data_to_send: Variant) -> void:
 	socket.send_text(data_to_send)
 
 func start_client_public_queue() -> void:
-	Utils.debug("Connecting to public queue with session: " + session_id)
-	_safe_connect(Globals.WS_BASE_URL + "/queue/public/")
+	Utils.debug("Connecting to public queue con token: " + RestClient.token_access)
+	_safe_connect(Globals.WS_BASE_URL + "/queue/public/?token=" + RestClient.token_access)
 	_conn_state = ConnState.IN_PUBLIC_QUEUE
 
 func start_client_private_lobby(lobby_code: String) -> void:
 	last_private_lobby_code = lobby_code
-	_safe_connect(Globals.WS_BASE_URL + "/queue/private/" + lobby_code + "/")
+	_safe_connect(Globals.WS_BASE_URL + "/queue/private/" + lobby_code + "/?token=" + RestClient.token_access)
 	_conn_state = ConnState.IN_PRIVATE_QUEUE
 
 func _ready() -> void:
@@ -384,6 +390,7 @@ func _process(_delta) -> void:
 			var packet_text: String = packet.get_string_from_utf8()
 			var response: Dictionary = JSON.parse_string(packet_text)
 			Utils.debug("Got response " + str(response))
+			last_message = response
 			if _conn_state == ConnState.IN_GAME:
 				_game_dispatcher(response)
 			elif _conn_state  == ConnState.IN_PUBLIC_QUEUE:
@@ -460,6 +467,18 @@ func _botlevel_enum_to_string(bot_level: BotLevel) -> String:
 		BotLevel.EXPERT: return "expert"
 		_: Utils.debug("BotLevel - This is impossible")
 	return ""
+
+func _botlevel_string_to_enum(bot_level_str: String) -> BotLevel:
+	match bot_level_str:
+		"very_easy": return BotLevel.VERY_EASY
+		"easy": return BotLevel.EASY
+		"medium": return BotLevel.MEDIUM
+		"hard": return BotLevel.HARD
+		"very_hard": return BotLevel.VERY_HARD
+		"expert": return BotLevel.EXPERT
+		_:
+			Utils.debug("BotLevel string not recognized: " + bot_level_str)
+			return BotLevel.MEDIUM # Default
 
 func _fantasyeventtype_string_to_enum(event_string: String) -> FantasyEventType:
 	match event_string:
@@ -538,6 +557,10 @@ func _private_queue_dispatcher(response: Dictionary) -> void:
 		player_leave.emit(response)
 	elif response["action"] == "ready_status":
 		player_ready.emit(response)
+	elif response["action"] == "settings_changed":
+		response["bot_level"] = _botlevel_string_to_enum(response["bot_level"])
+		response["target_players"] = int(response["target_players"])
+		lobby_settings_changed.emit(response)
 	elif response["action"] == "game_start":
 		game_id = response["game_id"]
 		_conn_state = ConnState.GO_TO_GAME

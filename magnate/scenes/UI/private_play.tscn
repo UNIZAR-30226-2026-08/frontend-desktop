@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b22yts8cv50mi" path="res://assets/images/join.png" id="4_8jusn"]
 [ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="4_g2gpt"]
 [ext_resource type="Texture2D" uid="uid://cwufyndwm5cw8" path="res://assets/images/host.png" id="6_2c3ea"]
+[ext_resource type="PackedScene" uid="uid://c1jvwymfhm6pl" path="res://scenes/components/tooltip.tscn" id="8_i8i38"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_2c3ea"]
 resource_local_to_scene = false
@@ -96,6 +97,22 @@ placeholder_text = "A2G98R"
 alignment = 1
 max_length = 6
 expand_to_text_length = true
+
+[node name="Tooltip" parent="VBoxContainer/TabContainer/JoinImage" unique_id=652872537 instance=ExtResource("8_i8i38")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 175.0
+offset_top = -114.0
+offset_right = 435.0
+offset_bottom = -41.0
+grow_horizontal = 2
+grow_vertical = 0
+custom_text = "El código no existe"
 
 [node name="CreateImage" type="TextureRect" parent="VBoxContainer/TabContainer" unique_id=577724660]
 visible = false

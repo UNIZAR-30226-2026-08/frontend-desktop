@@ -8,6 +8,7 @@ extends Node
 ## the signal <response> will be emitted with the parsed reponse body.
 
 var needs_login: bool = true
+var username: String = ""
 var last_faulty_response: Variant
 var last_faulty_response_code: int
 signal logout
@@ -112,7 +113,6 @@ func make_auth_request(
 	_was_auth_request = true
 	
 	var headers: Array = ["Authorization: Bearer " + token_access] + additional_headers
-	Utils.debug(str(typeof(headers)))
 	make_request(url, data_to_send, verb, headers)
 
 func _refresh_access_token():
@@ -140,6 +140,8 @@ func _refresh_access_token():
 		token_access = refresh_json["access"]
 		Utils.debug("Token refreshed!")
 		login.emit()
+		if username == "":
+			username = (await user_get_info()).get("username", "")
 		if has_last_data:
 			Utils.debug("Retrying las request")
 			make_auth_request(last_url, last_data, last_verb, last_headers)
@@ -198,7 +200,6 @@ func _load_refresh_token():
 
 ## Takes signup info as dictionary:
 ## - "username": String	- Username
-## - "email": String		- Email of the user
 ## - "password": String	- User's password
 ## - "password2": String	- Password confirmation field
 ## Return dictionary with:
@@ -230,6 +231,8 @@ func user_login(data: Dictionary) -> Dictionary:
 	var resp = await response
 	if resp.has("tokens"):
 		_save_auth_data(resp["tokens"])
+	if resp != {}:
+		username = (await user_get_info()).get("username", "")
 	return resp
 
 func user_logout() -> void:
@@ -299,4 +302,9 @@ func shop_get_user_emojis() -> Dictionary:
 # TODO
 func game_get_private_code() -> Dictionary:
 	make_auth_request(Globals.REST_BASE_URL + "/lobby/get-private-code")
+	return await response
+
+# Returns {"exists": bool}
+func game_check_private_code(code: String) -> Dictionary:
+	make_auth_request(Globals.REST_BASE_URL + "/lobby/check-code/" + code + "/")
 	return await response
