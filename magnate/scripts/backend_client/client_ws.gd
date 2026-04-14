@@ -342,8 +342,7 @@ signal action_bid(Dictionary)
 # =================
 var socket = WebSocketPeer.new() # WS instance
 var game_id: int # ID of the current playing game (Only valid if _conn_state = IN_GAME)
-var player_id: int # ID of the player (Only valid if _conn_state = IN_GAME)
-var player_username: String # Username of the player
+var player_id: int = -1 # ID of the player (Only valid if _conn_state = IN_GAME)
 var last_message: Variant # Last message received
 var _conn_state: ConnState = ConnState.START # Internal state of the connection
 var last_private_lobby_code: String # Last private code received
@@ -643,9 +642,6 @@ func _game_dispatcher(response: Dictionary) -> void:
 	match response["event_type"]:
 		"error": error.emit(response["data"]["message"])
 		"chat_message": chat_message.emit(response)
-		"init_identity":
-			player_id = response["data"]["player_id"]
-			player_username = response["data"]["username"]
 		"game_state": _game_state_dispatcher(response["game_state"])
 		"game_response": _game_response_dispatcher(response["data"])
 		"game_action": _game_action_dispatcher(response["data"])

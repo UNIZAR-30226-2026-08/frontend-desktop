@@ -140,8 +140,10 @@ func _refresh_access_token():
 		token_access = refresh_json["access"]
 		Utils.debug("Token refreshed!")
 		login.emit()
-		if username == "":
-			username = (await user_get_info()).get("username", "")
+		if username == "" or WsClient.player_id == -1:
+			var user_info = await user_get_info()
+			username = user_info.get("username", "")
+			WsClient.player_id = int(user_info["pk"])
 		if has_last_data:
 			Utils.debug("Retrying las request")
 			make_auth_request(last_url, last_data, last_verb, last_headers)
@@ -232,11 +234,14 @@ func user_login(data: Dictionary) -> Dictionary:
 	if resp.has("tokens"):
 		_save_auth_data(resp["tokens"])
 	if resp != {}:
-		username = (await user_get_info()).get("username", "")
+		var user_info = await user_get_info()
+		username = user_info.get("username", "")
+		WsClient.player_id = int(user_info["pk"])
 	return resp
 
 func user_logout() -> void:
 	needs_login = true
+	username = ""
 	if FileAccess.file_exists(SAVE_PATH):
 		DirAccess.remove_absolute(SAVE_PATH)
 	logout.emit()
