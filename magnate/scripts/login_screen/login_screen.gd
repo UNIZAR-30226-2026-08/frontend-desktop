@@ -2,7 +2,7 @@ extends Control
 
 @onready var username_input: LineEdit = %UsernameInput
 @onready var pass_input: LineEdit = %PassInput
-@onready var tooltip: PanelContainer = $Tooltip
+@onready var unauthorized_tooltip: PanelContainer = %UnauthorizedTooltip
 @onready var animated_button: MagnateTweenButton = $MainVBox/HBoxContainer/AnimatedButton
 
 func _on_animated_button_pressed() -> void:
@@ -16,8 +16,7 @@ func _on_animated_button_pressed() -> void:
 		username_input.text = ""
 		pass_input.text = ""
 		if RestClient.last_faulty_response_code == 401:
-			Utils.debug("FLASHING")
-			tooltip.flash()
+			unauthorized_tooltip.flash()
 
 func _on_back_button_pressed() -> void:
 	SceneTransition.change_scene("res://scenes/UI/landing_screen.tscn")

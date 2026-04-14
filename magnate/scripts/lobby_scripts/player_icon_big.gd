@@ -1,3 +1,4 @@
+class_name MagnateBigPlayerIcon
 extends Panel
 
 enum State {WAITING, PLAYER, BOT}
@@ -18,6 +19,7 @@ func setup(name_text: String, player_type: String, is_owner: bool, custom_textur
 		set_state(State.BOT, is_owner)
 		$PlayerIcon.texture = BOT_PHOTO
 		$PlayerIcon.scale = Vector2(1, 1)
+		$VBoxContainer/Name.text = name_text
 	else:
 		set_state(State.PLAYER)
 		$VBoxContainer/Name.text = name_text

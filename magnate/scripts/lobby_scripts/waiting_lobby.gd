@@ -24,10 +24,9 @@ func _ready():
 	WsClient.player_leave.connect(_handle_player_update)
 	WsClient.player_ready.connect(_handle_player_ready)
 	WsClient.lobby_settings_changed.connect(_handle_settings_change)
+	WsClient.private_match_found.connect(_handle_match_found)
 
 func _handle_player_update(info: Dictionary) -> void:
-	if not is_owner and info["is_owner"] and num_bots >= 0 and len(player_info) == 1:
-		WsClient.ws_private_lobby_settings(bot_level, len(player_info) + num_bots)
 	is_owner = info["is_owner"]
 	player_info = []
 	for p in info["players"]:
@@ -39,7 +38,13 @@ func _handle_player_update(info: Dictionary) -> void:
 		})
 		if is_owner and p["username"] == RestClient.username and not p["ready_to_play"]:
 			WsClient.ws_private_lobby_readystatus(true)
-	update_lobby()
+	
+	num_bots = clamp(num_bots, 0, 4 - len(player_info))
+	
+	if info["action"] == "joined" and info["user"] == RestClient.username:
+		_handle_settings_change(info)
+	else:
+		update_lobby()
 
 func _handle_player_ready(info: Dictionary) -> void:
 	for p in player_info:
@@ -55,6 +60,10 @@ func _handle_settings_change(settings: Dictionary) -> void:
 	bot_level = settings["bot_level"]
 	num_bots = settings["target_players"] - len(player_info)
 	update_lobby()
+
+func _handle_match_found() -> void:
+	Utils.debug(RestClient.username + ": MATCH FOUND!")
+	SceneTransition.change_scene("res://scenes/board/board.tscn")
 
 func update_lobby():
 	match bot_level:
@@ -82,23 +91,25 @@ func update_lobby():
 		child.queue_free()
 		
 	# Creamos los 4 slots
+	var first_waiting: bool = true
 	for i in range(4):
 		var slot = player_icon_big_scene.instantiate()
 		player_list.add_child(slot)
 		
-		if i < len(player_info):
+		if i < len(player_info): # Should be player
 			var p = player_info[i]
 			var tex = p.get("custom_texture", null) 
 			slot.setup(p.name, p.type, is_owner, tex, p.ready)
-		elif i < len(player_info) + num_bots:
+		elif i < len(player_info) + num_bots: # Should be bot
 			slot.setup("", "bot", is_owner)
 			slot.bot_removed_locally.connect(
 				func ():
 					num_bots -= 1
 					WsClient.ws_private_lobby_settings(bot_level, len(player_info) + num_bots)
 			)
-		else:
-			slot.setup("", "waiting", is_owner)
+		else: # Should be waiting
+			slot.setup("", "waiting", is_owner and first_waiting)
+			first_waiting = false
 			slot.bot_added_locally.connect(
 				func ():
 					num_bots += 1
@@ -115,7 +126,6 @@ func _on_start_game_button_pressed() -> void:
 		else: WsClient.ws_private_lobby_readystatus(false)
 	else:
 		WsClient.ws_private_lobby_start()
-	# SceneTransition.change_scene("res://scenes/board/board.tscn")
 
 func _on_copy_code_button_pressed() -> void:
 	const COPY_SOLID_FULL = preload("uid://cw3ys8ynq0lcm")

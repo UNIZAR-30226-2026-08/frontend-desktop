@@ -420,7 +420,9 @@ func _process(_delta) -> void:
 		Utils.debug("Socket closed. Code: %d, Reason: %s" % [code, reason])
 		if _conn_state == ConnState.GO_TO_GAME:
 			Utils.debug("Connecting to game: " + str(game_id))
-			_safe_connect(Globals.WS_BASE_URL + "/game/" + str(game_id) + "/")
+			RestClient.has_last_data = false
+			await RestClient._refresh_access_token()
+			_safe_connect(Globals.WS_BASE_URL + "/game/" + str(game_id) + "/?token=" + RestClient.token_access)
 			_conn_state = ConnState.IN_GAME
 		else: # Reset the state
 			_conn_state = ConnState.START
@@ -435,7 +437,9 @@ func _normalize_tile_id(id: Variant) -> Variant:
 		return "%03d" % id
 	elif typeof(id) == TYPE_STRING:
 		return "%03d" % int(id)
-	elif typeof(id) == TYPE_PACKED_INT32_ARRAY:
+	elif typeof(id) == TYPE_FLOAT:
+		return _normalize_tile_id(int(id))
+	elif typeof(id) in [TYPE_ARRAY]:
 		var new_array: Array[String]
 		for i in id:
 			new_array.append(_normalize_tile_id(i))
@@ -552,6 +556,7 @@ func _private_queue_dispatcher(response: Dictionary) -> void:
 		return
 	
 	if response["action"] == "joined":
+		response["bot_level"] = _botlevel_string_to_enum(response["bot_level"])
 		player_join.emit(response)
 	elif response["action"] == "player_left":
 		player_leave.emit(response)
@@ -631,11 +636,11 @@ func _game_state_dispatcher(_game_state: Dictionary) -> void:
 	game_state.emit(_game_state)
 
 func _game_dispatcher(response: Dictionary) -> void:
-	if not response.has("action"):
-		Utils.debug("ERROR: Response without 'action' key")
+	if not response.has("event_type"):
+		Utils.debug("ERROR: Response without 'event_type' key")
 		return
 
-	match response["action"]:
+	match response["event_type"]:
 		"error": error.emit(response["data"]["message"])
 		"chat_message": chat_message.emit(response)
 		"init_identity":

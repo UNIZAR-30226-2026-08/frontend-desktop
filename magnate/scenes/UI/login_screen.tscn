@@ -30,13 +30,14 @@ script = ExtResource("2_52kn4")
 [node name="Background" parent="." unique_id=1440435364 instance=ExtResource("2_w6wvi")]
 layout_mode = 1
 
-[node name="Tooltip" parent="." unique_id=652872537 instance=ExtResource("3_hvk13")]
+[node name="UnauthorizedTooltip" parent="." unique_id=652872537 instance=ExtResource("3_hvk13")]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 1432.0
 offset_top = 618.0
 offset_right = 1692.0
 offset_bottom = 691.0
-custom_text = "Credenciales incorrectas"
+custom_text = "Usuario o contraseña incorrectos"
 
 [node name="BackButton" parent="." unique_id=175575919 instance=ExtResource("4_54ont")]
 layout_mode = 0

@@ -53,7 +53,7 @@ func _ready() -> void:
 	if token_refresh == "":
 		needs_login = true
 	else:
-		_refresh_access_token()
+		await _refresh_access_token()
 
 ## WARNING: You probably shouldn't be using this. There should be a
 ## specific function in this class that abstracts your request logic.
@@ -161,7 +161,7 @@ func _response_handler(_result, response_code, _headers, body) -> void:
 			last_faulty_response_code = response_code
 		if needs_refresh:
 			Utils.debug("Access token expired. Attempting refresh...")
-			_refresh_access_token()
+			await _refresh_access_token()
 		else:
 			Utils.debug("Refresh token also expired. Redirecting to login.")
 			user_logout()
