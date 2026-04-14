@@ -15,16 +15,18 @@ func _ready() -> void:
 	
 	call_deferred("_init_pivot")
 
+func set_btn_text(txt: String) -> void:
+	self.text = txt
+	_init_pivot()
+
 func _init_pivot() -> void:
 	pivot_offset = size / 2.0
 
 func _button_enter() -> void:
 	create_tween().tween_property(self, "scale", hover_scale, 0.1).set_trans(Tween.TRANS_SINE)
 
-
 func _button_exit() -> void:
 	create_tween().tween_property(self, "scale", Vector2.ONE, 0.1).set_trans(Tween.TRANS_SINE)
-
 
 func _on_button_pressed() -> void:
 	# Audio

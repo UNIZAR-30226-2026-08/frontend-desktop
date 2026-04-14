@@ -62,6 +62,7 @@ theme_override_constants/margin_top = 75
 theme_override_constants/margin_bottom = 75
 
 [node name="PlayerList" type="HBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=1004673776]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 

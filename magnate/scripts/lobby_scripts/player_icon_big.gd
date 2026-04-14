@@ -4,6 +4,7 @@ enum State {WAITING, PLAYER, BOT}
 var current_state = State.WAITING
 var rotation_tween: Tween
 var _ready: bool = false
+var player_name: String = ""
 
 const BOT_PHOTO = preload("res://assets/images/bg_city.jpg")
 
@@ -15,12 +16,12 @@ func setup(name_text: String, player_type: String, is_owner: bool, custom_textur
 		set_state(State.WAITING, is_owner)
 	elif player_type.to_lower() == "bot":
 		set_state(State.BOT, is_owner)
-		$VBoxContainer/Name.text = name_text
 		$PlayerIcon.texture = BOT_PHOTO
 		$PlayerIcon.scale = Vector2(1, 1)
 	else:
 		set_state(State.PLAYER)
 		$VBoxContainer/Name.text = name_text
+		player_name = name_text
 		# Si custom_texture es null, el icono se verá vacío o con la foto anterior
 		$PlayerIcon.texture = custom_texture
 		$PlayerIcon.scale = Vector2(0.7, 0.7)

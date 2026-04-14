@@ -5,9 +5,13 @@ extends Control
 @onready var copy_code_button: Button = %copy_code_button
 @onready var start_game_button: MagnateTweenButton = %start_game_button
 @onready var bot_dificulty_selector: OptionButton = %BotDificultySelector
+@onready var player_list: HBoxContainer = %PlayerList
+
 var is_owner: bool = false
 var player_info: Array[Dictionary] = []
+var old_number_of_players: int = -1
 var num_bots: int = 0
+var old_num_bots: int = -1
 var bot_level: MagnateWSClient.BotLevel = MagnateWSClient.BotLevel.MEDIUM
 
 func _ready():
@@ -15,6 +19,7 @@ func _ready():
 	if typeof(WsClient.last_message) == TYPE_DICTIONARY and\
 		WsClient.last_message.get("action", "") in ["joined", "player_left"]:
 		_handle_player_update(WsClient.last_message)
+	if not is_owner: start_game_button.set_btn_text("LISTO")
 	WsClient.player_join.connect(_handle_player_update)
 	WsClient.player_leave.connect(_handle_player_update)
 	WsClient.player_ready.connect(_handle_player_ready)
@@ -39,7 +44,12 @@ func _handle_player_update(info: Dictionary) -> void:
 func _handle_player_ready(info: Dictionary) -> void:
 	for p in player_info:
 		if p["name"] == info["user"]: p["ready"] = info["is_ready"]
-	update_lobby()
+	for p in player_list.get_children():
+		if p.player_name == info["user"]:
+			p.set_ready(info["is_ready"])
+	if not is_owner and info["user"] == RestClient.username:
+		if info["is_ready"]: start_game_button.set_btn_text("NO LISTO")
+		else: start_game_button.set_btn_text("LISTO")
 
 func _handle_settings_change(settings: Dictionary) -> void:
 	bot_level = settings["bot_level"]
@@ -54,14 +64,19 @@ func update_lobby():
 		WsClient.BotLevel.HARD: bot_dificulty_selector.select(3)
 		WsClient.BotLevel.VERY_HARD: bot_dificulty_selector.select(4)
 		WsClient.BotLevel.EXPERT: bot_dificulty_selector.select(5)
-	var player_list = $VBoxContainer/MarginContainer/PlayerList
 	if is_owner:
-		start_game_button.text = "COMENZAR JUEGO"
-		start_game_button.pivot_offset = start_game_button.size / 2.0
+		start_game_button.set_btn_text("COMENZAR JUEGO")
 		bot_dificulty_selector.disabled = num_bots == 0
 	else:
 		bot_dificulty_selector.disabled = true
 	
+	$VBoxContainer/player_count_label.text = "JUGADORES EN SALA: " + str(len(player_info)) + "/4"
+	
+	# Only update if necessary
+	if num_bots == old_num_bots and old_number_of_players == len(player_info): return
+	old_num_bots = num_bots
+	old_number_of_players = len(player_info)
+
 	# Limpiamos los slots antiguos
 	for child in player_list.get_children():
 		child.queue_free()
@@ -75,13 +90,6 @@ func update_lobby():
 			var p = player_info[i]
 			var tex = p.get("custom_texture", null) 
 			slot.setup(p.name, p.type, is_owner, tex, p.ready)
-			if not is_owner and p["name"] == RestClient.username:
-				if p["ready"]:
-					start_game_button.text = "NO LISTO"
-					start_game_button.pivot_offset = start_game_button.size / 2.0
-				else:
-					start_game_button.text = "LISTO"
-					start_game_button.pivot_offset = start_game_button.size / 2.0
 		elif i < len(player_info) + num_bots:
 			slot.setup("", "bot", is_owner)
 			slot.bot_removed_locally.connect(
@@ -96,8 +104,6 @@ func update_lobby():
 					num_bots += 1
 					WsClient.ws_private_lobby_settings(bot_level, len(player_info) + num_bots)
 			)
-
-	$VBoxContainer/player_count_label.text = "JUGADORES EN SALA: " + str(len(player_info)) + "/4"
 
 func _on_header_back_action_requested() -> void:
 	WsClient.socket.close(1000, "Player left lobby")
