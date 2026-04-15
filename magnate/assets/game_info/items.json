@@ -1,0 +1,12 @@
+{
+	"token": [
+		{"id": 1, "name": "Barco", "icon": "barco_closeup.png" },
+		{"id": 2, "name": "Hamburguesa", "icon": "burguer_closeup.png" },
+		{"id": 3, "name": "Sombrero", "icon": "sombrero_closeup.png" },
+		{"id": 4, "name": "Coche", "icon": "f1_closeup.png" }
+	],
+	"emoji": [
+		{"id": 5, "name": "Cara feliz", "icon": "emote_faceHappy.png" },
+		{"id": 6, "name": "Cara enfado", "icon": "emote_faceAngry.png" }
+	]  
+}

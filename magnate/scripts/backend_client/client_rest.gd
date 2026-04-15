@@ -267,6 +267,16 @@ func user_get_info() -> Dictionary:
 	return resp
 
 # TODO
+func user_get_games() -> Dictionary:
+	make_auth_request(Globals.REST_BASE_URL + "/user/games-played/")
+	return await response
+
+# TODO
+func user_get_game_summary(game_id: int) -> Dictionary:
+	make_auth_request(Globals.REST_BASE_URL + "/game/summary/" + str(game_id) + "/")
+	return await response
+
+# TODO
 func user_change_piece(piece_id: int) -> Dictionary:
 	make_auth_request(
 		Globals.REST_BASE_URL + "/user/change-piece/",
@@ -297,7 +307,10 @@ func shop_buy_item(item_id: int) -> Dictionary:
 # TODO
 func shop_get_user_pieces() -> Array:
 	make_auth_request(Globals.REST_BASE_URL + "/shop/user-pieces/")
-	return await response
+	var resp = await response
+	if typeof(resp) == TYPE_ARRAY:
+		return resp
+	return []
 
 # TODO
 func shop_get_user_emojis() -> Dictionary:

@@ -40,6 +40,7 @@ func _ready() -> void:
 	_update_cards_affordability()
 	
 	items = await RestClient.shop_get_items()
+	Utils.debug(str(items))
 
 # Simula la llegada del JSON desde el backend
 func _load_shop_items() -> void:
