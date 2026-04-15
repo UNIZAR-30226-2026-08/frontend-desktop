@@ -58,7 +58,9 @@ func _handle_player_ready(info: Dictionary) -> void:
 
 func _handle_settings_change(settings: Dictionary) -> void:
 	bot_level = settings["bot_level"]
-	num_bots = settings["target_players"] - len(player_info)
+	print(settings["target_players"])
+	print(len(player_info))
+	num_bots = clamp(settings["target_players"] - len(player_info), 0, 4)
 	update_lobby()
 
 func _handle_match_found() -> void:
@@ -104,7 +106,7 @@ func update_lobby():
 			slot.setup("", "bot", is_owner)
 			slot.bot_removed_locally.connect(
 				func ():
-					num_bots -= 1
+					num_bots = clamp(num_bots - 1, 0, 4)
 					WsClient.ws_private_lobby_settings(bot_level, len(player_info) + num_bots)
 			)
 		else: # Should be waiting
@@ -112,7 +114,7 @@ func update_lobby():
 			first_waiting = false
 			slot.bot_added_locally.connect(
 				func ():
-					num_bots += 1
+					num_bots = clamp(num_bots + 1, 0, 4)
 					WsClient.ws_private_lobby_settings(bot_level, len(player_info) + num_bots)
 			)
 
