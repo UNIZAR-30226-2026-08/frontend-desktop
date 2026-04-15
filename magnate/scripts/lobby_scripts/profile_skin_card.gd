@@ -57,7 +57,7 @@ func _on_action_button_pressed() -> void:
 func setup_profile_item(data: Dictionary) -> void:
 	item_id = data.get("id", "")
 	item_name = data.get("name", "Unknown")
-	var icon_path = data.get("icon_path", "")
+	var icon_path = data.get("icon", "")
 	if icon_path != "":
 		item_icon = load(icon_path)
 		item_icon_rect.texture = item_icon

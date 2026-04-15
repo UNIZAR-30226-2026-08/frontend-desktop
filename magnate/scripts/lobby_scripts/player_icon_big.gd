@@ -3,7 +3,6 @@ extends Panel
 
 enum State {WAITING, PLAYER, BOT}
 var current_state = State.WAITING
-var rotation_tween: Tween
 var _ready: bool = false
 var player_name: String = ""
 
@@ -55,10 +54,10 @@ func set_state(new_state, is_owner: bool = false):
 	
 	# 4. Animación y Modulate
 	if is_waiting:
-		start_loading_animation()
+		$circle_waiting.start_loading_animation()
 		modulate = Color(1, 1, 1, 1)
 	else:
-		stop_loading_animation()
+		$circle_waiting.stop_loading_animation()
 		modulate = Color(1, 1, 1, 1)
 		
 		# Actualizar icono de esquina (TopRightIcon)
@@ -66,16 +65,6 @@ func set_state(new_state, is_owner: bool = false):
 			$TopRightIcon.texture = preload("res://assets/icons/ia.svg")
 		else:
 			$TopRightIcon.texture = preload("res://assets/icons/single_player.svg")
-
-func start_loading_animation():
-	if rotation_tween: rotation_tween.kill()
-	rotation_tween = create_tween().set_loops()
-	rotation_tween.tween_property($circle_waiting, "rotation_degrees", 360, 2.0).from(0)
-
-func stop_loading_animation():
-	if rotation_tween:
-		rotation_tween.kill()
-		$circle_waiting.rotation_degrees = 0
 
 # --- SEÑALES DE BOTONES ---
 

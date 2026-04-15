@@ -56,9 +56,20 @@ enum TileType {
 	PARKING,
 }
 
+var tokens = {}
+var emojis = {}
+
 # Universal behaviours
 func _ready() -> void:
 	# On logout go to landing page
 	RestClient.logout.connect(SceneTransition.change_scene.bind("res://scenes/UI/landing_screen.tscn"))
 	# On login go to home page
 	RestClient.login.connect(SceneTransition.change_scene.bind("res://scenes/UI/home_screen.tscn"))
+	# Load tokens and emojis
+	var json_string = FileAccess.get_file_as_string("res://assets/game_info/items.json")
+	var data = JSON.parse_string(json_string)
+	for t in data.get("token", []):
+		t["icon"] = "res://assets/icons/characters/" + t["icon"]
+		tokens[t["id"]] = t
+	for e in data.get("emoji", []):
+		emojis[e["id"]] = e
