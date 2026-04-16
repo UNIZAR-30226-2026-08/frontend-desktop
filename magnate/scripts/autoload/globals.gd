@@ -72,4 +72,5 @@ func _ready() -> void:
 		t["icon"] = "res://assets/icons/characters/" + t["icon"]
 		tokens[t["id"]] = t
 	for e in data.get("emoji", []):
+		e["icon"] = "res://assets/icons/emotes/" + e["icon"]
 		emojis[e["id"]] = e

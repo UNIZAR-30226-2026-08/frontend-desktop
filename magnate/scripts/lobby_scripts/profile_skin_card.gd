@@ -1,12 +1,12 @@
 extends PanelContainer
 
 # Señal para cuando el usuario hace clic en "SELECCIONAR"
-signal skin_selected(item_id: String)
+signal skin_selected(item_id: int)
 
 # Definimos los 3 estados claros
 enum State { IN_USE, SELECTED, SELECTABLE }
 
-@export var item_id: String = ""
+@export var item_id: int = -1
 @export var item_name: String = ""
 @export var item_icon: Texture2D
 

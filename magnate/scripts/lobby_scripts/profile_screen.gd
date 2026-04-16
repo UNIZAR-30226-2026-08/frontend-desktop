@@ -15,6 +15,7 @@ const SCROLL_STEP_SKINS = CARD_WIDTH + SPACING
 # ==========================================
 # 2. REFERENCIAS A NODOS
 # ==========================================
+@onready var item_icon: TextureRect = %ItemIcon
 @onready var skins_tab_container: TabContainer = %SkinsTabContainer
 @onready var skins_circle_waiting: TextureRect = %skins_circle_waiting
 @onready var username: Label = %Username
@@ -61,7 +62,7 @@ var game_history = []
 var get_skins_async = func():
 	var result = await RestClient.shop_get_user_pieces()
 	for r in result:
-		skins_data.append(Globals.tokens[r["id"]])
+		skins_data.append(Globals.tokens[r["custom_id"]])
 	_load_skins()
 
 # ==========================================
@@ -92,7 +93,7 @@ func _ready() -> void:
 	if resp != {} and resp.has("games"):
 		user_games = resp["games"]
 		for i in user_games:
-			var game_info = await RestClient.user_get_game_summary(user_games[i])
+			var game_info = await RestClient.user_get_game_summary(i)
 			if not game_info == {}:
 				game_history.append(game_info)
 	
@@ -103,7 +104,9 @@ func _ready() -> void:
 	username.text = user_info["username"]
 	games_played_label.text = str(user_info["num_played_games"])
 	wins_label.text = str(user_info["num_won_games"])
-	total_points.text = str(user_info["points"])
+	total_points.text = str(int(user_info["exp"]))
+	if Globals.tokens.has(user_info["user_piece"]):
+		item_icon.texture = load(Globals.tokens[user_info["user_piece"]]["icon"])
 	
 	get_skins_async.call()
 
@@ -126,7 +129,8 @@ func _switch_to_face1() -> void:
 func _on_confirm_pressed() -> void:
 	if currently_selected_card != null:
 		Utils.debug("Guardando skin: " + str(currently_selected_card.item_id))
-		# TODO: Aquí irá el guardado real en servidor
+		RestClient.user_change_piece(currently_selected_card.item_id)
+		item_icon.texture = currently_selected_card.item_icon
 		_clear_current_selection()
 	else:
 		Utils.debug("No hay ninguna skin seleccionada para confirmar")
@@ -134,7 +138,7 @@ func _on_confirm_pressed() -> void:
 # ==========================================
 # 6. LÓGICA DE SELECCIÓN DE SKINS
 # ==========================================
-func _on_global_skin_selected(selected_id: String) -> void:
+func _on_global_skin_selected(selected_id: int) -> void:
 	# Si ya había algo seleccionado, lo reseteamos
 	if currently_selected_card != null:
 		currently_selected_card.current_state = currently_selected_card.State.SELECTABLE
@@ -175,7 +179,7 @@ func _load_game_history() -> void:
 func _load_skins() -> void:
 	for child in skins_container.get_children():
 		child.queue_free()
-	await get_skins_async
+
 	skins_circle_waiting.stop_loading_animation()
 	if len(skins_data) == 0:
 		skins_tab_container.current_tab = 1

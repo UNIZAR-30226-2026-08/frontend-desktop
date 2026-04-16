@@ -11,6 +11,7 @@
 [ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="11_fnisq"]
 [ext_resource type="Texture2D" uid="uid://cp5bx3nl5gmj8" path="res://assets/icons/front-arrow-green.svg" id="11_xd5d6"]
 [ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="12_dmsp2"]
+[ext_resource type="PackedScene" uid="uid://j1n4qrxg3bf8" path="res://scenes/components/loading_circle.tscn" id="12_xd5d6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g2gpt"]
 shader = ExtResource("1_xd5d6")
@@ -18,6 +19,8 @@ shader_parameter/color_b = Color(0.95, 0.95, 0.95, 1)
 shader_parameter/color_a = Color(1, 1, 1, 1)
 shader_parameter/divisions = 20.0
 shader_parameter/angle = 0.5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7aq7s"]
 
 [node name="shop_screen" type="Control" unique_id=723652825]
 material = SubResource("ShaderMaterial_g2gpt")
@@ -74,12 +77,39 @@ theme_override_fonts/font = ExtResource("6_myp1c")
 theme_override_font_sizes/font_size = 50
 text = "            SKINS DE FICHA"
 
-[node name="CarruselHbox" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection" unique_id=1175938903]
+[node name="TokenTabContainer" type="TabContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection" unique_id=373680198]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_7aq7s")
+current_tab = 0
+tabs_visible = false
+
+[node name="circle_waiting" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/TokenTabContainer" unique_id=1921030254 instance=ExtResource("12_xd5d6")]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="NoItemsLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/TokenTabContainer" unique_id=89655767]
+visible = false
+custom_minimum_size = Vector2(0, 350)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.06666667, 0.06666667, 0.06666667, 1)
+theme_override_font_sizes/font_size = 50
+text = "Aún no hay skins en la tienda"
+vertical_alignment = 1
+metadata/_tab_index = 1
+
+[node name="TokenCarrusel" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/TokenTabContainer" unique_id=1175938903]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 alignment = 1
+metadata/_tab_index = 2
 
-[node name="TokensLeftBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/CarruselHbox" unique_id=175575919 instance=ExtResource("7_gsweg")]
+[node name="TokensLeftBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/TokenTabContainer/TokenCarrusel" unique_id=175575919 instance=ExtResource("7_gsweg")]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 4
@@ -90,7 +120,7 @@ theme_override_styles/disabled = ExtResource("9_xd5d6")
 theme_override_styles/focus = ExtResource("8_ivtsw")
 icon_texture = ExtResource("10_ivtsw")
 
-[node name="TokensScroll" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/CarruselHbox" unique_id=1889211074]
+[node name="TokensScroll" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/TokenTabContainer/TokenCarrusel" unique_id=1889211074]
 unique_name_in_owner = true
 clip_children = 1
 clip_contents = true
@@ -98,13 +128,14 @@ custom_minimum_size = Vector2(1500, 300)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="TokensContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/CarruselHbox/TokensScroll" unique_id=63556932]
+[node name="TokensContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/TokenTabContainer/TokenCarrusel/TokensScroll" unique_id=63556932]
 unique_name_in_owner = true
 layout_mode = 0
 theme_override_constants/separation = 25
 
-[node name="TokensRightBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/CarruselHbox" unique_id=762233653 instance=ExtResource("7_gsweg")]
+[node name="TokensRightBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/TokenSection/TokenTabContainer/TokenCarrusel" unique_id=762233653 instance=ExtResource("7_gsweg")]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 4
@@ -129,12 +160,40 @@ theme_override_fonts/font = ExtResource("6_myp1c")
 theme_override_font_sizes/font_size = 50
 text = "            EMOTICONOS"
 
-[node name="CarruselHbox" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection" unique_id=826141615]
+[node name="EmojiTabContainer" type="TabContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection" unique_id=1267724800]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_7aq7s")
+current_tab = 0
+tabs_visible = false
+
+[node name="circle_waiting" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/EmojiTabContainer" unique_id=90283747 instance=ExtResource("12_xd5d6")]
+unique_name_in_owner = true
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="NoEmojiLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/EmojiTabContainer" unique_id=1093730584]
+visible = false
+custom_minimum_size = Vector2(0, 350)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.06666667, 0.06666667, 0.06666667, 1)
+theme_override_font_sizes/font_size = 50
+text = "Aún no hay emojis en la tienda"
+vertical_alignment = 1
+metadata/_tab_index = 1
+
+[node name="EmojiCarrusel" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/EmojiTabContainer" unique_id=826141615]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 alignment = 1
+metadata/_tab_index = 2
 
-[node name="EmotesLeftBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/CarruselHbox" unique_id=824275027 instance=ExtResource("7_gsweg")]
+[node name="EmotesLeftBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/EmojiTabContainer/EmojiCarrusel" unique_id=824275027 instance=ExtResource("7_gsweg")]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 4
@@ -145,7 +204,7 @@ theme_override_styles/disabled = ExtResource("9_xd5d6")
 theme_override_styles/focus = ExtResource("8_ivtsw")
 icon_texture = ExtResource("10_ivtsw")
 
-[node name="EmotesScroll" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/CarruselHbox" unique_id=47779363]
+[node name="EmotesScroll" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/EmojiTabContainer/EmojiCarrusel" unique_id=47779363]
 unique_name_in_owner = true
 clip_children = 1
 clip_contents = true
@@ -153,13 +212,14 @@ custom_minimum_size = Vector2(1500, 300)
 layout_mode = 2
 size_flags_horizontal = 6
 
-[node name="EmotesContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/CarruselHbox/EmotesScroll" unique_id=970603586]
+[node name="EmotesContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/EmojiTabContainer/EmojiCarrusel/EmotesScroll" unique_id=970603586]
 unique_name_in_owner = true
 layout_mode = 0
 theme_override_constants/separation = 25
 
-[node name="EmotesRightBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/CarruselHbox" unique_id=59170170 instance=ExtResource("7_gsweg")]
+[node name="EmotesRightBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/EmotesSection/EmojiTabContainer/EmojiCarrusel" unique_id=59170170 instance=ExtResource("7_gsweg")]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 4
@@ -173,10 +233,32 @@ icon_texture = ExtResource("11_xd5d6")
 [node name="BudgetLabel" type="Label" parent="." unique_id=569418588]
 unique_name_in_owner = true
 layout_mode = 1
-offset_left = 1453.0
-offset_top = 56.0
-offset_right = 1770.0
-offset_bottom = 126.0
-text = "Saldo: X€"
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -450.0
+offset_top = 55.0
+offset_right = -133.0
+offset_bottom = 125.0
+grow_horizontal = 0
+text = "Saldo: XM"
+
+[node name="LoseMoneyLabel" type="Label" parent="." unique_id=115441456]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -450.0
+offset_top = 55.0
+offset_right = -133.0
+offset_bottom = 125.0
+grow_horizontal = 0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme_override_colors/font_color = Color(0.85882354, 0.34509805, 0.3372549, 1)
+text = "XM"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="back_action_requested" from="VBoxContainer/Header" to="." method="_on_header_back_action_requested"]

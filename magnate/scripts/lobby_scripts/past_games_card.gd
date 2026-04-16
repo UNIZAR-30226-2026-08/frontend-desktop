@@ -25,18 +25,18 @@ extends PanelContainer  # O el tipo de nodo raíz que sea tu PastGameCard, asumo
 func setup(game_data: Dictionary) -> void:
 	# 1. Configurar los Labels de texto simples
 	# get_node_or_null para mayor seguridad si los nodos no existen aún
-	var _money = game_data["final_money"][RestClient.username]
+	var _money = int(game_data["final_money"].get(RestClient.username, -1))
 	var player_names = game_data["final_money"].keys()
 	player_names.sort_custom(func(a, b): return game_data["final_money"][a] > game_data["final_money"][b])
-	var _position = player_names.find(RestClient.username)
+	var _position = player_names.find(RestClient.username) + 1
 	if time_start_label:
-		time_start_label.text = game_data.get("start_date", "---")
+		time_start_label.text = game_data.get("start_date", "---T").split("T")[0]
 	if position_label:
 		position_label.text = "#" + str(_position)
 	if reward_amount_label:
 		reward_amount_label.text = str(_money)
 	if time_end_label:
-		time_end_label.text = "FIN: " + game_data.get("end_date", "---")
+		time_end_label.text = "FIN: " + game_data.get("end_date", "---T").split("T")[0]
 
 	# 2. Configurar la lista de jugadores y visibilidad de puestos
 	var num_players = player_names.size()
