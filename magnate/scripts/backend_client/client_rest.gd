@@ -299,7 +299,7 @@ func shop_get_items() -> Array:
 func shop_buy_item(item_id: int) -> Dictionary:
 	make_auth_request(
 		Globals.REST_BASE_URL + "/shop/buy/",
-		{"item_id": item_id},
+		{"custom_id": item_id},
 		HTTPClient.METHOD_POST
 	)
 	return await response

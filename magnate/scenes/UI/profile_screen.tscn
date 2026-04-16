@@ -171,7 +171,7 @@ theme_override_styles/pressed = ExtResource("11_hudyc")
 theme_override_styles/hover = ExtResource("11_hudyc")
 theme_override_styles/disabled = ExtResource("11_hudyc")
 theme_override_styles/focus = ExtResource("11_hudyc")
-text = "CANCELAR SELECCIÓN"
+text = "VOLVER A MI PERFIL"
 
 [node name="Control" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=267281276]
 custom_minimum_size = Vector2(70, 0)
