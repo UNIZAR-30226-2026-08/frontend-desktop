@@ -6,14 +6,17 @@ extends CanvasLayer
 @onready var message_list: VBoxContainer = $HUDContainer/Panel/MarginContainer/VBoxContainer/ScrollContainer/MessageList
 @onready var scroll_container: ScrollContainer = $HUDContainer/Panel/MarginContainer/VBoxContainer/ScrollContainer
 @onready var input_field: LineEdit = $HUDContainer/Panel/MarginContainer/VBoxContainer/InputField
+@onready var badge: Panel = %Notification
 
 var is_open: bool = false
 var panel_width: float = 320.0
-var players_ref: Array[Dictionary] = []
+var players_ref: Array[PlayerModel] = []
 
 var chat_button_audio: AudioResource
 
 func _ready() -> void:
+	WsClient.chat_message.connect(add_player_message)
+	
 	container.position.x = -panel_width
 	toggle_btn.pressed.connect(_on_toggle_pressed)
 	input_field.text_submitted.connect(_on_text_submitted)
@@ -25,11 +28,12 @@ func _ready() -> void:
 	
 	chat_button_audio = AudioResource.from_type(Globals.BUTTON_BACK, AudioResource.AudioResourceType.UI)
 
-func init_chat(players: Array[Dictionary]) -> void:
+func init_chat(players: Array[PlayerModel]) -> void:
 	players_ref = players
 	_build_message("¡Bienvenido al chat de Magnate! Construye tu imperio.", false, "Sistema", Color("9ca3af"))
 
 func _on_toggle_pressed() -> void:
+	badge.hide()
 	is_open = !is_open
 	var tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	var target_x = 0.0 if is_open else -panel_width
@@ -46,24 +50,25 @@ func toggle_chat_visibility(should_show: bool) -> void:
 func _on_text_submitted(new_text: String) -> void:
 	if new_text.strip_edges() == "":
 		return
-		
-	# TODO: Tenemos que guardar el id del jugador del cliente
-	var local_id = players_ref[0]["model"].id if players_ref.size() > 0 else ""
-	add_player_message(local_id, new_text, true)
+	
+	WsClient.ws_send_chat_message(new_text.strip_edges())
+	# var local_id = WsClient.player_id
+	# add_player_message(local_id, new_text, true)
 	input_field.text = ""
 
-func add_player_message(player_id: String, text: String, is_sender: bool) -> void:
-	var p_name: String = "Unknown"
+func add_player_message(message: Dictionary) -> void:
+	var text = message.get("msg", "")
+	var p_name: String = message.get("user", "")
+	var is_sender = p_name == RestClient.username
 	var p_color: Color = Color.WHITE
 	
-	for p in players_ref:
-		if p.has("model"):
-			var model = p["model"]
-			if str(model.id) == str(player_id):
-				p_name = model.player_name
-				p_color = model.color
-				break
-			
+	for model in players_ref:
+		if str(model.player_name) == p_name:
+			p_color = model.color
+			break
+	if not is_sender and not is_open:
+		badge.show()
+	
 	_build_message(text, is_sender, p_name, p_color)
 
 func _build_message(text: String, is_sender: bool, sender_name: String, sender_color: Color) -> void:

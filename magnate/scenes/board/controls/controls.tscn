@@ -24,6 +24,7 @@ mouse_filter = 2
 
 [node name="RollButton" parent="SlideContainer" unique_id=1615912822 instance=ExtResource("2_button")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 offset_left = 60.0
 offset_top = 120.0

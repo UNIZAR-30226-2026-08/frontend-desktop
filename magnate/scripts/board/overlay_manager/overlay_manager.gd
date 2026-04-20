@@ -23,11 +23,12 @@ signal overlay_open
 # specific signals
 signal trade_selection_request
 signal tram_ok
-signal property_bought(String, Variant) # tile id + color (null if current players color)
+# signal property_bought(String, Variant) # tile id + color (null if current players color)
 signal offer_accepted
 signal offer_rejected
 signal get_parking_money
 signal property_houses_changed(tile_id: String, new_houses: int, final_mortgage: bool)
+signal dice_rolled(Dictionary) # Response to dice throw
 
 # jail signals
 signal jail_roll_requested
@@ -44,6 +45,8 @@ signal normal_roll_requested
 signal request_admin_selection
 
 var board: Node2D
+var dice_roller_overlay: DiceRollerOverlay
+var jail_dice_roller: DiceRollerOverlay
 var tile_data: Dictionary
 var current_trade_overlay: CanvasLayer = null
 var in_trade_selection_mode: bool = false
@@ -90,19 +93,32 @@ const TRAIN_SELECTION_OVERLAY = preload("uid://dbleh2dgxratm")
 const BANNER_MESSAGE = preload("uid://g1ccyk0arbkf")
 const TOAST_MESSAGE = preload("uid://dj0br3kdrndit")
 
-func setup_overlays(_board: Node2D) -> void:
+func setup_overlays(_board: Node2D, dice_roller, jail_dice) -> void:
 	board = _board
+	dice_roller_overlay = dice_roller
+	jail_dice_roller = jail_dice
 	tile_data = BoardDefinitionParser.parse_board("res://assets/game_info/board.json")
 	banner_instance = BANNER_MESSAGE.instantiate()
 	board.add_child(banner_instance)
 	toast_instance = TOAST_MESSAGE.instantiate()
 	board.add_child(toast_instance)
-#	_load_board_data()
+
+func show_dice_overlay() -> void:
+	dice_roller_overlay.show_overlay()
+	dice_roller_overlay.has_rolled = false
+	dice_roller_overlay.roll_finished.connect(
+		func(result):
+			await board.get_tree().create_timer(3).timeout
+			dice_roller_overlay.hide_overlay()
+			dice_rolled.emit(result)
+	)
 
 func show_banner(message: String, bg_color: Color = Color("008a5c"), duration: float = 2.5) -> void:
-	if banner_instance:
-		overlay_open.emit()
-		banner_instance.show_banner(message, bg_color, duration)
+	overlay_open.emit()
+	banner_instance.show_banner(message, bg_color, duration)
+	await banner_instance.current_tween.finished
+	overlay_closed.emit()
+	show_dice_overlay()
 		
 func show_toast(message: String, duration: float = 3.0) -> void:
 	if toast_instance:
@@ -141,19 +157,16 @@ func _start_new_property(tile_id: String) -> void:
 	Utils.debug("Abriendo overlay de propiedad para la casilla: " + tile_id)
 	
 	# Look for the tile
-	var current_tile = tile_data.get(tile_id, {})
-			
-	if current_tile.is_empty():
-		Utils.debug("⚠️ Error: No se encontraron datos en el JSON para la casilla " + tile_id)
-		return
+	var property: PropertyModel = ModelManager.get_property(tile_id)
 	
 	# Initialize the overlay
 	var overlay = NEW_PROPERTY_OVERLAY.instantiate()
 	board.add_child(overlay)
-	overlay.property_bought.connect(property_bought.emit.bind(tile_id, null))
+	# overlay.property_bought.connect(property_bought.emit.bind(tile_id, null))
+	overlay.property_bought.connect(WsClient.ws_action_buy_property.bind(tile_id))
 	overlay.property_bought.connect(overlay_closed.emit)
 	overlay.property_auctioned.connect(_start_auction.bind(tile_id))
-	overlay.abrir_carta(current_tile)
+	overlay.abrir_carta(property)
 
 func _start_property_administration(tile_id: String) -> void:
 	Utils.debug("Abriendo overlay de propiedad para la casilla: " + tile_id)
@@ -183,14 +196,7 @@ func _start_property_administration(tile_id: String) -> void:
 		property_houses_changed.emit(tile_id, final_houses, final_mortgage)
 	)
 	
-	overlay.tree_exited.connect(func():
-		if player_hud:
-			player_hud.toggle_hud_visibility(false)
-		if controls_hud:
-			controls_hud.show()
-			
-		overlay_closed.emit()
-	)
+	overlay.tree_exited.connect(overlay_closed.emit)
 
 func _start_property_with_mortgage(tile_id: String) -> void:
 	Utils.debug("Abriendo overlay de propiedad para la casilla: " + tile_id)
@@ -248,7 +254,7 @@ func _start_finished_auction(tile_id: String) -> void:
 	# Winner is at the top (index 0)
 	var winner_name = final_bids[0]["name"]
 	var winner_color = final_bids[0]["color"]
-	property_bought.emit(tile_id, winner_color)
+	# property_bought.emit(tile_id, winner_color)
 	results_screen.finished.connect(overlay_closed.emit)
 	Utils.debug("✅ La propiedad " + tile_id + " ahora pertenece a " + winner_name)
 
@@ -414,7 +420,7 @@ func show_jail_pay_decision(bail_price: int = 50) -> void:
 # GESTIÓN DE HUDS PRINCIPALES Y CHAT
 # ==========================================
 
-func setup_huds(players_data: Array) -> void:
+func setup_huds(players_data: Array[PlayerModel]) -> void:
 	# 1. Inicializar PlayerHUD (La barra de los jugadores)
 	player_hud = PlayerHUD.new()
 	board.add_child(player_hud)
@@ -434,19 +440,9 @@ func setup_huds(players_data: Array) -> void:
 	chat_hud = CHAT_SCENE.instantiate()
 	board.add_child(chat_hud)
 	chat_hud.init_chat(players_data)
-
-	# 4. GESTIÓN AUTOMÁTICA DE VISIBILIDAD
-	overlay_open.connect(func():
-		if not is_selecting_trade_target:
-			player_hud.toggle_hud_visibility(true)
-		controls_hud.toggle_hud_visibility(true)
-	)
 	
-	# Cuando se cierra, los volvemos a mostrar
-	overlay_closed.connect(func():
-		player_hud.toggle_hud_visibility(false)
-		controls_hud.toggle_hud_visibility(false)
-	)
+	overlay_open.connect(player_hud.toggle_hud_visibility.bind(true))
+	overlay_closed.connect(player_hud.toggle_hud_visibility.bind(false))
 
 func _open_settings() -> void:
 	var settings = SETTINGS_OVERLAY_SCENE.instantiate()
@@ -455,10 +451,6 @@ func _open_settings() -> void:
 func set_roll_disabled(disabled: bool) -> void:
 	if controls_hud:
 		controls_hud.set_roll_disabled(disabled)
-
-func add_chat_message(player_id: String, msg: String, is_important: bool = false) -> void:
-	if chat_hud:
-		chat_hud.add_player_message(player_id, msg, is_important)
 
 func _start_surrender_overlay() -> void:
 	Utils.debug("🏳️ Abriendo overlay de rendición...")

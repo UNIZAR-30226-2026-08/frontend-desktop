@@ -24,10 +24,10 @@ func _ready() -> void:
 	
 	settings_button.pressed.connect(func(): open_settings_requested.emit())
 	roll_button.pressed.connect(func(): roll_dice_requested.emit())
-	
 	admin_button.pressed.connect(func(): admin_requested.emit())
 	bankrupt_button.pressed.connect(func(): bankrupt_requested.emit())
 	trade_button.pressed.connect(func(): trade_requested.emit())
+	finish_button.pressed.connect(WsClient.ws_action_end_current_phase)
 
 func toggle_hud_visibility(to_hide: bool) -> void:
 	if is_hidden == to_hide: return

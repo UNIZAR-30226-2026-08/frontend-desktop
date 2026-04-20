@@ -21,8 +21,8 @@ func set_bridge_name(p_name: String) -> void:
 	
 # --- Función Maestra ---
 
-func update_all_data(data: Dictionary) -> void:
-	set_bridge_name(data.get("name", "Puente"))
+func update_all_data(bridge: PropertyModel) -> void:
+	set_bridge_name(bridge.name)
 
 # --- Lógica de Resaltado (Highlighter) ---
 

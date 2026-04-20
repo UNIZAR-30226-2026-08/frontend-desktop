@@ -9,7 +9,7 @@ var player_name: String
 var color: Color
 var token: PlayerToken
 
-var balance: int = 300 
+var balance: int = 1500
 var current_tile_id: String = "000"
 var is_in_jail: bool = false
 var jail_turn_count: int = 0

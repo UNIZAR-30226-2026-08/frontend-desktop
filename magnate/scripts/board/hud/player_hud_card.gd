@@ -10,13 +10,13 @@ extends MarginContainer
 
 # Para hacerlas clickables
 signal clicked(id: String)
-var player_id: String
+var player_id: int
 
 const animation_duration: int = 2
 const animation_label_offset: int = 40
 
 var base_color: Color = Color.WHITE
-var balance: int = 0
+var balance: int = 1500
 
 func _ready() -> void:
 	add_theme_constant_override("margin_left", 50)
@@ -34,13 +34,13 @@ func _ready() -> void:
 	if has_node("MainVBox"):
 		_ignore_mouse_on_children($MainVBox)
 
-func setup(p_id: String, p_name: String, p_color: Color, p_balance: int) -> void:
+func setup(p_id: int, p_name: String, p_color: Color, p_balance: int) -> void:
 	player_id = p_id # Guardamos el ID
 	mouse_filter = Control.MOUSE_FILTER_STOP # ¡Vital para detectar clicks!
 	
 	base_color = p_color
 	name_label.text = p_name.to_upper()
-	id_label.text = "#" + p_id.right(4)
+	id_label.text = "#" + str(p_id)
 	
 	_update_balance_label(p_balance)
 	queue_redraw()
@@ -58,6 +58,8 @@ func _update_balance_label(amount: int) -> void:
 
 func update_balance(amount: int) -> void:
 	var difference = amount - balance
+	if difference == 0: return
+	balance = amount
 	var formatted_difference = Utils.to_currency_text(difference)
 
 	var initial_y = balance_difference.position.y
@@ -67,7 +69,7 @@ func update_balance(amount: int) -> void:
 	bill_particles.set_emit(true)
 	
 	var tween = get_tree().create_tween().set_parallel().set_ease(Tween.EASE_IN_OUT)
-	tween.tween_method(_update_balance_label, balance, amount, animation_duration)\
+	tween.tween_method(_update_balance_label, ModelManager.get_player_balance(player_id), amount, animation_duration)\
 		.set_trans(Tween.TRANS_CUBIC)
 	var target_y = balance_difference.position.y
 	if difference > 0:
@@ -80,8 +82,6 @@ func update_balance(amount: int) -> void:
 		.set_trans(Tween.TRANS_LINEAR)
 	tween.tween_property(balance_difference, "modulate:a", 1, animation_duration)\
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_OUT)
-	
-	balance = amount
 	
 	await tween.finished
 	bill_particles.set_emit(false)

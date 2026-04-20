@@ -30,29 +30,26 @@ func _ready() -> void:
 # ==========================================
 # FUNCIÓN PÚBLICA PARA EL BOARD
 # ==========================================
-func abrir_carta(prop_data: Dictionary) -> void:
+func abrir_carta(property: PropertyModel) -> void:
 	# Asumimos que el precio base viene en la clave "price" (ajusta si en tu JSON se llama distinto)
-	var prop_price = prop_data.get("price", 0)
-	buy_button.text = "Comprar por %d" % prop_price + Globals.SYMBOL_CURRENCY
+	var buy_price = property.buy_price
+	if buy_price > ModelManager.get_player().balance: buy_button.disabled = true
+	buy_button.text = "Comprar por %d" % buy_price + Globals.SYMBOL_CURRENCY
 	
-	# Comprobamos si es un servidor mirando alguna clave de tu JSON
-	var is_server = prop_data["type"] == Globals.TileType.SERVER
-	var is_bridge = prop_data["type"] == Globals.TileType.BRIDGE
-	
-	if is_server:
+	if property.is_server:
 		card.visible = false
 		bridge_card.visible = false
-		server_card.update_all_data(prop_data)
+		server_card.update_all_data(property)
 		aparecer(server_card)
-	elif is_bridge:
+	elif property.is_bridge:
 		card.visible = false
 		server_card.visible = false
-		bridge_card.update_all_data(prop_data)
+		bridge_card.update_all_data(property)
 		aparecer(bridge_card)
 	else:
 		server_card.visible = false
 		bridge_card.visible = false
-		card.update_all_data(prop_data)
+		card.update_all_data(property)
 		aparecer(card)
 
 # ==========================================
@@ -75,14 +72,11 @@ func aparecer(tarjeta: Control):
 # ==========================================
 func _on_buy_button_pressed() -> void:
 	property_bought.emit() # Avisamos al tablero
-	cerrar_y_destruir()
-
-func cerrar_y_destruir() -> void:
 	queue_free()
-	
+
 func _on_auction_button_pressed() -> void:
 	property_auctioned.emit() # Avisamos al Tablero de que no compramos, subastamos
-	cerrar_y_destruir()
+	queue_free()
 
 const fade_duration = 0.1
 

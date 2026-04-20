@@ -1,11 +1,11 @@
 class_name TokenLayoutManager
 extends RefCounted
 
-static func update_all_token_positions(players: Array[Dictionary], tiles: Dictionary) -> void:
+static func update_all_token_positions(players: Array[PlayerModel], tiles: Dictionary) -> void:
 	var tile_occupants: Dictionary = {}
 	
 	for player_data in players:
-		var tile_id: String = player_data["model"].current_tile_id
+		var tile_id: String = player_data.current_tile_id
 		if not tile_occupants.has(tile_id):
 			tile_occupants[tile_id] = []
 		tile_occupants[tile_id].append(player_data["token"])

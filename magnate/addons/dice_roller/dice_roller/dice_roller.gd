@@ -163,7 +163,7 @@ func _on_finnished_dice_rolling(number: int, dice_name: String):
 	if result.size() < dices.size():
 		return
 	rolling = false
-	roll_finnished.emit(total_value)
+	roll_finnished.emit()
 
 func quick_roll():
 	var values: Array[int] = []

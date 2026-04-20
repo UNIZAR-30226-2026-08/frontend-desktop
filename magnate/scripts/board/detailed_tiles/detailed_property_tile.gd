@@ -59,18 +59,18 @@ func set_mortgage_price(p_amount: int) -> void:
 
 # --- Función Maestra ---
 
-func update_all_data(data: Dictionary) -> void:
-	set_property_name(data.get("name", "Propiedad"))
+func update_all_data(property: PropertyModel) -> void:
+	set_property_name(property.name)
 	# Convertimos el string del JSON a un Color real
-	set_property_color(Color(data.get("color", "#FFFFFF"))) 
-	set_basic_rent(data.get("rent_0", 0))
-	set_rent_1(data.get("rent_1", 0))
-	set_rent_2(data.get("rent_2", 0))
-	set_rent_3(data.get("rent_3", 0))
-	set_rent_4(data.get("rent_4", 0))
-	set_rent_hotel(data.get("rent_hotel", 0))
-	set_house_price(data.get("house_price", 0))
-	set_mortgage_price(data.get("mortgage", 0))
+	set_property_color(property.color) 
+	set_basic_rent(property.rent_prices[0])
+	set_rent_1(property.rent_prices[1])
+	set_rent_2(property.rent_prices[2])
+	set_rent_3(property.rent_prices[3])
+	set_rent_4(property.rent_prices[4])
+	set_rent_hotel(property.rent_prices[5])
+	set_house_price(property.build_price)
+	set_mortgage_price(property.buy_price / 2)
 
 var flash_tween: Tween 
 

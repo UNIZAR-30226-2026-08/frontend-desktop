@@ -50,14 +50,13 @@ func toggle_hud_visibility(to_hide: bool) -> void:
 	
 	container.mouse_filter = Control.MOUSE_FILTER_IGNORE if to_hide else Control.MOUSE_FILTER_PASS
 
-func setup_players(players_data: Array[Dictionary]) -> void:
+func setup_players(players_data: Array[PlayerModel]) -> void:
 	for child in container.get_children():
 		child.queue_free()
 	cards.clear()
 		
-	for p in players_data:
-		var model = p["model"]
-		var p_id: String = str(model.get("id")) if model.get("id") != null else "0"
+	for model in players_data:
+		var p_id: int = model.get("id")
 		var raw_name = model.get("player_name") if model.get("player_name") != null else model.get("name")
 		var p_name: String = str(raw_name) if raw_name != null else "Player"
 		
@@ -77,7 +76,7 @@ func setup_players(players_data: Array[Dictionary]) -> void:
 		
 		cards[p_id] = card
 
-func update_player_stats(p_id: String, new_balance: int, property_count: int) -> void:
+func update_player_stats(p_id: int, new_balance: int, property_count: int) -> void:
 	if cards.has(p_id):
 		var card = cards[p_id]
 		card.update_balance(new_balance)

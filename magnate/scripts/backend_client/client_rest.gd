@@ -53,7 +53,9 @@ func _ready() -> void:
 	if token_refresh == "":
 		needs_login = true
 	else:
-		await _refresh_access_token()
+		needs_login = false
+		login.emit()
+		_refresh_access_token()
 
 ## WARNING: You probably shouldn't be using this. There should be a
 ## specific function in this class that abstracts your request logic.
@@ -139,13 +141,14 @@ func _refresh_access_token():
 	if resp[1] == 200:
 		token_access = refresh_json["access"]
 		Utils.debug("Token refreshed!")
-		login.emit()
+		if needs_login:
+			login.emit()
 		if username == "" or WsClient.player_id == -1:
 			var user_info = await user_get_info()
 			username = user_info.get("username", "")
 			WsClient.player_id = int(user_info["pk"])
 		if has_last_data:
-			Utils.debug("Retrying las request")
+			Utils.debug("Retrying last request")
 			make_auth_request(last_url, last_data, last_verb, last_headers)
 	else:
 		user_logout()
@@ -163,7 +166,7 @@ func _response_handler(_result, response_code, _headers, body) -> void:
 			last_faulty_response_code = response_code
 		if needs_refresh:
 			Utils.debug("Access token expired. Attempting refresh...")
-			await _refresh_access_token()
+			_refresh_access_token()
 		else:
 			Utils.debug("Refresh token also expired. Redirecting to login.")
 			user_logout()
@@ -286,8 +289,8 @@ func user_change_piece(piece_id: int) -> Dictionary:
 	return await response
 
 # TODO
-func fetch_user_name_and_piece(pk: String) -> Dictionary:
-	make_auth_request(Globals.REST_BASE_URL + "/info/user-name-piece/" + pk + "/")
+func fetch_user_name_and_piece(pk: int) -> Dictionary:
+	make_auth_request(Globals.REST_BASE_URL + "/info/user-name-piece/" + str(pk) + "/")
 	return await response
 
 # TODO [{ "custom_id": 1.0, "itemType": "piece", "price": 100.0, "owned": false }, { "custom_id": 2.0, "itemType": "piece", "price": 200.0, "owned": false }, { "custom_id": 3.0, "itemType": "piece", "price": 300.0, "owned": false }, { "custom_id": 4.0, "itemType": "emoji", "price": 150.0, "owned": false }, { "custom_id": 5.0, "itemType": "emoji", "price": 250.0, "owned": false }]

@@ -19,13 +19,13 @@ var is_mortgaged: bool = false
 var original_is_mortgaged: bool = false
 
 var property_id: String
-var player_id: String
+var player_id: int
 var model_manager: ModelManager
 
 var max_houses_allowed: int = 5
 var min_houses_allowed: int = 0
 
-func setup(initial_data: Dictionary, houses: int, _prop_id: String, _player_id: String, _manager: ModelManager) -> void:
+func setup(initial_data: Dictionary, houses: int, _prop_id: String, _player_id: int, _manager: ModelManager) -> void:
 	if initial_data.has("color") and typeof(initial_data["color"]) == TYPE_COLOR:
 		initial_data["color"] = "#" + initial_data["color"].to_html()
 	
