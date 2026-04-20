@@ -184,7 +184,7 @@ signal response_general(Dictionary)
 ## - "dice2": int,					- Result of the second dice
 ## - "dice_bus": int,				- Result of the bus/third dice
 ## - "destinations": Array[String],	- Possible destinations for the player (list of ids)
-## - "triple": bool,				- If the throw is a triple
+## - "triple": bool,					- If the throw is a triple
 ## - "streak": int					- Streak of doubles for the current player
 ## - "fantasy_event": FantasyEvent	- See above
 signal response_throw_dices(Dictionary)
@@ -352,6 +352,12 @@ var last_private_lobby_code: String # Last private code received
 
 func _safe_connect(url: String, headers: PackedStringArray = []) -> void:
 	# Initiate connection to the given URL.
+	if socket != null:
+		if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
+			socket.close()
+			while socket.get_ready_state() != WebSocketPeer.STATE_CLOSED:
+				socket.poll()
+				await get_tree().process_frame
 	socket.handshake_headers = headers
 	var err = socket.connect_to_url(url)
 	if err == OK:
@@ -376,6 +382,15 @@ func start_client_private_lobby(lobby_code: String) -> void:
 	_safe_connect(Globals.WS_BASE_URL + "/queue/private/" + lobby_code + "/?token=" + RestClient.token_access)
 	_conn_state = ConnState.IN_PRIVATE_QUEUE
 
+func start_client_game() -> void:
+	Utils.debug("Connecting to game: " + str(game_id))
+	Utils.debug("_conn_state is " + str(_conn_state))
+	if _conn_state == ConnState.GO_TO_GAME:
+		RestClient.has_last_data = false
+		_conn_state = ConnState.IN_GAME
+		await RestClient._refresh_access_token()
+		_safe_connect(Globals.WS_BASE_URL + "/game/" + str(game_id) + "/?token=" + RestClient.token_access)
+
 func _ready() -> void:
 	set_process(false)
 
@@ -397,7 +412,7 @@ func _process(_delta) -> void:
 			elif _conn_state  == ConnState.IN_PRIVATE_QUEUE:
 				_private_queue_dispatcher(response)
 			else:
-				Utils.debug("ERROR: Invalid _conn_state with open socket")
+				Utils.debug("ERROR: Invalid _conn_state with open socket: " + str(_conn_state))
 		else: # This shouldn't happen to us
 			Utils.debug("ERROR: Got a binary packet")
 	
@@ -414,18 +429,12 @@ func _process(_delta) -> void:
 	# `WebSocketPeer.STATE_CLOSED` means the connection has fully closed.
 	# It is now safe to stop polling.
 	elif state == WebSocketPeer.STATE_CLOSED:
+		set_process(false)
 		var code = socket.get_close_code()
 		var reason = socket.get_close_reason()
 		Utils.debug("Socket closed. Code: %d, Reason: %s" % [code, reason])
-		if _conn_state == ConnState.GO_TO_GAME:
-			Utils.debug("Connecting to game: " + str(game_id))
-			RestClient.has_last_data = false
-			await RestClient._refresh_access_token()
-			_safe_connect(Globals.WS_BASE_URL + "/game/" + str(game_id) + "/?token=" + RestClient.token_access)
-			_conn_state = ConnState.IN_GAME
-		else: # Reset the state
+		if _conn_state != ConnState.GO_TO_GAME: # Reset the state
 			_conn_state = ConnState.START
-			set_process(false) # Stop processing.
 			match_finished.emit()
 
 # =====================
@@ -510,7 +519,7 @@ func _fantasyeventtype_string_to_enum(event_string: String) -> FantasyEventType:
 	return FantasyEventType.WIN_PLAIN_MONEY
 
 func _parse_fantasy_event(fantasy_event: Dictionary) -> Dictionary:
-	fantasy_event["type"] = _fantasyeventtype_string_to_enum(fantasy_event["type"])
+	fantasy_event["fantasy_type"] = _fantasyeventtype_string_to_enum(fantasy_event["fantasy_type"])
 	return fantasy_event
 
 func _parse_fantasy_result(fantasy_result: Dictionary) -> Dictionary:
@@ -623,7 +632,8 @@ func _game_response_dispatcher(response: Dictionary) -> void:
 				response["fantasy_result"] = _parse_fantasy_result(response["fantasy_result"])
 			response_choose_fantasy.emit(response)
 		"ResponseAuction": response_auction.emit(response)
-		_: Utils.debug("ERROR: Unknown type in socket response")
+		"Response": pass
+		_: Utils.debug("ERROR: Unknown type in socket response: " + response["type"])
 
 func _game_state_dispatcher(_game_state: Dictionary) -> void:
 	for k in _game_state["positions"].keys():
@@ -632,6 +642,15 @@ func _game_state_dispatcher(_game_state: Dictionary) -> void:
 	for p in _game_state["property_relationships"]:
 		p["square"] = _normalize_tile_id(p["square"])
 	_game_state["phase"] = _phase_string_to_enum(_game_state["phase"])
+	_game_state["id"] = int(_game_state["id"])
+	_game_state["streak"] = int(_game_state["streak"])
+	_game_state["parking_money"] = int(_game_state["parking_money"])
+	_game_state["current_turn"] = int(_game_state["current_turn"])
+	_game_state["active_phase_player"] = int(_game_state["active_phase_player"])
+	_game_state["active_turn_player"] = int(_game_state["active_turn_player"])
+	for i in len(_game_state["players"]):
+		_game_state["players"][i] = int(_game_state["players"][i])
+		_game_state["ordered_players"][i] = int(_game_state["ordered_players"][i])
 	game_state.emit(_game_state)
 
 func _game_dispatcher(response: Dictionary) -> void:
@@ -640,7 +659,7 @@ func _game_dispatcher(response: Dictionary) -> void:
 		return
 
 	match response["event_type"]:
-		"error": error.emit(response["data"]["message"])
+		"error": error.emit(response["message"])
 		"chat_message": chat_message.emit(response)
 		"game_state": _game_state_dispatcher(response["game_state"])
 		"game_response": _game_response_dispatcher(response["data"])

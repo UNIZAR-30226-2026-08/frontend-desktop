@@ -1,5 +1,5 @@
-class_name ModelManager
-extends RefCounted
+class_name MagnateModelManager
+extends Node2D
 
 signal game_initialized
 
@@ -10,27 +10,66 @@ signal player_balance_changed(player_id: int, new_balance: int)
 # Modelos
 var game: GameModel
 
-func initialize_game(game_id: int, raw_players: Array[Dictionary], properties_data: Array[Dictionary]) -> void:
+func initialize_game(game_state: Dictionary) -> void:
+	# Initialize PlayerModels
+	var json_text = FileAccess.open("res://assets/game_info/board.json", FileAccess.READ).get_as_text()
+	var board_info = JSON.parse_string(json_text)
 	var player_models: Array[PlayerModel] = []
-	for p_data in raw_players:
-		var color = Color(p_data.get("color", "#FFFFFF"))
-		player_models.append(PlayerModel.new(p_data["id"], p_data["name"], color))
-		
-	# Creamos el GameModel
-	game = GameModel.new(game_id, player_models, [])
+	var player_colors: Array = board_info["playerColors"]
+	for idx in len(game_state["ordered_players"]):
+		var color = Color(player_colors[idx])
+		var player_name = (await RestClient.fetch_user_name_and_piece(game_state["ordered_players"][idx])).get("username", "Desconocido")
+		var player = PlayerModel.new(game_state["ordered_players"][idx], player_name, color)
+		player.balance = int(game_state["money"][str(player.id)])
+		player.current_tile_id = game_state["positions"][str(player.id)]
+		player.is_in_jail = game_state["jail_remaining_turns"].has(str(player.id))
+		player.jail_turn_count = 3 - game_state["jail_remaining_turns"].get(str(player.id), 3)
+		player_models.append(player)
 	
-	# Creamos las propiedades con sus grupos
-	for p in properties_data:
-		var group_str = str(p.get("group", ""))
-		game.board_properties[p["id"]] = PropertyModel.new(p["id"], group_str)
+	# Initialize PropertyModels
+	json_text = FileAccess.open("res://assets/game_info/properties.json", FileAccess.READ).get_as_text()
+	var property_info = JSON.parse_string(json_text)
+	var property_models: Dictionary[String, PropertyModel] = {}
+	for tile in board_info["tiles"]:
+		if not tile["type"] in ["property", "server", "bridge"]: continue
+		for i in len(property_info[tile["id"]].rent_prices):
+			property_info[tile["id"]].rent_prices[i] = int(property_info[tile["id"]].rent_prices[i])
+		property_models[tile["id"]] = PropertyModel.new(tile["id"])
+		property_models[tile["id"]].name = tile["name"]
+		property_models[tile["id"]].rent_prices = property_info[tile["id"]].rent_prices
+		property_models[tile["id"]].buy_price = property_info[tile["id"]].buy_price
+		if tile["type"] == "server": property_models[tile["id"]].group_id = 13
+		elif tile["type"] == "bridge": property_models[tile["id"]].group_id = 14
+		else:
+			property_models[tile["id"]].group_id = tile["group"]
+			property_models[tile["id"]].build_price = property_info[tile["id"]].build_price
+			for group in board_info["groups"]:
+				if group["group"] != tile["group"]: continue
+				property_models[tile["id"]].color = Color(group["color"])
+				break
+	for p in game_state["property_relationships"]:
+		var _owner = get_player(p["owner"])
+		owner.owned_properties.append(p["square"])
+		var property = property_models[p["square"]]
+		property.house_count = p["houses"]
+		property.owner_id = p["owner"]
+		property.is_mortgaged = p["mortgage"]
 	
+	# Initialize GameModel
+	game = GameModel.new(game_state["id"], player_models, property_models.values())
+	game.current_turn_player_id = game_state["active_turn_player"]
+	game.my_id = WsClient.player_id
+	game.current_phase = game_state["phase"]
+	game.parking_money = game_state["parking_money"]
+	game.current_turn = game_state["current_turn"]
+	game.current_phase_player_id = game_state["active_phase_player"]
 	game_initialized.emit()
 
 # ==========================================
 # 🙋‍♂️ CONSULTAS DE JUGADORES
 # ==========================================
 
-func get_player(player_id: int) -> PlayerModel:
+func get_player(player_id: int = game.my_id) -> PlayerModel:
 	if game and game.players.has(player_id):
 		return game.players[player_id]
 	return null
@@ -72,8 +111,8 @@ func get_property_owner_id(property_id: String) -> String:
 	return prop.owner_id if prop else ""
 
 func is_property_owned(property_id: String) -> bool:
-	var owner = get_property_owner_id(property_id)
-	return owner != "" and owner != null
+	var _owner = get_property_owner_id(property_id)
+	return _owner != "" and _owner != null
 
 # ==========================================
 # ✏️ MODIFICADORES (Para cuando el Backend te mande actualizaciones)
@@ -117,10 +156,10 @@ func update_player_balance(player_id: int, new_balance: int) -> void:
 		player_balance_changed.emit(player_id, new_balance)
 
 ## NUEVA FUNCIÓN: Para usar en el Overlay de forma segura (sumar o restar)
-func add_player_balance(player_id: int, amount_to_add: int) -> void:
+func set_player_balance(player_id: int, amount: int) -> void:
 	var player = get_player(player_id)
 	if player:
-		player.balance += amount_to_add
+		player.balance = amount
 		player.emit_update()
 		player_balance_changed.emit(player_id, player.balance)
 

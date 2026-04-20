@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://r42my8wdgshe"]
+
+[ext_resource type="Script" uid="uid://bmg0psgoo57sc" path="res://scripts/board/models/model_manager.gd" id="1_7ojxq"]
+
+[node name="ModelManager" type="Node2D" unique_id=1557929967]
+script = ExtResource("1_7ojxq")

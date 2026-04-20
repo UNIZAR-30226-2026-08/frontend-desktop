@@ -26,6 +26,7 @@ SceneTransition="*uid://t0m5rvjixvms"
 AudioSystem="*uid://ch72ng0eupl0o"
 WsClient="*uid://d0npngeu5vu8b"
 RestClient="*uid://b3m5p5uxbd7dc"
+ModelManager="*uid://r42my8wdgshe"
 
 [display]
 
