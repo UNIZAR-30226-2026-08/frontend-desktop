@@ -2,7 +2,7 @@ class_name PlayerModel
 extends RefCounted
 
 # Señal añadida de la versión nueva
-signal player_updated(update_data: Dictionary)
+signal player_updated(p_id: int)
 
 var id: int
 var player_name: String
@@ -28,11 +28,4 @@ func move_to_tile(new_tile_id: String) -> void:
 
 func emit_update() -> void:
 	# Emitimos el diccionario igual que en React
-	var data: Dictionary = {
-		"id": id,
-		"balance": balance,
-		"properties": owned_properties.duplicate(),
-		"jailTurnCount": jail_turn_count,
-		"current_tile_id": current_tile_id
-	}
-	player_updated.emit(data)
+	player_updated.emit(id)

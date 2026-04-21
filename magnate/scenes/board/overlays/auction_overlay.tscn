@@ -256,6 +256,7 @@ text = "+50€"
 
 [node name="WithdrawButton" parent="SquarePanel" unique_id=1367630371 instance=ExtResource("5_h3upp")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
 offset_left = 597.0
 offset_top = 686.0

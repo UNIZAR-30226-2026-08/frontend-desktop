@@ -62,4 +62,8 @@ static func spawn_board(parent_scene: Node2D) -> Dictionary[String, Control]:
 	var tile_dict: Dictionary[String, Control] = {}
 	for tile_id in tile_defs:
 		tile_dict[tile_id] = _spawn_tile(parent_scene, tile_defs[tile_id])
+		if tile_defs[tile_id].type == Globals.TileType.PROPERTY:
+			tile_dict[tile_id].set_property_price(ModelManager.get_property(tile_id).buy_price)
+		if tile_dict[tile_id].has_method("update"):
+			ModelManager.get_property(tile_id).updated.connect(tile_dict[tile_id].update)
 	return tile_dict

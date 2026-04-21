@@ -70,6 +70,7 @@ func update_all_data(property: PropertyModel) -> void:
 	set_rent_4(property.rent_prices[4])
 	set_rent_hotel(property.rent_prices[5])
 	set_house_price(property.build_price)
+	@warning_ignore("integer_division")
 	set_mortgage_price(property.buy_price / 2)
 
 var flash_tween: Tween 

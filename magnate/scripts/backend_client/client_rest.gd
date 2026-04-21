@@ -237,7 +237,7 @@ func user_login(data: Dictionary) -> Dictionary:
 	if resp.has("tokens"):
 		_save_auth_data(resp["tokens"])
 	if resp != {}:
-		var user_info = await user_get_info()
+		var user_info = resp.get("user", resp)
 		username = user_info.get("username", "")
 		WsClient.player_id = int(user_info["pk"])
 	return resp

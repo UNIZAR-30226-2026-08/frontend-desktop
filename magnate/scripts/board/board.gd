@@ -20,23 +20,23 @@ var is_selecting_for_train: bool = false
 #  READY
 # =======
 func _ready() -> void:
-	var music = AudioResource.from_type(Globals.AUDIO_BOARDMUSIC, AudioResource.AudioResourceType.MUSIC)
-	AudioSystem.play_audio(music)
 	WsClient.start_client_game()
-	
-	# 1. Mundo físico y Cámara
-	tile_manager.setup_tiles(tile_parent_node)
-	camera_system.init_camera_system(self)
-	
-	# 2. Inicializar los datos del juego 
 	await _setup_game_data()
 	
-	# 3. Interfaz de Usuario y Overlays
+	tile_manager.setup_tiles(tile_parent_node)
+	PlayerSpawner.spawn_players(self, tile_manager.tile_entities, ModelManager.game)
+	TokenLayoutManager.update_all_token_positions(ModelManager.game.players.values(), tile_manager.tile_entities)
+	
+	var music = AudioResource.from_type(Globals.AUDIO_BOARDMUSIC, AudioResource.AudioResourceType.MUSIC)
+	AudioSystem.play_audio(music)
+	
+	camera_system.init_camera_system(self)
+	
 	overlay_manager.setup_overlays(self, %DiceRoller, %JailDiceRoller)
 	overlay_manager.setup_huds(ModelManager.game.players.values())
+	
 	_start_turn()
 	
-	# 4. Conectar tooooodas las señales
 	_connect_all_signals()
 	
 	# 5. Modo Debug
@@ -50,14 +50,12 @@ func _setup_game_data() -> void:
 	if game_state == {}: return
 
 	await ModelManager.initialize_game(game_state)
-	PlayerSpawner.spawn_players(self, tile_manager.tile_entities, ModelManager.game)
-	TokenLayoutManager.update_all_token_positions(ModelManager.game.players.values(), tile_manager.tile_entities)
 	
 	Utils.debug("💾 ModelManager inicializado con las reglas cargadas desde JSON")
 
-# ==============================================================================================================================================
-# CONEXIÓN DE SEÑALES
-# ==============================================================================================================================================
+# ===================
+#  SIGNAL CONNECTION
+# ===================
 func _connect_all_signals() -> void:
 	
 	if not ModelManager.property_updated.is_connected(_on_model_property_updated):
@@ -80,8 +78,17 @@ func _connect_all_signals() -> void:
 	# Señales de Secretaría (Cárcel)
 	overlay_manager.jail_roll_requested.connect(_on_jail_roll_requested)
 	
+	# Normal dice
+	overlay_manager.dice_roller_overlay.roll_finished.connect(_on_dice_result_received)
 	
+	# WS Response connections
+	WsClient.response_choose_square.connect(_on_choose_square_received)
+	WsClient.response_general.connect(_handle_general_response)
+	WsClient.response_auction.connect(_handle_end_auction)
 	
+	# WS Action connections
+	WsClient.action_buy_square.connect(_on_property_purchased)
+	WsClient.action_start_auction.connect(_handle_start_auction)
 	
 	# ------ LOS DE AQUI ABAJO YA ESTÁN MEDIO CONECTADOS ------ #
 	
@@ -89,18 +96,7 @@ func _connect_all_signals() -> void:
 	tile_manager.tile_pressed.connect(_on_highlighted_tile_clicked)
 	
 	# CONEXIONES A LOS OVERLAYS DE DADOS (NO LOS GESTIONA EL OVERLAY MANAGER)
-	overlay_manager.dice_roller_overlay.roll_finished.connect(_on_dice_result_received)
 	overlay_manager.jail_dice_roller.roll_finished.connect(_on_dice_result_received) # DONE 1
-
-	# CONEXIONES A LOS MANAGERS
-	# overlay_manager.normal_roll_requested.connect(_on_hud_roll_requested)
-	
-	# CONEXIONES AL WS RESPONSES
-	WsClient.response_choose_square.connect(_on_choose_square_received)
-	WsClient.response_general.connect(_handle_general_response)
-	
-	# WS ACTION CONECTIONS
-	WsClient.action_buy_square.connect(_on_property_purchased)
 	
 	# CONEXIONES RELACIONADAS CON LA CARCEL
 	# CONECTADOS A NIVEL 1
@@ -125,16 +121,38 @@ func _start_turn() -> void:
 	overlay_manager.controls_hud.toggle_hud_visibility(true)
 	var text = "Tu turno"
 	var player = ModelManager.get_player(ModelManager.get_current_turn_player_id())
-	if not ModelManager.game.is_my_turn():
+	if not ModelManager.is_my_turn():
 		text = "Turno de " + player.player_name
 	overlay_manager.show_banner(text, player.color)
 
 func _start_phase() -> void:
 	match ModelManager.game.current_phase:
 		WsClient.Phase.ROLL_THE_DICES:
-			if ModelManager.game.is_my_turn(): overlay_manager.show_dice_overlay()
+			overlay_manager.show_dice_overlay()
 		WsClient.Phase.BUSINESS:
-			if ModelManager.game.is_my_turn(): overlay_manager.controls_hud.toggle_hud_visibility(false)
+			if ModelManager.is_my_turn(): overlay_manager.show_controls_when_possible()
+
+# ================
+#  LOGIC HANDLERS
+# ================
+func _handle_start_auction(response: Dictionary) -> void:
+	if !ModelManager.is_my_turn(): overlay_manager.start_auction(response)
+
+#"auction": {
+#	"id": 4.0,
+#	"square": 9.0,
+#	"winner": 2.0,
+#	"final_amount": 110.0,
+#	"is_active": false,
+#	"is_tie": false,
+#	"bids": { "2": 110.0 } 
+func _handle_end_auction(response: Dictionary) -> void:
+	overlay_manager.start_finished_auction(response)
+	if response["auction"]["is_tie"]: return
+	var auction = response["auction"]
+	for bid in auction["bids"]:
+		ModelManager.update_player_balance(int(bid), -auction["bids"][bid])
+	ModelManager.set_property_owner(auction["square"], response["auction"]["winner"])
 
 # ============
 #  MODO DEBUG
@@ -160,17 +178,9 @@ func _begin_debug(mode: int) -> void:
 		_run_debug_train_scenario()
 
 
-# ==============================================================================================================================================
-# LÓGICA DE DADOS - CONEXIÓN: GAME_MODEL <-> BOARD <-> DICE_ROLLER
-# ==============================================================================================================================================
-# ACTION - Tirada normal DONE 1
-#func _on_hud_roll_requested() -> void:
-#	# 1. Bloquear la UI para que el jugador no haga doble click
-#	overlay_manager.set_roll_disabled(true)
-#	# 2. Avisamos al manager de que tiene que esperar a mostrar un overlay
-#	overlay_manager.overlay_open.emit()
-#	WsClient.ws_action_throw_dice()
-
+# ============
+#  DICE LOGIC
+# ============
 # Devolución por parte del Overlay Manager de los dados
 func _on_dice_result_received(result: Dictionary) -> void:
 	# 1. EXTRAEMOS EL GAME_MODEL Y EL PLAYER_MODEL QUE HA TIRADO PARA UTILIZAR LA INFORMACIÓN 
@@ -178,7 +188,7 @@ func _on_dice_result_received(result: Dictionary) -> void:
 	var current_player: PlayerModel = ModelManager.get_player(game.current_turn_player_id)
 	
 	# 3. LÓGICA DE DADOS (PARA EL USUARIO QUE LOS HA LANZADO)
-	if game.is_my_turn():
+	if ModelManager.is_my_turn():
 		if current_player.is_in_jail: 
 			#_handle_jail_dice_logic()
 			pass
@@ -187,7 +197,7 @@ func _on_dice_result_received(result: Dictionary) -> void:
 			if result.streak == 3:
 				# TODO mensaje de has sacado dobles 3 veces: Yendo a la cárcel
 				# Al mandarlo a la casilla de ir a la cárcel, ya sale la animación de ir a la cárcel
-				current_player.current_tile_id = game.important_tiles["go_to_jail"]
+				ModelManager.update_player_position(current_player.id, game.important_tiles["go_to_jail"])
 				_handle_normal_movement(false, result.path)
 				overlay_manager.overlay_closed.emit()
 			elif len(result.destinations) > 1:
@@ -223,9 +233,9 @@ func _on_jail_roll_requested() -> void:
 	overlay_manager.dice_roller_overlay.hide_overlay()
 	overlay_manager.jail_dice_roller.show_overlay()
 
-# ==============================================================================================================================================
-# LÓGICA DE MOVIMIENTO - CONEXIÓN: GAME_MODEL, PLAYERMODEL <-> BOARD
-# ==============================================================================================================================================
+# ================
+#  MOVEMENT LOGIC
+# ================
 # Función que actualiza el movimieneto del player a su destino en GAME_MODEL
 # PRE: animation = false teletransporta al player sin la animación
 func _handle_normal_movement(animation: bool, path: Array[String]) -> void:
@@ -261,7 +271,7 @@ func _handle_normal_movement(animation: bool, path: Array[String]) -> void:
 		#TokenLayoutManager.update_all_token_positions(players, tile_manager.tile_entities)
 		
 		# Si es el turno del usuario, mostramos overlay de la casilla a la que va
-		if game.is_my_turn():
+		if ModelManager.is_my_turn():
 			overlay_manager.display_overlay_for_tile(path[-1])
 
 	else:
@@ -272,6 +282,7 @@ func _handle_normal_movement(animation: bool, path: Array[String]) -> void:
 		# Si es el turno del usuario, mostramos overlay de la casilla a la que va
 		if game.current_turn_player_id == game.my_id:
 			overlay_manager.display_overlay_for_tile(current_player.current_tile_id)
+	# TODO: TokenLayoutManager.update_all_token_positions()
 
 # RESPONSE - JUGADOR ACTUAL HA SELECCIONADO CASILLA PARA MOVERSE
 func _on_choose_square_received(data: Dictionary) -> void:
@@ -347,7 +358,7 @@ func _on_jail_pay_bail_confirmed() -> void:
 	var game = ModelManager.game
 	
 	# Mandamos la action de haber pagado la fianza
-	WsClient.action_pay_bail.emit({"game": game.game_id, "player": game.current_turn_player_id})
+	WsClient.ws_action_pay_bail()
 	
 	# TODO FALTA CAPTURAR EL ACTION QUE BROADCASTEA EL BACK PARA MOVER AL JUGADOR
 	return
@@ -402,7 +413,7 @@ func _check_cancel_admin_click() -> void:
 		_cancel_admin_selection()
 		
 func _handle_tram_selection(clicked_tile_id: String) -> void:
-		var current_player_id = ModelManager.get_current_turn_player_id()
+#		var current_player_id = ModelManager.get_current_turn_player_id()
 		var current_tile_id = "010" #HARDCODEADO
 		var tile_name = "Estación" # Aquí puedes sacar el nombre real si lo tienes en el PropertyModel
 		
@@ -423,7 +434,7 @@ func _on_tram_travel_confirmed(target_tile_id: String, cost: int) -> void:
 	var current_player_id = ModelManager.get_current_turn_player_id()
 	
 	if cost > 0:
-		ModelManager.set_player_balance(current_player_id, ModelManager.get_player(current_player_id).balance - cost)
+		ModelManager.update_player_balance(current_player_id, -cost)
 		
 	# Movemos al jugador (usando la función que arreglamos antes)
 	ModelManager.update_player_position(current_player_id, target_tile_id)
@@ -493,8 +504,6 @@ func _handle_jail_dice_logic() -> void:
 		# Iluminamos la cárcel (ID "010" por ejemplo) y el destino
 		#tile_manager.prompt_tile_selection(["104", jail_target_tile])
 
-
-		
 func _on_property_houses_changed(tile_id: String, new_houses: int, is_mortgaged: bool) -> void:
 	if tile_manager.tile_entities.has(tile_id):
 		var tile = tile_manager.tile_entities[tile_id]
@@ -509,11 +518,10 @@ func _on_property_houses_changed(tile_id: String, new_houses: int, is_mortgaged:
 
 func _on_property_purchased(data: Dictionary) -> void:
 	Utils.debug("💰 ¡El jugador ha comprado la casilla " + data["square"])
-	var player: PlayerModel = ModelManager.get_player(data["player"])
-	tile_manager.set_tile_owner(data["square"], player.color)
-	player.owned_properties.append(data["square"])
-	player.balance -= ModelManager.get_property(data["square"]).buy_price
-	overlay_manager.player_hud.update_player_stats(player.id, player.balance, len(player.owned_properties))
+	#var player: PlayerModel = ModelManager.get_player(data["player"])
+	#tile_manager.set_tile_owner(data["square"], player.color)
+	ModelManager.set_property_owner(data["square"], data["player"])
+	ModelManager.update_player_balance(data["player"], -ModelManager.get_property(data["square"]).buy_price)
 
 func _on_trade_selection_requested(is_player_1: bool, available_ids: Array) -> void:	
 	# Set the trade state to active
@@ -627,7 +635,7 @@ func _run_debug_train_scenario() -> void:
 	if target_player_id == 1:
 		target_player_id = 1 
 		
-	print("🚂 [DEBUG] Ejecutando escenario de Tranvía para el jugador: ", target_player_id)
+	Utils.debug("🚂 [DEBUG] Ejecutando escenario de Tranvía para el jugador: " + str(target_player_id))
 
 	# 2. Mover al jugador usando tu función del ModelManager
 	#_handle_normal_movement()

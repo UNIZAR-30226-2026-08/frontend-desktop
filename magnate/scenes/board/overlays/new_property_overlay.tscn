@@ -45,6 +45,7 @@ script = ExtResource("1_eu44f")
 
 [node name="PropertyCard" parent="." unique_id=589823767 instance=ExtResource("2_iwjru")]
 unique_name_in_owner = true
+visible = false
 offset_left = 760.0
 offset_top = 200.0
 offset_right = 1160.0
@@ -52,6 +53,7 @@ offset_bottom = 800.0
 
 [node name="ServerCard" parent="." unique_id=919827841 instance=ExtResource("4_iwjru")]
 unique_name_in_owner = true
+visible = false
 offset_left = 760.0
 offset_top = 200.0
 offset_right = 1160.0
@@ -59,6 +61,7 @@ offset_bottom = 800.0
 
 [node name="BridgeCard" parent="." unique_id=617245605 instance=ExtResource("4_0m1iy")]
 unique_name_in_owner = true
+visible = false
 offset_left = 760.0
 offset_top = 200.0
 offset_right = 1160.0

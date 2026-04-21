@@ -218,6 +218,14 @@ signal response_choose_fantasy(Dictionary)
 ## - "winner": int
 ## - "final_amount": int
 ## - "is_tie": bool
+## - "auction": Dictionary
+##		- "id": int
+##		- "square": String
+##		- "winner": int
+##		- "final_amount": int
+##		- "is_active": bool
+##		- "is_tie": bool
+## 		- "bids": Dictionary[String, int]	- User ID to bid amount
 signal response_auction(Dictionary)
 
 # ACTION SIGNALS
@@ -631,7 +639,14 @@ func _game_response_dispatcher(response: Dictionary) -> void:
 			if response["fantasy_result"]:
 				response["fantasy_result"] = _parse_fantasy_result(response["fantasy_result"])
 			response_choose_fantasy.emit(response)
-		"ResponseAuction": response_auction.emit(response)
+		"ResponseAuction":
+			for bid in response["auction"]["bids"]:
+				response["auction"]["bids"][bid] = int(response["auction"]["bids"][bid])
+			response["auction"]["id"] = int(response["auction"]["id"])
+			response["auction"]["square"] = _normalize_tile_id(response["auction"]["square"])
+			response["auction"]["winner"] = int(response["auction"]["winner"])
+			response["auction"]["final_amount"] = int(response["auction"]["final_amount"])
+			response_auction.emit(response)
 		"Response": pass
 		_: Utils.debug("ERROR: Unknown type in socket response: " + response["type"])
 

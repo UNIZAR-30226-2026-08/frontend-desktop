@@ -2,12 +2,6 @@ class_name MagnateOverlayManager
 extends RefCounted
 
 #  ===== MOCK DATA, CAN BE DELETED FOR RELEASE =====
-var final_bids = [
-	{"name": "Lucas", "color": Color.RED, "bet": 180},
-	{"name": "Cris", "color": Color.BLUE, "bet": 179},
-	{"name": "Nic", "color": Color.ORANGE, "bet": 30},
-	{"name": "Naud", "color": Color.GREEN, "bet": 10}
-]
 var _dummy_fantasy_cards = [
 	{"name": "Beca por Excelencia", "description": "Tus notas en Programación son increíbles. Ganas 100€."},
 	{"name": "Multa de Biblioteca", "description": "Olvidaste devolver un libro de SQL. Pagas 20€."},
@@ -17,8 +11,9 @@ var _dummy_fantasy_cards = [
 # ================ END OF MOCK DATA ================
 
 # common signals
-signal overlay_closed
-signal overlay_open
+signal overlay_closed # Emited when a FULLSCREEN overlay is closed
+signal overlay_open # Emited when a FULLSCREEN overlay is opened
+var is_overlay_open: bool = false
 
 # specific signals
 signal trade_selection_request
@@ -97,11 +92,17 @@ func setup_overlays(_board: Node2D, dice_roller, jail_dice) -> void:
 	board = _board
 	dice_roller_overlay = dice_roller
 	jail_dice_roller = jail_dice
+	overlay_closed.connect(func(): is_overlay_open = false)
+	overlay_open.connect(func(): is_overlay_open = true)
 	tile_data = BoardDefinitionParser.parse_board("res://assets/game_info/board.json")
 	banner_instance = BANNER_MESSAGE.instantiate()
 	board.add_child(banner_instance)
 	toast_instance = TOAST_MESSAGE.instantiate()
 	board.add_child(toast_instance)
+
+func show_controls_when_possible() -> void:
+	if not is_overlay_open: controls_hud.toggle_hud_visibility(false)
+	else: overlay_closed.connect(controls_hud.toggle_hud_visibility.bind(false), CONNECT_ONE_SHOT)
 
 func show_dice_overlay() -> void:
 	dice_roller_overlay.show_overlay()
@@ -139,124 +140,83 @@ func display_overlay_for_tile(tile_id: String) -> void:
 
 	# 3. Call the overlay handler
 	var handlers: Dictionary[Globals.TileType, Callable] = {
-		Globals.TileType.PROPERTY: _start_new_property.bind(tile_id),
-		Globals.TileType.SERVER: _start_new_property.bind(tile_id),
+		Globals.TileType.PROPERTY: _property_state_dispatcher.bind(tile_id),
+		Globals.TileType.SERVER: _property_state_dispatcher.bind(tile_id),
 		Globals.TileType.FANTASY: _start_fantasy_overlay.bind(tile_id),
 		Globals.TileType.GO_TO_JAIL: _start_go_to_jail_overlay.bind(tile_id),
 		Globals.TileType.JAIL: _start_jail_overlay.bind(tile_id),
 		Globals.TileType.PARKING: _start_parking_overlay.bind(tile_id),
-		Globals.TileType.BRIDGE: _start_new_property.bind(tile_id),
+		Globals.TileType.BRIDGE: _property_state_dispatcher.bind(tile_id),
 		Globals.TileType.TRAM: _start_tram_overlay
 	}
 	if handlers.has(tile_type):
 		handlers[tile_type].call()
 	else:
-		Utils.debug("⚠️ Tipo de casilla desconocido o sin acción programada: " + tile_type)
+		Utils.debug("⚠️ Tipo de casilla desconocido o sin acción programada")
 
-func _start_new_property(tile_id: String) -> void:
-	Utils.debug("Abriendo overlay de propiedad para la casilla: " + tile_id)
-	
-	# Look for the tile
+func _property_state_dispatcher(tile_id: String) -> void:
 	var property: PropertyModel = ModelManager.get_property(tile_id)
-	
-	# Initialize the overlay
+	if property.is_mortgaged: _start_property_with_mortgage(property)
+	elif property.owner_id != -1: _start_pay_rent(property)
+	else: _start_new_property(property)
+
+func _start_new_property(property: PropertyModel) -> void:
+	Utils.debug("Abriendo overlay de propiedad para la casilla: " + property.id)
 	var overlay = NEW_PROPERTY_OVERLAY.instantiate()
 	board.add_child(overlay)
 	# overlay.property_bought.connect(property_bought.emit.bind(tile_id, null))
-	overlay.property_bought.connect(WsClient.ws_action_buy_property.bind(tile_id))
+	overlay.property_bought.connect(WsClient.ws_action_buy_property.bind(property.id))
 	overlay.property_bought.connect(overlay_closed.emit)
-	overlay.property_auctioned.connect(_start_auction.bind(tile_id))
-	overlay.abrir_carta(property)
+	overlay.property_auctioned.connect(WsClient.ws_action_start_auction.bind(property.id))
+	overlay.property_auctioned.connect(overlay_closed.emit)
+	overlay.setup(property)
 
 func _start_property_administration(tile_id: String) -> void:
 	Utils.debug("Abriendo overlay de propiedad para la casilla: " + tile_id)
-	
-	# Look for the tile
 	var current_tile = tile_data.get(tile_id, {})
-			
-	if current_tile.is_empty():
-		Utils.debug("⚠️ Error: No se encontraron datos en el JSON para la casilla " + tile_id)
-		return
-	
-	# Initialize the overlay
 	var overlay = PROPERTY_ADMINISTRATION_OVERLAY.instantiate()
-	
-	# 👇 LA MAGIA OCURRE AQUÍ 👇
-	# Obtenemos los datos desde el manager de nuestro board
-	var manager = board.model_manager
-	var current_player_id = manager.get_current_turn_player_id()
-	var current_houses = manager.get_property_houses(tile_id)
-	
+	var current_player_id = ModelManager.get_current_turn_player_id()
+	var current_houses = ModelManager.get_property_houses(tile_id)
 	board.add_child(overlay)
-	
-	# Le pasamos los 5 parámetros que configuramos en tu script del overlay
-	overlay.setup(current_tile, current_houses, tile_id, current_player_id, manager)
-	
-	overlay.administration_confirmed.connect(func(final_houses: int, final_mortgage: bool):
-		property_houses_changed.emit(tile_id, final_houses, final_mortgage)
+	overlay.setup(current_tile, current_houses, tile_id, current_player_id)
+	overlay.administration_confirmed.connect(
+		func(final_houses: int, final_mortgage: bool):
+			property_houses_changed.emit(tile_id, final_houses, final_mortgage)
 	)
-	
 	overlay.tree_exited.connect(overlay_closed.emit)
 
-func _start_property_with_mortgage(tile_id: String) -> void:
-	Utils.debug("Abriendo overlay de propiedad para la casilla: " + tile_id)
-	
-	# Look for the tile
-	var current_tile = tile_data.get(tile_id, {})
-			
-	if current_tile.is_empty():
-		Utils.debug("⚠️ Error: No se encontraron datos en el JSON para la casilla " + tile_id)
-		return
-	
-	# Initialize the overlay
+func _start_property_with_mortgage(property: PropertyModel) -> void:
+	Utils.debug("Abriendo overlay de propiedad para la casilla: " + property.id)
 	var overlay = MORTGAGE_OVERLAY.instantiate()
+	overlay.setup(property)
 	board.add_child(overlay)
 
-func _start_pay_rent(tile_id: String) -> void:
-	Utils.debug("Abriendo overlay de propiedad para la casilla: " + tile_id)
-	
-	# Look for the tile
-	var current_tile = tile_data.get(tile_id, {})
-			
-	if current_tile.is_empty():
-		Utils.debug("⚠️ Error: No se encontraron datos en el JSON para la casilla " + tile_id)
-		return
-	
-	# Initialize the overlay
+func _start_pay_rent(property: PropertyModel) -> void:
+	Utils.debug("Abriendo overlay de propiedad para la casilla: " + property.id)
 	var overlay = PAY_RENT_OVERLAY.instantiate()
+	overlay.setup(property)
 	board.add_child(overlay)
 
-func _start_auction(tile_id: String) -> void:
-	Utils.debug("🔨 Empezando subasta para la casilla: " + tile_id)
-	
-	# Look for the tile
-	var current_tile = tile_data.get(tile_id, {})
-			
-	if current_tile.is_empty():
-		Utils.debug("⚠️ Error: No se encontraron datos para subastar la casilla " + tile_id)
-		return
-		
-	# Initialize the overlay
+func start_auction(action: Dictionary) -> void:
+	Utils.debug("🔨 Empezando subasta para la casilla: " + action["square"])
+	var property = ModelManager.get_property(action["square"])
 	var auction_screen = AUCTION_OVERLAY.instantiate()
 	board.add_child(auction_screen)
-	auction_screen.auction_finished.connect(_start_finished_auction.bind(tile_id))
-	auction_screen.abrir_carta(current_tile)
+	auction_screen.abrir_carta(property)
 
-func _start_finished_auction(tile_id: String) -> void:
-	Utils.debug("🏆 Subasta terminada. Mostrando resultados para: " + tile_id)
+func start_finished_auction(response: Dictionary) -> void:
+	Utils.debug("🏆 Subasta terminada. Mostrando resultados para")
 	
 	var results_screen = RESULTS_AUCTION_OVERLAY.instantiate()
 	board.add_child(results_screen)
 	
 	# Show results
-	results_screen.mostrar_resultados(final_bids)
-	
-	# Winner is at the top (index 0)
-	var winner_name = final_bids[0]["name"]
-	var winner_color = final_bids[0]["color"]
-	# property_bought.emit(tile_id, winner_color)
+	var bids: Array[Dictionary] = []
+	for bid in response["auction"]["bids"]:
+		bids.append({"player": ModelManager.get_player(int(bid)), "bid": response["auction"]["bids"][bid]})
+	results_screen.show_results(bids)
 	results_screen.finished.connect(overlay_closed.emit)
-	Utils.debug("✅ La propiedad " + tile_id + " ahora pertenece a " + winner_name)
+	Utils.debug("✅ La propiedad ahora pertenece al ganador")
 
 func _start_fantasy_overlay(_tile_id: String) -> void:
 	Utils.debug("✨ Iniciando evento de Fantasía...")

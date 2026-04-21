@@ -5,6 +5,9 @@ extends Control
 	%Highlighter1,
 	%Highlighter2
 ]
+@onready var mortgage_price: Label = %MortgagePrice
+@onready var rent_1: Label = %Rent1
+@onready var rent_2: Label = %Rent2
 
 var flash_tween: Tween 
 
@@ -23,6 +26,10 @@ func set_bridge_name(p_name: String) -> void:
 
 func update_all_data(bridge: PropertyModel) -> void:
 	set_bridge_name(bridge.name)
+	rent_1.text = "Con 1 Puente . . . . . . . . . " + Utils.to_currency_text(bridge.rent_prices[0])
+	rent_1.text = "Con 2 Puentes . . . . . . . . " + Utils.to_currency_text(bridge.rent_prices[0])
+	@warning_ignore("integer_division")
+	mortgage_price.text = "Valor de la Hipoteca " + Utils.to_currency_text(bridge.buy_price / 2)
 
 # --- Lógica de Resaltado (Highlighter) ---
 

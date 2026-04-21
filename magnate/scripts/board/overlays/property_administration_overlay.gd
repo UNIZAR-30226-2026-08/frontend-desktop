@@ -20,12 +20,11 @@ var original_is_mortgaged: bool = false
 
 var property_id: String
 var player_id: int
-var model_manager: ModelManager
 
 var max_houses_allowed: int = 5
 var min_houses_allowed: int = 0
 
-func setup(initial_data: Dictionary, houses: int, _prop_id: String, _player_id: int, _manager: ModelManager) -> void:
+func setup(initial_data: Dictionary, houses: int, _prop_id: String, _player_id: int) -> void:
 	if initial_data.has("color") and typeof(initial_data["color"]) == TYPE_COLOR:
 		initial_data["color"] = "#" + initial_data["color"].to_html()
 	
@@ -35,22 +34,20 @@ func setup(initial_data: Dictionary, houses: int, _prop_id: String, _player_id: 
 	
 	property_id = _prop_id
 	player_id = _player_id
-	model_manager = _manager
 	
 	index = houses
 	original_index = houses
 	price_per_house = initial_data.get("house_price", 50)
 	
 	# LEEMOS EL ESTADO DE LA HIPOTECA DEL MODELO
-	if model_manager:
-		var prop = model_manager.get_property(property_id)
-		if prop:
-			is_mortgaged = prop.is_mortgaged
-			original_is_mortgaged = prop.is_mortgaged
+	var prop = ModelManager.get_property(property_id)
+	if prop:
+		is_mortgaged = prop.is_mortgaged
+		original_is_mortgaged = prop.is_mortgaged
 	
 	# CALCULAMOS LOS LÍMITES UNA ÚNICA VEZ
-	var max_add = model_manager.get_max_addable_houses(property_id, player_id)
-	var max_rem = model_manager.get_max_removable_houses(property_id)
+	var max_add = ModelManager.get_max_addable_houses(property_id, player_id)
+	var max_rem = ModelManager.get_max_removable_houses(property_id)
 	
 	max_houses_allowed = original_index + max_add
 	min_houses_allowed = original_index - max_rem
@@ -62,24 +59,23 @@ func _ready() -> void:
 	super()
 
 func _update_ui() -> void:
-	if model_manager:
-		var prop = model_manager.get_property(property_id)
-		var owns_all = model_manager.owns_full_group(prop.group_id, player_id)
+	var prop = ModelManager.get_property(property_id)
+	var owns_all = ModelManager.owns_full_group(prop.group_id, player_id)
 		
-		var base_can_mortgage = model_manager.can_mortgage(property_id, player_id)
-		# Solo permitimos tocar la hipoteca si no estamos construyendo/destruyendo casas
-		mortgage_button.visible = base_can_mortgage and (index == 0) and (original_index == 0)
+	var base_can_mortgage = ModelManager.can_mortgage(property_id, player_id)
+	# Solo permitimos tocar la hipoteca si no estamos construyendo/destruyendo casas
+	mortgage_button.visible = base_can_mortgage and (index == 0) and (original_index == 0)
 		
-		# Si está hipotecada o va a estarlo, ocultamos los botones de casas
-		if not owns_all or is_mortgaged:
-			add_house_button.visible = false
-			remove_house_button.visible = false
-		else:
-			var can_add_more = index < max_houses_allowed
-			add_house_button.visible = (can_add_more and index >= original_index) or (index < original_index)
+	# Si está hipotecada o va a estarlo, ocultamos los botones de casas
+	if not owns_all or is_mortgaged:
+		add_house_button.visible = false
+		remove_house_button.visible = false
+	else:
+		var can_add_more = index < max_houses_allowed
+		add_house_button.visible = (can_add_more and index >= original_index) or (index < original_index)
 			
-			var can_remove_more = index > min_houses_allowed
-			remove_house_button.visible = (can_remove_more and index <= original_index) or (index > original_index)
+		var can_remove_more = index > min_houses_allowed
+		remove_house_button.visible = (can_remove_more and index <= original_index) or (index > original_index)
 
 	# 2. Toda la información de coste va al Animated Button
 	if is_mortgaged != original_is_mortgaged:
@@ -122,7 +118,7 @@ func _on_mortgage_property_pressed() -> void:
 func _on_confirm_button_pressed() -> void:
 	var has_changes = (index != original_index) or (is_mortgaged != original_is_mortgaged)
 	
-	if has_changes and model_manager:
+	if has_changes:
 		var net_money: int = 0
 		
 		# Cálculos finales para balance
@@ -140,15 +136,15 @@ func _on_confirm_button_pressed() -> void:
 			
 		# Aplicamos el dinero neto
 		if net_money != 0:
-			model_manager.add_player_balance(player_id, net_money)
+			ModelManager.add_player_balance(player_id, net_money)
 			
 		# Aplicamos las casas
 		if index != original_index:
-			model_manager.set_property_houses(property_id, index)
+			ModelManager.set_property_houses(property_id, index)
 			
 		# Aplicamos la hipoteca
 		if is_mortgaged != original_is_mortgaged:
-			model_manager.set_property_mortgaged(property_id, is_mortgaged)
+			ModelManager.set_property_mortgaged(property_id, is_mortgaged)
 
 	# Emitimos los DOS valores actualizados y cerramos
 	administration_confirmed.emit(index, is_mortgaged) 

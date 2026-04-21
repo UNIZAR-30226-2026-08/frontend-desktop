@@ -68,6 +68,8 @@ func initialize_game(game_state: Dictionary) -> void:
 # ==========================================
 # 🙋‍♂️ CONSULTAS DE JUGADORES
 # ==========================================
+func is_my_turn() -> bool:
+	return game.my_id == game.current_turn_player_id
 
 func get_player(player_id: int = game.my_id) -> PlayerModel:
 	if game and game.players.has(player_id):
@@ -80,7 +82,7 @@ func get_player_balance(player_id: int) -> int:
 
 func get_player_properties(player_id: int) -> Array[String]:
 	var player = get_player(player_id)
-	return player.properties if player else []
+	return player.owned_properties if player else []
 
 func get_player_position(player_id: int) -> String:
 	var player = get_player(player_id)
@@ -106,13 +108,13 @@ func is_property_mortgaged(property_id: String) -> bool:
 	var prop = get_property(property_id)
 	return prop.is_mortgaged if prop else false
 
-func get_property_owner_id(property_id: String) -> String:
+func get_property_owner_id(property_id: String) -> int:
 	var prop = get_property(property_id)
-	return prop.owner_id if prop else ""
+	return prop.owner_id if prop else -1
 
 func is_property_owned(property_id: String) -> bool:
 	var _owner = get_property_owner_id(property_id)
-	return _owner != "" and _owner != null
+	return _owner != -1 and _owner != null
 
 # ==========================================
 # ✏️ MODIFICADORES (Para cuando el Backend te mande actualizaciones)
@@ -123,39 +125,41 @@ func set_property_owner(property_id: String, new_owner_id: int) -> void:
 	var new_owner = get_player(new_owner_id)
 	
 	if prop and new_owner:
-		if prop.owner_id != 0:
+		if prop.owner_id != -1:
 			var old_owner = get_player(prop.owner_id)
-			if old_owner and old_owner.properties.has(property_id):
-				old_owner.properties.erase(property_id)
+			if old_owner and old_owner.owned_properties.has(property_id):
+				old_owner.owned_properties.erase(property_id)
 				old_owner.emit_update()
 		
 		prop.owner_id = new_owner_id
-		if not new_owner.properties.has(property_id):
-			new_owner.properties.append(property_id)
+		if not new_owner.owned_properties.has(property_id):
+			new_owner.owned_properties.append(property_id)
 			
 		new_owner.emit_update()
 		property_updated.emit(property_id)
+		prop.updated.emit(property_id)
 
 func set_property_houses(property_id: String, houses: int) -> void:
 	var prop = get_property(property_id)
 	if prop:
 		prop.house_count = houses
 		property_updated.emit(property_id)
+		prop.updated.emit(property_id)
 
 func set_property_mortgaged(property_id: String, is_mortgaged: bool) -> void:
 	var prop = get_property(property_id)
 	if prop:
 		prop.is_mortgaged = is_mortgaged
 		property_updated.emit(property_id)
+		prop.updated.emit(property_id)
 
-func update_player_balance(player_id: int, new_balance: int) -> void:
+func update_player_balance(player_id: int, amount: int) -> void:
 	var player = get_player(player_id)
 	if player:
-		player.balance = new_balance
+		player.balance += amount
 		player.emit_update()
-		player_balance_changed.emit(player_id, new_balance)
+		player_balance_changed.emit(player_id, player.balance)
 
-## NUEVA FUNCIÓN: Para usar en el Overlay de forma segura (sumar o restar)
 func set_player_balance(player_id: int, amount: int) -> void:
 	var player = get_player(player_id)
 	if player:

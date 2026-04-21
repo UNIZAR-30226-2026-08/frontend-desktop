@@ -11,11 +11,8 @@ static func _create_single_player(model: PlayerModel, parent_node: Node2D, tiles
 	var token = PlayerToken.new()
 	token.setup(model.color)
 	
-	if tiles.has("000"):
-		var start_tile = tiles["000"]
-		token.position = start_tile.position + start_tile.pivot_offset
-	else:
-		printerr("Start tile '000' not found in tiles dictionary!")
+	var start_tile = tiles["000"]
+	token.position = start_tile.position + start_tile.pivot_offset
 		
 	token.z_index = 10 + player_index
 	
