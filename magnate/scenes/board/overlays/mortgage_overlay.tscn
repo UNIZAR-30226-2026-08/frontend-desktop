@@ -1,15 +1,15 @@
 [gd_scene format=3 uid="uid://iip2p7fd0k63"]
 
-[ext_resource type="Script" uid="uid://b1l4jwv2xm3ih" path="res://scripts/board/overlays/basic_overlay.gd" id="1_w3yn8"]
+[ext_resource type="Script" uid="uid://ds5eox2ostkhv" path="res://scripts/board/overlays/mortgage_overlay.gd" id="1_w3yn8"]
 [ext_resource type="PackedScene" uid="uid://cgltbxhah1ssn" path="res://scenes/board/cards/mortgage_card.tscn" id="3_lpd07"]
 [ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="4_4ccyw"]
 
 [node name="MortgageOverlay" type="CanvasLayer" unique_id=417320456 node_paths=PackedStringArray("card")]
 script = ExtResource("1_w3yn8")
-button_text = "Aceptar"
 card = NodePath("MortgageCard")
 
 [node name="MortgageCard" parent="." unique_id=589823767 instance=ExtResource("3_lpd07")]
+unique_name_in_owner = true
 offset_left = 760.0
 offset_top = 173.0
 offset_right = 1160.0

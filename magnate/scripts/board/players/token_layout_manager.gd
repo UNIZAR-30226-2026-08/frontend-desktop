@@ -44,4 +44,4 @@ static func _arrange_tokens_on_tile(tile_id: String, tokens: Array, tiles: Dicti
 			if i == 3: offset_vector = Vector2(spacing, spacing)
 		
 		var final_pos = tile_center + offset_vector
-		token.move_to([final_pos])
+		token.tp_to_pos(final_pos)

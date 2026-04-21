@@ -38,10 +38,8 @@ script = ExtResource("2_y3yp7")
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1241891131]
 material = SubResource("ShaderMaterial_5hnra")
 layout_mode = 0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 408.0
-offset_bottom = 608.0
+offset_right = 400.0
+offset_bottom = 600.0
 script = ExtResource("4_5hnra")
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1665116371]

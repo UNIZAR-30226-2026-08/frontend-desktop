@@ -19,7 +19,7 @@ func _ready() -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	# Para evitar BUGS: clicks invisibles, etc.
-	if not ModelManager.game.is_my_turn() or not visible or has_rolled or dice_roller_3d.rolling or not dice_roller_3d.interactive:
+	if not ModelManager.is_my_turn() or not visible or has_rolled or dice_roller_3d.rolling or not dice_roller_3d.interactive:
 		return
 	
 	if event is InputEventMouseButton:
@@ -44,7 +44,7 @@ func force_values_in_dice_and_show_dice(forced_values: Array[int]) -> void:
 	show_overlay()
 	
 	# Si no es mi turno simulo lanzado de dados automático
-	if not ModelManager.game.is_my_turn():
+	if not ModelManager.is_my_turn():
 		roll_the_dice(forced_roll_throw)
 	# else el juego esperará a que el usuario le de a los dados, no hay que hacer nada
 

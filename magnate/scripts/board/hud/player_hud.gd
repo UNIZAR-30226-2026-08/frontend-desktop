@@ -60,7 +60,7 @@ func setup_players(players_data: Array[PlayerModel]) -> void:
 		var raw_name = model.get("player_name") if model.get("player_name") != null else model.get("name")
 		var p_name: String = str(raw_name) if raw_name != null else "Player"
 		
-		print("✅ Jugador creado -> Nombre: ", p_name, " | ID exacto: '", p_id, "'")
+		Utils.debug("✅ Jugador creado -> Nombre: " + p_name + " | ID exacto: '" + str(p_id) + "'")
 		
 		var p_color: Color = model.get("color") if model.get("color") != null else Color.WHITE
 		
@@ -70,13 +70,13 @@ func setup_players(players_data: Array[PlayerModel]) -> void:
 		container.add_child(card)
 		
 		card.setup(p_id, p_name, p_color, p_balance)
-		
-		# 👇 Conectamos el clic de la tarjeta hacia el HUD general
 		card.clicked.connect(func(id): player_selected.emit(id))
-		
 		cards[p_id] = card
+		model.player_updated.connect(update_player_stats)
 
-func update_player_stats(p_id: int, new_balance: int, property_count: int) -> void:
+func update_player_stats(p_id: int) -> void:
+	var new_balance: int = ModelManager.get_player_balance(p_id)
+	var property_count: int = len(ModelManager.get_player_properties(p_id))
 	if cards.has(p_id):
 		var card = cards[p_id]
 		card.update_balance(new_balance)

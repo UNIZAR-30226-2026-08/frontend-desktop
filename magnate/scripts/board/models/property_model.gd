@@ -1,6 +1,8 @@
 class_name PropertyModel
 extends RefCounted
 
+signal updated(tile_id: String)
+
 var id: String
 var name: String = ""
 var house_count: int = 0

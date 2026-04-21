@@ -42,6 +42,3 @@ func get_property_owner(property_id: String) -> int:
 	if board_properties.has(property_id):
 		return board_properties[property_id].owner_id
 	return -1
-
-func is_my_turn() -> bool:
-	return my_id == current_turn_player_id
