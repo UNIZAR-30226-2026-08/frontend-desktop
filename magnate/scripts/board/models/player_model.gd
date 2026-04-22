@@ -14,6 +14,8 @@ var current_tile_id: String = "000"
 var is_in_jail: bool = false
 var jail_turn_count: int = 0
 var owned_properties: Array[String] = []
+var surrendered: bool = false
+var last_path_taken: Array[Vector2] = []
 
 func _init(p_id: int, p_name: String, p_color: Color) -> void:
 	id = p_id
@@ -22,9 +24,9 @@ func _init(p_id: int, p_name: String, p_color: Color) -> void:
 	token = PlayerToken.new()
 	token.setup(color)
 
-func move_to_tile(new_tile_id: String) -> void:    
+func move_to_tile(new_tile_id: String, new_path: Array[Vector2]) -> void:    
 	current_tile_id = new_tile_id
-	emit_update() # Añadido para que avise a la UI al moverse
+	last_path_taken = new_path
 
 func emit_update() -> void:
 	# Emitimos el diccionario igual que en React

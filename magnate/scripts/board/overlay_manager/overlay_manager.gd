@@ -13,7 +13,7 @@ var _dummy_fantasy_cards = [
 # common signals
 signal overlay_closed # Emited when a FULLSCREEN overlay is closed
 signal overlay_open # Emited when a FULLSCREEN overlay is opened
-var is_overlay_open: bool = false
+signal show_controls_now # Signals that now is a good time to show controls if needed
 
 # specific signals
 signal trade_selection_request
@@ -53,6 +53,7 @@ var banner_instance: CanvasLayer = null
 
 # HUD
 var controls_hud: ControlsHUD
+var automatic_control_visibility = false
 var chat_hud: CanvasLayer
 var player_hud: PlayerHUD
 
@@ -92,8 +93,6 @@ func setup_overlays(_board: Node2D, dice_roller, jail_dice) -> void:
 	board = _board
 	dice_roller_overlay = dice_roller
 	jail_dice_roller = jail_dice
-	overlay_closed.connect(func(): is_overlay_open = false)
-	overlay_open.connect(func(): is_overlay_open = true)
 	tile_data = BoardDefinitionParser.parse_board("res://assets/game_info/board.json")
 	banner_instance = BANNER_MESSAGE.instantiate()
 	board.add_child(banner_instance)
@@ -101,8 +100,10 @@ func setup_overlays(_board: Node2D, dice_roller, jail_dice) -> void:
 	board.add_child(toast_instance)
 
 func show_controls_when_possible() -> void:
-	if not is_overlay_open: controls_hud.toggle_hud_visibility(false)
-	else: overlay_closed.connect(controls_hud.toggle_hud_visibility.bind(false), CONNECT_ONE_SHOT)
+	if not ModelManager.is_my_turn(): return
+	await show_controls_now
+	automatic_control_visibility = true
+	controls_hud.toggle_hud_visibility(false)
 
 func show_dice_overlay() -> void:
 	dice_roller_overlay.show_overlay()
@@ -165,8 +166,11 @@ func _start_new_property(property: PropertyModel) -> void:
 	var overlay = NEW_PROPERTY_OVERLAY.instantiate()
 	board.add_child(overlay)
 	# overlay.property_bought.connect(property_bought.emit.bind(tile_id, null))
-	overlay.property_bought.connect(WsClient.ws_action_buy_property.bind(property.id))
-	overlay.property_bought.connect(overlay_closed.emit)
+	overlay.property_bought.connect(func():
+		WsClient.ws_action_buy_property(property.id)
+		overlay_closed.emit()
+		show_controls_when_possible()
+	)
 	overlay.property_auctioned.connect(WsClient.ws_action_start_auction.bind(property.id))
 	overlay.property_auctioned.connect(overlay_closed.emit)
 	overlay.setup(property)
@@ -190,12 +194,14 @@ func _start_property_with_mortgage(property: PropertyModel) -> void:
 	var overlay = MORTGAGE_OVERLAY.instantiate()
 	overlay.setup(property)
 	board.add_child(overlay)
+	overlay.button_pressed.connect(show_controls_when_possible)
 
 func _start_pay_rent(property: PropertyModel) -> void:
 	Utils.debug("Abriendo overlay de propiedad para la casilla: " + property.id)
 	var overlay = PAY_RENT_OVERLAY.instantiate()
 	overlay.setup(property)
 	board.add_child(overlay)
+	overlay.button_pressed.connect(show_controls_when_possible)
 
 func start_auction(action: Dictionary) -> void:
 	Utils.debug("🔨 Empezando subasta para la casilla: " + action["square"])
@@ -215,7 +221,10 @@ func start_finished_auction(response: Dictionary) -> void:
 	for bid in response["auction"]["bids"]:
 		bids.append({"player": ModelManager.get_player(int(bid)), "bid": response["auction"]["bids"][bid]})
 	results_screen.show_results(bids)
-	results_screen.finished.connect(overlay_closed.emit)
+	results_screen.finished.connect(func():
+		overlay_closed.emit()
+		show_controls_when_possible()
+	)
 	Utils.debug("✅ La propiedad ahora pertenece al ganador")
 
 func _start_fantasy_overlay(_tile_id: String) -> void:
@@ -233,7 +242,10 @@ func _start_fantasy_overlay(_tile_id: String) -> void:
 	overlay.card_action_resolved.connect(overlay_closed.emit)
 	
 	# 4. Log final event
-	overlay.card_action_resolved.connect(func(): Utils.debug("Fin del evento Fantasía. Continuando juego..."))
+	overlay.card_action_resolved.connect(func():
+		Utils.debug("Fin del evento Fantasía. Continuando juego...")
+		show_controls_when_possible()
+	)
 
 func _start_tram_overlay() -> void:
 	Utils.debug("✨ Iniciando tranvía...")
@@ -253,7 +265,10 @@ func _start_go_to_jail_overlay(tile_id: String) -> void:
 		Utils.debug("Termina animación de secretaría")
 		overlay.queue_free()
 	)
-	overlay.animation_complete.connect(overlay_closed.emit)
+	overlay.animation_complete.connect(func():
+		overlay_closed.emit()
+		show_controls_when_possible()
+	)
 	
 	overlay.play_animation()
 
@@ -264,10 +279,11 @@ func _start_parking_overlay(tile_id: String) -> void:
 	Utils.debug("🅿️ Has caído en el Parking Libre: " + tile_id)
 	var overlay = PARKING_OVERLAY.instantiate()
 	board.add_child(overlay)
-	overlay.button_pressed.connect(overlay_closed.emit)
-	overlay.button_pressed.connect(get_parking_money.emit)
-
-# TODO: Remeber to emit overlay_closed at the end
+	overlay.button_pressed.connect(func():
+		overlay_closed.emit()
+		get_parking_money.emit()
+		show_controls_when_possible()
+	)
 
 func _start_trade(p1_name: String, p2_name: String, p1_money: int, p2_money: int, p1_props: Array[Dictionary], p2_props: Array[Dictionary]) -> void:
 	Utils.debug("🤝 Iniciando overlay de tradeo...")
@@ -302,6 +318,10 @@ func _start_trade(p1_name: String, p2_name: String, p1_money: int, p2_money: int
 func start_scoreboard_overlay() -> void:
 	var current_overlay = SCOREBOARD_OVERLAY.instantiate()
 	board.add_child(current_overlay)
+	current_overlay.button_pressed.connect(func():
+		WsClient.socket.close()
+		SceneTransition.change_scene("res://scenes/UI/home_screen.tscn")
+	)
 
 func start_offer(left_data: Dictionary, right_data: Dictionary) -> void:
 	Utils.debug("⚖️ Mostrando propuesta de trato...")
@@ -401,8 +421,16 @@ func setup_huds(players_data: Array[PlayerModel]) -> void:
 	board.add_child(chat_hud)
 	chat_hud.init_chat(players_data)
 	
-	overlay_open.connect(player_hud.toggle_hud_visibility.bind(true))
-	overlay_closed.connect(player_hud.toggle_hud_visibility.bind(false))
+	overlay_open.connect(func():
+		player_hud.toggle_hud_visibility.bind(true)
+		if automatic_control_visibility:
+			controls_hud.toggle_hud_visibility(true)
+	)
+	overlay_closed.connect(func():
+		player_hud.toggle_hud_visibility.bind(false)
+		if automatic_control_visibility:
+			controls_hud.toggle_hud_visibility(false)
+	)
 
 func _open_settings() -> void:
 	var settings = SETTINGS_OVERLAY_SCENE.instantiate()
@@ -414,7 +442,7 @@ func set_roll_disabled(disabled: bool) -> void:
 
 func _start_surrender_overlay() -> void:
 	Utils.debug("🏳️ Abriendo overlay de rendición...")
-	overlay_open.emit() 
+	overlay_open.emit()
 	
 	var overlay = SURRENDER_OVERLAY.instantiate()
 	board.add_child(overlay)
@@ -429,9 +457,9 @@ func _start_surrender_overlay() -> void:
 	# Si confirma salir:
 	overlay.exit_game_confirmed.connect(func():
 		Utils.debug("🏠 Botón salir pulsado. Cambiando escena...")
-		
-		board.get_tree().change_scene_to_packed(HOME_PAGE)
-		
+		WsClient.ws_action_surrender()
+		WsClient.socket.close()
+		SceneTransition.change_scene("res://scenes/UI/home_screen.tscn")
 	)
 
 # ==========================================

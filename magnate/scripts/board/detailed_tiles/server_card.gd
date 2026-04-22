@@ -1,4 +1,4 @@
-extends Control
+extends MagnateBaseCard
 
 @onready var server_name: Label = %ServerName
 @onready var highlighters: Array = [

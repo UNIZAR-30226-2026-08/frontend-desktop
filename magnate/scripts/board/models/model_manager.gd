@@ -167,11 +167,18 @@ func set_player_balance(player_id: int, amount: int) -> void:
 		player.emit_update()
 		player_balance_changed.emit(player_id, player.balance)
 
-func update_player_position(player_id: int, new_tile_id: String) -> void:
+func update_player_position(player_id: int, new_tile_id: String, path: Array[Vector2]) -> void:
 	var player = get_player(player_id)
 	if player:
-		player.move_to_tile(new_tile_id)
-		
+		player.move_to_tile(new_tile_id, path)
+		player.emit_update()
+
+func set_player_surrender(player_id: int) -> void:
+	var player = get_player(player_id)
+	if player:
+		player.surrendered = true
+		player.emit_update()
+
 # ==========================================
 # ⚖️ VALIDACIONES DE REGLAS (Monopoly Estricto)
 # ==========================================

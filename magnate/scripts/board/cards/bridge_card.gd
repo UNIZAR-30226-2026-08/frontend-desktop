@@ -1,4 +1,4 @@
-extends Control
+extends MagnateBaseCard
 
 @onready var bridge_name: Label = %BridgeName
 @onready var highlighters: Array = [

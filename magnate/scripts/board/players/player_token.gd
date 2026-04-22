@@ -2,6 +2,9 @@ class_name PlayerToken
 extends Area2D
 
 signal on_token_clicked(token_node: PlayerToken) # DEBUG
+signal stopped
+
+var current_tile_id: String = "000"
 var token_color: Color = Color.WHITE
 var hop_audio: AudioResource
 var offset: Vector2 = Vector2.ZERO:
@@ -27,9 +30,19 @@ func _ready() -> void:
 	
 	hop_audio = AudioResource.from_type(Globals.AUDIO_PLAYER_HOP, AudioResource.AudioResourceType.SFX)
 
-func setup(color: Color) -> void:
+func setup(color: Color, _current_tile_id: String = "000") -> void:
 	token_color = color
+	current_tile_id = _current_tile_id
 	queue_redraw()
+
+func update(player_id) -> void:
+	var player = ModelManager.get_player(player_id)
+	if player.surrendered:
+		queue_free()
+		return
+	if player.current_tile_id != current_tile_id:
+		move_to(player.last_path_taken)
+		current_tile_id = player.current_tile_id
 
 func _draw() -> void:
 	draw_set_transform(offset, 0, Vector2.ONE)
@@ -79,6 +92,7 @@ func move_to(positions: Array[Vector2]) -> void:
 			
 		await tween.finished
 		await get_tree().create_timer(0.05).timeout
+	stopped.emit()
 
 # DEBUG
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:

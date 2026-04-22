@@ -2,7 +2,7 @@ extends CanvasLayer
 
 @onready var transition_animation: AnimationPlayer = $TransitionAnimation
 
-func change_scene(target_path) -> void:
+func change_scene(target_path: String) -> void:
 	transition_animation.play("fade_in")
 	await transition_animation.animation_finished
 	

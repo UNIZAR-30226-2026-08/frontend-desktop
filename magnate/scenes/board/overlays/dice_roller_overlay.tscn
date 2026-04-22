@@ -43,7 +43,7 @@ script = ExtResource("1_d5ri2")
 unique_name_in_owner = true
 top_level = true
 dice_set = Array[ExtResource("3_2cr3t")]([SubResource("Resource_dej46"), SubResource("Resource_rpdi3"), SubResource("Resource_c6wwm")])
-roller_color = Color(1, 1, 1, 0)
+roller_color = Color(0, 0.39215687, 0, 0)
 
 [node name="RollerBox" parent="DiceRoller" index="0" unique_id=1324775602]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)

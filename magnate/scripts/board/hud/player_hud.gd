@@ -75,12 +75,15 @@ func setup_players(players_data: Array[PlayerModel]) -> void:
 		model.player_updated.connect(update_player_stats)
 
 func update_player_stats(p_id: int) -> void:
+	if not cards.has(p_id): return
+	var card = cards[p_id]
+	if ModelManager.get_player(p_id).surrendered:
+		card.queue_free()
+		return
 	var new_balance: int = ModelManager.get_player_balance(p_id)
 	var property_count: int = len(ModelManager.get_player_properties(p_id))
-	if cards.has(p_id):
-		var card = cards[p_id]
-		card.update_balance(new_balance)
-		card.update_properties(property_count)
+	card.update_balance(new_balance)
+	card.update_properties(property_count)
 
 func set_selection_mode(active: bool, my_player_id: String = "") -> void:
 	if active:

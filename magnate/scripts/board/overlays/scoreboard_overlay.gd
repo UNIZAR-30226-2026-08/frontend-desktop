@@ -1,12 +1,15 @@
 extends BlurryBgOverlay
 
+signal button_pressed
+
 @onready var category_name = %TitleLabel
 @onready var unnamed_scores = [%ScoreboardEntry, %ScoreboardEntry2, %ScoreboardEntry3, %ScoreboardEntry4]
-@onready var confirm_button = %ConfirmButton
+@onready var confirm_button: Button = %ConfirmButton
 var named_scores = {}
 
 func _ready() -> void:
 	super()
+	confirm_button.pressed.connect(button_pressed.emit)
 	
 	# Working example
 	add_player("Nico", Color("#f94144"))

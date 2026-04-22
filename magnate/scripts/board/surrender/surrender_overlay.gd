@@ -8,11 +8,5 @@ signal cancel_surrender
 
 func _ready() -> void:
 	super() # Mantiene lo que haga BlurryBgOverlay
-	
-	exit_button.pressed.connect(func():
-		exit_game_confirmed.emit()
-	)
-	
-	back_to_game_button.pressed.connect(func():
-		cancel_surrender.emit()
-	)
+	exit_button.pressed.connect(exit_game_confirmed.emit)
+	back_to_game_button.pressed.connect(cancel_surrender.emit)

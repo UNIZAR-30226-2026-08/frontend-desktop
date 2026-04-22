@@ -290,7 +290,7 @@ signal action_choose_card(Dictionary)
 
 ## Action sent when surrendering the game
 ## Action dictionary includes:
-## - "game": int		- ID of the game the action took place in
+## - "game": int	- ID of the game the action took place in
 ## - "player": int	- ID of the player that took action
 signal action_surrender(Dictionary)
 
@@ -603,7 +603,10 @@ func _game_action_dispatcher(action: Dictionary) -> void:
 		"ActionBuild": action_build.emit(action)
 		"ActionDemolish": action_demolish.emit(action)
 		"ActionChooseCard": action_choose_card.emit(action)
-		"ActionSurrender": action_surrender.emit(action)
+		"ActionSurrender":
+			action["game"] = int(action["game"])
+			action["player"] = int(action["player"])
+			action_surrender.emit(action)
 		"ActionTradeProposal":
 			action["offered_properties"] = _normalize_tile_id(action["offered_properties"])
 			action["asked_properties"] = _normalize_tile_id(action["asked_properties"])

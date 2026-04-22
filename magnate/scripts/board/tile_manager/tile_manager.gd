@@ -28,6 +28,14 @@ func highlight_tiles(ids: Array[String]) -> void:
 		tiles_to_darken.append(id)
 	darken_tiles(tiles_to_darken)
 
+func solve_path(path: Array[String]) -> Array[Vector2]:
+	var path_positions: Array[Vector2] = []
+	for step_id in path:
+		if tile_entities.has(step_id):
+			var step_tile = tile_entities[step_id]
+			path_positions.append(step_tile.position + step_tile.pivot_offset)
+	return path_positions
+
 func darken_tiles(ids: Array[String]) -> void:
 	var darken_canvas = CanvasGroup.new()
 	tile_parent_node.add_child(darken_canvas)
