@@ -27,13 +27,13 @@ func initialize_game(game_state: Dictionary) -> void:
 		player_models.append(player)
 	
 	# Initialize PropertyModels
-	json_text = FileAccess.open("res://assets/game_info/properties.json", FileAccess.READ).get_as_text()
-	var property_info = JSON.parse_string(json_text)
+	json_text = FileAccess.open("res://assets/game_info/money.json", FileAccess.READ).get_as_text()
+	var property_list = JSON.parse_string(json_text)["tiles"]
+	var property_info = {}
+	for p in property_list: property_info[p["id"]] = p
 	var property_models: Dictionary[String, PropertyModel] = {}
 	for tile in board_info["tiles"]:
 		if not tile["type"] in ["property", "server", "bridge"]: continue
-		for i in len(property_info[tile["id"]].rent_prices):
-			property_info[tile["id"]].rent_prices[i] = int(property_info[tile["id"]].rent_prices[i])
 		property_models[tile["id"]] = PropertyModel.new(tile["id"])
 		property_models[tile["id"]].name = tile["name"]
 		property_models[tile["id"]].rent_prices = property_info[tile["id"]].rent_prices

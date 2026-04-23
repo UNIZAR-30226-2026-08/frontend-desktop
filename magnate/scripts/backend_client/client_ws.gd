@@ -73,7 +73,10 @@ enum ConnState {START, IN_PUBLIC_QUEUE, IN_PRIVATE_QUEUE, GO_TO_GAME, IN_GAME}
 #  GENERAL USE SIGNALS
 # =====================
 ## Emitted when an error is received, String contains the error message
-signal error(String)
+signal error(message: String)
+
+## Emitted when the socket is disconnected, int contains the socket close code
+signal socket_disconnect(close_code: int)
 
 ## Emitted when a chat message is received
 ## Dictionary contains:
@@ -351,9 +354,8 @@ signal action_bid(Dictionary)
 var socket = WebSocketPeer.new() # WS instance
 var game_id: int # ID of the current playing game (Only valid if _conn_state = IN_GAME)
 var player_id: int = -1 # ID of the player (Only valid if _conn_state = IN_GAME)
-var last_message: Variant # Last message received
 var _conn_state: ConnState = ConnState.START # Internal state of the connection
-var last_private_lobby_code: String # Last private code received
+var private_lobby_code: String # Private code for next connection
 
 # The following comes straight from the Godot docs with slight modifications:
 # https://docs.godotengine.org/en/stable/tutorials/networking/websocket.html#using-websocket-in-godot
@@ -385,9 +387,8 @@ func start_client_public_queue() -> void:
 	_safe_connect(Globals.WS_BASE_URL + "/queue/public/?token=" + RestClient.token_access)
 	_conn_state = ConnState.IN_PUBLIC_QUEUE
 
-func start_client_private_lobby(lobby_code: String) -> void:
-	last_private_lobby_code = lobby_code
-	_safe_connect(Globals.WS_BASE_URL + "/queue/private/" + lobby_code + "/?token=" + RestClient.token_access)
+func start_client_private_lobby() -> void:
+	_safe_connect(Globals.WS_BASE_URL + "/queue/private/" + private_lobby_code + "/?token=" + RestClient.token_access)
 	_conn_state = ConnState.IN_PRIVATE_QUEUE
 
 func start_client_game() -> void:
@@ -412,7 +413,6 @@ func _process(_delta) -> void:
 			var packet_text: String = packet.get_string_from_utf8()
 			var response: Dictionary = JSON.parse_string(packet_text)
 			Utils.debug("Got response " + str(response))
-			last_message = response
 			if _conn_state == ConnState.IN_GAME:
 				_game_dispatcher(response)
 			elif _conn_state  == ConnState.IN_PUBLIC_QUEUE:
@@ -440,6 +440,7 @@ func _process(_delta) -> void:
 		set_process(false)
 		var code = socket.get_close_code()
 		var reason = socket.get_close_reason()
+		socket_disconnect.emit(code)
 		Utils.debug("Socket closed. Code: %d, Reason: %s" % [code, reason])
 		if _conn_state != ConnState.GO_TO_GAME: # Reset the state
 			_conn_state = ConnState.START
@@ -624,6 +625,8 @@ func _game_response_dispatcher(response: Dictionary) -> void:
 		Utils.debug("ERROR: Response doesnt have a phase or type")
 
 	response["phase"] = _phase_string_to_enum(response["phase"])
+	for pk in response["positions"]:
+		response["positions"][pk] = _normalize_tile_id(response["positions"][pk])
 	response_general.emit(response)
 	match response["type"]:
 		"ResponseMovement": Utils.debug("ERROR: Received ResponseMovement, this shouldnt happen")

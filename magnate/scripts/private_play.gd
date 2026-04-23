@@ -33,11 +33,11 @@ func _on_confirm_button_pressed() -> void:
 			tooltip.flash()
 			code_input.text = ""
 			return
+		WsClient.private_lobby_code = code
 	elif tab_container.current_tab == 1:
 		var response = await RestClient.game_get_private_code()
 		if response == {}: return
-		code = response["code"]
-	WsClient.start_client_private_lobby(code)
+		WsClient.private_lobby_code = response["code"]
 	SceneTransition.change_scene("res://scenes/UI/waiting_lobby.tscn")
 
 func _on_header_back_action_requested() -> void:
