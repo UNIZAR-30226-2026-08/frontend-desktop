@@ -169,17 +169,9 @@ func _begin_debug(mode: int) -> void:
 	if mode == 1:
 		pass
 	elif mode == 2:
-		_run_debug_trade_scenario()
-	elif mode == 3:
 		_run_debug_offer_scenario()
-	elif mode == 4:
-		await get_tree().create_timer(2).timeout
-		overlay_manager.start_scoreboard_overlay()
-	elif mode == 5:
+	elif mode == 3:
 		_run_debug_jail_scenario()
-	elif mode == 6:
-		_run_debug_train_scenario()
-
 
 # ============
 #  DICE LOGIC
@@ -350,7 +342,7 @@ func _on_admin_selection_requested() -> void:
 	ModelManager.set_property_owner("006", current_player_id)
 	
 	# 👇 3. Le pedimos al manager las propiedades REALES de ese jugador
-	var mis_propiedades_ids: Array[String] = ModelManager.get_player_properties(current_player_id)
+	var mis_propiedades_ids: Array[String] = ModelManager.get_player(current_player_id).owned_properties
 	
 	# Y se las pasamos a tu tile_manager para que las resalte
 	tile_manager.prompt_tile_selection(mis_propiedades_ids)
@@ -366,17 +358,14 @@ func _input(event: InputEvent) -> void:
 			call_deferred("_check_cancel_admin_click")
 
 func _check_cancel_admin_click() -> void:
-	# Si seguimos en modo admin después del frame, es que el clic fue en el césped
 	if is_selecting_for_admin:
 		Utils.debug("↩️ Clic fuera de casilla. Cancelando administración...")
 		_cancel_admin_selection()
 		
 func _handle_tram_selection(clicked_tile_id: String) -> void:
-#		var current_player_id = ModelManager.get_current_turn_player_id()
-		var current_tile_id = "010" #HARDCODEADO
-		var tile_name = "Estación" # Aquí puedes sacar el nombre real si lo tienes en el PropertyModel
-		
-		overlay_manager.show_tram_selection(clicked_tile_id, current_tile_id, tile_name)
+	var current_tile_id = ModelManager.get_player().current_tile_id
+	var tile_name = tile_manager.tile_entities[current_tile_id].get_stop_name()
+	overlay_manager.show_tram_selection(clicked_tile_id, current_tile_id, tile_name)
 
 func _on_tram_ok_received() -> void:
 	Utils.debug("🚂 El jugador ha decidido usar el tranvía. Iluminando paradas...")
@@ -391,7 +380,6 @@ func _on_tram_travel_confirmed(target_tile_id: String) -> void:
 func _on_tram_travel_cancelled() -> void:
 	Utils.debug("Elige otra estación...")
 	_on_tram_ok_received()
-####################################################################################
 
 func _cancel_admin_selection() -> void:
 	is_selecting_for_admin = false
@@ -468,40 +456,12 @@ func _on_trade_selection_requested(is_player_1: bool, available_ids: Array) -> v
 	# Highlight tiles
 	tile_manager.prompt_tile_selection(valid_ids_string)
 
-
-	
 func _on_offer_accepted() -> void:
 	Utils.debug("🤝 BOARD: El intercambio ha sido ACEPTADO. Ejecutando lógica de transferencia de bienes...")
 	# Aquí en el futuro harás que el tile_manager cambie los dueños de las propiedades y restes el dinero.
 
 func _on_offer_rejected() -> void:
 	Utils.debug("❌ BOARD: El intercambio ha sido RECHAZADO. Fin del turno.")
-
-# ==========================================
-# FUNCION DE DEBUG PARA PROBAR LOS TRADEOS
-# ==========================================
-func _run_debug_trade_scenario() -> void:
-	Utils.debug("🐛 DEBUG MODE: Preparando escenario de tradeo ficticio...")
-	
-	# Esperamos 1.5 segundos para que la cámara y el tablero terminen de cargar visualmente
-	await get_tree().create_timer(1.5).timeout
-	
-	# Ocultamos los dados si estaban visibles para que no molesten en la prueba
-	overlay_manager.dice_roller_overlay.hide_overlay()
-
-	var p1_mock_props: Array[Dictionary] = [
-		{"id": "001", "name": "Sala de Estudio A", "color": Color.BROWN},
-		{"id": "003", "name": "Laboratorio de Física", "color": Color.BROWN},
-		{"id": "006", "name": "Cafetería Central", "color": Color.LIGHT_BLUE}
-	]
-	
-	var p2_mock_props: Array[Dictionary] = [
-		{"id": "008", "name": "Biblioteca Norte", "color": Color.PINK},
-		{"id": "009", "name": "Aula Magna", "color": Color.PINK}
-	]
-	
-	# Lanzamos el tradeo: Jugador 1 (1500€) vs Jugador 2 (800€)
-	overlay_manager._start_trade("Tu Nombre", "Rival Ficticio", 1500, 800, p1_mock_props, p2_mock_props)
 	
 # ==========================================
 # FUNCION DE DEBUG PARA PROBAR LA OFERTA DE TRADEO
@@ -555,20 +515,3 @@ func _run_debug_jail_scenario() -> void:
 	# (Asegúrate de que la ID coincide con la de tu JSON para la cárcel)
 	#jail_current_turn = 1
 	#overlay_manager.show_jail_initial_warning(jail_current_turn, 3)
-	
-# ==========================================
-# ESCENARIO DE DEBUG 6: TRANVIAS
-# ==========================================
-func _run_debug_train_scenario() -> void:
-	# 1. Conseguir al jugador que queremos mover
-	# (Usamos la función que ya tienes en ModelManager para el turno actual)
-	var target_player_id = ModelManager.get_current_turn_player_id()
-	
-	# Si por algún motivo el juego acaba de arrancar y no hay turno asignado, forzamos el Jugador 1
-	if target_player_id == 1:
-		target_player_id = 1 
-		
-	Utils.debug("🚂 [DEBUG] Ejecutando escenario de Tranvía para el jugador: " + str(target_player_id))
-
-	# 2. Mover al jugador usando tu función del ModelManager
-	#_handle_normal_movement()

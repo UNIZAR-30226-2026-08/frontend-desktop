@@ -9,7 +9,7 @@ extends MarginContainer
 @onready var balance_difference: Label = %BalanceDifference
 
 # Para hacerlas clickables
-signal clicked(id: String)
+signal clicked(id: int)
 var player_id: int
 
 const animation_duration: int = 2

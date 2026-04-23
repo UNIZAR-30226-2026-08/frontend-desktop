@@ -4,7 +4,7 @@ extends CanvasLayer
 const CARD_SCENE = preload("res://scenes/board/players/player_card.tscn")
 
 # Para hacerlo clickable
-signal player_selected(p_id: String)
+signal player_selected(p_id: int)
 
 var is_hidden: bool = false
 var base_x_pos: float = 0.0
@@ -85,28 +85,21 @@ func update_player_stats(p_id: int) -> void:
 	card.update_balance(new_balance)
 	card.update_properties(property_count)
 
-func set_selection_mode(active: bool, my_player_id: String = "") -> void:
+func set_selection_mode(active: bool) -> void:
 	if active:
 		layer = 100 # Lo ponemos por encima del BlurryBg
-		
-		# Recorremos todas las tarjetas usando sus IDs
 		for id in cards:
 			var card = cards[id]
-			
-			if id == my_player_id:
-				# ❌ TU TARJETA: La oscurecemos y bloqueamos clics
+			if id == ModelManager.game.my_id:
 				card.modulate.a = 0.5 
 				card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				card.mouse_default_cursor_shape = Control.CURSOR_ARROW
 			else:
-				# ✅ LAS DEMÁS: Brillantes y con la "manita" para hacer clic
 				card.modulate.a = 1.0
 				card.mouse_filter = Control.MOUSE_FILTER_STOP
 				card.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	else:
 		layer = 1 # Lo devolvemos a su sitio
-		
-		# Restauramos todas las tarjetas a la normalidad
 		for card in cards.values():
 			card.modulate.a = 1.0
 			card.mouse_filter = Control.MOUSE_FILTER_STOP

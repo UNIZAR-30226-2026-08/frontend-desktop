@@ -286,7 +286,11 @@ func _start_parking_overlay(tile_id: String) -> void:
 		show_controls_when_possible()
 	)
 
-func _start_trade(p1_name: String, p2_name: String, p1_money: int, p2_money: int, p1_props: Array[Dictionary], p2_props: Array[Dictionary]) -> void:
+func _start_trade(p1: PlayerModel, p2: PlayerModel) -> void:
+	var p1_props: Array[PropertyModel] = ModelManager.get_player_properties(p1.id)
+	var p2_props: Array[PropertyModel] = ModelManager.get_player_properties(p2.id)
+	automatic_control_visibility = false
+	controls_hud.toggle_hud_visibility(true)
 	Utils.debug("🤝 Iniciando overlay de tradeo...")
 	current_trade_overlay = TRADE_OVERLAY.instantiate()
 	board.add_child(current_trade_overlay)
@@ -294,27 +298,25 @@ func _start_trade(p1_name: String, p2_name: String, p1_money: int, p2_money: int
 	# Propagar señales de selección del tablero
 	current_trade_overlay.request_board_selection.connect(trade_selection_request.emit)
 	
-	# 👇 NUEVO: Qué hacer si cancela
 	current_trade_overlay.trade_cancelled.connect(func():
 		Utils.debug("🚫 Tradeo cancelado. Cerrando menú...")
 		current_trade_overlay.queue_free()
 		current_trade_overlay = null
-		overlay_closed.emit() # Magia: vuelven los HUDs normales
+		overlay_closed.emit()
+		show_controls_when_possible()
 	)
 	
-	# 👇 NUEVO: Qué hacer si envía (de momento lo mismo)
-	current_trade_overlay.offer_sent.connect(func():
-		Utils.debug("📤 Oferta enviada al backend (mock). Cerrando menú...")
-		
-		# TODO: En el futuro aquí cogerás los diccionarios y emitirás algo hacia el servidor
-		
+	current_trade_overlay.offer_sent.connect(func(_p1_props, _p2_props, p1_money, p2_money):
+		Utils.debug("📤 Oferta enviada. Cerrando menú...")
+		WsClient.ws_action_start_trade(p2.id, p1_money, p2_money, _p1_props, _p2_props)
 		current_trade_overlay.queue_free()
 		current_trade_overlay = null
 		overlay_closed.emit() # Magia: vuelven los HUDs normales
+		show_controls_when_possible()
 	)
 	
 	# Inicializar overlay con datos
-	current_trade_overlay.setup_trade(p1_name, p2_name, p1_money, p2_money, p1_props, p2_props)
+	current_trade_overlay.setup_trade(p1.player_name, p2.player_name, p1.balance, p2.balance, p1_props, p2_props)
 
 func start_scoreboard_overlay() -> void:
 	var current_overlay = SCOREBOARD_OVERLAY.instantiate()
@@ -463,21 +465,17 @@ func _start_surrender_overlay() -> void:
 		SceneTransition.change_scene("res://scenes/UI/home_screen.tscn")
 	)
 
-# ==========================================
-# GESTIÓN DE TRADEOS
-# ==========================================
-
+# ========
+#  TRADES
+# ========
 func _start_trade_target_selection() -> void:
 	Utils.debug("🔍 Entrando en modo selección de jugador para tradeo...")
-	
-	# 👇 AÑADE ESTO PARA VER LOS IDs EXISTENTES
-	print("👀 IDs de las tarjetas actuales: ", player_hud.cards.keys())
+	Utils.debug("👀 IDs de las tarjetas actuales: " + str(player_hud.cards.keys()))
 	
 	is_selecting_trade_target = true
 	overlay_open.emit() 
 	
-	var my_local_id = "0001" # (Luego cambiaremos esto por el que veas en la consola)
-	player_hud.set_selection_mode(true, my_local_id)
+	player_hud.set_selection_mode(true)
 	
 	trade_selection_instance = TRADE_SELECTION_OVERLAY.instantiate()
 	board.add_child(trade_selection_instance)
@@ -495,11 +493,11 @@ func _cancel_trade_selection() -> void:
 		
 	overlay_closed.emit() # Devuelve los controles a la pantalla
 
-func _on_trade_target_selected(target_id: String) -> void:
+func _on_trade_target_selected(target_id: int) -> void:
 	# Ignoramos clics si no estamos en modo selección
 	if not is_selecting_trade_target: return
 	
-	Utils.debug("🤝 ¡Jugador " + target_id + " seleccionado!")
+	Utils.debug("🤝 ¡Jugador " + str(target_id) + " seleccionado!")
 	
 	# Limpiamos el overlay de selección sin emitir overlay_closed 
 	# para que el fondo siga borroso para el tradeo
@@ -510,21 +508,11 @@ func _on_trade_target_selected(target_id: String) -> void:
 	if trade_selection_instance:
 		trade_selection_instance.queue_free()
 		trade_selection_instance = null
+
+	var p1: PlayerModel = ModelManager.get_player()
+	var p2: PlayerModel = ModelManager.get_player(target_id)
 	
-	# TODO: Aquí debes obtener los datos reales del jugador en el futuro
-	#var p1_props: Array[Dictionary] = []
-	#var p2_props: Array[Dictionary] = []
-	
-	var p1_props: Array[Dictionary] = [
-		{"id": "001", "name": "Microondas Ada Byron", "color": "#FC5C65"},
-		{"id": "003", "name": "Microondas Betancourt", "color": "#FC5C65"}
-	]
-	var p2_props: Array[Dictionary] = [
-		{"id": "005", "name": "Pilgor", "color": Color.GRAY}
-	]
-	
-	# Llamamos a tu función existente de tradeo (con datos de prueba de momento)
-	_start_trade("TÚ", "JUGADOR #" + target_id.right(4), 1500, 800, p1_props, p2_props)
+	_start_trade(p1, p2)
 
 # ==========================================
 # GESTIÓN DE TRANVIA

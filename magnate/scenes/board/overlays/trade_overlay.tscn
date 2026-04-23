@@ -122,6 +122,7 @@ theme_override_styles/read_only = ExtResource("9_e845h")
 theme_override_styles/focus = ExtResource("9_e845h")
 placeholder_text = "Max. 870"
 max_length = 5
+caret_blink = true
 
 [node name="MidSpace4" type="Control" parent="TradeUI/LeftMarginBox/LeftPlayerBox/Margin/VBox" unique_id=820704884]
 custom_minimum_size = Vector2(0, 35)
@@ -298,6 +299,7 @@ theme_override_styles/read_only = ExtResource("9_e845h")
 theme_override_styles/focus = ExtResource("9_e845h")
 placeholder_text = "Max. 1550"
 max_length = 5
+caret_blink = true
 
 [node name="MidSpace4" type="Control" parent="TradeUI/RightMarginBox/RightPlayerBox/Margin/VBox" unique_id=971930953]
 custom_minimum_size = Vector2(0, 35)
