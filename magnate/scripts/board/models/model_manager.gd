@@ -80,13 +80,16 @@ func get_player_balance(player_id: int) -> int:
 	var player = get_player(player_id)
 	return player.balance if player else 0
 
-func get_player_properties(player_id: int) -> Array[PropertyModel]:
-	var player = get_player(player_id)
-	var property_ids = player.owned_properties if player else []
+func solve_properties(property_ids: Array[String]) -> Array[PropertyModel]:
 	var properties: Array[PropertyModel] = []
 	for property_id in property_ids:
 		properties.append(ModelManager.get_property(property_id))
 	return properties
+
+func get_player_properties(player_id: int) -> Array[PropertyModel]:
+	var player = get_player(player_id)
+	var property_ids = player.owned_properties if player else []
+	return solve_properties(property_ids)
 
 func get_player_position(player_id: int) -> String:
 	var player = get_player(player_id)

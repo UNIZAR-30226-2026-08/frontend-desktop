@@ -57,18 +57,12 @@ func setup_offer(left_player_data: Dictionary, right_player_data: Dictionary) ->
 	)
 
 # Función auxiliar para no repetir código en ambas columnas
-func _setup_player_column(data: Dictionary, name_lbl: Label, color_rect, money_lbl: Label, list_container: VBoxContainer) -> void:
+func _setup_player_column(data: Dictionary, name_lbl: Label, color_rect: Panel, money_lbl: Label, list_container: VBoxContainer) -> void:
 	# Nombres, colores y dinero
 	name_lbl.text = data.get("name", "Unknown")
 	money_lbl.text = str(data.get("money_offered", 0))
 	
-	# Dependiendo de si tu nodo de color es un ColorRect o un Panel con un StyleBox
-	if color_rect is ColorRect:
-		color_rect.color = data.get("color", Color.WHITE)
-	elif color_rect is Panel or color_rect is PanelContainer:
-		var style = color_rect.get_theme_stylebox("panel").duplicate()
-		style.bg_color = data.get("color", Color.WHITE)
-		color_rect.add_theme_stylebox_override("panel", style)
+	color_rect.modulate = data["color"]
 
 	# Instanciar propiedades
 	var properties = data.get("properties", [])
@@ -76,18 +70,15 @@ func _setup_player_column(data: Dictionary, name_lbl: Label, color_rect, money_l
 		var item_instance = PROPERTY_ITEM_SCENE.instantiate()
 		list_container.add_child(item_instance)
 		
-		# ¡OJO AQUÍ! Comprueba que ponga "setup_item" en los dos sitios
 		if item_instance.has_method("setup_item"):
 			item_instance.setup_item(
-				prop_data.get("id", "000"), 
-				prop_data.get("name", "Unknown"), 
-				prop_data.get("color", Color.WHITE)
+				prop_data.id, 
+				prop_data.name, 
+				prop_data.color
 			)
 		else:
-			# Añade este print temporal para detectar el error
-			print("❌ ERROR: El item no tiene la función setup_item()")
+			Utils.debug("❌ ERROR: El item no tiene la función setup_item()")
 
-# Limpia las listas antes de cargar una nueva oferta
 func _clear_lists() -> void:
 	for child in left_properties_list.get_children():
 		child.queue_free()
