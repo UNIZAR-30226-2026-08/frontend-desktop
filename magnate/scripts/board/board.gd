@@ -66,7 +66,6 @@ func _connect_all_signals() -> void:
 	overlay_manager.tram_travel_confirmed.connect(_on_tram_travel_confirmed)
 	overlay_manager.tram_travel_cancelled.connect(_on_tram_travel_cancelled)
 	overlay_manager.trade_selection_request.connect(_on_trade_selection_requested)
-	# overlay_manager.property_bought.connect(_on_property_purchased)
 	overlay_manager.offer_accepted.connect(_on_offer_accepted)
 	overlay_manager.offer_rejected.connect(_on_offer_rejected)
 	overlay_manager.get_parking_money.connect(tile_manager.parking_money)
@@ -85,11 +84,14 @@ func _connect_all_signals() -> void:
 	WsClient.response_choose_square.connect(_on_choose_square_received)
 	WsClient.response_general.connect(_handle_general_response)
 	WsClient.response_auction.connect(_handle_end_auction)
+	WsClient.response_bonus.connect(_handle_end_game)
 	
 	# WS Action connections
 	WsClient.action_buy_square.connect(_on_property_purchased)
 	WsClient.action_start_auction.connect(_handle_start_auction)
 	WsClient.action_surrender.connect(_handle_surrender)
+	WsClient.action_trade_proposal.connect(_handle_trade_proposal)
+	WsClient.action_trade_answer.connect(_handle_trade_answer)
 	
 	# ------ LOS DE AQUI ABAJO YA ESTÁN MEDIO CONECTADOS ------ #
 	
@@ -137,8 +139,6 @@ func _start_phase() -> void:
 			overlay_manager.show_dice_overlay()
 		WsClient.Phase.BUSINESS:
 			overlay_manager.show_controls_now.emit()
-		WsClient.Phase.END_GAME:
-			overlay_manager.start_scoreboard_overlay()
 
 # ================
 #  LOGIC HANDLERS
@@ -157,6 +157,42 @@ func _handle_end_auction(response: Dictionary) -> void:
 func _handle_surrender(action: Dictionary) -> void:
 	ModelManager.set_player_surrender(action["player"])
 
+func _handle_trade_proposal(action: Dictionary) -> void:
+	ModelManager.game.trade_p1_id = action["player"]
+	ModelManager.game.trade_p2_id = action["destination_user"]
+	ModelManager.game.trade_p1_properties = action["offered_properties"]
+	ModelManager.game.trade_p2_properties = action["asked_properties"]
+	if action["destination_user"] != ModelManager.game.my_id: return
+	var left_data = {
+		"name": "TÚ",
+		"color": ModelManager.get_player().color,
+		"money_offered": action["asked_money"],
+		"properties": ModelManager.solve_properties(action["asked_properties"])
+	}
+	var right_data = {
+		"name": ModelManager.get_player(action["player"]).player_name,
+		"color": ModelManager.get_player(action["player"]).color,
+		"money_offered": action["offered_money"],
+		"properties": ModelManager.solve_properties(action["offered_properties"])
+	}
+	overlay_manager.start_offer(left_data, right_data)
+
+func _handle_trade_answer(action: Dictionary) -> void:
+	if action["choose"]:
+		for property_id in ModelManager.game.trade_p1_properties:
+			ModelManager.set_property_owner(property_id, ModelManager.game.trade_p2_id)
+		for property_id in ModelManager.game.trade_p2_properties:
+			ModelManager.set_property_owner(property_id, ModelManager.game.trade_p1_id)
+	overlay_manager.show_controls_when_possible()
+	ModelManager.game.trade_p1_id = -1
+	ModelManager.game.trade_p2_id = -1
+	ModelManager.game.trade_p1_properties = []
+	ModelManager.game.trade_p2_properties = []
+
+func _handle_end_game(response: Dictionary) -> void:
+	overlay_manager.start_scoreboard_overlay(response)
+	WsClient.socket.close()
+
 # ============
 #  MODO DEBUG
 # ============
@@ -167,10 +203,6 @@ func _begin_debug(mode: int) -> void:
 	Utils.debug("🔧 Ejecutando Modo Debug: " + str(mode))
 	
 	if mode == 1:
-		pass
-	elif mode == 2:
-		_run_debug_offer_scenario()
-	elif mode == 3:
 		_run_debug_jail_scenario()
 
 # ============
@@ -408,9 +440,6 @@ func _on_model_property_updated(property_id: String) -> void:
 		if tile.has_method("set_number_of_houses"):
 			tile.set_number_of_houses(prop_data.house_count)
 
-# FUNCIÓN QUE MUEVE A UN PLAYER AL DESTINO AL QUE DEBE IR SEGÚN GAMEMODEL.PENDINGPATH
-
-
 func _handle_jail_dice_logic() -> void:
 	#is_in_jail_roll = false
 	# Simulación: El backend nos diría si hubo par. 
@@ -458,49 +487,11 @@ func _on_trade_selection_requested(is_player_1: bool, available_ids: Array) -> v
 
 func _on_offer_accepted() -> void:
 	Utils.debug("🤝 BOARD: El intercambio ha sido ACEPTADO. Ejecutando lógica de transferencia de bienes...")
-	# Aquí en el futuro harás que el tile_manager cambie los dueños de las propiedades y restes el dinero.
+	WsClient.ws_action_respond_to_trade(true)
 
 func _on_offer_rejected() -> void:
-	Utils.debug("❌ BOARD: El intercambio ha sido RECHAZADO. Fin del turno.")
-	
-# ==========================================
-# FUNCION DE DEBUG PARA PROBAR LA OFERTA DE TRADEO
-# ==========================================
-func _run_debug_offer_scenario() -> void:
-	Utils.debug("🐛 DEBUG MODE 3: Preparando escenario de PROPUESTA de trato...")
-	
-	await get_tree().create_timer(1.5).timeout
-	
-	overlay_manager.dice_roller_overlay.hide_overlay()
-
-	# Simulamos los datos que habrían salido del panel de tradeo anterior
-	var left_data = {
-		"name": "TÚ",
-		"color": Color("f2b705"), # Amarillo
-		"money_offered": 20,
-		"properties": [
-			{"name": "CIRCE", "color": Color("3b82f6")},
-			{"name": "LABORATORIO DE FÍSICA Y ELECTRÓNICA", "color": Color("7c3aed")},
-			{"name": "SALÓN DE ACTOS TORRES Q.", "color": Color("7c3aed")},
-			{"name": "BAÑO DE CHICAS CON TERRAZA", "color": Color("3b82f6")},
-			{"name": "BAÑO DE CHICAS CON TERRAZA", "color": Color("3b82f6")},
-			{"name": "BAÑO DE CHICAS CON TERRAZA", "color": Color("3b82f6")}
-		]
-	}
-
-	var right_data = {
-		"name": "PLAYER 1",
-		"color": Color("ef4444"), # Rojo
-		"money_offered": 500,
-		"properties": [
-			{"name": "LAB 0.05B", "color": Color("475569")},
-			{"name": "MICROONDAS BETANCOURT", "color": Color("22c55e")}
-		]
-	}
-	
-	# Llamamos a la función que creaste en tu overlay_manager.gd
-	overlay_manager.start_offer(left_data, right_data)
-
+	Utils.debug("❌ BOARD: El intercambio ha sido RECHAZADO.")
+	WsClient.ws_action_respond_to_trade(false)
 
 # ==========================================
 # ESCENARIO DE DEBUG 5: SECRETARÍA

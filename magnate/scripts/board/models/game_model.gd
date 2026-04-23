@@ -24,6 +24,12 @@ var important_tiles = {
 
 # Variables relacionadas con la cárcel
 
+# Vars to save last trade proposal
+# Money is not needed as it is updated by the general response
+var trade_p1_id: int = -1
+var trade_p2_id: int = -1
+var trade_p1_properties: Array[String] = []
+var trade_p2_properties: Array[String] = []
 
 func _init(_game_id: int, player_list: Array[PlayerModel], properties: Array[PropertyModel]) -> void:
 	game_id = _game_id

@@ -231,6 +231,14 @@ signal response_choose_fantasy(Dictionary)
 ## 		- "bids": Dictionary[String, int]	- User ID to bid amount
 signal response_auction(Dictionary)
 
+## Response for the result of a game, bonus points
+## Response Dictionary includes:
+## "bonuses": Dictionary	- Maps bonus ID to bonus types
+##		- Each bonus contains:
+##			"bonus_amount": int		- Bonus to win by the category winners
+##			"winners": Array[int]	- Array of player IDs of the winners of this category
+signal response_bonus(Dictionary)
+
 # ACTION SIGNALS
 ## !IMPORTANT: The following action signals all contain the data from action_general
 
@@ -356,6 +364,7 @@ var game_id: int # ID of the current playing game (Only valid if _conn_state = I
 var player_id: int = -1 # ID of the player (Only valid if _conn_state = IN_GAME)
 var _conn_state: ConnState = ConnState.START # Internal state of the connection
 var private_lobby_code: String # Private code for next connection
+var _next_response_closes: bool = false
 
 # The following comes straight from the Godot docs with slight modifications:
 # https://docs.godotengine.org/en/stable/tutorials/networking/websocket.html#using-websocket-in-godot
@@ -621,9 +630,17 @@ func _game_action_dispatcher(action: Dictionary) -> void:
 		_: Utils.debug("ERROR: Unknown type in socket action")
 
 func _game_response_dispatcher(response: Dictionary) -> void:
+	if _next_response_closes:
+		_next_response_closes = false
+		socket.close()
+		return
 	if not response.has("phase") or not response.has("type"):
 		Utils.debug("ERROR: Response doesnt have a phase or type")
+		return
 
+	if response["type"] == "ResponseBonus":
+		response_bonus.emit(response)
+		return
 	response["phase"] = _phase_string_to_enum(response["phase"])
 	for pk in response["positions"]:
 		response["positions"][pk] = _normalize_tile_id(response["positions"][pk])
@@ -809,8 +826,12 @@ func ws_action_start_trade(
 	offered_properties: Array[String],
 	asked_properties: Array[String]
 ) -> void:
-	var _offered_properties: String = ",".join(offered_properties)
-	var _asked_properties: String = ",".join(asked_properties)
+	var _offered_properties: Array[int] = []
+	var _asked_properties: Array[int] = []
+	for i in offered_properties:
+		_offered_properties.append(int(i))
+	for i in asked_properties:
+		_asked_properties.append(int(i))
 	_build_and_send_action({
 		"type": "ActionTradeProposal",
 		"destination_user": destination_user_id,
@@ -832,4 +853,5 @@ func ws_action_pay_bail() -> void:
 
 ## Action: Surrenders current player
 func ws_action_surrender() -> void:
+	_next_response_closes = true
 	_build_and_send_action({"type": "ActionSurrender"})

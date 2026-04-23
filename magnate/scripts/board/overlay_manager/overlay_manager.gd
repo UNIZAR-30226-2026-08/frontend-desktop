@@ -287,10 +287,6 @@ func _start_parking_overlay(tile_id: String) -> void:
 	)
 
 func _start_trade(p1: PlayerModel, p2: PlayerModel) -> void:
-	var p1_props: Array[PropertyModel] = ModelManager.get_player_properties(p1.id)
-	var p2_props: Array[PropertyModel] = ModelManager.get_player_properties(p2.id)
-	automatic_control_visibility = false
-	controls_hud.toggle_hud_visibility(true)
 	Utils.debug("🤝 Iniciando overlay de tradeo...")
 	current_trade_overlay = TRADE_OVERLAY.instantiate()
 	board.add_child(current_trade_overlay)
@@ -311,20 +307,28 @@ func _start_trade(p1: PlayerModel, p2: PlayerModel) -> void:
 		WsClient.ws_action_start_trade(p2.id, p1_money, p2_money, _p1_props, _p2_props)
 		current_trade_overlay.queue_free()
 		current_trade_overlay = null
-		overlay_closed.emit() # Magia: vuelven los HUDs normales
-		show_controls_when_possible()
+		overlay_closed.emit()
 	)
 	
 	# Inicializar overlay con datos
-	current_trade_overlay.setup_trade(p1.player_name, p2.player_name, p1.balance, p2.balance, p1_props, p2_props)
+	current_trade_overlay.setup_trade(p1, p2)
 
-func start_scoreboard_overlay() -> void:
+func start_scoreboard_overlay(response: Dictionary) -> void:
 	var current_overlay = SCOREBOARD_OVERLAY.instantiate()
 	board.add_child(current_overlay)
 	current_overlay.button_pressed.connect(func():
 		WsClient.socket.close()
 		SceneTransition.change_scene("res://scenes/UI/home_screen.tscn")
 	)
+	await board.get_tree().create_timer(2).timeout
+	for bonus in response["bonuses"]:
+		var scores: Dictionary[String, int] = {}
+		for player in ModelManager.game.players.values():
+			scores[player.player_name] = 0
+		for player_id in response["bonuses"][bonus]["winners"]:
+			scores[ModelManager.get_player(player_id).player_name] = response["bonuses"][bonus]["bonus_amount"]
+		await current_overlay.score_category(bonus, scores)
+	current_overlay.finish()
 
 func start_offer(left_data: Dictionary, right_data: Dictionary) -> void:
 	Utils.debug("⚖️ Mostrando propuesta de trato...")
@@ -461,7 +465,7 @@ func _start_surrender_overlay() -> void:
 	overlay.exit_game_confirmed.connect(func():
 		Utils.debug("🏠 Botón salir pulsado. Cambiando escena...")
 		WsClient.ws_action_surrender()
-		WsClient.socket.close()
+		#WsClient.socket.close()
 		SceneTransition.change_scene("res://scenes/UI/home_screen.tscn")
 	)
 
@@ -473,7 +477,8 @@ func _start_trade_target_selection() -> void:
 	Utils.debug("👀 IDs de las tarjetas actuales: " + str(player_hud.cards.keys()))
 	
 	is_selecting_trade_target = true
-	overlay_open.emit() 
+	automatic_control_visibility = false
+	controls_hud.toggle_hud_visibility(true)
 	
 	player_hud.set_selection_mode(true)
 	
@@ -499,11 +504,9 @@ func _on_trade_target_selected(target_id: int) -> void:
 	
 	Utils.debug("🤝 ¡Jugador " + str(target_id) + " seleccionado!")
 	
-	# Limpiamos el overlay de selección sin emitir overlay_closed 
-	# para que el fondo siga borroso para el tradeo
 	is_selecting_trade_target = false
 	player_hud.set_selection_mode(false)
-	player_hud.toggle_hud_visibility(true) # Ahora sí ocultamos las tarjetas
+	# player_hud.toggle_hud_visibility(true)
 	
 	if trade_selection_instance:
 		trade_selection_instance.queue_free()

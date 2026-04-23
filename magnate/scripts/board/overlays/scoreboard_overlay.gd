@@ -10,27 +10,10 @@ var named_scores = {}
 func _ready() -> void:
 	super()
 	confirm_button.pressed.connect(button_pressed.emit)
-	
-	# Working example
-	add_player("Nico", Color("#f94144"))
-	add_player("Luquín", Color("#f9c74f"))
-	add_player("Cris", Color("#90be6d"))
-	add_player("Julia", Color("#2c7da0"))
-
-	await get_tree().create_timer(2).timeout
-	await score_category("Más pasos dados", {
-		"Nico": 100,
-		"Luquín": 110,
-		"Cris": 80,
-		"Julia": 140
-	})
-	await score_category("Más transacciones", {
-		"Nico": 70,
-		"Luquín": 110,
-		"Cris": 60,
-		"Julia": 70
-	})
-	finish()
+	for player in ModelManager.game.players.values():
+		add_player(player.player_name, player.color)
+	for entry in unnamed_scores:
+		entry.hide()
 
 func finish() -> void:
 	confirm_button.disabled = false
@@ -44,6 +27,7 @@ func add_player(_name: String, _color: Color) -> void:
 		Utils.debug("No score left to assign")
 		return
 	
+	unnamed_scores[0].show()
 	named_scores[_name] = unnamed_scores[0]
 	unnamed_scores.pop_front()
 	
@@ -57,8 +41,10 @@ func add_score_to_player(_name: String, score_to_add: int, max_final_score: int)
 	named_scores[_name].add_score(score_to_add, max_final_score)
 
 func smooth_sort_entries(scores: Dictionary[String, int]) -> void:
-	var order = [null, null, null, null]
-	var y_positions = [null, null, null, null]
+	var order = []
+	order.resize(len(named_scores))
+	var y_positions = []
+	y_positions.resize(len(named_scores))
 	for entry in named_scores.values():
 		var i = 0
 		while order[entry.rank - 1 + i] != null:

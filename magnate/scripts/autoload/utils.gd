@@ -8,7 +8,7 @@ static func debug(msg: String) -> void:
 
 
 static func to_currency_text(value: int) -> String:
-	var s = str(value)
+	var s = str(abs(value))
 	var result = ""
 	var count = 0
 	
@@ -17,5 +17,5 @@ static func to_currency_text(value: int) -> String:
 			result = "." + result
 		result = s[i] + result
 		count += 1
-		
+	if value < 0: result = "-" + result
 	return result + Globals.SYMBOL_CURRENCY

@@ -19,9 +19,10 @@ const PROPERTY_ITEM_SCENE = preload("res://scenes/board/players/trade_property_i
 @onready var send_btn = %SendOfferButton
 @onready var player_name_2: Label = %PlayerName2
 @onready var player_name_1: Label = %PlayerName1
+@onready var player_color_2: Panel = %PlayerColor2
+@onready var player_color_1: Panel = %PlayerColor1
 
 # Guardamos el estado de las propiedades internamente
-# Suponemos que cada prop es un diccionario: {"id": "p1", "name": "Sala", "color": Color.RED}
 var _p1_available_props: Array[PropertyModel] = []
 var _p2_available_props: Array[PropertyModel] = []
 var _p1_selected_props: Array[String] = []
@@ -38,19 +39,22 @@ func _ready() -> void:
 		offer_sent.emit(_p1_selected_props, _p2_selected_props, int("0" + offer_line_edit.text), int("0" + request_line_edit.text))
 	)
 
-func setup_trade(p1_name: String, p2_name: String, p1_money: int, p2_money: int, p1_props: Array[PropertyModel], p2_props: Array[PropertyModel]) -> void:	
+func setup_trade(p1: PlayerModel, p2: PlayerModel) -> void:	
 	regex.compile("^[0-9]*$")
 	offer_line_edit.text_changed.connect(_on_text_changed.bind(offer_line_edit))
 	request_line_edit.text_changed.connect(_on_text_changed.bind(request_line_edit))
 	# 1. Textos e inputs (asumiendo que tienes Labels para los nombres)
-	player_name_1.text = p1_name
-	player_name_2.text = p2_name
-	offer_line_edit.placeholder_text = "Max. " + str(p1_money)
-	request_line_edit.placeholder_text = "Max. " + str(p2_money)
+	player_name_1.text = "TÚ"
+	player_name_2.text = p2.player_name
+	offer_line_edit.placeholder_text = "Max. " + str(p1.balance)
+	request_line_edit.placeholder_text = "Max. " + str(p2.balance)
 	
 	# 2. Copiamos las listas asegurando el tipado correcto de Godot 4
-	_p1_available_props.assign(p1_props)
-	_p2_available_props.assign(p2_props)
+	_p1_available_props.assign(ModelManager.get_player_properties(p1.id))
+	_p2_available_props.assign(ModelManager.get_player_properties(p2.id))
+	
+	player_color_1.modulate = p1.color
+	player_color_2.modulate = p2.color
 	
 	_update_buttons_state()
 

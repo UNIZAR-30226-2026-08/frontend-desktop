@@ -137,6 +137,7 @@ layout_mode = 2
 
 [node name="ScoreboardEntry" parent="SquarePanel/VBoxContainer/MarginContainer/VBoxContainer" unique_id=246137104 instance=ExtResource("5_273uh")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
 anchors_preset = 0
 anchor_right = 0.0
@@ -148,6 +149,7 @@ grow_vertical = 1
 
 [node name="ScoreboardEntry2" parent="SquarePanel/VBoxContainer/MarginContainer/VBoxContainer" unique_id=2082257899 instance=ExtResource("5_273uh")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
 anchors_preset = 0
 anchor_right = 0.0
@@ -160,6 +162,7 @@ grow_vertical = 1
 
 [node name="ScoreboardEntry3" parent="SquarePanel/VBoxContainer/MarginContainer/VBoxContainer" unique_id=140829414 instance=ExtResource("5_273uh")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
 anchors_preset = 0
 anchor_right = 0.0
@@ -172,6 +175,7 @@ grow_vertical = 1
 
 [node name="ScoreboardEntry4" parent="SquarePanel/VBoxContainer/MarginContainer/VBoxContainer" unique_id=916034849 instance=ExtResource("5_273uh")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
 anchors_preset = 0
 anchor_right = 0.0
