@@ -8,6 +8,7 @@ var owner_id = -1
 func update(tile_id: String) -> void:
 	var property = ModelManager.get_property(tile_id)
 	set_property_owner(property.owner_id)
+	set_property_price(property.buy_price)
 
 func set_property_owner(player_id: int) -> void:
 	if owner_id == player_id: return

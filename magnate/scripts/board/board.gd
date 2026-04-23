@@ -114,6 +114,10 @@ func _handle_general_response(data: Dictionary) -> void:
 	ModelManager.game.current_phase = data["phase"]
 	for pk in data["money"]:
 		ModelManager.set_player_balance(int(pk), data["money"][pk])
+	if data["type"] == "Response":
+		for pk in data["positions"]:
+			var path = tile_manager.solve_path([data["positions"][pk]])
+			ModelManager.update_player_position(int(pk), data["positions"][pk], path)
 	# Dispatch action
 	if new_turn: _start_turn()
 	if new_phase: _start_phase()
@@ -376,32 +380,16 @@ func _handle_tram_selection(clicked_tile_id: String) -> void:
 
 func _on_tram_ok_received() -> void:
 	Utils.debug("🚂 El jugador ha decidido usar el tranvía. Iluminando paradas...")
-	
-	# 1. Activamos el modo selección para que el click en la casilla sea interceptado
 	is_selecting_for_train = true 
-	
-	# 2. Iluminamos las casillas del tranvía usando tu constante TRAM_IDS
 	tile_manager.prompt_tile_selection(TRAM_IDS)
 
 # Respuestas a los botones del Overlay
-func _on_tram_travel_confirmed(target_tile_id: String, cost: int) -> void:
+func _on_tram_travel_confirmed(target_tile_id: String) -> void:
 	is_selecting_for_train = false # Salimos del modo selección
-	var current_player_id = ModelManager.get_current_turn_player_id()
-	
-	if cost > 0:
-		ModelManager.update_player_balance(current_player_id, -cost)
-		
-	# Movemos al jugador (usando la función que arreglamos antes)
-	var step_tile = tile_manager.tile_entities[target_tile_id]
-	ModelManager.update_player_position(current_player_id, target_tile_id, [step_tile.position + step_tile.pivot_offset])
-	
-	TokenLayoutManager.update_all_token_positions(ModelManager.game.players.values(), tile_manager.tile_entities)
-	
-	overlay_manager.overlay_closed.emit()
+	WsClient.ws_action_take_tram_to(target_tile_id)
 
 func _on_tram_travel_cancelled() -> void:
-	# El usuario eligió "Elegir otra parada". Se cierra el overlay pero seguimos en modo selección.
-	print("Elige otra estación...")
+	Utils.debug("Elige otra estación...")
 	_on_tram_ok_received()
 ####################################################################################
 

@@ -101,7 +101,8 @@ func setup_overlays(_board: Node2D, dice_roller, jail_dice) -> void:
 
 func show_controls_when_possible() -> void:
 	if not ModelManager.is_my_turn(): return
-	await show_controls_now
+	if ModelManager.game.current_phase != WsClient.Phase.BUSINESS:
+		await show_controls_now
 	automatic_control_visibility = true
 	controls_hud.toggle_hud_visibility(false)
 
@@ -528,7 +529,6 @@ func _on_trade_target_selected(target_id: String) -> void:
 # ==========================================
 # GESTIÓN DE TRANVIA
 # ==========================================
-
 func show_tram_selection(target_tile_id: String, current_tile_id: String, tile_name: String) -> void:
 	# 1. Creamos la instancia del overlay a partir de tu constante
 	var overlay = TRAIN_SELECTION_OVERLAY.instantiate()
@@ -542,20 +542,12 @@ func show_tram_selection(target_tile_id: String, current_tile_id: String, tile_n
 	board.add_child(overlay)
 	
 	# 4. Le pasamos los datos para que actualice sus textos
-	print(target_tile_id)
-	print(current_tile_id)
 	var is_same_station = (target_tile_id == current_tile_id)
 	overlay.setup_tram_selection(target_tile_id, is_same_station, tile_name)
 
-# ==========================================
-# 🎧 RECEPTORES DE LAS SEÑALES DEL OVERLAY
-# ==========================================
-
-func _on_tram_travel_confirmed(target_tile_id: String, cost: int) -> void:
-	# El overlay ya ha hecho queue_free() por su cuenta, así que solo 
-	# tenemos que avisar al tablero de lo que ha decidido el jugador.
-	tram_travel_confirmed.emit(target_tile_id, cost)
+func _on_tram_travel_confirmed(target_tile_id: String) -> void:
+	show_controls_when_possible()
+	tram_travel_confirmed.emit(target_tile_id)
 
 func _on_tram_travel_cancelled() -> void:
-	# Igual que arriba, avisamos al tablero de que se ha cancelado
 	tram_travel_cancelled.emit()

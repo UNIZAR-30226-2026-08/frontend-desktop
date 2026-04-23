@@ -15,16 +15,15 @@ var old_num_bots: int = -1
 var bot_level: MagnateWSClient.BotLevel = MagnateWSClient.BotLevel.MEDIUM
 
 func _ready():
-	room_code_label.text = WsClient.last_private_lobby_code
-	if typeof(WsClient.last_message) == TYPE_DICTIONARY and\
-		WsClient.last_message.get("action", "") in ["joined", "player_left"]:
-		_handle_player_update(WsClient.last_message)
-	if not is_owner: start_game_button.set_btn_text("LISTO")
 	WsClient.player_join.connect(_handle_player_update)
 	WsClient.player_leave.connect(_handle_player_update)
 	WsClient.player_ready.connect(_handle_player_ready)
 	WsClient.lobby_settings_changed.connect(_handle_settings_change)
 	WsClient.private_match_found.connect(_handle_match_found)
+	WsClient.socket_disconnect.connect(_on_header_back_action_requested)
+	WsClient.start_client_private_lobby()
+	room_code_label.text = WsClient.private_lobby_code
+	if not is_owner: start_game_button.set_btn_text("LISTO")
 
 func _handle_player_update(info: Dictionary) -> void:
 	is_owner = info["is_owner"]
@@ -33,7 +32,7 @@ func _handle_player_update(info: Dictionary) -> void:
 		player_info.append({
 			"name": p["username"],
 			"type": "human",
-			"custom_texture": preload("res://assets/icons/characters/barco_closeup.png"),
+			"custom_texture": load(Globals.tokens[p["user_piece"]]["icon"] if Globals.tokens.has(p["user_piece"]) else Globals.tokens[0]["icon"]),
 			"ready": p["ready_to_play"] or p["username"] == info["owner"]
 		})
 		if is_owner and p["username"] == RestClient.username and not p["ready_to_play"]:
@@ -65,6 +64,12 @@ func _handle_settings_change(settings: Dictionary) -> void:
 
 func _handle_match_found() -> void:
 	Utils.debug(RestClient.username + ": MATCH FOUND!")
+	WsClient.player_join.disconnect(_handle_player_update)
+	WsClient.player_leave.disconnect(_handle_player_update)
+	WsClient.player_ready.disconnect(_handle_player_ready)
+	WsClient.lobby_settings_changed.disconnect(_handle_settings_change)
+	WsClient.private_match_found.disconnect(_handle_match_found)
+	WsClient.socket_disconnect.disconnect(_on_header_back_action_requested)
 	SceneTransition.change_scene("res://scenes/board/board.tscn")
 
 func update_lobby():
@@ -118,8 +123,15 @@ func update_lobby():
 					WsClient.ws_private_lobby_settings(bot_level, len(player_info) + num_bots)
 			)
 
-func _on_header_back_action_requested() -> void:
-	WsClient.socket.close(1000, "Player left lobby")
+func _on_header_back_action_requested(close_code: int = 0) -> void:
+	WsClient.player_join.disconnect(_handle_player_update)
+	WsClient.player_leave.disconnect(_handle_player_update)
+	WsClient.player_ready.disconnect(_handle_player_ready)
+	WsClient.lobby_settings_changed.disconnect(_handle_settings_change)
+	WsClient.private_match_found.disconnect(_handle_match_found)
+	WsClient.socket_disconnect.disconnect(_on_header_back_action_requested)
+	if close_code == 0:
+		WsClient.socket.close(1000, "Player left lobby")
 	SceneTransition.change_scene("res://scenes/UI/private_play.tscn")
 
 func _on_start_game_button_pressed() -> void:
