@@ -13,6 +13,7 @@ static func _get_tile_type_from_string(tile_type: String) -> Globals.TileType:
 		"parking" = Globals.TileType.PARKING,
 		"go_to_jail" = Globals.TileType.GO_TO_JAIL,
 		"start" = Globals.TileType.START,
+		"visit" = Globals.TileType.VISIT,
 	}
 	if not types_mapping.has(tile_type):
 		printerr("Got unexpected tile type: " + tile_type)
@@ -46,14 +47,15 @@ static func _get_tiles(data: Dictionary) -> Dictionary:
 		printerr("Theres no \"groups\" key in the board definition JSON")
 		return {}
 	var tiles_dict: Dictionary[String, Dictionary] = {}
-	# TODO: Maybe we should check that all the keys we're going to access are there?
 	for tile in data["tiles"]:
-		tiles_dict[tile["id"]] = {
-			"name" = tile["name"],
-			"type" = _get_tile_type_from_string(tile["type"]),
-			"position" = Vector2(tile["x"] - tile["width"] / 2, tile["y"] - tile["height"] / 2),
-			"size" = Vector2(tile["width"], tile["height"])
-		}
+		tiles_dict[tile["id"]] = {"type" = _get_tile_type_from_string(tile["type"])}
+		if tile.has("name"):
+			tiles_dict[tile["id"]]["name"] = tile["name"]
+		if tile.has("width") and tile.has("height"):
+			tiles_dict[tile["id"]]["size"] = Vector2(tile["width"], tile["height"])
+			tiles_dict[tile["id"]]["position"] = Vector2(tile["x"] - tile["width"] / 2, tile["y"] - tile["height"] / 2)
+		else:
+			tiles_dict[tile["id"]]["position"] = Vector2(tile["x"], tile["y"])
 		if tile.has("group"):
 			var group_color = Color(data["groups"][tile["group"] - 1]["color"])
 			tiles_dict[tile["id"]]["color"] = group_color

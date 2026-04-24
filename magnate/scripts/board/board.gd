@@ -66,8 +66,8 @@ func _connect_all_signals() -> void:
 	overlay_manager.tram_travel_confirmed.connect(_on_tram_travel_confirmed)
 	overlay_manager.tram_travel_cancelled.connect(_on_tram_travel_cancelled)
 	overlay_manager.trade_selection_request.connect(_on_trade_selection_requested)
-	overlay_manager.offer_accepted.connect(_on_offer_accepted)
-	overlay_manager.offer_rejected.connect(_on_offer_rejected)
+	overlay_manager.offer_accepted.connect(WsClient.ws_action_respond_to_trade.bind(true))
+	overlay_manager.offer_rejected.connect(WsClient.ws_action_respond_to_trade.bind(false))
 	overlay_manager.get_parking_money.connect(tile_manager.parking_money)
 	overlay_manager.property_houses_changed.connect(_on_property_houses_changed)
 	
@@ -351,7 +351,7 @@ func _on_jail_pay_bail_confirmed() -> void:
 #TODO
 func _on_jail_reselect_requested() -> void:
 	# Simplemente volvemos a iluminar las casillas para que el jugador elija
-	#tile_manager.prompt_tile_selection(["104", jail_target_tile])
+	#tile_manager.prompt_tile_selection(["201", jail_target_tile])
 	pass
 
 func _on_admin_selection_requested() -> void:
@@ -468,8 +468,6 @@ func _on_property_houses_changed(tile_id: String, new_houses: int, is_mortgaged:
 
 func _on_property_purchased(data: Dictionary) -> void:
 	Utils.debug("💰 ¡El jugador ha comprado la casilla " + data["square"])
-	#var player: PlayerModel = ModelManager.get_player(data["player"])
-	#tile_manager.set_tile_owner(data["square"], player.color)
 	ModelManager.set_property_owner(data["square"], data["player"])
 	ModelManager.update_player_balance(data["player"], -ModelManager.get_property(data["square"]).buy_price)
 
@@ -484,14 +482,6 @@ func _on_trade_selection_requested(is_player_1: bool, available_ids: Array) -> v
 	
 	# Highlight tiles
 	tile_manager.prompt_tile_selection(valid_ids_string)
-
-func _on_offer_accepted() -> void:
-	Utils.debug("🤝 BOARD: El intercambio ha sido ACEPTADO. Ejecutando lógica de transferencia de bienes...")
-	WsClient.ws_action_respond_to_trade(true)
-
-func _on_offer_rejected() -> void:
-	Utils.debug("❌ BOARD: El intercambio ha sido RECHAZADO.")
-	WsClient.ws_action_respond_to_trade(false)
 
 # ==========================================
 # ESCENARIO DE DEBUG 5: SECRETARÍA

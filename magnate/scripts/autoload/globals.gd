@@ -54,6 +54,7 @@ enum TileType {
 	GO_TO_JAIL,
 	JAIL,
 	PARKING,
+	VISIT,
 }
 
 var tokens = {}

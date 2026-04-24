@@ -18,7 +18,7 @@ var players: Dictionary[int, PlayerModel] = {}
 # Diccionario de casillas importantes
 var important_tiles = {
 	"start": "000",
-	"jail": "104",
+	"jail": "201",
 	"go_to_jail": "020"
 }
 
