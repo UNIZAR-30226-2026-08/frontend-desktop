@@ -1,6 +1,5 @@
 extends BlurryBgOverlay
 
-# Creamos señales para avisar al tablero de la decisión
 signal property_bought
 signal property_auctioned
 
@@ -23,17 +22,11 @@ func _ready() -> void:
 	var audio = AudioResource.from_type(Globals.AUDIO_CARDFLIP, AudioResource.AudioResourceType.SFX)
 	AudioSystem.play_audio(audio)
 	
-	# Conectamos el botón de compra
 	buy_button.pressed.connect(_on_buy_button_pressed)
 	auction_button.pressed.connect(_on_auction_button_pressed)
 
-# ==========================================
-# FUNCIÓN PÚBLICA PARA EL BOARD
-# ==========================================
 func setup(property: PropertyModel) -> void:
-	# Asumimos que el precio base viene en la clave "price" (ajusta si en tu JSON se llama distinto)
 	var buy_price = property.buy_price
-	if buy_price > ModelManager.get_player().balance: buy_button.disabled = true
 	buy_button.text = "Comprar por %d" % buy_price + Globals.SYMBOL_CURRENCY
 	
 	if property.is_server:
@@ -61,9 +54,9 @@ func aparecer(tarjeta: Control):
 	tween.tween_property(tarjeta, "modulate:a", 1.0, 0.4)
 	tween.tween_property(tarjeta, "position:y", pos_original, 0.4)
 
-# ==========================================
-# RESPUESTAS A LOS BOTONES
-# ==========================================
+# =================
+#  Button handlers
+# =================
 func _on_buy_button_pressed() -> void:
 	property_bought.emit() # Avisamos al tablero
 	queue_free()

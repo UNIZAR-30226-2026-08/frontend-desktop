@@ -4,14 +4,16 @@ extends PanelContainer
 @onready var server_name: Label = %ServerName
 
 var owner_id = -1
+var is_mortgaged = false
 
 func update(tile_id: String) -> void:
 	var property = ModelManager.get_property(tile_id)
 	set_property_owner(property.owner_id)
-	set_property_price(property.buy_price)
+	update_mortgage_visuals(property.is_mortgaged)
 
 func set_property_owner(player_id: int) -> void:
 	if owner_id == player_id: return
+	owner_id = player_id
 	var player = ModelManager.get_player(player_id)
 	var tween
 	for child in get_children():
@@ -32,3 +34,20 @@ func set_server_name(_name: String) -> void:
 
 func set_property_price(price: int) -> void:
 	server_price.text = Utils.to_currency_text(price)
+
+# Función principal que se llama cuando se pulsa el botón
+func update_mortgage_visuals(_is_mortgaged: bool) -> void:
+	if is_mortgaged == _is_mortgaged: return
+	is_mortgaged = _is_mortgaged
+	var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE).set_parallel()
+	var tween_duration = 1
+	if is_mortgaged:
+		# Casilla hipotecada: Fondo rojo, letras blancas
+		tween.tween_property(self, "self_modulate", Color(0.8, 0, 0, 1), tween_duration)
+		tween.tween_property(server_name, "theme_override_colors/font_color", Color.WHITE, tween_duration)
+		tween.tween_property(server_price, "theme_override_colors/font_color", Color.WHITE, tween_duration)
+	else:
+		# Casilla normal: Restauramos (ajusta estos colores a los tuyos por defecto)
+		tween.tween_property(self, "self_modulate", Color.WHITE, tween_duration)
+		tween.tween_property(server_name, "theme_override_colors/font_color", Color.BLACK, tween_duration)
+		tween.tween_property(server_price, "theme_override_colors/font_color", Color.BLACK, tween_duration)

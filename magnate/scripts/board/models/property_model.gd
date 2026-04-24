@@ -23,6 +23,9 @@ var is_bridge: bool = false
 func _init(_id: String) -> void:
 	id = _id
 
+func send_update() -> void:
+	updated.emit(id)
+
 func set_houses(count: int) -> void:
 	house_count = count
 

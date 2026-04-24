@@ -69,7 +69,6 @@ func _connect_all_signals() -> void:
 	overlay_manager.offer_accepted.connect(WsClient.ws_action_respond_to_trade.bind(true))
 	overlay_manager.offer_rejected.connect(WsClient.ws_action_respond_to_trade.bind(false))
 	overlay_manager.get_parking_money.connect(tile_manager.parking_money)
-	overlay_manager.property_houses_changed.connect(_on_property_houses_changed)
 	
 	# Señales de Controles (Dados normales)
 	overlay_manager.request_admin_selection.connect(_on_admin_selection_requested)
@@ -92,6 +91,10 @@ func _connect_all_signals() -> void:
 	WsClient.action_surrender.connect(_handle_surrender)
 	WsClient.action_trade_proposal.connect(_handle_trade_proposal)
 	WsClient.action_trade_answer.connect(_handle_trade_answer)
+	WsClient.action_mortgage_set.connect(_handle_property_mortgage)
+	WsClient.action_mortgage_unset.connect(_handle_property_unmortgage)
+	WsClient.action_demolish.connect(_handle_house_demolish)
+	WsClient.action_build.connect(_handle_house_build)
 	
 	# ------ LOS DE AQUI ABAJO YA ESTÁN MEDIO CONECTADOS ------ #
 	
@@ -193,6 +196,18 @@ func _handle_end_game(response: Dictionary) -> void:
 	overlay_manager.start_scoreboard_overlay(response)
 	WsClient.socket.close()
 
+func _handle_property_mortgage(action: Dictionary) -> void:
+	ModelManager.set_property_mortgaged(action["square"], true)
+
+func _handle_property_unmortgage(action: Dictionary) -> void:
+	ModelManager.set_property_mortgaged(action["square"], false)
+
+func _handle_house_build(action: Dictionary) -> void:
+	ModelManager.update_property_houses(action["square"], action["houses"])
+
+func _handle_house_demolish(action: Dictionary) -> void:
+	ModelManager.update_property_houses(action["square"], -action["houses"])
+
 # ============
 #  MODO DEBUG
 # ============
@@ -284,22 +299,18 @@ func _on_choose_square_received(data: Dictionary) -> void:
 	# movemos al player actual a la posición elegida
 	_handle_normal_movement(true, ModelManager.get_current_turn_player_id(), data["path"])
 	
-# ==============================================================================================================================================
-#  HANDLER DE CLIQUEAR EN UNA CASILLA -> Hay que avisar al back
-# ==============================================================================================================================================
+# ====================
+#  Tile click handler
+# ====================
 func _on_highlighted_tile_clicked(tile_id: String) -> void:
-	overlay_manager.overlay_closed.emit()
 	var game = ModelManager.game
 	var current_player = ModelManager.get_player(game.current_turn_player_id)
 	
-	#TODO
 	if is_selecting_for_admin:
-		is_selecting_for_admin = false # Apagamos el modo
-		tile_manager.reset_tile_highlight() # Limpiamos las luces del tablero
-		
-		# Abrimos el menú pasándole el ID que acabamos de tocar
+		is_selecting_for_admin = false
+		tile_manager.reset_tile_highlight()
 		overlay_manager._start_property_administration(tile_id) 
-		return # Cortamos la función aquí para que no mueva la ficha
+		return
 	
 	# El player está eligiendo casilla desde la cárcel
 	elif current_player.is_in_jail:
@@ -357,28 +368,11 @@ func _on_jail_reselect_requested() -> void:
 func _on_admin_selection_requested() -> void:
 	Utils.debug("🛠️ Entrando en modo selección para administrar propiedades...")
 	is_selecting_for_admin = true
+	overlay_manager.overlay_open.emit()
 	
-	if overlay_manager.player_hud:
-		overlay_manager.player_hud.toggle_hud_visibility(true) 
-	if overlay_manager.controls_hud:
-		overlay_manager.controls_hud.hide() 
-	
-	# 👇 1. Sacamos quién está jugando ahora mismo PRIMERO
 	var current_player_id = ModelManager.get_current_turn_player_id()
-	
-	# 👇 2. Hardcodeamos propiedades para ese jugador
-	# (Asegúrate de poner aquí los IDs de TODAS las casillas que formen 
-	# un grupo/color en tu board.json, o los botones no se verán)
-	ModelManager.set_property_owner("001", current_player_id)
-	ModelManager.set_property_owner("003", current_player_id)
-	ModelManager.set_property_owner("006", current_player_id)
-	
-	# 👇 3. Le pedimos al manager las propiedades REALES de ese jugador
-	var mis_propiedades_ids: Array[String] = ModelManager.get_player(current_player_id).owned_properties
-	
-	# Y se las pasamos a tu tile_manager para que las resalte
-	tile_manager.prompt_tile_selection(mis_propiedades_ids)
-
+	var owned_property_ids: Array[String] = ModelManager.get_player(current_player_id).owned_properties
+	tile_manager.prompt_tile_selection(owned_property_ids)
 
 # ESTASS SON UNA GUARRADA GOOOOORDA PARA QUE FUNCIONE LO DE DAR CLICK FUERA DE LA PANTALLA PARA CANCELAR
 # LA SELECCION
@@ -453,18 +447,6 @@ func _handle_jail_dice_logic() -> void:
 		Utils.debug("🚫 No hubo par. Debes elegir: Quedarte o Pagar.")
 		# Iluminamos la cárcel (ID "010" por ejemplo) y el destino
 		#tile_manager.prompt_tile_selection(["104", jail_target_tile])
-
-func _on_property_houses_changed(tile_id: String, new_houses: int, is_mortgaged: bool) -> void:
-	if tile_manager.tile_entities.has(tile_id):
-		var tile = tile_manager.tile_entities[tile_id]
-		
-		# 1. Actualizamos las casas visualmente
-		if tile.has_method("set_number_of_houses"):
-			tile.set_number_of_houses(new_houses)
-		
-		# 2. Actualizamos el estado de hipoteca visualmente
-		if tile.has_method("set_mortgaged"):
-			tile.set_mortgaged(is_mortgaged)
 
 func _on_property_purchased(data: Dictionary) -> void:
 	Utils.debug("💰 ¡El jugador ha comprado la casilla " + data["square"])

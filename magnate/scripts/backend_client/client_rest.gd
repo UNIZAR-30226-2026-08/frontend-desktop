@@ -245,6 +245,8 @@ func user_login(data: Dictionary) -> Dictionary:
 func user_logout() -> void:
 	needs_login = true
 	username = ""
+	token_access = ""
+	token_refresh = ""
 	if FileAccess.file_exists(SAVE_PATH):
 		DirAccess.remove_absolute(SAVE_PATH)
 	logout.emit()

@@ -144,23 +144,31 @@ func set_property_owner(property_id: String, new_owner_id: int) -> void:
 			
 		new_owner.emit_update()
 		property_updated.emit(property_id)
-		prop.updated.emit(property_id)
+		prop.send_update()
 
 func set_property_houses(property_id: String, houses: int) -> void:
 	var prop = get_property(property_id)
+	if houses == prop.house_count: return
 	if prop:
 		prop.house_count = houses
 		property_updated.emit(property_id)
-		prop.updated.emit(property_id)
+		prop.send_update()
+
+func update_property_houses(property_id: String, house_diff: int) -> void:
+	if house_diff == 0: return
+	var prop = get_property(property_id)
+	if prop: set_property_houses(property_id, prop.house_count + house_diff)
 
 func set_property_mortgaged(property_id: String, is_mortgaged: bool) -> void:
 	var prop = get_property(property_id)
+	if prop.is_mortgaged == is_mortgaged: return
 	if prop:
 		prop.is_mortgaged = is_mortgaged
 		property_updated.emit(property_id)
-		prop.updated.emit(property_id)
+		prop.send_update()
 
 func update_player_balance(player_id: int, amount: int) -> void:
+	if amount == 0: return
 	var player = get_player(player_id)
 	if player:
 		player.balance += amount
@@ -169,6 +177,7 @@ func update_player_balance(player_id: int, amount: int) -> void:
 
 func set_player_balance(player_id: int, amount: int) -> void:
 	var player = get_player(player_id)
+	if player.balance == amount: return
 	if player:
 		player.balance = amount
 		player.emit_update()
@@ -190,16 +199,14 @@ func set_player_surrender(player_id: int) -> void:
 # ⚖️ VALIDACIONES DE REGLAS (Monopoly Estricto)
 # ==========================================
 
-func _get_properties_in_group(group_id: String) -> Array[PropertyModel]:
+func _get_properties_in_group(group_id: int) -> Array[PropertyModel]:
 	var result: Array[PropertyModel] = []
-	if group_id == "" or not game: return result
-	
 	for prop in game.board_properties.values():
 		if prop.group_id == group_id:
 			result.append(prop)
 	return result
 
-func get_max_addable_houses(prop_id: String, player_id: int) -> int:
+func get_max_addable_houses(prop_id: String) -> int:
 	var target_prop = get_property(prop_id)
 	if not target_prop or target_prop.house_count >= 5: 
 		return 0
@@ -207,24 +214,15 @@ func get_max_addable_houses(prop_id: String, player_id: int) -> int:
 	var street = _get_properties_in_group(target_prop.group_id)
 	var min_other_houses = 5
 	
-	# Buscamos el mínimo del RESTO de la calle
 	for p in street:
-		if p.is_mortgaged:
-			return 0
-		if p.id != prop_id:
-			if p.house_count < min_other_houses:
-				min_other_houses = p.house_count
+		if p.is_mortgaged: return 0
+		if p.id == prop_id: continue
+		if p.house_count < min_other_houses:
+			min_other_houses = p.house_count
 				
-	# Fórmula estricta: No puedes superar en más de 1 al que menos tiene
 	var max_by_rule = (min_other_houses + 1) - target_prop.house_count
 	
-	var money = get_player_balance(player_id) 
-	@warning_ignore("integer_division")
-	var max_by_money = floor(money / 50) # HARCODEADO ESTE 50
-	
-	var final_max = min(max_by_rule, max_by_money)
-	# clampi asegura que devolvemos entre 0 y el hueco que nos quede hasta 5
-	return clampi(final_max, 0, 5 - target_prop.house_count)
+	return clampi(max_by_rule, 0, 5 - target_prop.house_count)
 
 func get_max_removable_houses(prop_id: String) -> int:
 	var target_prop = get_property(prop_id)
@@ -234,13 +232,11 @@ func get_max_removable_houses(prop_id: String) -> int:
 	var street = _get_properties_in_group(target_prop.group_id)
 	var max_other_houses = 0
 	
-	# Buscamos el máximo del RESTO de la calle
 	for p in street:
-		if p.id != prop_id:
-			if p.house_count > max_other_houses:
-				max_other_houses = p.house_count
-				
-	# Fórmula estricta: No puedes quedarte corto en más de 1 respecto al que más tiene
+		if p.id == prop_id: continue
+		if p.house_count > max_other_houses:
+			max_other_houses = p.house_count
+
 	var max_by_rule = target_prop.house_count - (max_other_houses - 1)
 	
 	return clampi(max_by_rule, 0, target_prop.house_count)
@@ -257,7 +253,7 @@ func can_mortgage(property_id: String, player_id: int) -> bool:
 			
 	return true
 
-func owns_full_group(group_id: String, player_id: int) -> bool:
+func owns_full_group(group_id: int, player_id: int) -> bool:
 	var street = _get_properties_in_group(group_id)
 	if street.is_empty(): return false
 	

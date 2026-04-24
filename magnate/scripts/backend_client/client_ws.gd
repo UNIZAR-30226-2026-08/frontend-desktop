@@ -174,7 +174,7 @@ signal response_general(Dictionary)
 
 ## For the following 2 signals define FantasyEvent as a Dictionary with:
 ## - "fantasy_type": FantasyEventType	- Enum type of fantasy event
-## - "value": int | None					- value to apply the effect, might not apply
+## - "value": int | None				- value to apply the effect, might not apply
 ## - "card_cost": int					- Cost of buying the card
 #TODO creo - luquin
 
