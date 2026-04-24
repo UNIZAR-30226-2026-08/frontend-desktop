@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bvohlrmtgmaxg"
-path="res://.godot/imported/Outgame_Currency.png-7c0e41e4aa244eea99a30a72468bfc7e.ctex"
+uid="uid://cbiox7fc77ubb"
+path="res://.godot/imported/emote_redCross.svg-d79f1f7b08ec6fa2c2c0d4f4f553b240.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/Outgame_Currency.png"
-dest_files=["res://.godot/imported/Outgame_Currency.png-7c0e41e4aa244eea99a30a72468bfc7e.ctex"]
+source_file="res://assets/icons/emotes/emote_redCross.svg"
+dest_files=["res://.godot/imported/emote_redCross.svg-d79f1f7b08ec6fa2c2c0d4f4f553b240.ctex"]
 
 [params]
 
@@ -38,3 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=5.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

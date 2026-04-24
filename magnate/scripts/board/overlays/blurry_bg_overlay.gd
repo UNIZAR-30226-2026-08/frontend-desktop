@@ -4,10 +4,12 @@ extends CanvasLayer
 @export var target_blur = 1.5;
 @export var fadein_duration = 2;
 
+var blur_filter: ColorRect
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var dark_filter = ColorRect.new()
-	var blur_filter = ColorRect.new()
+	blur_filter = ColorRect.new()
 	
 	dark_filter.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	blur_filter.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)

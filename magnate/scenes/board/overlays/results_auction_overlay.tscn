@@ -145,6 +145,7 @@ custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
 [node name="TitleLabel" type="Label" parent="SquarePanel/VBoxContainer" unique_id=1706409431]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("4_hdh73")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -165,7 +166,7 @@ theme = ExtResource("4_hdh73")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("7_1u2hh")
 theme_override_font_sizes/font_size = 25
-text = "CONSERJERÍA DEL ADA BYRON LORE IPSUM"
+text = "CONSERJERÍA DEL ADA BYRON"
 horizontal_alignment = 1
 autowrap_mode = 2
 
@@ -174,6 +175,8 @@ custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
 [node name="WinnerPanel" type="Panel" parent="SquarePanel/VBoxContainer" unique_id=732009230]
+unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(650, 150)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -262,7 +265,9 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
-[node name="AuxLabel2" type="Label" parent="SquarePanel/VBoxContainer" unique_id=1953777626]
+[node name="OtherBidsLabel" type="Label" parent="SquarePanel/VBoxContainer" unique_id=1953777626]
+unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(650, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -276,6 +281,8 @@ custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
 [node name="SecondBidderPanel" type="Panel" parent="SquarePanel/VBoxContainer" unique_id=1982777472]
+unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(650, 75)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -344,6 +351,8 @@ custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
 [node name="ThirdBidderPanel" type="Panel" parent="SquarePanel/VBoxContainer" unique_id=28373415]
+unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(650, 75)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -412,6 +421,8 @@ custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
 [node name="ForthBidderPanel" type="Panel" parent="SquarePanel/VBoxContainer" unique_id=1423553962]
+unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(650, 75)
 layout_mode = 2
 size_flags_horizontal = 4

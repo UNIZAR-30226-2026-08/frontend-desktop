@@ -10,6 +10,7 @@ const JAIL_TILE = preload("uid://dtdx4dou1ljl6")
 const SERVER_TILE = preload("uid://cov8rn28xmtuf")
 const START_TILE = preload("uid://dqdoqvx1b8srl")
 const TRAM_TILE = preload("uid://38yhgyxt25m4")
+const VISIT_TILE = preload("uid://cjghrardls6fq")
 
 static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> Control:
 	# Instantiate tile type
@@ -33,14 +34,17 @@ static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> Control:
 			tile_entity = START_TILE
 		Globals.TileType.TRAM:
 			tile_entity = TRAM_TILE
+		Globals.TileType.VISIT:
+			tile_entity = VISIT_TILE
 		_:
 			return null
 	# Common tile properties
 	var tile_instance: Control = tile_entity.instantiate() as Control
 	parent_scene.add_child(tile_instance)
-	tile_instance.pivot_offset = tile_def["size"] / 2
 	tile_instance.position = tile_def["position"]
-	tile_instance.size = tile_def["size"]
+	if tile_def.has("size"):
+		tile_instance.pivot_offset = tile_def["size"] / 2
+		tile_instance.size = tile_def["size"]
 	if tile_def.has("rotation"):
 		tile_instance.rotation_degrees = tile_def["rotation"]
 	# Specific tile properties
@@ -52,6 +56,8 @@ static func _spawn_tile(parent_scene: Node2D, tile_def: Dictionary) -> Control:
 			tile_instance.set_bridge_name(tile_def["name"])
 		Globals.TileType.SERVER:
 			tile_instance.set_server_name(tile_def["name"])
+		Globals.TileType.TRAM:
+			tile_instance.set_stop_name(tile_def["stop_name"])
 	tile_instance.mouse_filter = Control.MOUSE_FILTER_STOP
 	return tile_instance
 
@@ -60,4 +66,8 @@ static func spawn_board(parent_scene: Node2D) -> Dictionary[String, Control]:
 	var tile_dict: Dictionary[String, Control] = {}
 	for tile_id in tile_defs:
 		tile_dict[tile_id] = _spawn_tile(parent_scene, tile_defs[tile_id])
+		if tile_defs[tile_id].type in [Globals.TileType.PROPERTY, Globals.TileType.SERVER]:
+			tile_dict[tile_id].set_property_price(ModelManager.get_property(tile_id).buy_price)
+		if tile_dict[tile_id].has_method("update"):
+			ModelManager.get_property(tile_id).updated.connect(tile_dict[tile_id].update)
 	return tile_dict

@@ -2,7 +2,19 @@ class_name PlayerToken
 extends Area2D
 
 signal on_token_clicked(token_node: PlayerToken) # DEBUG
+signal stopped
+
+var current_tile_id: String = "000"
 var token_color: Color = Color.WHITE
+var hop_audio: AudioResource
+var offset: Vector2 = Vector2.ZERO:
+	set(value):
+		offset = value
+		queue_redraw()
+var radius: float = 20.0:
+	set(value):
+		radius = value
+		queue_redraw()
 
 func _ready() -> void:
 	var collision = CollisionShape2D.new()
@@ -15,13 +27,25 @@ func _ready() -> void:
 	mouse_exited.connect(_on_mouse_exited)
 	
 	input_event.connect(_on_input_event)
+	
+	hop_audio = AudioResource.from_type(Globals.AUDIO_PLAYER_HOP, AudioResource.AudioResourceType.SFX)
 
-func setup(color: Color) -> void:
+func setup(color: Color, _current_tile_id: String = "000") -> void:
 	token_color = color
+	current_tile_id = _current_tile_id
 	queue_redraw()
 
+func update(player_id) -> void:
+	var player = ModelManager.get_player(player_id)
+	if player.surrendered:
+		queue_free()
+		return
+	if player.current_tile_id != current_tile_id:
+		move_to(player.last_path_taken)
+		current_tile_id = player.current_tile_id
+
 func _draw() -> void:
-	var radius = 20.0
+	draw_set_transform(offset, 0, Vector2.ONE)
 	
 	draw_circle(Vector2(3, 3), radius, Color(0, 0, 0, 0.3))
 	draw_circle(Vector2.ZERO, radius, token_color)
@@ -37,9 +61,38 @@ func _on_mouse_exited() -> void:
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2.ONE, 0.1)
 
-func move_to(target_pos: Vector2) -> void:	
-	var tween = create_tween()
-	tween.tween_property(self, "position", target_pos, 0.6).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+func tp_to_pos(pos: Vector2) -> void:
+	position = pos
+
+func move_to(positions: Array[Vector2]) -> void:
+	var hop_height: float = 40.0
+	var duration: float = 0.4
+	
+	for target_pos in positions:
+		AudioSystem.play_audio(hop_audio)
+		
+		var movement_vector = (target_pos - position).abs()
+		var is_vertical = movement_vector.y > movement_vector.x
+		
+		var hop_tween = create_tween().set_trans(Tween.TRANS_QUAD)
+		if is_vertical:
+			hop_tween.tween_property(self, "radius", 22.0, duration / 2.0) \
+					.set_ease(Tween.EASE_OUT)
+			hop_tween.tween_property(self, "radius", 20.0, duration / 2.0) \
+				.set_ease(Tween.EASE_IN)
+		else:
+			hop_tween.tween_property(self, "offset", Vector2(0, -hop_height), duration / 2.0) \
+					.set_ease(Tween.EASE_OUT)
+			hop_tween.tween_property(self, "offset", Vector2.ZERO, duration / 2.0) \
+				.set_ease(Tween.EASE_IN)
+			
+		var tween = create_tween().set_trans(Tween.TRANS_QUAD)
+		tween.tween_property(self, "position", target_pos, duration) \
+			.set_ease(Tween.EASE_IN)
+			
+		await tween.finished
+		await get_tree().create_timer(0.05).timeout
+	stopped.emit()
 
 # DEBUG
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:

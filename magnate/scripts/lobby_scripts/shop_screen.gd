@@ -3,6 +3,7 @@ extends Control
 const ITEM_CARD_SCENE = preload("res://scenes/components/shop_item_card.tscn") # ¡Cambia esta ruta!
 
 @onready var budget_label: Label = %BudgetLabel
+@onready var lose_money_label: Label = %LoseMoneyLabel
 
 @onready var tokens_container: HBoxContainer = %TokensContainer
 @onready var emotes_container: HBoxContainer = %EmotesContainer
@@ -14,13 +15,19 @@ const ITEM_CARD_SCENE = preload("res://scenes/components/shop_item_card.tscn") #
 @onready var tokens_right_btn: Button = %TokensRightBtn
 @onready var emotes_left_btn: Button = %EmotesLeftBtn
 @onready var emotes_right_btn: Button = %EmotesRightBtn
+@onready var token_carrusel: HBoxContainer = %TokenCarrusel
+@onready var emoji_carrusel: HBoxContainer = %EmojiCarrusel
+@onready var token_tab_container: TabContainer = %TokenTabContainer
+@onready var emoji_tab_container: TabContainer = %EmojiTabContainer
 
 const VISIBLE_CARDS = 4
 const CARD_WIDTH = 355 
 const SPACING = 25
-const SCROLL_STEP = CARD_WIDTH + SPACING # Esto da 280 exactos por saltoflecha
+const SCROLL_STEP = CARD_WIDTH + SPACING
 
-var player_money: int = 500 # Ponle el dinero que quieras para hacer pruebas
+var player_money: int = -1
+
+var items: Array = []
 
 func _ready() -> void:
 	# Conectamos pasándole el contenedor DIRECTO (ya no le pasamos el "Scroll")
@@ -31,72 +38,83 @@ func _ready() -> void:
 	emotes_left_btn.pressed.connect(_scroll_custom_carousel.bind(emotes_container, -1))
 	emotes_right_btn.pressed.connect(_scroll_custom_carousel.bind(emotes_container, 1))
 	
-	_load_shop_items()
+	var user_info = await RestClient.user_get_info()
+	if user_info != {}:
+		player_money = user_info["points"]
 	
-	# Actualizamos el texto con el dinero inicial
+	items = await RestClient.shop_get_items()
+	# [{ "custom_id": 1.0, "itemType": "piece", "price": 100.0, "owned": true }]
+	for item in items:
+		var map
+		if item["itemType"] == "piece":
+			map = Globals.tokens
+		else:
+			map = Globals.emojis
+		if map.has(item["custom_id"]):
+			item["name"] = map[item["custom_id"]]["name"]
+			item["icon_path"] = map[item["custom_id"]]["icon"]
+		else:
+			item["name"] = "Desconocido"
+			item["icon_path"] = map[1]["icon"]
+	
+	_populate_shop(items)
 	_update_budget_ui()
 	_update_cards_affordability()
-# Simula la llegada del JSON desde el backend
-func _load_shop_items() -> void:
-	var dummy_backend_json = [
-		# --- SECCIÓN TOKENS ---
-		{"id": "tkn_1", "name": "TOKEN 1", "price": 0, "is_purchased": true, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-		{"id": "tkn_2", "name": "TOKEN 2", "price": 10, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-		{"id": "tkn_3", "name": "TOKEN 3", "price": 50, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-		{"id": "tkn_4", "name": "TOKEN 4", "price": 100, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-		{"id": "tkn_5", "name": "TOKEN 5", "price": 150, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-		{"id": "tkn_6", "name": "TOKEN 6", "price": 200, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-		{"id": "tkn_7", "name": "TOKEN 7", "price": 250, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-		{"id": "tkn_8", "name": "TOKEN 8", "price": 300, "is_purchased": false, "category": "token", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-
-		# --- SECCIÓN EMOTICONOS ---
-		{"id": "emo_1", "name": "RISA 1", "price": 0, "is_purchased": true, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-		{"id": "emo_2", "name": "RISA 2", "price": 50, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-		{"id": "emo_3", "name": "RISA 3", "price": 100, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-		{"id": "emo_4", "name": "RISA 4", "price": 150, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-		{"id": "emo_5", "name": "RISA 5", "price": 200, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-		{"id": "emo_6", "name": "RISA 6", "price": 250, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-		{"id": "emo_7", "name": "RISA 7", "price": 300, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"},
-		{"id": "emo_8", "name": "RISA 8", "price": 350, "is_purchased": false, "category": "emote", "icon_path": "res://assets/icons/characters/sombrero_closeup.png"}
-	]
-	
-	_populate_shop(dummy_backend_json)
 
 func _populate_shop(items_data: Array) -> void:
+	token_tab_container.current_tab = 1
+	emoji_tab_container.current_tab = 1
+	var num_pieces = 0
+	var num_emoji = 0
 	for item_data in items_data:
 		var card = ITEM_CARD_SCENE.instantiate()
 		
 		# Asignamos al carril correcto según la categoría
-		if item_data["category"] == "token":
+		if item_data["itemType"] == "piece":
 			tokens_container.add_child(card)
-		elif item_data["category"] == "emote":
+			token_tab_container.current_tab = 2
+			num_pieces += 1
+			if num_pieces == VISIBLE_CARDS + 1:
+				tokens_left_btn.modulate.a = 1
+				tokens_right_btn.modulate.a = 1
+		elif item_data["itemType"] == "emoji":
 			emotes_container.add_child(card)
+			emoji_tab_container.current_tab = 2
+			num_emoji += 1
+			if num_emoji == VISIBLE_CARDS + 1:
+				emotes_left_btn.modulate.a = 1
+				emotes_right_btn.modulate.a = 1
 			
 		# Le inyectamos los datos y conectamos su señal de compra
 		card.setup_item(item_data)
 		card.purchase_requested.connect(_on_item_purchase_requested)
 
-func _on_item_purchase_requested(item_id: String, price: int) -> void:
-	Utils.debug("El jugador quiere comprar: " + item_id + " por " + Utils.to_currency_text(price))
+func _on_item_purchase_requested(item_id: int, price: int) -> void:
+	Utils.debug("El jugador quiere comprar: " + str(item_id) + " por " + Utils.to_currency_text(price))
 	# Aquí meterás tu lógica: comprobar si el jugador tiene dinero suficiente,
 	# avisar al backend, restar el dinero, y si todo sale bien, buscar
 	# la tarjeta en el contenedor y ponerle su `is_purchased = true`
 	buy_item(item_id, price)
 	
-func buy_item(item_id: String, price: int) -> void:
-	Utils.debug("Intentando comprar: " + item_id + " por " + Utils.to_currency_text(price))
+func buy_item(item_id: int, price: int) -> void:
+	Utils.debug("Intentando comprar: " + str(item_id) + " por " + Utils.to_currency_text(price))
 	
 	# 1. Comprobar si hay dinero suficiente
 	if player_money >= price:
+		var resp = await RestClient.shop_buy_item(item_id)
+		if resp == {}: return
 		player_money -= price
 		Utils.debug("¡Compra exitosa! Nuevo saldo: " + Utils.to_currency_text(player_money))
 		
-		# 2. Actualizar la tarjeta visualmente a "Adquirido"
 		_update_card_to_purchased(item_id)
-		
-		# 3. Aquí en el futuro enviarás la petición a tu Backend:
-		# MiBackend.send_purchase_request(item_id)
-		
+		lose_money_label.position = budget_label.position
+		lose_money_label.rotation = 0
+		lose_money_label.modulate.a = 1
+		lose_money_label.text = "-" + Utils.to_currency_text(price)
+		var tween = get_tree().create_tween().set_parallel(true)
+		tween.tween_property(lose_money_label, "position:y", lose_money_label.position.y + 100, 1)
+		tween.tween_property(lose_money_label, "modulate:a", 0, 1)
+		tween.tween_property(lose_money_label, "rotation_degrees", 35, 1)
 		_update_budget_ui()
 		_update_cards_affordability()
 	else:
@@ -104,7 +122,7 @@ func buy_item(item_id: String, price: int) -> void:
 		# Aquí en el futuro podrías mostrar un popup de error o hacer vibrar el dinero
 
 # Función auxiliar que busca la tarjeta correcta y cambia su estado
-func _update_card_to_purchased(target_id: String) -> void:
+func _update_card_to_purchased(target_id: int) -> void:
 	# Buscamos primero en el carril de Tokens
 	for card in tokens_container.get_children():
 		if card.item_id == target_id:
@@ -117,11 +135,9 @@ func _update_card_to_purchased(target_id: String) -> void:
 			card.is_purchased = true
 			return
 
-# (Tu función de salir del header que ya tenías)
 func _on_header_back_action_requested() -> void:
 	SceneTransition.change_scene("res://scenes/UI/home_screen.tscn")
-	
-# La nueva magia:
+
 func _scroll_custom_carousel(container: HBoxContainer, direction: int) -> void:
 	var total_items = container.get_child_count()
 	
@@ -138,6 +154,23 @@ func _scroll_custom_carousel(container: HBoxContainer, direction: int) -> void:
 	
 	# El clamp evita que vayamos más allá del máximo o que volvamos más allá del 0 (el inicio)
 	target_x = clamp(target_x, max_scroll_left, 0.0)
+	
+	var right_btn
+	var left_btn
+	if container == token_carrusel:
+		right_btn = tokens_right_btn
+		left_btn = tokens_left_btn
+	else:
+		right_btn = emotes_right_btn
+		left_btn = emotes_left_btn
+	if target_x == max_scroll_left:
+		right_btn.modulate.a = 0
+	elif target_x == 0:
+		left_btn.modulate.a = 0
+	if direction == 1:
+		left_btn.modulate.a = 1
+	else:
+		right_btn.modulate.a = 1
 	
 	# Animamos la posición X del contenedor
 	var tween = create_tween()

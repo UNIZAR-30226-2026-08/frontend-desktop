@@ -1,0 +1,24 @@
+{
+	"token": [
+		{"id": 1, "name": "Barco", "icon": "barco_closeup.png" },
+		{"id": 2, "name": "Hamburguesa", "icon": "burguer_closeup.png" },
+		{"id": 3, "name": "Sombrero", "icon": "sombrero_closeup.png" },
+		{"id": 4, "name": "Coche", "icon": "f1_closeup.png" }
+	],
+	"emoji": [
+		{"id": 5, "name": "Cara feliz", "icon": "emote_faceHappy.svg" },
+		{"id": 6, "name": "Cara enfado", "icon": "emote_faceAngry.svg" },
+		{"id": 7, "name": "Bombilla", "icon": "emote_bulb.svg" },
+		{"id": 8, "name": "Dinero", "icon": "emote_dollar.svg" },
+		{"id": 9, "name": "Sorpresa", "icon": "emote_exclamation.svg" },
+		{"id": 10, "name": "Cara triste", "icon": "emote_faceSad.svg" },
+		{"id": 11, "name": "Corazón", "icon": "emote_heart.svg" },
+		{"id": 12, "name": "Corazón roto", "icon": "emote_heartbreak.svg" },
+		{"id": 13, "name": "Burla", "icon": "emote_laugh.svg" },
+		{"id": 14, "name": "Música", "icon": "emote_music.svg" },
+		{"id": 15, "name": "Pregunta", "icon": "emote_question.svg" },
+		{"id": 16, "name": "Denegado", "icon": "emote_redCross.svg" },
+		{"id": 17, "name": "Dormir", "icon": "emote_sleep.svg" },
+		{"id": 18, "name": "Estrella", "icon": "emote_star.svg" },
+	]  
+}

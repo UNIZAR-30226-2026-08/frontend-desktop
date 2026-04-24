@@ -1,25 +1,17 @@
-extends BlurryBgOverlay
+extends BasicCardOverlay
 
-@onready var card = %PropertyCard
-@onready var server_card = %ServerCard
+var _property: PropertyModel
+@onready var animated_button: MagnateTweenButton = %AnimatedButton
+
+func setup(property: PropertyModel) -> void:
+	if property.is_server: card = %ServerCard
+	elif property.is_bridge: card = %BridgeCard
+	else: card = %PropertyCard
+	card.show()
+	_property = property
 
 func _ready() -> void:
-	visible = false
-	card.visible = false
-	server_card.visible = false
-	aparecer(server_card)
-
-func aparecer(tarjeta: Control):
-	tarjeta.visible = true
-	show()
-	tarjeta.modulate.a = 0.0
-	
-	var pos_original = tarjeta.position.y
-	tarjeta.position.y = pos_original + 20 
-
-	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC)
-	tween.tween_property(tarjeta, "modulate:a", 1.0, 0.4)
-	tween.tween_property(tarjeta, "position:y", pos_original, 0.4)
-	
-	#Esta función es la que se encarga de marcar la renta que paga el que ha caido ahí
-	tarjeta.highlight_rent(0)
+	card.update_all_data(_property)
+	var price = Utils.to_currency_text(_property.rent_prices[_property.house_count])
+	super()
+	animated_button.set_btn_text("PAGAR " + price)

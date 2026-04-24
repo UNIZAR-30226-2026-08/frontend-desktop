@@ -14,10 +14,11 @@
 [ext_resource type="StyleBox" uid="uid://dc47ejgb5jctj" path="res://styles/shop/scroll_buttons_shop.tres" id="8_hudyc"]
 [ext_resource type="FontFile" uid="uid://d0n0vsktkc5wr" path="res://assets/fonts/LTSuperior/LTSuperior-Bold.ttf" id="8_qtibt"]
 [ext_resource type="StyleBox" uid="uid://ea3padm8hxn0" path="res://styles/shop/disabled_scroll_buttons_shop.tres" id="9_n6hus"]
-[ext_resource type="Texture2D" uid="uid://kr6y2xasktun" path="res://assets/images/left_arrow.png" id="10_142ik"]
 [ext_resource type="StyleBox" uid="uid://n6is3jb3ojo7" path="res://styles/profile/calcel_style.tres" id="11_hudyc"]
-[ext_resource type="Texture2D" uid="uid://bospcqsdrpka" path="res://assets/images/right_arrow.png" id="11_jdq1e"]
 [ext_resource type="FontFile" uid="uid://pqt8tux3lbt7" path="res://assets/fonts/LTSuperior/LTSuperior-Light.ttf" id="12_qtibt"]
+[ext_resource type="PackedScene" uid="uid://j1n4qrxg3bf8" path="res://scenes/components/loading_circle.tscn" id="14_n6hus"]
+[ext_resource type="Texture2D" uid="uid://bem5u5bxowiaq" path="res://assets/icons/back-arrow-green.svg" id="17_142ik"]
+[ext_resource type="Texture2D" uid="uid://cp5bx3nl5gmj8" path="res://assets/icons/front-arrow-green.svg" id="18_jdq1e"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g2gpt"]
 shader = ExtResource("1_rdtry")
@@ -43,6 +44,10 @@ corner_radius_top_left = 40
 corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_142ik"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n6hus"]
 
 [node name="profile_screen" type="Control" unique_id=723652825]
 material = SubResource("ShaderMaterial_g2gpt")
@@ -121,7 +126,8 @@ theme_override_fonts/font = ExtResource("7_7w1ml")
 theme_override_font_sizes/font_size = 50
 text = "Nicolas de Rivas"
 
-[node name="Button" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" unique_id=2044040582]
+[node name="LogoutButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" unique_id=2044040582]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(1, 0.58203125, 0.58203125, 1)
@@ -165,7 +171,7 @@ theme_override_styles/pressed = ExtResource("11_hudyc")
 theme_override_styles/hover = ExtResource("11_hudyc")
 theme_override_styles/disabled = ExtResource("11_hudyc")
 theme_override_styles/focus = ExtResource("11_hudyc")
-text = "CANCELAR SELECCIÓN"
+text = "VOLVER A MI PERFIL"
 
 [node name="Control" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=267281276]
 custom_minimum_size = Vector2(70, 0)
@@ -252,6 +258,7 @@ custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
 [node name="WinsLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/HBoxContainer/PanelContainer2/VBoxContainer" unique_id=1375918224]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0.5411765, 0.36078432, 1)
@@ -282,7 +289,8 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="GamesPlayed" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/HBoxContainer/PanelContainer3/VBoxContainer" unique_id=1653681545]
+[node name="TotalPoints" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/HBoxContainer/PanelContainer3/VBoxContainer" unique_id=1653681545]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0.5411765, 0.36078432, 1)
@@ -305,12 +313,39 @@ text = "HISTORIAL DE PARTIDAS"
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="CarruselHbox" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1" unique_id=826141615]
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1" unique_id=650440828]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_142ik")
+current_tab = 0
+tabs_visible = false
+
+[node name="circle_waiting" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/TabContainer" unique_id=1921030254 instance=ExtResource("14_n6hus")]
+unique_name_in_owner = true
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="no_games_label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/TabContainer" unique_id=1462949497]
+visible = false
+custom_minimum_size = Vector2(0, 350)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.06666667, 0.06666667, 0.06666667, 1)
+theme_override_font_sizes/font_size = 50
+text = "Aún no has jugado ninguna partida"
+vertical_alignment = 1
+metadata/_tab_index = 1
+
+[node name="CarruselHbox" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/TabContainer" unique_id=826141615]
+visible = false
 layout_mode = 2
 alignment = 1
+metadata/_tab_index = 2
 
-[node name="GamesLeftBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/CarruselHbox" unique_id=824275027 instance=ExtResource("7_qtibt")]
+[node name="GamesLeftBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/TabContainer/CarruselHbox" unique_id=824275027 instance=ExtResource("7_qtibt")]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 4
@@ -319,9 +354,9 @@ theme_override_styles/pressed = ExtResource("8_hudyc")
 theme_override_styles/hover = ExtResource("8_hudyc")
 theme_override_styles/disabled = ExtResource("9_n6hus")
 theme_override_styles/focus = ExtResource("8_hudyc")
-icon_texture = ExtResource("10_142ik")
+icon_texture = ExtResource("17_142ik")
 
-[node name="GamesScroll" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/CarruselHbox" unique_id=47779363]
+[node name="GamesScroll" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/TabContainer/CarruselHbox" unique_id=47779363]
 unique_name_in_owner = true
 clip_children = 1
 clip_contents = true
@@ -329,12 +364,12 @@ custom_minimum_size = Vector2(1500, 300)
 layout_mode = 2
 size_flags_horizontal = 6
 
-[node name="GamesContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/CarruselHbox/GamesScroll" unique_id=970603586]
+[node name="GamesContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/TabContainer/CarruselHbox/GamesScroll" unique_id=970603586]
 unique_name_in_owner = true
 layout_mode = 0
 theme_override_constants/separation = 25
 
-[node name="GamesRightBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/CarruselHbox" unique_id=59170170 instance=ExtResource("7_qtibt")]
+[node name="GamesRightBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/Face1/TabContainer/CarruselHbox" unique_id=59170170 instance=ExtResource("7_qtibt")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
@@ -344,7 +379,7 @@ theme_override_styles/pressed = ExtResource("8_hudyc")
 theme_override_styles/hover = ExtResource("8_hudyc")
 theme_override_styles/disabled = ExtResource("9_n6hus")
 theme_override_styles/focus = ExtResource("8_hudyc")
-icon_texture = ExtResource("11_jdq1e")
+icon_texture = ExtResource("18_jdq1e")
 
 [node name="Face2" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1573937534]
 unique_name_in_owner = true
@@ -358,12 +393,39 @@ theme_override_fonts/font = ExtResource("6_7w1ml")
 theme_override_font_sizes/font_size = 50
 text = "ELIGE TU SKIN"
 
-[node name="CarruselHbox2" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2" unique_id=1537306224]
+[node name="SkinsTabContainer" type="TabContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2" unique_id=1326510858]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_n6hus")
+current_tab = 0
+tabs_visible = false
+
+[node name="skins_circle_waiting" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2/SkinsTabContainer" unique_id=698285360 instance=ExtResource("14_n6hus")]
+unique_name_in_owner = true
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="no_skins_label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2/SkinsTabContainer" unique_id=1423873361]
+visible = false
+custom_minimum_size = Vector2(0, 350)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.06666667, 0.06666667, 0.06666667, 1)
+theme_override_font_sizes/font_size = 50
+text = "Aún no tienes ningun cosmético"
+vertical_alignment = 1
+metadata/_tab_index = 1
+
+[node name="CarruselHbox2" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2/SkinsTabContainer" unique_id=1537306224]
+visible = false
 layout_mode = 2
 alignment = 1
+metadata/_tab_index = 2
 
-[node name="SkinsLeftBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2/CarruselHbox2" unique_id=1754244700 instance=ExtResource("7_qtibt")]
+[node name="SkinsLeftBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2/SkinsTabContainer/CarruselHbox2" unique_id=1754244700 instance=ExtResource("7_qtibt")]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 4
@@ -372,21 +434,21 @@ theme_override_styles/pressed = ExtResource("8_hudyc")
 theme_override_styles/hover = ExtResource("8_hudyc")
 theme_override_styles/disabled = ExtResource("9_n6hus")
 theme_override_styles/focus = ExtResource("8_hudyc")
-icon_texture = ExtResource("10_142ik")
+icon_texture = ExtResource("17_142ik")
 
-[node name="SkinsScroll" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2/CarruselHbox2" unique_id=294071604]
+[node name="SkinsScroll" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2/SkinsTabContainer/CarruselHbox2" unique_id=294071604]
 clip_children = 1
 clip_contents = true
 custom_minimum_size = Vector2(1500, 300)
 layout_mode = 2
 size_flags_horizontal = 6
 
-[node name="SkinsContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2/CarruselHbox2/SkinsScroll" unique_id=692947735]
+[node name="SkinsContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2/SkinsTabContainer/CarruselHbox2/SkinsScroll" unique_id=692947735]
 unique_name_in_owner = true
 layout_mode = 0
 theme_override_constants/separation = 25
 
-[node name="SkinsRightBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2/CarruselHbox2" unique_id=531717413 instance=ExtResource("7_qtibt")]
+[node name="SkinsRightBtn" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2/SkinsTabContainer/CarruselHbox2" unique_id=531717413 instance=ExtResource("7_qtibt")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
@@ -396,7 +458,7 @@ theme_override_styles/pressed = ExtResource("8_hudyc")
 theme_override_styles/hover = ExtResource("8_hudyc")
 theme_override_styles/disabled = ExtResource("9_n6hus")
 theme_override_styles/focus = ExtResource("8_hudyc")
-icon_texture = ExtResource("11_jdq1e")
+icon_texture = ExtResource("18_jdq1e")
 
 [node name="Control5" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer/Face2" unique_id=1372872061]
 custom_minimum_size = Vector2(0, 50)

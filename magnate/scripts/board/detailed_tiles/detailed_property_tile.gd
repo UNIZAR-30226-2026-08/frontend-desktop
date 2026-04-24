@@ -1,4 +1,4 @@
-extends Control
+extends MagnateBaseCard
 
 @onready var property_color: ColorRect = %PropertyColor
 @onready var property_name: Label = %PropertyName
@@ -37,44 +37,20 @@ func set_basic_rent(p_amount: int) -> void:
 	property_basic_rent.text = "ALQUILERES " + Utils.to_currency_text(p_amount)
 	
 func set_rent_1(p_amount: int) -> void:
-	if(p_amount < 100):
-		property_rent_1.text = "Con 1 Casa . . . . . . . . . . . " + Utils.to_currency_text(p_amount)
-	elif(p_amount < 1000):
-		property_rent_1.text = "Con 1 Casa . . . . . . . . . . " + Utils.to_currency_text(p_amount)
-	else:
-		property_rent_1.text = "Con 1 Casa . . . . . . . . . " + Utils.to_currency_text(p_amount)
+	property_rent_1.text = "Con 1 Casa . . . . . . . . . " + Utils.to_currency_text(p_amount)
 
 func set_rent_2(p_amount: int) -> void:
-	if(p_amount < 100):
-		property_rent_2.text = "Con 2 Casas . . . . . . . . . . " + Utils.to_currency_text(p_amount)
-	elif(p_amount < 1000):
-		property_rent_2.text = "Con 2 Casas . . . . . . . . . " + Utils.to_currency_text(p_amount)
-	else:
-		property_rent_2.text = "Con 2 Casas . . . . . . . . " + Utils.to_currency_text(p_amount)
+	property_rent_2.text = "Con 2 Casas . . . . . . . . " + Utils.to_currency_text(p_amount)
 		
 func set_rent_3(p_amount: int) -> void:
-	if(p_amount < 100):
-		property_rent_3.text = "Con 3 Casas . . . . . . . . . . " + Utils.to_currency_text(p_amount)
-	elif(p_amount < 1000):
-		property_rent_3.text = "Con 3 Casas . . . . . . . . . " + Utils.to_currency_text(p_amount)
-	else:
-		property_rent_3.text = "Con 3 Casas . . . . . . . . " + Utils.to_currency_text(p_amount)
+	property_rent_3.text = "Con 3 Casas . . . . . . . . " + Utils.to_currency_text(p_amount)
 		
 func set_rent_4(p_amount: int) -> void:
-	if(p_amount < 100):
-		property_rent_4.text = "Con 4 Casas . . . . . . . . . . " + Utils.to_currency_text(p_amount)
-	elif(p_amount < 1000):
-		property_rent_4.text = "Con 4 Casas . . . . . . . . . " + Utils.to_currency_text(p_amount)
-	else:
-		property_rent_4.text = "Con 4 Casas . . . . . . . . " + Utils.to_currency_text(p_amount)
+	property_rent_4.text = "Con 4 Casas . . . . . . . . " + Utils.to_currency_text(p_amount)
 		
 func set_rent_hotel(p_amount: int) -> void:
-	if(p_amount < 100):
-		property_rent_hotel.text = "Con HOTEL . . . . . . . . . . . " + Utils.to_currency_text(p_amount)
-	elif(p_amount < 1000):
-		property_rent_hotel.text = "Con HOTEL . . . . . . . . . . " + Utils.to_currency_text(p_amount)
-	else:
-		property_rent_hotel.text = "Con HOTEL . . . . . . . . . " + Utils.to_currency_text(p_amount)
+	property_rent_hotel.text = "Con HOTEL . . . . . . . . . " + Utils.to_currency_text(p_amount)
+
 func set_house_price(p_amount: int) -> void:
 	property_house_price.text = "Cada Casa cuesta " + Utils.to_currency_text(p_amount) + "\n El Hotel cuesta 5 Casas"
 
@@ -83,18 +59,19 @@ func set_mortgage_price(p_amount: int) -> void:
 
 # --- Función Maestra ---
 
-func update_all_data(data: Dictionary) -> void:
-	set_property_name(data.get("name", "Propiedad"))
+func update_all_data(property: PropertyModel) -> void:
+	set_property_name(property.name)
 	# Convertimos el string del JSON a un Color real
-	set_property_color(Color(data.get("color", "#FFFFFF"))) 
-	set_basic_rent(data.get("rent_0", 0))
-	set_rent_1(data.get("rent_1", 0))
-	set_rent_2(data.get("rent_2", 0))
-	set_rent_3(data.get("rent_3", 0))
-	set_rent_4(data.get("rent_4", 0))
-	set_rent_hotel(data.get("rent_hotel", 0))
-	set_house_price(data.get("house_price", 0))
-	set_mortgage_price(data.get("mortgage", 0))
+	set_property_color(property.color) 
+	set_basic_rent(property.rent_prices[0])
+	set_rent_1(property.rent_prices[1])
+	set_rent_2(property.rent_prices[2])
+	set_rent_3(property.rent_prices[3])
+	set_rent_4(property.rent_prices[4])
+	set_rent_hotel(property.rent_prices[5])
+	set_house_price(property.build_price)
+	@warning_ignore("integer_division")
+	set_mortgage_price(property.buy_price / 2)
 
 var flash_tween: Tween 
 

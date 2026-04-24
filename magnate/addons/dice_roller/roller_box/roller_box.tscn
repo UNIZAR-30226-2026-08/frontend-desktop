@@ -27,7 +27,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
 visible = false
 use_collision = true
 flip_faces = true
-size = Vector3(7, 16, 7)
+size = Vector3(6, 16, 6)
 material = SubResource("StandardMaterial3D_uauhm")
 
 [node name="DebugCamera3D" type="Camera3D" parent="." unique_id=1479375768]

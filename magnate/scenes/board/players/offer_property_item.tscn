@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://bvi6dqb0y2v02"]
+
+[ext_resource type="StyleBox" uid="uid://cdb2i2qip8v2j" path="res://styles/ingame/tradebox.tres" id="1_h6q8b"]
+[ext_resource type="Script" uid="uid://bt1xqf7v4f2wq" path="res://scripts/board/trading/offer_property_item.gd" id="2_h6q8b"]
+[ext_resource type="StyleBox" uid="uid://cnvygwbyqya08" path="res://styles/ingame/colordot.tres" id="3_2h7jh"]
+[ext_resource type="FontFile" uid="uid://q5s1rdm0i0yu" path="res://assets/fonts/LTSuperior/LTSuperior-Medium.ttf" id="4_0sfcy"]
+
+[node name="OfferPropertyItem" type="PanelContainer" unique_id=458250389]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = ExtResource("1_h6q8b")
+script = ExtResource("2_h6q8b")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=739554069]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBox" type="VBoxContainer" parent="Margin" unique_id=710971216]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="Margin/VBox" unique_id=900368753]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="MidSpace" type="Control" parent="Margin/VBox/HBox" unique_id=1435199170]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GroupColor" type="Panel" parent="Margin/VBox/HBox" unique_id=2143249438]
+unique_name_in_owner = true
+modulate = Color(0.4023285, 0.73046875, 0.49974513, 1)
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("3_2h7jh")
+
+[node name="PropertyName" type="Label" parent="Margin/VBox/HBox" unique_id=44909691]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_0sfcy")
+theme_override_font_sizes/font_size = 15
+text = "SALA DE TRABAJO 2 JJAAajajajajdsaj"
+autowrap_mode = 2
+
+[node name="MidSpace2" type="Control" parent="Margin/VBox/HBox" unique_id=972598024]
+layout_mode = 2
+size_flags_horizontal = 3

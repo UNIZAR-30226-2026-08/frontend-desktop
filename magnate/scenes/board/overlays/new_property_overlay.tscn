@@ -2,8 +2,10 @@
 
 [ext_resource type="Script" uid="uid://d1w6ev76b7ide" path="res://scripts/board/overlays/new_property_overlay.gd" id="1_eu44f"]
 [ext_resource type="PackedScene" uid="uid://vd87r5unxafe" path="res://scenes/board/cards/property_card.tscn" id="2_iwjru"]
+[ext_resource type="PackedScene" uid="uid://cvlvp87utk4kx" path="res://scenes/board/cards/bridge_card.tscn" id="4_0m1iy"]
 [ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="4_eu44f"]
 [ext_resource type="PackedScene" uid="uid://bfcpwq3bljh8g" path="res://scenes/board/cards/server_card.tscn" id="4_iwjru"]
+[ext_resource type="PackedScene" uid="uid://c1jvwymfhm6pl" path="res://scenes/components/tooltip.tscn" id="5_0m1iy"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iwjru"]
 bg_color = Color(0.3372549, 0.38039216, 0.3647059, 1)
@@ -43,6 +45,7 @@ script = ExtResource("1_eu44f")
 
 [node name="PropertyCard" parent="." unique_id=589823767 instance=ExtResource("2_iwjru")]
 unique_name_in_owner = true
+visible = false
 offset_left = 760.0
 offset_top = 200.0
 offset_right = 1160.0
@@ -50,10 +53,27 @@ offset_bottom = 800.0
 
 [node name="ServerCard" parent="." unique_id=919827841 instance=ExtResource("4_iwjru")]
 unique_name_in_owner = true
+visible = false
 offset_left = 760.0
 offset_top = 200.0
 offset_right = 1160.0
 offset_bottom = 800.0
+
+[node name="BridgeCard" parent="." unique_id=617245605 instance=ExtResource("4_0m1iy")]
+unique_name_in_owner = true
+visible = false
+offset_left = 760.0
+offset_top = 200.0
+offset_right = 1160.0
+offset_bottom = 800.0
+
+[node name="Tooltip" parent="." unique_id=652872537 instance=ExtResource("5_0m1iy")]
+unique_name_in_owner = true
+offset_left = 1468.0
+offset_top = 827.0
+offset_right = 1728.0
+offset_bottom = 900.0
+custom_text = "Si decides no adquirir esta propiedad pasará a subasta entre el resto de los jugadores"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2146086424]
 offset_left = 500.0
@@ -67,7 +87,7 @@ alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-text = "Comprar por 100€"
+text = "Comprar por 100M"
 
 [node name="Control" type="Control" parent="HBoxContainer" unique_id=737730637]
 custom_minimum_size = Vector2(200, 0)
@@ -81,3 +101,10 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_iwjru")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_eu44f")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0m1iy")
 text = "Poner a subasta"
+
+[node name="Control2" type="Control" parent="HBoxContainer" unique_id=2129435574]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+
+[connection signal="mouse_entered" from="HBoxContainer/AuctionButton" to="." method="_on_auction_button_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/AuctionButton" to="." method="_on_auction_button_mouse_exited"]

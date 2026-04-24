@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://r7wff0p1ra5x"]
+
+[ext_resource type="Script" uid="uid://iqm8gmph6brn" path="res://scripts/board/surrender/surrender_overlay.gd" id="1_xtjyv"]
+[ext_resource type="FontFile" uid="uid://cel767gfqwf3q" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBoldItalic.ttf" id="2_xtjyv"]
+[ext_resource type="FontFile" uid="uid://q5s1rdm0i0yu" path="res://assets/fonts/LTSuperior/LTSuperior-Medium.ttf" id="3_0jrtm"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="5_kh7rw"]
+[ext_resource type="StyleBox" uid="uid://cxalmbko1o7te" path="res://styles/ingame/black_button_style.tres" id="6_txosm"]
+[ext_resource type="StyleBox" uid="uid://dnpy4c64tp2t6" path="res://styles/ingame/red_button_style.tres" id="6_utrhx"]
+
+[node name="SurrenderOverlay" type="CanvasLayer" unique_id=417320456]
+script = ExtResource("1_xtjyv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=593344712]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -346.0
+offset_top = -253.5
+offset_right = 346.0
+offset_bottom = 253.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1174250846]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_xtjyv")
+theme_override_font_sizes/font_size = 80
+text = "¿ESTÁS SEGURO?"
+horizontal_alignment = 1
+
+[node name="Space" type="Control" parent="VBoxContainer" unique_id=2022878831]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="SubtitleLabel" type="Label" parent="VBoxContainer" unique_id=1048592151]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.44140625, 0.44140625, 0.44140625, 1)
+theme_override_fonts/font = ExtResource("3_0jrtm")
+theme_override_font_sizes/font_size = 30
+text = "TE DECLARARÁS EN BANCARROTA Y QUEDARÁS FUERA DE LA PARTIDA."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Space2" type="Control" parent="VBoxContainer" unique_id=529894470]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="ExitButton" parent="VBoxContainer" unique_id=588064525 instance=ExtResource("5_kh7rw")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.15234375, 0.15234375, 1)
+theme_override_colors/font_focus_color = Color(1, 0.15294118, 0.15294118, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.15294118, 0.15294118, 1)
+theme_override_colors/font_hover_color = Color(1, 0.15294118, 0.15294118, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 0.15294118, 0.15294118, 1)
+theme_override_fonts/font = ExtResource("2_xtjyv")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = ExtResource("6_utrhx")
+theme_override_styles/pressed = ExtResource("6_utrhx")
+theme_override_styles/hover = ExtResource("6_utrhx")
+theme_override_styles/disabled = ExtResource("6_utrhx")
+theme_override_styles/focus = ExtResource("6_utrhx")
+text = "Sí, RENDIRME"
+
+[node name="Space3" type="Control" parent="VBoxContainer" unique_id=689828012]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="BackToGameButton" parent="VBoxContainer" unique_id=175575919 instance=ExtResource("5_kh7rw")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7058824, 0.7058824, 0.7058824, 1)
+theme_override_colors/font_focus_color = Color(0.7058824, 0.7058824, 0.7058824, 1)
+theme_override_colors/font_pressed_color = Color(0.7058824, 0.7058824, 0.7058824, 1)
+theme_override_colors/font_hover_color = Color(0.7058824, 0.7058824, 0.7058824, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.7058824, 0.7058824, 0.7058824, 1)
+theme_override_colors/font_disabled_color = Color(0.7058824, 0.7058824, 0.7058824, 1)
+theme_override_fonts/font = ExtResource("2_xtjyv")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = ExtResource("6_txosm")
+theme_override_styles/pressed = ExtResource("6_txosm")
+theme_override_styles/hover = ExtResource("6_txosm")
+theme_override_styles/disabled = ExtResource("6_txosm")
+theme_override_styles/focus = ExtResource("6_txosm")
+text = "CONTINUAR JUGANDO"

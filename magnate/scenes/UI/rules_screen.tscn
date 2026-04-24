@@ -55,3 +55,5 @@ grow_vertical = 2
 [node name="Header" parent="VBoxContainer" unique_id=93527095 instance=ExtResource("12_6pcab")]
 layout_mode = 2
 title = "Tips de ayuda"
+
+[connection signal="back_action_requested" from="VBoxContainer/Header" to="." method="_on_header_back_action_requested"]

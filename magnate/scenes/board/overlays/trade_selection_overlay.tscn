@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://cf7vsw1q85viu"]
+
+[ext_resource type="Script" uid="uid://crf1ioy75fhsc" path="res://scripts/board/trading/trade_selection_overlay.gd" id="1_lj1dv"]
+[ext_resource type="FontFile" uid="uid://cel767gfqwf3q" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBoldItalic.ttf" id="2_kwaop"]
+[ext_resource type="FontFile" uid="uid://q5s1rdm0i0yu" path="res://assets/fonts/LTSuperior/LTSuperior-Medium.ttf" id="3_oisjk"]
+
+[node name="TradeSelectionOverlay" type="CanvasLayer" unique_id=417320456]
+script = ExtResource("1_lj1dv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1965538085]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="VBoxContainer" unique_id=1043535037]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1500625700]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_kwaop")
+theme_override_font_sizes/font_size = 80
+text = "ELIGE JUGADOR PARA TRADEAR"
+horizontal_alignment = 1
+
+[node name="Control2" type="Control" parent="VBoxContainer" unique_id=1396802641]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="Subtitle" type="Label" parent="VBoxContainer" unique_id=263120149]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.796875, 0.796875, 0.796875, 1)
+theme_override_fonts/font = ExtResource("3_oisjk")
+theme_override_font_sizes/font_size = 40
+text = "(Click en otro lugar para cancelar)"
+horizontal_alignment = 1

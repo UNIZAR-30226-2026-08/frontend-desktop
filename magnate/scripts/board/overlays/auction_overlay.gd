@@ -16,12 +16,12 @@ extends BlurryBgOverlay
 
 # --- VARIABLES ---
 var time_left: int = 15
-var current_bid: int = 91 
-var maxmoney: int = 1000 
+var current_bid: int = 0
+var maxmoney: int = ModelManager.get_player().balance
 var color_verde_puja: Color = Color("#008a5c") # Tu color personalizado
 
 signal auction_finished
-signal player_withdrawn 
+# signal player_withdrawn 
 
 func _ready() -> void:
 	super()
@@ -45,7 +45,7 @@ func _ready() -> void:
 	
 	add_10_button.pressed.connect(_on_add_10_pressed)
 	add_50_button.pressed.connect(_on_add_50_pressed)
-	withdraw_button.pressed.connect(_on_withdraw_pressed)
+#	withdraw_button.pressed.connect(_on_withdraw_pressed)
 	
 	# Empezamos la subasta (el tablero llamará a abrir_carta al instanciarlo)
 	start_auction(15)
@@ -53,16 +53,14 @@ func _ready() -> void:
 # ==========================================
 # INICIALIZACIÓN DE LA CARTA (Desde el Tablero)
 # ==========================================
-func abrir_carta(prop_data: Dictionary) -> void:
-	var is_server = prop_data["type"] == Globals.TileType.SERVER
-	
-	if is_server:
+func abrir_carta(property: PropertyModel) -> void:
+	if property.is_server:
 		card.visible = false
-		server_card.update_all_data(prop_data)
+		server_card.update_all_data(property)
 		aparecer(server_card)
 	else:
 		server_card.visible = false
-		card.update_all_data(prop_data)
+		card.update_all_data(property)
 		aparecer(card)
 
 func aparecer(tarjeta: Control) -> void:
@@ -116,14 +114,15 @@ func flash_warning() -> void:
 	tween.tween_property(countdown_label, "theme_override_colors/font_color", Color.BLACK, 0.5)
 
 func _on_timeout() -> void:
-	print("¡Tiempo agotado!")
+	Utils.debug("¡Tiempo agotado!")
 	countdown_label.add_theme_color_override("font_color", Color.BLACK)
 	desactivar_controles() 
 	
 	# Esperamos 2 segundos para que se vea la puja final
 	await get_tree().create_timer(2.0).timeout
 	if is_inside_tree():
-		auction_finished.emit() # <--- AVISAMOS AHORA, JUSTO ANTES DE CERRAR
+		auction_finished.emit()
+		WsClient.ws_action_bid(current_bid)
 		cerrar_y_destruir()
 
 # ==========================================
@@ -143,7 +142,7 @@ func intentar_pujar(nueva_puja: int) -> void:
 		update_placeholder()
 		auction_price_input.grab_focus()
 	else:
-		print("Puja inválida.")
+		Utils.debug("Puja inválida.")
 		auction_price_input.text = ""
 		set_price_button.disabled = true
 
@@ -174,16 +173,16 @@ func _on_add_10_pressed() -> void:
 func _on_add_50_pressed() -> void:
 	intentar_pujar(current_bid + 50)
 
-func _on_withdraw_pressed() -> void:
-	print("Te has retirado de la puja.")
+#func _on_withdraw_pressed() -> void:
+#	print("Te has retirado de la puja.")
 	
 	# Cambiamos texto a Fuera y color a rojo
-	current_bid_label.text = "Fuera"
-	current_bid_label.add_theme_color_override("font_color", Color.RED)
+#	current_bid_label.text = "Fuera"
+#	current_bid_label.add_theme_color_override("font_color", Color.RED)
 	
 	# Solo bloqueamos los botones del jugador, EL TIEMPO SIGUE
-	desactivar_controles()
-	player_withdrawn.emit()
+#	desactivar_controles()
+#	player_withdrawn.emit()
 
 # Extraída a una función para no repetir código entre _on_timeout y _on_withdraw_pressed
 func desactivar_controles() -> void:

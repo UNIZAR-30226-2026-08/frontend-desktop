@@ -28,6 +28,14 @@ func highlight_tiles(ids: Array[String]) -> void:
 		tiles_to_darken.append(id)
 	darken_tiles(tiles_to_darken)
 
+func solve_path(path: Array[String]) -> Array[Vector2]:
+	var path_positions: Array[Vector2] = []
+	for step_id in path:
+		if tile_entities.has(step_id):
+			var step_tile = tile_entities[step_id]
+			path_positions.append(step_tile.position + step_tile.pivot_offset)
+	return path_positions
+
 func darken_tiles(ids: Array[String]) -> void:
 	var darken_canvas = CanvasGroup.new()
 	tile_parent_node.add_child(darken_canvas)
@@ -78,11 +86,17 @@ func _reset_all_tiles(_id: String) -> void:
 	reset_clickable_tiles()
 	tile_pressed.disconnect(_reset_all_tiles)
 
+func parking_money() -> void:
+	tile_entities["111"].emit_coins()
+
+# Función que ilumina casillas clicables para que el usuario clique
 func prompt_tile_selection(ids: Array[String]) -> void:
 	clickable_tile_ids = ids.duplicate()
 	highlight_tiles(ids)
 
-	tile_pressed.connect(_reset_all_tiles)
+	# 👇 Solo conectamos si NO está conectado ya
+	if not tile_pressed.is_connected(_reset_all_tiles):
+		tile_pressed.connect(_reset_all_tiles)
 
 	for id in clickable_tile_ids:
 		if tile_entities.has(id):

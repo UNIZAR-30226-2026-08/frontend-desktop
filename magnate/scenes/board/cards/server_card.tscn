@@ -28,7 +28,8 @@ border_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5bwru"]
 bg_color = Color(1, 1, 1, 1)
 
-[node name="Control" type="Control" unique_id=617245605]
+[node name="ServerCard" type="Control" unique_id=617245605]
+custom_minimum_size = Vector2(400, 600)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 400.0
@@ -110,7 +111,7 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_u38yj")
 theme_override_font_sizes/font_size = 25
-text = "Con 1 Servidor . . . . . . . . . 100M"
+text = "Con 1 Servidor . . . . . . . . . 20M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -131,7 +132,7 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_u38yj")
 theme_override_font_sizes/font_size = 25
-text = "Con 2 Servidores . . . . . . . 250M"
+text = "Con 2 Servidores . . . . . . . 60M"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -147,6 +148,6 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_rarnh")
 theme_override_font_sizes/font_size = 25
-text = "Valor de la Hipoteca 70M"
+text = "Valor de la Hipoteca 150M"
 horizontal_alignment = 1
 vertical_alignment = 1

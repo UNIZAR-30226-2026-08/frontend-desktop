@@ -5,7 +5,17 @@
 [ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="3_dvshn"]
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="4_1ke3a"]
 [ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="5_em104"]
+[ext_resource type="PackedScene" uid="uid://cpo0vkocad1pp" path="res://scenes/components/animated_icon_button.tscn" id="6_1ke3a"]
 [ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="6_plxh4"]
+[ext_resource type="Texture2D" uid="uid://e43r5wdjywgb" path="res://assets/icons/copy-regular-full.svg" id="7_em104"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ke3a"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 0)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+shadow_color = Color(0, 0, 0, 0)
 
 [node name="waiting_lobby" type="Control" unique_id=1463536821]
 layout_mode = 3
@@ -14,6 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("4_1ke3a")
 script = ExtResource("1_7ex62")
 player_icon_big_scene = ExtResource("2_wjwl7")
 
@@ -51,17 +62,42 @@ theme_override_constants/margin_top = 75
 theme_override_constants/margin_bottom = 75
 
 [node name="PlayerList" type="HBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=1004673776]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="room_code_label" type="Label" parent="VBoxContainer" unique_id=1269556110]
+[node name="room_code_title" type="Label" parent="VBoxContainer" unique_id=2046683730]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("4_1ke3a")
+theme_override_colors/font_color = Color(0.33333334, 0.33333334, 0.33333334, 1)
+theme_override_font_sizes/font_size = 25
+text = "CÓDIGO DE LA SALA"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1097454979]
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="room_code_label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1269556110]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
 theme = ExtResource("4_1ke3a")
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0.5411765, 0.36078432, 1)
 theme_override_font_sizes/font_size = 60
-text = "Código: 123456"
+text = "123456"
+
+[node name="copy_code_button" parent="VBoxContainer/HBoxContainer" unique_id=175575919 instance=ExtResource("6_1ke3a")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_1ke3a")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_1ke3a")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1ke3a")
+theme_override_styles/focus = SubResource("StyleBoxFlat_1ke3a")
+icon_texture = ExtResource("7_em104")
 
 [node name="mid_margin" type="Control" parent="VBoxContainer" unique_id=1564692885]
 custom_minimum_size = Vector2(0, 20)
@@ -71,22 +107,64 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("4_1ke3a")
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 50
-text = "Jugadores: 2"
+theme_override_colors/font_color = Color(0.33333334, 0.33333334, 0.33333334, 1)
+theme_override_font_sizes/font_size = 25
+text = "JUGADORES EN SALA: 2/4"
 
 [node name="mid_margin2" type="Control" parent="VBoxContainer" unique_id=342269418]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="start_game_button" parent="VBoxContainer" unique_id=175575919 instance=ExtResource("6_plxh4")]
+[node name="start_game_button" parent="VBoxContainer" unique_id=1168947152 instance=ExtResource("6_plxh4")]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Empezar juego"
+text = "COMENZAR JUEGO"
 
 [node name="bottom_margin" type="Control" parent="VBoxContainer" unique_id=2021374846]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
+[node name="BotDificulty" type="VBoxContainer" parent="." unique_id=41586802]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -430.0
+offset_top = 215.0
+offset_right = -174.0
+offset_bottom = 325.0
+grow_horizontal = 0
+theme_override_constants/separation = 20
+
+[node name="BotDificultyLabel" type="Label" parent="BotDificulty" unique_id=1328622334]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("4_1ke3a")
+theme_override_colors/font_color = Color(0.33333334, 0.33333334, 0.33333334, 1)
+theme_override_font_sizes/font_size = 25
+text = "NIVEL DE LOS BOTS:"
+
+[node name="BotDificultySelector" type="OptionButton" parent="BotDificulty" unique_id=753459449]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+selected = 2
+item_count = 6
+popup/item_0/text = "Muy fácil"
+popup/item_0/id = 0
+popup/item_1/text = "Fácil"
+popup/item_1/id = 1
+popup/item_2/text = "Medio"
+popup/item_2/id = 2
+popup/item_3/text = "Difícil"
+popup/item_3/id = 3
+popup/item_4/text = "Muy difícil"
+popup/item_4/id = 4
+popup/item_5/text = "Experto"
+popup/item_5/id = 5
+
 [connection signal="back_action_requested" from="VBoxContainer/Header" to="." method="_on_header_back_action_requested"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/copy_code_button" to="." method="_on_copy_code_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/start_game_button" to="." method="_on_start_game_button_pressed"]
+[connection signal="item_selected" from="BotDificulty/BotDificultySelector" to="." method="_on_bot_dificulty_selector_item_selected"]

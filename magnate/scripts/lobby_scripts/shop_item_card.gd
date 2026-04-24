@@ -4,8 +4,8 @@ extends PanelContainer
 signal purchase_requested(item_id: String, price: int)
 
 # Variables exportadas para configurar desde el Inspector
-@export var item_id: String = "token_01"
-@export var item_name: String = "TOKEN 1"
+@export var item_id: int = 0
+@export var item_name: String = "Desconocido"
 @export var item_price: int = 10 
 @export var item_icon: Texture2D
 
@@ -74,10 +74,10 @@ func _on_action_button_pressed() -> void:
 	
 # Le pasamos un diccionario que simula lo que vendrá del JSON
 func setup_item(data: Dictionary) -> void:
-	item_id = data.get("id", "")
+	item_id = data.get("custom_id", "")
 	item_name = data.get("name", "Unknown")
-	item_price = data.get("price", 0)
-	is_purchased = data.get("is_purchased", false)
+	item_price = int(data.get("price", 0))
+	is_purchased = data.get("owned", false)
 	
 	# Leemos la ruta del JSON (si no existe, devolvemos un texto vacío "")
 	var icon_path = data.get("icon_path", "")

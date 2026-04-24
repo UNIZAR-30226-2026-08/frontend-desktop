@@ -1,16 +1,79 @@
 extends Control
 
-# TODO: Add integrity checks to the fields and communicate with backend
-
+@onready var username_input: LineEdit = %UsernameInput
 @onready var password_input: LineEdit = %PassInput
 @onready var confirm_password_input: LineEdit = %ConfirmPassInput
+@onready var user_tooltip: PanelContainer = %UserTooltip
+@onready var pass_tooltip: PanelContainer = %PassTooltip
+@onready var confirm_pass_tooltip: PanelContainer = %ConfirmPassTooltip
+
+const fade_duration = 0.5
+
+var pass_tooltip_shown = false
+var confirmpass_tooltip_shown = false
+
+func _test_pass_security(pwd: String) -> bool:
+	if pwd.length() < 8: return false
+	var is_entirely_numeric := true
+	for i in pwd.length():
+		if not (pwd[i] >= "0" and pwd[i] <= "9"):
+			is_entirely_numeric = false
+			break
+	if is_entirely_numeric: return false
+	return true
 
 func _on_animated_button_pressed() -> void:
-	SceneTransition.change_scene("res://scenes/UI/home_screen.tscn")
+	if pass_tooltip_shown or confirmpass_tooltip_shown: return
 
+	var response = await RestClient.user_signup({
+		"username": username_input.text,
+		"password": password_input.text,
+		"password2": confirm_password_input.text
+	})
+	if response != {}:
+		SceneTransition.change_scene("res://scenes/UI/home_screen.tscn")
+	else:
+		username_input.text = ""
+		password_input.text = ""
+		confirm_password_input.text = ""
+		if typeof(RestClient.last_faulty_response) != TYPE_DICTIONARY: return
+		if RestClient.last_faulty_response.has("username"):
+			user_tooltip.flash()
+		if RestClient.last_faulty_response.has("password"):
+			pass_tooltip.flash()
 
 func _on_confirm_pass_input_text_changed(new_text: String) -> void:
 	if new_text != password_input.text:
 		confirm_password_input.theme_type_variation = "LineEditError"
+		if not confirmpass_tooltip_shown:
+			confirmpass_tooltip_shown = true
+			confirm_pass_tooltip.fadein()
 	else:
 		confirm_password_input.theme_type_variation = ""
+		if confirmpass_tooltip_shown:
+			confirmpass_tooltip_shown = false
+			confirm_pass_tooltip.fadeout()
+
+func _on_pass_input_text_changed(new_text: String) -> void:
+	if not _test_pass_security(new_text):
+		password_input.theme_type_variation = "LineEditError"
+		if not pass_tooltip_shown:
+			pass_tooltip_shown = true
+			pass_tooltip.fadein()
+	else:
+		password_input.theme_type_variation = ""
+		if pass_tooltip_shown:
+			pass_tooltip_shown = false
+			pass_tooltip.fadeout()
+
+func _on_back_button_pressed() -> void:
+	SceneTransition.change_scene("res://scenes/UI/landing_screen.tscn")
+
+func _on_username_input_text_submitted(_new_text: String) -> void:
+	_on_animated_button_pressed()
+
+func _on_pass_input_text_submitted(_new_text: String) -> void:
+	_on_animated_button_pressed()
+
+func _on_confirm_pass_input_text_submitted(_new_text: String) -> void:
+	_on_animated_button_pressed()

@@ -1,0 +1,189 @@
+[gd_scene format=3 uid="uid://bb3relwhb88sa"]
+
+[ext_resource type="Script" uid="uid://b3i8u83ovjb5o" path="res://scripts/board/chat/chat.gd" id="1_chhud"]
+[ext_resource type="Texture2D" uid="uid://ciejmwelrj3v1" path="res://assets/icons/chevron.svg" id="2_chev"]
+[ext_resource type="Texture2D" uid="uid://daqqv0ehchdjj" path="res://assets/icons/chat_message.svg" id="3_msg"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_hsep"]
+color = Color(0, 0, 0, 0.05)
+thickness = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_input"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.898039, 0.898039, 0.905882, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_input_focus"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.5411765, 0.36078432, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+shadow_color = Color(0, 0, 0, 0.2)
+shadow_size = 20
+shadow_offset = Vector2(10, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8j8w"]
+bg_color = Color(1, 0.7882353, 0.44313726, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="Chat" type="CanvasLayer" unique_id=1695413551]
+layer = 100
+script = ExtResource("1_chhud")
+
+[node name="HUDContainer" type="Control" parent="." unique_id=1851492371]
+layout_mode = 3
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 320.0
+grow_vertical = 2
+
+[node name="Panel" type="ColorRect" parent="HUDContainer" unique_id=1285639634]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -80.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.980392, 0.980392, 0.984314, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="HUDContainer/Panel" unique_id=173199122]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 104
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUDContainer/Panel/MarginContainer" unique_id=1114750627]
+layout_mode = 2
+
+[node name="HeaderLabel" type="RichTextLabel" parent="HUDContainer/Panel/MarginContainer/VBoxContainer" unique_id=1655650536]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.0941176, 0.0941176, 0.105882, 1)
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+bbcode_enabled = true
+text = "[i][b]CHAT [color=#008a5c]GLOBAL[/color][/b][/i]"
+fit_content = true
+
+[node name="HSeparator" type="HSeparator" parent="HUDContainer/Panel/MarginContainer/VBoxContainer" unique_id=370231019]
+layout_mode = 2
+theme_override_constants/separation = 16
+theme_override_styles/separator = SubResource("StyleBoxLine_hsep")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HUDContainer/Panel/MarginContainer/VBoxContainer" unique_id=1456404080]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="MessageList" type="VBoxContainer" parent="HUDContainer/Panel/MarginContainer/VBoxContainer/ScrollContainer" unique_id=494468239]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="InputField" type="LineEdit" parent="HUDContainer/Panel/MarginContainer/VBoxContainer" unique_id=1707013697]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.0941176, 0.0941176, 0.105882, 1)
+theme_override_colors/font_placeholder_color = Color(0.627451, 0.627451, 0.639216, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_input")
+theme_override_styles/focus = SubResource("StyleBoxFlat_input_focus")
+placeholder_text = "Escribir mensaje..."
+
+[node name="ToggleButton" type="Button" parent="HUDContainer" unique_id=1907372060]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 320.0
+offset_top = -80.0
+offset_right = 376.0
+offset_bottom = 80.0
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_normal")
+
+[node name="Notification" type="Panel" parent="HUDContainer/ToggleButton" unique_id=1187124959]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -19.0
+offset_top = -9.0
+offset_right = 11.0
+offset_bottom = 21.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_i8j8w")
+
+[node name="BtnLayout" type="VBoxContainer" parent="HUDContainer/ToggleButton" unique_id=1062441975]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="IconChevron" type="TextureRect" parent="HUDContainer/ToggleButton/BtnLayout" unique_id=1392203028]
+layout_mode = 2
+texture = ExtResource("2_chev")
+stretch_mode = 5
+
+[node name="Spacer" type="Control" parent="HUDContainer/ToggleButton/BtnLayout" unique_id=1105020446]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+
+[node name="IconChat" type="TextureRect" parent="HUDContainer/ToggleButton/BtnLayout" unique_id=834422807]
+layout_mode = 2
+texture = ExtResource("3_msg")
+stretch_mode = 5

@@ -10,7 +10,7 @@
 
 | | Signal Name | Signal Arguments |
 | --- | :--- | ---: |
-| signal | **[response](#signal-response)** | 
+| signal | **[response](#signal-response)** | Dictionary
 ---
 # Properties
 | | Property Name | Property Type | Property Default Value |
@@ -37,6 +37,7 @@
 ---
 ## SIGNALS
 ### signal response
+(**Dictionary**)
 
 
 

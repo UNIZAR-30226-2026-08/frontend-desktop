@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Magnate"
-run/main_scene="uid://d2twidlaag5qv"
+run/main_scene="uid://c72ahxfhkpr7e"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -24,6 +24,9 @@ buses/default_bus_layout="uid://olwy1fnpvxcd"
 Globals="*uid://b4pmg3hfq0uag"
 SceneTransition="*uid://t0m5rvjixvms"
 AudioSystem="*uid://ch72ng0eupl0o"
+WsClient="*uid://d0npngeu5vu8b"
+RestClient="*uid://b3m5p5uxbd7dc"
+ModelManager="*uid://r42my8wdgshe"
 
 [display]
 
@@ -41,6 +44,14 @@ version_control/autoload_on_startup=true
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/dice_roller/plugin.cfg")
+
+[input]
+
+ui_ok={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194309,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
 
 [physics]
 

@@ -1,0 +1,205 @@
+[gd_scene format=3 uid="uid://njtmnh67mrt5"]
+
+[ext_resource type="Script" uid="uid://biclbtxh3rqli" path="res://scripts/board/overlays/scoreboard_overlay.gd" id="1_swwta"]
+[ext_resource type="Material" uid="uid://cc3i8jhttk6a7" path="res://styles/shaders/shader_background.tres" id="2_273uh"]
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="3_6am2n"]
+[ext_resource type="FontFile" uid="uid://conyee5yte71n" path="res://assets/fonts/LTSuperior/LTSuperior-Italic.ttf" id="4_mw7si"]
+[ext_resource type="PackedScene" uid="uid://kastyju1k0am" path="res://scenes/components/scoreboard_entry.tscn" id="5_273uh"]
+[ext_resource type="FontFile" uid="uid://b3216w4ia8it8" path="res://assets/fonts/LTSuperior/LTSuperior-BoldItalic.ttf" id="5_xnx8o"]
+[ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="9_b51q5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dd6nk"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5qra4"]
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 45.0
+expand_margin_top = 20.0
+expand_margin_right = 45.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_emv0e"]
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 45.0
+expand_margin_top = 20.0
+expand_margin_right = 45.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2x0xy"]
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 45.0
+expand_margin_top = 20.0
+expand_margin_right = 45.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ipjcy"]
+bg_color = Color(0.7107411, 0.71074116, 0.7107411, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 45.0
+expand_margin_top = 20.0
+expand_margin_right = 45.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kpfvs"]
+bg_color = Color(0, 0.5411765, 0.36078432, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+expand_margin_left = 45.0
+expand_margin_top = 20.0
+expand_margin_right = 45.0
+expand_margin_bottom = 20.0
+
+[node name="ScoreboardOverlay" type="CanvasLayer" unique_id=417320456]
+script = ExtResource("1_swwta")
+
+[node name="SquarePanel" type="Panel" parent="." unique_id=1611699495]
+material = ExtResource("2_273uh")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -450.0
+offset_right = 400.0
+offset_bottom = 450.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dd6nk")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SquarePanel" unique_id=421339297]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Space1" type="Control" parent="SquarePanel/VBoxContainer" unique_id=472381524]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PreTitleLabel" type="Label" parent="SquarePanel/VBoxContainer" unique_id=140999038]
+layout_mode = 2
+theme = ExtResource("3_6am2n")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_mw7si")
+theme_override_font_sizes/font_size = 25
+text = "CALCULANDO PUNTUACIÓN"
+horizontal_alignment = 1
+
+[node name="Space2" type="Control" parent="SquarePanel/VBoxContainer" unique_id=1961882839]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="SquarePanel/VBoxContainer" unique_id=1706409431]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_6am2n")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_xnx8o")
+theme_override_font_sizes/font_size = 70
+text = "RESULTADOS"
+horizontal_alignment = 1
+
+[node name="Space3" type="Control" parent="SquarePanel/VBoxContainer" unique_id=1330519636]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="SquarePanel/VBoxContainer" unique_id=641133533]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 30
+
+[node name="VBoxContainer" type="Control" parent="SquarePanel/VBoxContainer/MarginContainer" unique_id=2100129445]
+layout_mode = 2
+
+[node name="ScoreboardEntry" parent="SquarePanel/VBoxContainer/MarginContainer/VBoxContainer" unique_id=246137104 instance=ExtResource("5_273uh")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 740.0
+offset_bottom = 80.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="ScoreboardEntry2" parent="SquarePanel/VBoxContainer/MarginContainer/VBoxContainer" unique_id=2082257899 instance=ExtResource("5_273uh")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 140.0
+offset_right = 740.0
+offset_bottom = 220.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="ScoreboardEntry3" parent="SquarePanel/VBoxContainer/MarginContainer/VBoxContainer" unique_id=140829414 instance=ExtResource("5_273uh")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 280.0
+offset_right = 740.0
+offset_bottom = 360.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="ScoreboardEntry4" parent="SquarePanel/VBoxContainer/MarginContainer/VBoxContainer" unique_id=916034849 instance=ExtResource("5_273uh")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 420.0
+offset_right = 740.0
+offset_bottom = 500.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="ConfirmButton" parent="SquarePanel/VBoxContainer" unique_id=175575919 instance=ExtResource("9_b51q5")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_5qra4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_emv0e")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2x0xy")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_ipjcy")
+theme_override_styles/focus = SubResource("StyleBoxFlat_kpfvs")
+disabled = true
+text = "CONTINUAR"
+
+[node name="Space4" type="Control" parent="SquarePanel/VBoxContainer" unique_id=574433085]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2

@@ -1,12 +1,12 @@
 extends PanelContainer
 
 # Señal para cuando el usuario hace clic en "SELECCIONAR"
-signal skin_selected(item_id: String)
+signal skin_selected(item_id: int)
 
 # Definimos los 3 estados claros
 enum State { IN_USE, SELECTED, SELECTABLE }
 
-@export var item_id: String = ""
+@export var item_id: int = -1
 @export var item_name: String = ""
 @export var item_icon: Texture2D
 
@@ -57,7 +57,7 @@ func _on_action_button_pressed() -> void:
 func setup_profile_item(data: Dictionary) -> void:
 	item_id = data.get("id", "")
 	item_name = data.get("name", "Unknown")
-	var icon_path = data.get("icon_path", "")
+	var icon_path = data.get("icon", "")
 	if icon_path != "":
 		item_icon = load(icon_path)
 		item_icon_rect.texture = item_icon

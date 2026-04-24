@@ -2,10 +2,11 @@
 
 [ext_resource type="Script" uid="uid://bvs3xi0h4xwl7" path="res://scripts/lobby_scripts/player_icon_big.gd" id="1_qfbvr"]
 [ext_resource type="Texture2D" uid="uid://dg4j7hrm4ylg7" path="res://assets/icons/ia.svg" id="2_nkkxk"]
-[ext_resource type="Texture2D" uid="uid://dyr05bl1052fj" path="res://assets/icons/loading_circle.svg" id="2_tmn0o"]
+[ext_resource type="PackedScene" uid="uid://j1n4qrxg3bf8" path="res://scenes/components/loading_circle.tscn" id="2_y7qoc"]
 [ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="3_qfbvr"]
 [ext_resource type="FontFile" uid="uid://cel767gfqwf3q" path="res://assets/fonts/LTSuperior/LTSuperior-ExtraBoldItalic.ttf" id="4_f7vb1"]
 [ext_resource type="PackedScene" uid="uid://b1kg6l62o2fi2" path="res://scenes/components/animated_button.tscn" id="5_p7x4w"]
+[ext_resource type="Texture2D" uid="uid://da5jxe2v1hc17" path="res://assets/icons/check-solid-full.svg" id="7_y7qoc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qfbvr"]
 bg_color = Color(1, 1, 1, 1)
@@ -47,24 +48,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="circle_waiting" type="TextureRect" parent="." unique_id=1500652769]
-custom_minimum_size = Vector2(120, 120)
+[node name="circle_waiting" parent="." unique_id=1921030254 instance=ExtResource("2_y7qoc")]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -60.0
-offset_top = -100.0
-offset_right = 60.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(60, 60)
-texture = ExtResource("2_tmn0o")
-expand_mode = 4
-stretch_mode = 4
+offset_top = -98.0
+offset_bottom = 22.0
 
 [node name="waiting_label" type="Label" parent="." unique_id=1018219203]
 modulate = Color(0, 0, 0, 1)
@@ -123,6 +110,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="AddBotButton" parent="." unique_id=175575919 instance=ExtResource("5_p7x4w")]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -138,6 +126,7 @@ grow_vertical = 0
 text = "Añadir Bot"
 
 [node name="RemoveBotButton" parent="." unique_id=630031643 instance=ExtResource("5_p7x4w")]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -171,6 +160,17 @@ theme_override_fonts/font = ExtResource("4_f7vb1")
 theme_override_font_sizes/font_size = 40
 text = "PLAYER_NAME"
 horizontal_alignment = 1
+
+[node name="ReadyIcon" type="TextureRect" parent="." unique_id=159006633]
+visible = false
+layout_mode = 0
+offset_left = 19.0
+offset_top = 11.0
+offset_right = 99.0
+offset_bottom = 91.0
+texture = ExtResource("7_y7qoc")
+expand_mode = 1
+stretch_mode = 5
 
 [connection signal="pressed" from="AddBotButton" to="." method="_on_add_bot_button_pressed"]
 [connection signal="pressed" from="RemoveBotButton" to="." method="_on_remove_bot_button_pressed"]

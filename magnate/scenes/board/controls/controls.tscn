@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://cp5cmlsncsi6t"]
+
+[ext_resource type="Script" uid="uid://6y5b4or3m5j6" path="res://scripts/board/controls/controls.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://dsdeet3wdbhcq" path="res://scenes/components/animated_control_icon_button.tscn" id="2_button"]
+[ext_resource type="Texture2D" uid="uid://hlyropl32ga5" path="res://assets/icons/dice.svg" id="3_463eu"]
+[ext_resource type="Texture2D" uid="uid://bwagpmsygedvs" path="res://assets/icons/settings.svg" id="3_cl6vw"]
+[ext_resource type="Texture2D" uid="uid://bfls28o2dcxyy" path="res://assets/icons/hotel.svg" id="4_viue6"]
+[ext_resource type="Texture2D" uid="uid://bolkm33kh2vpb" path="res://assets/icons/handshake.svg" id="5_eq0w1"]
+[ext_resource type="Texture2D" uid="uid://c20xteulgh52e" path="res://assets/icons/forward.svg" id="6_tt2si"]
+[ext_resource type="Texture2D" uid="uid://cdxdsfr8espc8" path="res://assets/icons/flag.svg" id="7_bd0r1"]
+
+[node name="Controls" type="CanvasLayer" unique_id=1295380663]
+layer = 10
+script = ExtResource("1_script")
+
+[node name="SlideContainer" type="Control" parent="." unique_id=33171718]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="RollButton" parent="SlideContainer" unique_id=1615912822 instance=ExtResource("2_button")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+offset_left = 60.0
+offset_top = 120.0
+offset_right = 156.0
+offset_bottom = 216.0
+icon_texture = ExtResource("3_463eu")
+
+[node name="CenterActions" type="VBoxContainer" parent="SlideContainer" unique_id=909861522]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 190.0
+offset_top = -250.0
+offset_right = 286.0
+offset_bottom = 250.0
+grow_vertical = 2
+theme_override_constants/separation = 40
+
+[node name="AdminButton" parent="SlideContainer/CenterActions" unique_id=358806347 instance=ExtResource("2_button")]
+unique_name_in_owner = true
+layout_mode = 2
+icon_texture = ExtResource("4_viue6")
+
+[node name="TradeButton" parent="SlideContainer/CenterActions" unique_id=133011804 instance=ExtResource("2_button")]
+unique_name_in_owner = true
+layout_mode = 2
+icon_texture = ExtResource("5_eq0w1")
+
+[node name="FinishButton" parent="SlideContainer/CenterActions" unique_id=1515161369 instance=ExtResource("2_button")]
+unique_name_in_owner = true
+layout_mode = 2
+icon_texture = ExtResource("6_tt2si")
+
+[node name="BankruptButton" parent="SlideContainer/CenterActions" unique_id=1943171425 instance=ExtResource("2_button")]
+unique_name_in_owner = true
+layout_mode = 2
+icon_texture = ExtResource("7_bd0r1")
+
+[node name="SettingsButton" parent="SlideContainer" unique_id=1674556772 instance=ExtResource("2_button")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 60.0
+offset_top = -216.0
+offset_right = 156.0
+offset_bottom = -120.0
+grow_vertical = 0
+icon_texture = ExtResource("3_cl6vw")
