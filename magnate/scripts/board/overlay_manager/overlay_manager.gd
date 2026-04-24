@@ -22,7 +22,6 @@ signal tram_ok
 signal offer_accepted
 signal offer_rejected
 signal get_parking_money
-signal property_houses_changed(tile_id: String, new_houses: int, final_mortgage: bool)
 signal dice_rolled(Dictionary) # Response to dice throw
 
 # jail signals
@@ -178,15 +177,18 @@ func _start_new_property(property: PropertyModel) -> void:
 
 func _start_property_administration(tile_id: String) -> void:
 	Utils.debug("Abriendo overlay de propiedad para la casilla: " + tile_id)
-	var current_tile = tile_data.get(tile_id, {})
 	var overlay = PROPERTY_ADMINISTRATION_OVERLAY.instantiate()
-	var current_player_id = ModelManager.get_current_turn_player_id()
-	var current_houses = ModelManager.get_property_houses(tile_id)
 	board.add_child(overlay)
-	overlay.setup(current_tile, current_houses, tile_id, current_player_id)
-	overlay.administration_confirmed.connect(
-		func(final_houses: int, final_mortgage: bool):
-			property_houses_changed.emit(tile_id, final_houses, final_mortgage)
+	var property = ModelManager.get_property(tile_id)
+	overlay.setup(property)
+	#func ws_action_mortgage_property(tile_id: String) -> void:
+	#func ws_action_unmortgage_property(tile_id: String) -> void:
+	overlay.administration_confirmed.connect(func(houses, mortgaged):
+		var house_diff = property.house_count - houses
+		if house_diff > 0: WsClient.ws_action_build_house(tile_id, house_diff)
+		elif house_diff < 0: WsClient.ws_action_demolish_house(tile_id, -house_diff)
+		if property.is_mortgaged and not mortgaged: WsClient.ws_action_unmortgage_property(tile_id)
+		elif not property.is_mortgaged and mortgaged: WsClient.ws_action_mortgage_property(tile_id)
 	)
 	overlay.tree_exited.connect(overlay_closed.emit)
 

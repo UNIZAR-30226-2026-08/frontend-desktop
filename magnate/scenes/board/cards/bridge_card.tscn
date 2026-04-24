@@ -29,6 +29,7 @@ border_color = Color(0, 0, 0, 1)
 bg_color = Color(1, 1, 1, 1)
 
 [node name="BridgeCard" type="Control" unique_id=617245605]
+custom_minimum_size = Vector2(400, 600)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 400.0

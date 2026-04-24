@@ -35,6 +35,16 @@ shadow_color = Color(0, 0, 0, 0.345098)
 shadow_size = 1
 shadow_offset = Vector2(0, 3)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e7rsx"]
+bg_color = Color(1, 1, 1, 0.5882353)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+shadow_color = Color(0, 0, 0, 0.345098)
+shadow_size = 1
+shadow_offset = Vector2(0, 3)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hwxbp"]
 bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 100
@@ -54,6 +64,7 @@ theme = ExtResource("1_6si7t")
 theme_override_styles/normal = SubResource("StyleBoxFlat_3c3w2")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_u7p0u")
 theme_override_styles/hover = SubResource("StyleBoxFlat_2bvsl")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_e7rsx")
 theme_override_styles/focus = SubResource("StyleBoxFlat_hwxbp")
 script = ExtResource("2_e7rsx")
 icon_texture = ExtResource("3_aoho5")
