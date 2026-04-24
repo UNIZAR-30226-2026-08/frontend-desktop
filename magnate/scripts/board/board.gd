@@ -96,6 +96,11 @@ func _connect_all_signals() -> void:
 	WsClient.action_demolish.connect(_handle_house_demolish)
 	WsClient.action_build.connect(_handle_house_build)
 	
+	# WS Cheats
+	WsClient.tp.connect(func(p_id, t_id):
+		ModelManager.update_player_position(p_id, t_id, tile_manager.solve_path([t_id]))
+	)
+	
 	# ------ LOS DE AQUI ABAJO YA ESTÁN MEDIO CONECTADOS ------ #
 	
 	# CONEXION CON EL TILE MANAGER

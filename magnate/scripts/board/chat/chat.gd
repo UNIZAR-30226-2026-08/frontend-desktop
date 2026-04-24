@@ -50,7 +50,10 @@ func toggle_chat_visibility(should_show: bool) -> void:
 func _on_text_submitted(new_text: String) -> void:
 	if new_text.strip_edges() == "":
 		return
-	
+	if Globals.BUILD_TYPE == Globals.BuildType.DEV and new_text[0] == "/":
+		_handle_cheat(new_text)
+		input_field.text = ""
+		return
 	WsClient.ws_send_chat_message(new_text.strip_edges())
 	# var local_id = WsClient.player_id
 	# add_player_message(local_id, new_text, true)
@@ -133,3 +136,31 @@ func _scroll_to_bottom() -> void:
 	await get_tree().process_frame
 	var scrollbar = scroll_container.get_v_scroll_bar()
 	scrollbar.value = scrollbar.max_value
+
+#var text = message.get("msg", "")
+#var p_name: String = message.get("user", "")
+func _handle_cheat(cheat: String) -> void:
+	var parts = cheat.split(" ")
+	if cheat in ["/help", "/h"]:
+		add_player_message({
+			"user": RestClient.username,
+			"msg": "/dice <d1> <d2> <d3>\n/tp <player_name> <tile_id>\n/money <player_name> <money>\n/property <player_name> <tile_id> <houses> <mortgage>\n/removeHouse <tile_id> [houses_to_remove]"
+		})
+	elif parts[0] == "/dice":
+		WsClient.ws_cheat_dice(int(parts[1]), int(parts[2]), int(parts[3]))
+		add_player_message({"user": RestClient.username, "msg": "OK DICE"})
+	elif parts[0] == "/tp":
+		WsClient.ws_cheat_tp(parts[1], parts[2])
+		add_player_message({"user": RestClient.username, "msg": "OK TP"})
+	elif parts[0] == "/money":
+		WsClient.ws_cheat_money(parts[1], int(parts[2]))
+		add_player_message({"user": RestClient.username, "msg": "OK MONEY"})
+	elif parts[0] == "/property":
+		WsClient.ws_cheat_property(parts[1], parts[2], int(parts[3]), parts[4][0].to_lower() == "t")
+		add_player_message({"user": RestClient.username, "msg": "OK PROPERTY"})
+	elif parts[0] == "/removeHouse":
+		if len(parts) > 2:
+			WsClient.ws_cheat_deletehouse(parts[1], int(parts[2]))
+		else:
+			WsClient.ws_cheat_deletehouse(parts[1])
+		add_player_message({"user": RestClient.username, "msg": "OK REMOVEHOUSE"})

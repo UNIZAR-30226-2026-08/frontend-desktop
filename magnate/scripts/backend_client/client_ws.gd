@@ -388,7 +388,10 @@ func _safe_connect(url: String, headers: PackedStringArray = []) -> void:
 ## WARNING: You probably shouldn't be using this. There should be a
 ## specific function in this class that abstracts your interaction logic.
 func send_data(data_to_send: Variant) -> void:
+	socket.poll()
+	if socket.get_ready_state() != WebSocketPeer.STATE_OPEN: return
 	data_to_send = JSON.stringify(data_to_send)
+	Utils.debug(data_to_send)
 	socket.send_text(data_to_send)
 
 func start_client_public_queue() -> void:
@@ -855,3 +858,43 @@ func ws_action_pay_bail() -> void:
 func ws_action_surrender() -> void:
 	_next_response_closes = true
 	_build_and_send_action({"type": "ActionSurrender"})
+
+## Cheat: Forces next throw
+func ws_cheat_dice(d1: int, d2: int, d3: int) -> void:
+	send_data({"type": "Cheat", "cheat": "MockDice", "dice1": d1, "dice2": d2, "dice_bus": d3})
+
+## Cheat: Teleport a player to any tile
+signal tp(p_id, tile_id) # A bit of spaguetti code, cant solve path here
+func ws_cheat_tp(p_name: String, tile_id: String) -> void:
+	var p_id = -1
+	for p in ModelManager.game.players:
+		if ModelManager.get_player(p).player_name != p_name: continue
+		p_id = ModelManager.get_player(p).id
+		break
+	tp.emit(p_id, tile_id)
+	send_data({"type": "Cheat", "cheat": "Teleport", "player_id": p_id, "square_id": int(tile_id)})
+
+func ws_cheat_money(p_name: String, money: int) -> void:
+	var p_id = -1
+	for p in ModelManager.game.players:
+		if ModelManager.get_player(p).player_name != p_name: continue
+		p_id = ModelManager.get_player(p).id
+		break
+	ModelManager.set_player_balance(p_id, money)
+	send_data({"type": "Cheat", "cheat": "SetMoney", "player_id": p_id, "amount": money})
+
+func ws_cheat_property(p_name: String, tile_id: String, target_houses: int, mortgage: bool) -> void:
+	var p_id = -1
+	for p in ModelManager.game.players:
+		if ModelManager.get_player(p).player_name != p_name: continue
+		p_id = ModelManager.get_player(p).id
+		break
+	ModelManager.set_property_houses(tile_id, target_houses)
+	ModelManager.set_property_mortgaged(tile_id, mortgage)
+	ModelManager.set_property_owner(tile_id, p_id)
+	send_data({"type": "Cheat", "cheat": "CreateProperty", "player_id": p_id, "square_id": int(tile_id), "houses": target_houses, "mortgage": mortgage})
+
+func ws_cheat_deletehouse(tile_id: String, houses: int = 1) -> void:
+	ModelManager.update_property_houses(tile_id, -houses)
+	for i in houses:
+		send_data({"type": "Cheat", "cheat": "DeleteProperty", "square_id": int(tile_id)})
