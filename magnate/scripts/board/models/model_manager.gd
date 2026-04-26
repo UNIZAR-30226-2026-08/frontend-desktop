@@ -131,20 +131,17 @@ func set_property_owner(property_id: String, new_owner_id: int) -> void:
 	var prop = get_property(property_id)
 	var new_owner = get_player(new_owner_id)
 	
-	if prop and new_owner:
-		if prop.owner_id != -1:
-			var old_owner = get_player(prop.owner_id)
-			if old_owner and old_owner.owned_properties.has(property_id):
-				old_owner.owned_properties.erase(property_id)
-				old_owner.emit_update()
-		
-		prop.owner_id = new_owner_id
-		if not new_owner.owned_properties.has(property_id):
-			new_owner.owned_properties.append(property_id)
-			
+	if prop and prop.owner_id != -1:
+		var old_owner = get_player(prop.owner_id)
+		if old_owner and old_owner.owned_properties.has(property_id):
+			old_owner.owned_properties.erase(property_id)
+			old_owner.emit_update()
+	prop.owner_id = new_owner_id
+	property_updated.emit(property_id)
+	prop.send_update()
+	if new_owner and not new_owner.owned_properties.has(property_id):
+		new_owner.owned_properties.append(property_id)
 		new_owner.emit_update()
-		property_updated.emit(property_id)
-		prop.send_update()
 
 func set_property_houses(property_id: String, houses: int) -> void:
 	var prop = get_property(property_id)

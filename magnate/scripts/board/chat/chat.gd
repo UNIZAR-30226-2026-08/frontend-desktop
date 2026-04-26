@@ -144,7 +144,7 @@ func _handle_cheat(cheat: String) -> void:
 	if cheat in ["/help", "/h"]:
 		add_player_message({
 			"user": RestClient.username,
-			"msg": "/dice <d1> <d2> <d3>\n/tp <player_name> <tile_id>\n/money <player_name> <money>\n/property <player_name> <tile_id> <houses> <mortgage>\n/removeHouse <tile_id> [houses_to_remove]"
+			"msg": "/dice <d1> <d2> <d3>\n/tp <player_name> <tile_id>\n/money <player_name> <money>\n/property <player_name> <tile_id> <houses> <mortgage>\n/clearProperty <tile_id>"
 		})
 	elif parts[0] == "/dice":
 		WsClient.ws_cheat_dice(int(parts[1]), int(parts[2]), int(parts[3]))
@@ -158,9 +158,6 @@ func _handle_cheat(cheat: String) -> void:
 	elif parts[0] == "/property":
 		WsClient.ws_cheat_property(parts[1], parts[2], int(parts[3]), parts[4][0].to_lower() == "t")
 		add_player_message({"user": RestClient.username, "msg": "OK PROPERTY"})
-	elif parts[0] == "/removeHouse":
-		if len(parts) > 2:
-			WsClient.ws_cheat_deletehouse(parts[1], int(parts[2]))
-		else:
-			WsClient.ws_cheat_deletehouse(parts[1])
+	elif parts[0] == "/clearProperty":
+		WsClient.ws_cheat_deletehouse(parts[1])
 		add_player_message({"user": RestClient.username, "msg": "OK REMOVEHOUSE"})

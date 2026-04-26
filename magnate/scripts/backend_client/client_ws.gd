@@ -218,9 +218,6 @@ signal response_choose_fantasy(Dictionary)
 
 ## Response for the result of an auction, shows who won
 ## Response Dictionary includes:
-## - "winner": int
-## - "final_amount": int
-## - "is_tie": bool
 ## - "auction": Dictionary
 ##		- "id": int
 ##		- "square": String
@@ -894,7 +891,8 @@ func ws_cheat_property(p_name: String, tile_id: String, target_houses: int, mort
 	ModelManager.set_property_owner(tile_id, p_id)
 	send_data({"type": "Cheat", "cheat": "CreateProperty", "player_id": p_id, "square_id": int(tile_id), "houses": target_houses, "mortgage": mortgage})
 
-func ws_cheat_deletehouse(tile_id: String, houses: int = 1) -> void:
-	ModelManager.update_property_houses(tile_id, -houses)
-	for i in houses:
-		send_data({"type": "Cheat", "cheat": "DeleteProperty", "square_id": int(tile_id)})
+func ws_cheat_deletehouse(tile_id: String) -> void:
+	ModelManager.set_property_houses(tile_id, 0)
+	ModelManager.set_property_mortgaged(tile_id, false)
+	ModelManager.set_property_owner(tile_id, -1)
+	send_data({"type": "Cheat", "cheat": "DeleteProperty", "square_id": int(tile_id)})

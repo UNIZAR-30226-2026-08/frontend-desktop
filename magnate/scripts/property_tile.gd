@@ -31,12 +31,12 @@ func set_property_owner(player_id: int) -> void:
 			tween.tween_property(child, "position:y", size.y - child.marker_height, 0.5)
 			await tween.finished
 			child.queue_free()
-
-	var marker = OwnerMarker.new(player.color, size.x)
-	marker.position = Vector2(0, size.y - marker.marker_height)
-	add_child(marker)
-	tween = create_tween().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(marker, "position:y", size.y, 0.5)
+	if player:
+		var marker = OwnerMarker.new(player.color, size.x)
+		marker.position = Vector2(0, size.y - marker.marker_height)
+		add_child(marker)
+		tween = create_tween().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_IN_OUT)
+		tween.tween_property(marker, "position:y", size.y, 0.5)
 
 func set_property_name(_name: String) -> void:
 	property_name.text = _name
