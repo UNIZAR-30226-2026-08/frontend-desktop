@@ -48,7 +48,6 @@ func _calculate_pay() -> int:
 		@warning_ignore('integer_division')
 		house_price_diff = (property.build_price * (property.house_count - index)) / 2
 	elif property.house_count < index:
-		@warning_ignore('integer_division')
 		house_price_diff = (property.build_price * (property.house_count - index))
 	var mortgage_price_diff = 0
 	if property.is_mortgaged and not is_mortgaged:
@@ -79,9 +78,9 @@ func _update_ui() -> void:
 
 	# Button text
 	if pay < 0:
-		animated_button.set_btn_text("PAGAR " + Utils.to_currency_text(pay))
+		animated_button.set_btn_text("PAGAR " + Utils.to_currency_text(-pay))
 	elif pay > 0:
-		animated_button.set_btn_text("RECIBIR " + Utils.to_currency_text(pay))
+		animated_button.set_btn_text("COBRAR " + Utils.to_currency_text(pay))
 	else:
 		animated_button.set_btn_text("CERRAR")
 

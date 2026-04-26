@@ -1,0 +1,14 @@
+{
+	"walked_squares": {"title": "El andarín", "description": "Más casillas andadas"},
+	"won_money": {"title": "El magnate", "description": "Más dinero ganado"},
+	"lost_money": {"title": "El mendigo", "description": "Más dinero perdido"},
+	"num_fantasy_events": {"title": "El mago", "description": "Más eventos fantasía"},
+	"built_houses": {"title": "Manny Manitas", "description": "Más casas construidas"},
+	"demolished_houses": {"title": "Bola de demolición", "description": "Más casas derruidas"},
+	"times_in_jail": {"title": "El reincidente", "description": "Más veces en la cárcel"},
+	"turns_in_jail": {"title": "El criminal", "description": "Más turnos en la cárcel"},
+	"num_paid_rents": {"title": "Pagafantas", "description": "Más alquileres pagados"},
+	"num_trades": {"title": "El mercante", "description": "Más intercambios realizados"},
+	"num_mortgages": {"title": "El especulador", "description": "Más propiedades hipotecadas"},
+	"end_game": {"title": "Finalistas", "description": "Ha llegado al final de la partida"},
+}

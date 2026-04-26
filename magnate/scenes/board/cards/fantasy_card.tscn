@@ -153,6 +153,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_w14dt")
 
 [node name="VerticalAlign" type="VBoxContainer" parent="SubViewportContainer/SubViewport/FantasyCardFront/MarginContainer/PanelContainer" unique_id=37148799]
+custom_minimum_size = Vector2(0, 564)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/separation = 0
@@ -183,10 +184,10 @@ autowrap_mode = 3
 [node name="Space" type="Control" parent="SubViewportContainer/SubViewport/FantasyCardFront/MarginContainer/PanelContainer/VerticalAlign" unique_id=1485565268]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
-size_flags_vertical = 3
 
 [node name="CardTitle" type="Label" parent="SubViewportContainer/SubViewport/FantasyCardFront/MarginContainer/PanelContainer/VerticalAlign" unique_id=129816303]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -196,6 +197,7 @@ theme_override_font_sizes/font_size = 35
 text = "¡HACKEO ÉPICO!"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="TopSeparator" type="HSeparator" parent="SubViewportContainer/SubViewport/FantasyCardFront/MarginContainer/PanelContainer/VerticalAlign" unique_id=625707652]
 custom_minimum_size = Vector2(320, 40)
@@ -218,17 +220,23 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Control" type="Control" parent="SubViewportContainer/SubViewport/FantasyCardFront/MarginContainer/PanelContainer/VerticalAlign" unique_id=314131026]
-custom_minimum_size = Vector2(0, 250)
+visible = false
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="BottomSeparator" type="HSeparator" parent="SubViewportContainer/SubViewport/FantasyCardFront/MarginContainer/PanelContainer/VerticalAlign" unique_id=1916827371]
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/FantasyCardFront/MarginContainer/PanelContainer/VerticalAlign" unique_id=823110259]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 2
+
+[node name="BottomSeparator" type="HSeparator" parent="SubViewportContainer/SubViewport/FantasyCardFront/MarginContainer/PanelContainer/VerticalAlign/VBoxContainer" unique_id=1916827371]
 material = SubResource("ShaderMaterial_ap1h0")
 custom_minimum_size = Vector2(320, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/separator = SubResource("StyleBoxLine_bavur")
 
-[node name="Price" type="Label" parent="SubViewportContainer/SubViewport/FantasyCardFront/MarginContainer/PanelContainer/VerticalAlign" unique_id=1539712134]
+[node name="Price" type="Label" parent="SubViewportContainer/SubViewport/FantasyCardFront/MarginContainer/PanelContainer/VerticalAlign/VBoxContainer" unique_id=1539712134]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -239,6 +247,10 @@ theme_override_font_sizes/font_size = 35
 text = "10M"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Control" type="Control" parent="SubViewportContainer/SubViewport/FantasyCardFront/MarginContainer/PanelContainer/VerticalAlign/VBoxContainer" unique_id=1114402430]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
 
 [node name="FantasyCardBack" type="Panel" parent="SubViewportContainer/SubViewport" unique_id=1928303016]
 unique_name_in_owner = true

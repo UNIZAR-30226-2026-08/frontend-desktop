@@ -60,6 +60,9 @@ func _connect_all_signals() -> void:
 	
 	if not ModelManager.property_updated.is_connected(_on_model_property_updated):
 		ModelManager.property_updated.connect(_on_model_property_updated)
+	var update_player_layout = TokenLayoutManager.update_all_token_positions.bind(ModelManager.game.players.values(), tile_manager.tile_entities)
+	for player in ModelManager.game.players.values():
+		player.token.stopped.connect(update_player_layout)
 	
 	# Señales Generales del Overlay Manager
 	overlay_manager.tram_ok.connect(_on_tram_ok_received)
@@ -122,6 +125,7 @@ func _handle_general_response(data: Dictionary) -> void:
 	ModelManager.game.current_phase = data["phase"]
 	for pk in data["money"]:
 		ModelManager.set_player_balance(int(pk), data["money"][pk])
+	ModelManager.set_parking_money(data["parking_money"])
 	if data["type"] in ["Response", "ResponseChooseFantasy"]:
 		for pk in data["positions"]:
 			var path = tile_manager.solve_path([data["positions"][pk]])
@@ -142,13 +146,15 @@ func _start_turn() -> void:
 func _start_phase() -> void:
 	match ModelManager.game.current_phase:
 		WsClient.Phase.ROLL_THE_DICES:
-			var current_player = ModelManager.game.players[ModelManager.game.current_turn_player_id]
-			if current_player.is_in_jail:
-				overlay_manager.show_jail_dice_overlay()
-			else:
-				overlay_manager.show_dice_overlay()
+			if ModelManager.get_player().id == ModelManager.get_current_turn_player_id():
+				overlay_manager.show_toast("¡Tira los dados!")
+			var current_player = ModelManager.get_player(ModelManager.get_current_turn_player_id())
+			if current_player.is_in_jail: overlay_manager.show_jail_dice_overlay()
+			else: overlay_manager.show_dice_overlay()
 		WsClient.Phase.BUSINESS:
 			overlay_manager.show_controls_now.emit()
+		WsClient.Phase.LIQUIDATION:
+			overlay_manager.show_toast("Estás en rojo: vende o declara bacarrota")
 
 # ================
 #  LOGIC HANDLERS
@@ -255,7 +261,7 @@ func _handle_fantasy_chosen(response: Dictionary) -> void:
 			ModelManager.set_property_mortgaged(fantasy_result["result"]["square"], false)
 		WsClient.FantasyEventType.EARTHQUAKE:
 			var tile_ids = fantasy_result["result"]["squares"] if fantasy_result["result"] else []
-			for tile_id in fantasy_result["result"]["squares"]:
+			for tile_id in tile_ids:
 				ModelManager.update_property_houses(tile_id, -1)
 # ============
 #  MODO DEBUG
@@ -289,6 +295,7 @@ func _on_dice_result_received(result: Dictionary) -> void:
 				_handle_normal_movement(false, current_player.id, [ModelManager.game.important_tiles["go_to_jail"]], {})
 				overlay_manager.overlay_closed.emit()
 			elif len(result.destinations) > 1:
+				overlay_manager.show_toast("¡Elige una casilla!")
 				tile_manager.prompt_tile_selection(result.destinations)
 			# Jugador se mueve automáticamente
 			else:

@@ -204,14 +204,16 @@ func _start_property_with_mortgage(property: PropertyModel) -> void:
 	var overlay = MORTGAGE_OVERLAY.instantiate()
 	overlay.setup(property)
 	board.add_child(overlay)
-	overlay.button_pressed.connect(show_controls_when_possible)
+	if ModelManager.game.current_phase == WsClient.Phase.ROLL_THE_DICES: board._start_phase()
+	else: overlay.button_pressed.connect(show_controls_when_possible)
 
 func _start_pay_rent(property: PropertyModel) -> void:
 	Utils.debug("Abriendo overlay de propiedad para la casilla: " + property.id)
 	var overlay = PAY_RENT_OVERLAY.instantiate()
 	overlay.setup(property)
 	board.add_child(overlay)
-	overlay.button_pressed.connect(show_controls_when_possible)
+	if ModelManager.game.current_phase == WsClient.Phase.ROLL_THE_DICES: board._start_phase()
+	else: overlay.button_pressed.connect(show_controls_when_possible)
 
 func start_auction(action: Dictionary) -> void:
 	Utils.debug("🔨 Empezando subasta para la casilla: " + action["square"])
@@ -334,6 +336,7 @@ func start_scoreboard_overlay(response: Dictionary) -> void:
 		SceneTransition.change_scene("res://scenes/UI/home_screen.tscn")
 	)
 	await board.get_tree().create_timer(2).timeout
+	await current_overlay.prepare_for_categories()
 	for bonus in response["bonuses"]:
 		var scores: Dictionary[String, int] = {}
 		for player in ModelManager.game.players.values():

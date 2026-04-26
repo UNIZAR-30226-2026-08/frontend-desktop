@@ -645,6 +645,7 @@ func _game_response_dispatcher(response: Dictionary) -> void:
 	if response["type"] == "ResponseBonus":
 		response_bonus.emit(response)
 		return
+	response["parking_money"] = int(response["parking_money"])
 	response["phase"] = _phase_string_to_enum(response["phase"])
 	for pk in response["positions"]:
 		response["positions"][pk] = _normalize_tile_id(response["positions"][pk])
