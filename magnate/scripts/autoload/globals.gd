@@ -59,6 +59,7 @@ enum TileType {
 
 var tokens = {}
 var emojis = {}
+var fantasy: Dictionary[MagnateWSClient.FantasyEventType, Dictionary] = {}
 
 # Universal behaviours
 func _ready() -> void:
@@ -75,3 +76,11 @@ func _ready() -> void:
 	for e in data.get("emoji", []):
 		e["icon"] = "res://assets/icons/emotes/" + e["icon"]
 		emojis[e["id"]] = e
+	json_string = FileAccess.get_file_as_string("res://assets/game_info/fantasyCard.json")
+	data = JSON.parse_string(json_string)
+	for f in data.get("fantasy", []):
+		var type_key = WsClient.fantasyeventtype_string_to_enum(f["type"])
+		var value_key = f["value"]
+		if not fantasy.has(type_key):
+			fantasy[type_key] = {}
+		fantasy[type_key][value_key] = f

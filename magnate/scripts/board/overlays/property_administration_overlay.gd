@@ -42,38 +42,48 @@ func setup(_property: PropertyModel) -> void:
 	_update_rent_highlight()
 	_update_ui()
 
+func _calculate_pay() -> int:
+	var house_price_diff = 0
+	if property.house_count > index:
+		@warning_ignore('integer_division')
+		house_price_diff = (property.build_price * (property.house_count - index)) / 2
+	elif property.house_count < index:
+		@warning_ignore('integer_division')
+		house_price_diff = (property.build_price * (property.house_count - index))
+	var mortgage_price_diff = 0
+	if property.is_mortgaged and not is_mortgaged:
+		@warning_ignore('integer_division')
+		mortgage_price_diff = -property.buy_price / 2
+	if not property.is_mortgaged and is_mortgaged:
+		@warning_ignore('integer_division')
+		mortgage_price_diff = property.buy_price / 2
+	return house_price_diff + mortgage_price_diff
+
 func _ready() -> void:
 	super()
 
 func _update_ui() -> void:
 	var owns_all = ModelManager.owns_full_group(property.group_id, property.owner_id)
 	var base_can_mortgage = ModelManager.can_mortgage(property.id, property.owner_id)
-	mortgage_button.visible = base_can_mortgage and (index == 0) and (property.house_count == 0)
-	
+	mortgage_button.disabled = not base_can_mortgage or (index != 0) or (property.house_count != 0)
+	var pay = _calculate_pay()
+	var player_balance = ModelManager.get_player_balance(ModelManager.game.my_id)
 	# Build buttons activation
 	if not owns_all or is_mortgaged or property.is_bridge or property.is_server:
 		add_house_button.disabled = true
 		remove_house_button.disabled = true
 	else:
-		add_house_button.disabled = index == max_houses_allowed
-		remove_house_button.disabled = index == min_houses_allowed
+		add_house_button.disabled = index == max_houses_allowed or pay + property.build_price > player_balance or is_mortgaged
+		remove_house_button.disabled = index == min_houses_allowed or is_mortgaged
+	mortgage_button.disabled = index != 0 or not is_mortgaged
 
 	# Button text
-	if is_mortgaged and not property.is_mortgaged:
-		@warning_ignore("integer_division")
-		animated_button.text = "HIPOTECAR (" + Utils.to_currency_text(property.buy_price / 2) + ")"
-	elif not is_mortgaged and property.is_mortgaged:
-		@warning_ignore("integer_division")
-		animated_button.text = "PAGAR HIPOTECA (" + Utils.to_currency_text(-property.buy_price / 2) + ")"
-	elif index < property.house_count:
-		@warning_ignore("integer_division")
-		var profit = (property.build_price * (property.house_count - index)) / 2
-		animated_button.text = "VENDER CASAS (" + Utils.to_currency_text(profit) + ")"
-	elif index > property.house_count:
-		var cost = property.build_price * (index - property.house_count)
-		animated_button.text = "COPRAR CASAS (" + Utils.to_currency_text(-cost) + ")"
+	if pay < 0:
+		animated_button.set_btn_text("PAGAR " + Utils.to_currency_text(pay))
+	elif pay > 0:
+		animated_button.set_btn_text("RECIBIR " + Utils.to_currency_text(pay))
 	else:
-		animated_button.text = "CERRAR"
+		animated_button.set_btn_text("CERRAR")
 
 func _update_rent_highlight() -> void:
 	if index != 0: property_card.highlight_rent(index)

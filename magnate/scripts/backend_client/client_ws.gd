@@ -21,7 +21,7 @@ extends Node
 ## Possible types of fantasy card events
 enum FantasyEventType {
 	WIN_PLAIN_MONEY, # Gives the player money in absolute terms
-	WIN_RATION_MONEY, # Gives the player money in percetages (relative to their current wealth)
+	WIN_RATIO_MONEY, # Gives the player money in percetages (relative to their current wealth)
 	LOSE_PLAIN_MONEY, # Takes money from the player in absolute terms
 	LOSE_RATIO_MONEY, # Takes money from the player in percentages (relative to their current wealth)
 	SHARE_MONEY_ALL, # The player sends money to all other players
@@ -30,6 +30,7 @@ enum FantasyEventType {
 	GET_PARKING_MONEY, # Receive the money stored in the parking
 	GO_TO_JAIL, # Go to the jail tile
 	SEND_TO_JAIL, # Send someone to the jail tile
+	EVERYBODY_TO_JAIL, # Sends everyone to jail
 	SHUFFLE_POSITIONS, # Randomly shuffle all player positions
 	MOVE_ANYWHERE_RANDOM, # Randomly move somewhere
 	MOVE_OPPONENT_ANYWHERE_RANDOM, # Randomly move an opponent somewhere
@@ -39,7 +40,7 @@ enum FantasyEventType {
 	BREAK_OWN_HOUSE, # Break one of the players houses (lastest built)
 	FREE_HOUSE, # Build a free house (priciest house the player could build if it had the money)
 	REVIVE_PROPERTY, # Unmortgages a property
-	EARTHQUAKE, # All streets miss a property
+	EARTHQUAKE, # All streets lose a property
 }
 
 ## Phases of the game
@@ -86,21 +87,21 @@ signal chat_message(Dictionary)
 
 ## Emitted when a game state is received, you should probably set everything to this values
 ## Dictionary contains:
-## - "id": int										- id of the player (TODO: I think its the player)
-## - "datetime": String								- Timestamp (ISO format) when the game was created
+## - "id": int											- id of the player (TODO: I think its the player)
+## - "datetime": String									- Timestamp (ISO format) when the game was created
 ## - "positions": Dictionary[String, String]			- Maps player ID to tile ID
-## - "money": Dictionary[String, int]				- Maps player ID to money they have
-## - "active_phase_player": int						- ID of the player of the current phase
-## - "active_turn_player": int						- ID of the player of the current turn
-## - "phase": Phase									- Current Phase in play
-## - "players": Array[int]							- IDs of the players
-## - "ordered_players": Array[int]					- IDs of the players in order
-## - "streak": int									- Current streak of doubles in play
+## - "money": Dictionary[String, int]					- Maps player ID to money they have
+## - "active_phase_player": int							- ID of the player of the current phase
+## - "active_turn_player": int							- ID of the player of the current turn
+## - "phase": Phase										- Current Phase in play
+## - "players": Array[int]								- IDs of the players
+## - "ordered_players": Array[int]						- IDs of the players in order
+## - "streak": int										- Current streak of doubles in play
 ## - "possible_destinations": []						- Current possible destinations of the player
-## - "parking_money": int							- Money stored in the parking
+## - "parking_money": int								- Money stored in the parking
 ## - "jail_remaining_turns": Dictionary[String, int]	- Maps player ID to remainint jail turns
-## - "finished": bool								- TODO: No clue
-## - "bonus_response":								- TODO: No clue
+## - "finished": bool									- TODO: No clue
+## - "bonus_response":									- TODO: No clue
 ## - "current_turn": int								- Number of the round
 ## - "property_relationships": Array[Dictionary]		- Information about properties
 ##		- Dictionary contains:
@@ -510,10 +511,10 @@ func _botlevel_string_to_enum(bot_level_str: String) -> BotLevel:
 			Utils.debug("BotLevel string not recognized: " + bot_level_str)
 			return BotLevel.MEDIUM # Default
 
-func _fantasyeventtype_string_to_enum(event_string: String) -> FantasyEventType:
+func fantasyeventtype_string_to_enum(event_string: String) -> FantasyEventType:
 	match event_string:
 		"winPlainMoney": return FantasyEventType.WIN_PLAIN_MONEY
-		"winRationMoney": return FantasyEventType.WIN_RATION_MONEY
+		"winRatioMoney": return FantasyEventType.WIN_RATIO_MONEY
 		"losePlainMoney": return FantasyEventType.LOSE_PLAIN_MONEY
 		"loseRatioMoney": return FantasyEventType.LOSE_RATIO_MONEY
 		"shareMoneyAll": return FantasyEventType.SHARE_MONEY_ALL
@@ -522,6 +523,7 @@ func _fantasyeventtype_string_to_enum(event_string: String) -> FantasyEventType:
 		"getParkingMoney": return FantasyEventType.GET_PARKING_MONEY
 		"goToJail": return FantasyEventType.GO_TO_JAIL
 		"sendToJail": return FantasyEventType.SEND_TO_JAIL
+		"everybodyToJail": return FantasyEventType.EVERYBODY_TO_JAIL
 		"shufflePositions": return FantasyEventType.SHUFFLE_POSITIONS
 		"moveAnywhereRandom": return FantasyEventType.MOVE_ANYWHERE_RANDOM
 		"moveOpponentAnywhereRandom": return FantasyEventType.MOVE_OPPONENT_ANYWHERE_RANDOM
@@ -537,7 +539,7 @@ func _fantasyeventtype_string_to_enum(event_string: String) -> FantasyEventType:
 	return FantasyEventType.WIN_PLAIN_MONEY
 
 func _parse_fantasy_event(fantasy_event: Dictionary) -> Dictionary:
-	fantasy_event["fantasy_type"] = _fantasyeventtype_string_to_enum(fantasy_event["fantasy_type"])
+	fantasy_event["fantasy_type"] = fantasyeventtype_string_to_enum(fantasy_event["fantasy_type"])
 	return fantasy_event
 
 func _parse_fantasy_result(fantasy_result: Dictionary) -> Dictionary:
@@ -547,6 +549,8 @@ func _parse_fantasy_result(fantasy_result: Dictionary) -> Dictionary:
 		fantasy_result["result"]["square"] = _normalize_tile_id(fantasy_result["result"]["square"])
 	elif fantasy_result["result"].has("squares"):
 		fantasy_result["result"]["squares"] = _normalize_tile_id(fantasy_result["result"]["squares"])
+	elif fantasy_result["result"].has("target_player"):
+		fantasy_result["result"]["target_player"] = int(fantasy_result["result"]["target_player"])
 	return fantasy_result
 
 func _build_base_action() -> Dictionary:

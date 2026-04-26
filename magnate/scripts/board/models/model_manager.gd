@@ -2,6 +2,7 @@ class_name MagnateModelManager
 extends Node2D
 
 signal game_initialized
+signal parking # Emited when parking updated
 
 # Señales útiles para que la UI reaccione instantáneamente a los cambios
 signal property_updated(property_id: int)
@@ -191,6 +192,15 @@ func set_player_surrender(player_id: int) -> void:
 	if player:
 		player.surrendered = true
 		player.emit_update()
+
+func set_parking_money(amount: int) -> void:
+	if amount == game.parking_money: return
+	game.parking_money = amount
+	parking.emit()
+
+func update_parking_money(diff: int) -> void:
+	if diff == 0: return
+	set_parking_money(game.parking_money + diff)
 
 # ==========================================
 # ⚖️ VALIDACIONES DE REGLAS (Monopoly Estricto)

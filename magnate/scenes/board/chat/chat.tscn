@@ -131,10 +131,13 @@ theme_override_constants/separation = 16
 layout_mode = 2
 theme_override_colors/font_color = Color(0.0941176, 0.0941176, 0.105882, 1)
 theme_override_colors/font_placeholder_color = Color(0.627451, 0.627451, 0.639216, 1)
+theme_override_colors/caret_color = Color(0, 0.5411765, 0.36078432, 1)
+theme_override_constants/caret_width = 3
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_input")
 theme_override_styles/focus = SubResource("StyleBoxFlat_input_focus")
 placeholder_text = "Escribir mensaje..."
+caret_blink = true
 
 [node name="ToggleButton" type="Button" parent="HUDContainer" unique_id=1907372060]
 layout_mode = 1
