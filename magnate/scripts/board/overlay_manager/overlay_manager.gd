@@ -1,15 +1,6 @@
 class_name MagnateOverlayManager
 extends RefCounted
 
-#  ===== MOCK DATA, CAN BE DELETED FOR RELEASE =====
-var _dummy_fantasy_cards = [
-	{"name": "Beca por Excelencia", "description": "Tus notas en Programación son increíbles. Ganas 100€."},
-	{"name": "Multa de Biblioteca", "description": "Olvidaste devolver un libro de SQL. Pagas 20€."},
-	{"name": "Cafetería Cerrada", "description": "No hay café hoy. Pierdes 10€ buscando otra máquina."},
-	{"name": "Regalo de Graduación", "description": "Tus abuelos están orgullosos de ti. Ganas 200€."}
-]
-# ================ END OF MOCK DATA ================
-
 # common signals
 signal overlay_closed # Emited when a FULLSCREEN overlay is closed
 signal overlay_open # Emited when a FULLSCREEN overlay is opened
@@ -23,6 +14,7 @@ signal offer_accepted
 signal offer_rejected
 signal get_parking_money
 signal dice_rolled(Dictionary) # Response to dice throw
+signal fantasy_result(Dictionary) # Response to fantasy chosen
 
 # jail signals
 signal jail_roll_requested
@@ -143,7 +135,6 @@ func display_overlay_for_tile(tile_id: String) -> void:
 	var handlers: Dictionary[Globals.TileType, Callable] = {
 		Globals.TileType.PROPERTY: _property_state_dispatcher.bind(tile_id),
 		Globals.TileType.SERVER: _property_state_dispatcher.bind(tile_id),
-		Globals.TileType.FANTASY: _start_fantasy_overlay.bind(tile_id),
 		Globals.TileType.GO_TO_JAIL: _start_go_to_jail_overlay.bind(tile_id),
 		Globals.TileType.JAIL: _start_jail_overlay.bind(tile_id),
 		Globals.TileType.PARKING: _start_parking_overlay.bind(tile_id),
@@ -181,10 +172,9 @@ func _start_property_administration(tile_id: String) -> void:
 	board.add_child(overlay)
 	var property = ModelManager.get_property(tile_id)
 	overlay.setup(property)
-	#func ws_action_mortgage_property(tile_id: String) -> void:
-	#func ws_action_unmortgage_property(tile_id: String) -> void:
+
 	overlay.administration_confirmed.connect(func(houses, mortgaged):
-		var house_diff = property.house_count - houses
+		var house_diff = houses - property.house_count
 		if house_diff > 0: WsClient.ws_action_build_house(tile_id, house_diff)
 		elif house_diff < 0: WsClient.ws_action_demolish_house(tile_id, -house_diff)
 		if property.is_mortgaged and not mortgaged: WsClient.ws_action_unmortgage_property(tile_id)
@@ -230,7 +220,7 @@ func start_finished_auction(response: Dictionary) -> void:
 	)
 	Utils.debug("✅ La propiedad ahora pertenece al ganador")
 
-func _start_fantasy_overlay(_tile_id: String) -> void:
+func start_fantasy_overlay(fantasy_event: Dictionary) -> void:
 	Utils.debug("✨ Iniciando evento de Fantasía...")
 	
 	# 1. Instantiate the overlay
@@ -238,15 +228,15 @@ func _start_fantasy_overlay(_tile_id: String) -> void:
 	board.add_child(overlay)
 	
 	# 2. choose a random card from mock data
-	var random_card = _dummy_fantasy_cards.pick_random()
+	var card
+	if fantasy_event["value"]: card = Globals.fantasy[fantasy_event["fantasy_type"]][fantasy_event["value"]]
+	else: card = Globals.fantasy[fantasy_event["fantasy_type"]][0.0]
 	
 	# 3. Setup overlay with card data
-	overlay.setup_card(random_card)
-	overlay.card_action_resolved.connect(overlay_closed.emit)
-	
-	# 4. Log final event
-	overlay.card_action_resolved.connect(func():
-		Utils.debug("Fin del evento Fantasía. Continuando juego...")
+	overlay.setup_card(card)
+	overlay.card_action_resolved.connect(func(r):
+		fantasy_result.emit(r)
+		overlay_closed.emit()
 		show_controls_when_possible()
 	)
 

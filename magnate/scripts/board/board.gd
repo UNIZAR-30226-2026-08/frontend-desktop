@@ -84,6 +84,7 @@ func _connect_all_signals() -> void:
 	WsClient.response_general.connect(_handle_general_response)
 	WsClient.response_auction.connect(_handle_end_auction)
 	WsClient.response_bonus.connect(_handle_end_game)
+	WsClient.response_choose_fantasy.connect(_handle_fantasy_chosen)
 	
 	# WS Action connections
 	WsClient.action_buy_square.connect(_on_property_purchased)
@@ -124,7 +125,7 @@ func _handle_general_response(data: Dictionary) -> void:
 	ModelManager.game.current_phase = data["phase"]
 	for pk in data["money"]:
 		ModelManager.set_player_balance(int(pk), data["money"][pk])
-	if data["type"] == "Response":
+	if data["type"] in ["Response", "ResponseChooseFantasy"]:
 		for pk in data["positions"]:
 			var path = tile_manager.solve_path([data["positions"][pk]])
 			ModelManager.update_player_position(int(pk), data["positions"][pk], path)
@@ -213,6 +214,48 @@ func _handle_house_build(action: Dictionary) -> void:
 func _handle_house_demolish(action: Dictionary) -> void:
 	ModelManager.update_property_houses(action["square"], -action["houses"])
 
+func _handle_fantasy_chosen(response: Dictionary) -> void:
+	var fantasy_result = response["fantasy_result"]
+	# The following fantasy events are handled as part of the general response
+	var already_handled = [
+		WsClient.FantasyEventType.WIN_PLAIN_MONEY,
+		WsClient.FantasyEventType.WIN_RATIO_MONEY,
+		WsClient.FantasyEventType.SHARE_MONEY_ALL,
+		WsClient.FantasyEventType.EVERYBODY_SENDS_YOU_MONEY,
+		WsClient.FantasyEventType.SHUFFLE_POSITIONS,
+		WsClient.FantasyEventType.MOVE_ANYWHERE_RANDOM,
+		WsClient.FantasyEventType.MOVE_OPPONENT_ANYWHERE_RANDOM,
+		WsClient.FantasyEventType.MAGNETISM,
+		WsClient.FantasyEventType.GO_TO_START,
+		WsClient.FantasyEventType.LOSE_PLAIN_MONEY,
+		WsClient.FantasyEventType.LOSE_RATIO_MONEY,
+		WsClient.FantasyEventType.DOUBLE_OR_NOTHING,
+		WsClient.FantasyEventType.GET_PARKING_MONEY
+	]
+	if fantasy_result["fantasy_event"]["fantasy_type"] in already_handled: return
+	match fantasy_result["fantasy_event"]["fantasy_type"]:
+		WsClient.FantasyEventType.GO_TO_JAIL:
+			ModelManager.get_player(ModelManager.get_current_turn_player_id()).is_in_jail = true
+		WsClient.FantasyEventType.SEND_TO_JAIL:
+			ModelManager.get_player(fantasy_result["result"]["target_player"]).is_in_jail = true
+		WsClient.FantasyEventType.EVERYBODY_TO_JAIL:
+			for player in ModelManager.game.players.values(): player.is_in_jail = true
+		WsClient.FantasyEventType.BREAK_OPPONENT_HOUSE:
+			if not fantasy_result["result"]: return
+			ModelManager.update_property_houses(fantasy_result["result"]["square"], -1)
+		WsClient.FantasyEventType.BREAK_OWN_HOUSE:
+			if not fantasy_result["result"]: return
+			ModelManager.update_property_houses(fantasy_result["result"]["square"], -1)
+		WsClient.FantasyEventType.FREE_HOUSE:
+			if not fantasy_result["result"]: return
+			ModelManager.update_property_houses(fantasy_result["result"]["square"], 1)
+		WsClient.FantasyEventType.REVIVE_PROPERTY:
+			if not fantasy_result["result"]: return
+			ModelManager.set_property_mortgaged(fantasy_result["result"]["square"], false)
+		WsClient.FantasyEventType.EARTHQUAKE:
+			var tile_ids = fantasy_result["result"]["squares"] if fantasy_result["result"] else []
+			for tile_id in fantasy_result["result"]["squares"]:
+				ModelManager.update_property_houses(tile_id, -1)
 # ============
 #  MODO DEBUG
 # ============
@@ -244,13 +287,13 @@ func _on_dice_result_received(result: Dictionary) -> void:
 			if result.streak == 3:
 				# TODO mensaje de has sacado dobles 3 veces: Yendo a la cárcel
 				# Al mandarlo a la casilla de ir a la cárcel, ya sale la animación de ir a la cárcel
-				_handle_normal_movement(false, current_player.id, result.path)
+				_handle_normal_movement(false, current_player.id, result.path, {})
 				overlay_manager.overlay_closed.emit()
 			elif len(result.destinations) > 1:
 				tile_manager.prompt_tile_selection(result.destinations)
 			# Jugador se mueve automáticamente
 			else:
-				_handle_normal_movement(true, current_player.id, result.path)
+				_handle_normal_movement(true, current_player.id, result.path, result["fantasy_event"] if result["fantasy_event"] else {})
 				overlay_manager.overlay_closed.emit()
 	# 4. LÓGICA DE DADOS (PARA EL RESTO DE USUARIOS)
 	else:
@@ -258,9 +301,9 @@ func _on_dice_result_received(result: Dictionary) -> void:
 			#_handle_jail_dice_logic()
 			pass
 		elif result.streak == 3:
-			_handle_normal_movement(false, current_player.id, result.path)
+			_handle_normal_movement(false, current_player.id, result.path, {})
 		elif len(result.destinations) == 1:
-			_handle_normal_movement(true, current_player.id, result.path)
+			_handle_normal_movement(true, current_player.id, result.path, result["fantasy_event"] if result["fantasy_event"] else {})
 
 # Tirada desde la cárcel #TODO
 func _on_jail_roll_requested() -> void:
@@ -276,7 +319,7 @@ func _on_jail_roll_requested() -> void:
 #  MOVEMENT LOGIC
 # ================
 # Función que actualiza el movimieneto del player a su destino en GAME_MODEL
-func _handle_normal_movement(animation: bool, player_id: int, path: Array[String]) -> void:
+func _handle_normal_movement(animation: bool, player_id: int, path: Array[String], fantasy_event: Dictionary) -> void:
 	var current_token = ModelManager.get_player(player_id).token
 	
 	if animation:
@@ -296,13 +339,15 @@ func _handle_normal_movement(animation: bool, player_id: int, path: Array[String
 		
 	TokenLayoutManager.update_all_token_positions(ModelManager.game.players.values(), tile_manager.tile_entities)
 	if ModelManager.is_my_turn():
-		overlay_manager.display_overlay_for_tile(path[-1])
+		if fantasy_event != {}:
+			overlay_manager.start_fantasy_overlay(fantasy_event)
+		else:
+			overlay_manager.display_overlay_for_tile(path[-1])
 
 # RESPONSE - JUGADOR ACTUAL HA SELECCIONADO CASILLA PARA MOVERSE
 func _on_choose_square_received(data: Dictionary) -> void:
-	# game.fantasy_event: FantasyEvent = data["fantasy_event"]
 	# movemos al player actual a la posición elegida
-	_handle_normal_movement(true, ModelManager.get_current_turn_player_id(), data["path"])
+	_handle_normal_movement(true, ModelManager.get_current_turn_player_id(), data["path"], data["fantasy_event"] if data["fantasy_event"] else {})
 	
 # ====================
 #  Tile click handler
