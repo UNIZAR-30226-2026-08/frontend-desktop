@@ -17,7 +17,6 @@ signal dice_rolled(Dictionary) # Response to dice throw
 signal fantasy_result(Dictionary) # Response to fantasy chosen
 
 # jail signals
-signal jail_roll_requested
 signal jail_stay_confirmed
 signal jail_pay_bail_confirmed
 signal jail_reselect_requested
@@ -92,7 +91,7 @@ func setup_overlays(_board: Node2D, dice_roller, jail_dice) -> void:
 
 func show_controls_when_possible() -> void:
 	if not ModelManager.is_my_turn(): return
-	if ModelManager.game.current_phase != WsClient.Phase.BUSINESS:
+	if ModelManager.game.current_phase != WsClient.Phase.BUSINESS and ModelManager.game.current_phase != WsClient.Phase.LIQUIDATION:
 		await show_controls_now
 	automatic_control_visibility = true
 	controls_hud.toggle_hud_visibility(false)
@@ -107,12 +106,30 @@ func show_dice_overlay() -> void:
 			dice_rolled.emit(result)
 	)
 
+func show_jail_dice_overlay() -> void:
+	jail_dice_roller.show_overlay()
+	jail_dice_roller.has_rolled = false
+	jail_dice_roller.roll_finished.connect(
+		func(result):
+			await board.get_tree().create_timer(3).timeout
+			jail_dice_roller.hide_overlay()
+			dice_rolled.emit(result)
+	)
+
 func show_banner(message: String, bg_color: Color = Color("008a5c"), duration: float = 2.5) -> void:
 	overlay_open.emit()
 	banner_instance.show_banner(message, bg_color, duration)
 	await banner_instance.current_tween.finished
 	overlay_closed.emit()
-	show_dice_overlay()
+	var current_player = ModelManager.game.players[ModelManager.game.current_turn_player_id]
+	if current_player.is_in_jail:
+		show_jail_dice_overlay()
+		current_player.jail_turn_count += 1
+		# Si es nuestro turno enseñamos un overlay indicando cuantos turnos llevamos en la cárcel
+		if ModelManager.game.my_id == ModelManager.game.current_turn_player_id:
+			show_jail_initial_warning(current_player.jail_turn_count)
+	else:
+		show_dice_overlay()
 		
 func show_toast(message: String, duration: float = 3.0) -> void:
 	if toast_instance:
@@ -248,7 +265,6 @@ func _start_tram_overlay() -> void:
 	# overlay.button_pressed.connect(overlay_closed.emit)
 
 func _start_go_to_jail_overlay(tile_id: String) -> void:
-	# Dejo el icono pero xd
 	Utils.debug("🚨 Has caído en 'Ve a secretaría': " + tile_id)
 	
 	var overlay = SECRETARY_ANIMATION.instantiate()
@@ -260,13 +276,18 @@ func _start_go_to_jail_overlay(tile_id: String) -> void:
 	)
 	overlay.animation_complete.connect(func():
 		overlay_closed.emit()
-		show_controls_when_possible()
 	)
 	
 	overlay.play_animation()
 
 func _start_jail_overlay(tile_id: String) -> void:
-	Utils.debug("🔒 Estás de visita en Secretaría: " + tile_id)
+	Utils.debug("🔒 Acabas de entrar a la cárcel: " + tile_id)
+	# Muestras controles si estás en negativo, sino pasas automáticamente de turno
+	var current_player = ModelManager.game.players[ModelManager.game.current_turn_player_id]
+	if ModelManager.game.current_phase == WsClient.Phase.LIQUIDATION and current_player.balance < 0:
+		show_controls_when_possible()
+	else:
+		WsClient.ws_action_end_current_phase()
 
 func _start_parking_overlay(tile_id: String) -> void:
 	Utils.debug("🅿️ Has caído en el Parking Libre: " + tile_id)
@@ -355,13 +376,6 @@ func show_jail_initial_warning(turn: int, max_turns: int = 3) -> void:
 	var overlay = JAIL_DECISION_OVERLAY.instantiate()
 	board.add_child(overlay)
 	overlay.setup_initial(turn, max_turns)
-	
-	# Al darle a "Tirar Dados", avisamos al board y destruimos este pop-up específico
-	overlay.primary_action.connect(func():
-		jail_roll_requested.emit()
-		overlay.queue_free() # Destruimos la ventanita de la cárcel visualmente
-		# (Y ya no emitimos overlay_closed, de eso se encargará el board cuando muevas la ficha)
-	)
 	overlay_open.emit()
 
 func show_jail_stay_decision(turn: int, max_turns: int = 3) -> void:
@@ -392,6 +406,7 @@ func show_jail_pay_decision(bail_price: int = 50) -> void:
 	)
 	overlay.secondary_action.connect(func():
 		jail_reselect_requested.emit()
+		# Aquí no emitimos overlay_closed porque sigue en la fase de elegir
 	)
 	overlay_open.emit()
 

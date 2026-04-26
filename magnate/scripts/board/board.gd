@@ -73,9 +73,6 @@ func _connect_all_signals() -> void:
 	# Señales de Controles (Dados normales)
 	overlay_manager.request_admin_selection.connect(_on_admin_selection_requested)
 	
-	# Señales de Secretaría (Cárcel)
-	overlay_manager.jail_roll_requested.connect(_on_jail_roll_requested)
-	
 	# Normal dice
 	overlay_manager.dice_roller_overlay.roll_finished.connect(_on_dice_result_received)
 	
@@ -145,7 +142,11 @@ func _start_turn() -> void:
 func _start_phase() -> void:
 	match ModelManager.game.current_phase:
 		WsClient.Phase.ROLL_THE_DICES:
-			overlay_manager.show_dice_overlay()
+			var current_player = ModelManager.game.players[ModelManager.game.current_turn_player_id]
+			if current_player.is_in_jail:
+				overlay_manager.show_jail_dice_overlay()
+			else:
+				overlay_manager.show_dice_overlay()
 		WsClient.Phase.BUSINESS:
 			overlay_manager.show_controls_now.emit()
 
@@ -277,17 +278,15 @@ func _on_dice_result_received(result: Dictionary) -> void:
 	var game = ModelManager.game
 	var current_player: PlayerModel = ModelManager.get_player(game.current_turn_player_id)
 	
-	# 3. LÓGICA DE DADOS (PARA EL USUARIO QUE LOS HA LANZADO)
+	# 2. LÓGICA DE DADOS (PARA EL USUARIO QUE LOS HA LANZADO)
 	if ModelManager.is_my_turn():
 		if current_player.is_in_jail: 
-			#_handle_jail_dice_logic()
+			_handle_jail_dice_logic(result)
 			pass
 		else:
-			# Jugador ha sacado dobles 3 veces
-			if result.streak == 3:
-				# TODO mensaje de has sacado dobles 3 veces: Yendo a la cárcel
-				# Al mandarlo a la casilla de ir a la cárcel, ya sale la animación de ir a la cárcel
-				_handle_normal_movement(false, current_player.id, result.path, {})
+			# Jugador ha sacado dobles 3 veces, mandan 201 como destino final, asi q hago trucos
+			if result.path[-1] == ModelManager.game.important_tiles["jail"]:
+				_handle_normal_movement(false, current_player.id, [ModelManager.game.important_tiles["go_to_jail"]], {})
 				overlay_manager.overlay_closed.emit()
 			elif len(result.destinations) > 1:
 				tile_manager.prompt_tile_selection(result.destinations)
@@ -295,25 +294,17 @@ func _on_dice_result_received(result: Dictionary) -> void:
 			else:
 				_handle_normal_movement(true, current_player.id, result.path, result["fantasy_event"] if result["fantasy_event"] else {})
 				overlay_manager.overlay_closed.emit()
-	# 4. LÓGICA DE DADOS (PARA EL RESTO DE USUARIOS)
+	# 3. LÓGICA DE DADOS (PARA EL RESTO DE USUARIOS)
 	else:
 		if current_player.is_in_jail: 
-			#_handle_jail_dice_logic()
+			_handle_jail_dice_logic(result)
 			pass
-		elif result.streak == 3:
-			_handle_normal_movement(false, current_player.id, result.path, {})
+		# Jugador ha sacado dobles 3 veces, mandan 201 como destino final, asi q hago trucos
+		elif result.path[-1] ==  ModelManager.game.important_tiles["jail"]:
+			_handle_normal_movement(false, current_player.id, [ModelManager.game.important_tiles["go_to_jail"]], {})
+			overlay_manager.overlay_closed.emit()
 		elif len(result.destinations) == 1:
 			_handle_normal_movement(true, current_player.id, result.path, result["fantasy_event"] if result["fantasy_event"] else {})
-
-# Tirada desde la cárcel #TODO
-func _on_jail_roll_requested() -> void:
-	#is_in_jail_roll = true
-	
-	# 📢 ¡Avisamos para que se oculte la UI!
-	overlay_manager.overlay_open.emit()
-	
-	overlay_manager.dice_roller_overlay.hide_overlay()
-	overlay_manager.jail_dice_roller.show_overlay()
 
 # ================
 #  MOVEMENT LOGIC
@@ -321,6 +312,7 @@ func _on_jail_roll_requested() -> void:
 # Función que actualiza el movimieneto del player a su destino en GAME_MODEL
 func _handle_normal_movement(animation: bool, player_id: int, path: Array[String], fantasy_event: Dictionary) -> void:
 	var current_token = ModelManager.get_player(player_id).token
+	
 	
 	if animation:
 		var path_positions = tile_manager.solve_path(path.slice(1))
@@ -343,6 +335,12 @@ func _handle_normal_movement(animation: bool, player_id: int, path: Array[String
 			overlay_manager.start_fantasy_overlay(fantasy_event)
 		else:
 			overlay_manager.display_overlay_for_tile(path[-1])
+			
+	# Caso especial: Jugador cae en la cárcel, tenemos que moverlo a la casilla 201
+	if (path[-1] == ModelManager.game.important_tiles["go_to_jail"]):
+		# Esperamos 5 segundos a la animación de cárcel
+		await get_tree().create_timer(5.0).timeout
+		_handle_normal_movement(false, player_id, [ModelManager.game.important_tiles["jail"]], fantasy_event)
 
 # RESPONSE - JUGADOR ACTUAL HA SELECCIONADO CASILLA PARA MOVERSE
 func _on_choose_square_received(data: Dictionary) -> void:
@@ -365,7 +363,7 @@ func _on_highlighted_tile_clicked(tile_id: String) -> void:
 	# El player está eligiendo casilla desde la cárcel
 	elif current_player.is_in_jail:
 		# Player elige quedarse en la cárcel un turno más
-		if tile_id == game.important_tiles["jail"]:
+		if tile_id == game.important_tiles["jail"] or tile_id == "104":
 			overlay_manager.show_jail_stay_decision(current_player.jail_turn_count, 3)
 			return
 		# Player selecciona la casilla para pagar el bail
@@ -399,21 +397,18 @@ func _on_highlighted_tile_clicked(tile_id: String) -> void:
 func _on_jail_stay_confirmed() -> void:
 	tile_manager.reset_tile_highlight() # Limpiamos el tablero
 	overlay_manager.show_toast("Turno terminado en Secretaría.")
-	
-	# TODO Fase de administrar cosas, mostrar UI si somos el jugador actual
+	overlay_manager.show_controls_when_possible()
 
 # Jugador confirma que paga la fianza para moverse
 func _on_jail_pay_bail_confirmed() -> void:
 	tile_manager.reset_tile_highlight()
 	# Mandamos la action de haber pagado la fianza
 	WsClient.ws_action_pay_bail()
-	# TODO FALTA CAPTURAR EL ACTION QUE BROADCASTEA EL BACK PARA MOVER AL JUGADOR
 
-#TODO
 func _on_jail_reselect_requested() -> void:
-	# Simplemente volvemos a iluminar las casillas para que el jugador elija
-	#tile_manager.prompt_tile_selection(["201", jail_target_tile])
-	pass
+	# TODO HARDCODEADO HASTA QUE BACK ARREGLE COSAS
+	tile_manager.prompt_tile_selection(["201","105"])
+	return
 
 func _on_admin_selection_requested() -> void:
 	Utils.debug("🛠️ Entrando en modo selección para administrar propiedades...")
@@ -484,19 +479,22 @@ func _on_model_property_updated(property_id: String) -> void:
 		if tile.has_method("set_number_of_houses"):
 			tile.set_number_of_houses(prop_data.house_count)
 
-func _handle_jail_dice_logic() -> void:
-	#is_in_jail_roll = false
-	# Simulación: El backend nos diría si hubo par. 
-	var is_pair = false
+func _handle_jail_dice_logic(result: Dictionary) -> void:
+	var is_pair = result.dice1 == result.dice2
+	var game = ModelManager.game
+	var current_player: PlayerModel = ModelManager.get_player(game.current_turn_player_id)
 	
 	if is_pair:
 		Utils.debug("✨ ¡DOUBLES! Sales de Secretaría gratis.")
 		overlay_manager.show_toast("¡Has sacado par! Sales libre.")
-		_on_jail_pay_bail_confirmed() # Reutilizamos la lógica de movernos al destino
+		_handle_normal_movement(true, current_player.id, result.path, result["fantasy_event"] if result["fantasy_event"] else {})
 	else:
 		Utils.debug("🚫 No hubo par. Debes elegir: Quedarte o Pagar.")
-		# Iluminamos la cárcel (ID "010" por ejemplo) y el destino
-		#tile_manager.prompt_tile_selection(["104", jail_target_tile])
+		#Iluminamos la cárcel (ID "010" por ejemplo) y el destino
+		if game.current_turn_player_id == ModelManager.game.my_id:
+			#TODO HARDCODEADO de momento
+			#tile_manager.prompt_tile_selection(result.destinations)
+			tile_manager.prompt_tile_selection(["201","105"])
 
 func _on_property_purchased(data: Dictionary) -> void:
 	Utils.debug("💰 ¡El jugador ha comprado la casilla " + data["square"])

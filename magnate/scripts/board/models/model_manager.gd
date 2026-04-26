@@ -186,6 +186,11 @@ func update_player_position(player_id: int, new_tile_id: String, path: Array[Vec
 	if player:
 		player.move_to_tile(new_tile_id, path)
 		player.emit_update()
+		if new_tile_id == "201":
+			player.is_in_jail = true
+		else:
+			player.is_in_jail = false
+		
 
 func set_player_surrender(player_id: int) -> void:
 	var player = get_player(player_id)
