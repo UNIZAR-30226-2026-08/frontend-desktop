@@ -123,6 +123,8 @@ func _handle_general_response(data: Dictionary) -> void:
 	ModelManager.game.current_turn_player_id = data["active_turn_player"]
 	var new_phase = ModelManager.game.current_phase != data["phase"]
 	ModelManager.game.current_phase = data["phase"]
+	if data["type"] == "ResponseChooseFantasy" and ModelManager.is_my_turn():
+		await overlay_manager.fantasy_result
 	for pk in data["money"]:
 		ModelManager.set_player_balance(int(pk), data["money"][pk])
 	ModelManager.set_parking_money(data["parking_money"])

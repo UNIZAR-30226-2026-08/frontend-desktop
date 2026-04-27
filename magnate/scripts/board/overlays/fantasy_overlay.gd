@@ -6,7 +6,7 @@ signal card_action_resolved(front_chosen: bool)
 @onready var front_card: Control = $HBoxContainer/FrontFantasyCard
 @onready var back_card: Control = $HBoxContainer/BackFantasyCard
 
-const TIEMPO_ESPERA_CIERRE: float = 6.0
+const TIEMPO_ESPERA_CIERRE: float = 4.0
 const TIEMPO_DESVANECIMIENTO: float = 1.0
 
 var result: Dictionary
@@ -27,17 +27,15 @@ func _handle_response(response: Dictionary):
 	var card
 	if fantasy_event["value"]: card = Globals.fantasy[fantasy_event["fantasy_type"]][fantasy_event["value"]]
 	else: card = Globals.fantasy[fantasy_event["fantasy_type"]][0.0]
-	back_card.setup_content(card)
 	if not front_card_chosen:
-		_desvanecer_carta(front_card)
-		await get_tree().create_timer(TIEMPO_ESPERA_CIERRE).timeout
-		_finalizar_overlay()
+		back_card.setup_content(card)
+		await _fadeout_card(front_card)
+		_move_card_to_center(back_card)
 	else:
-		back_card.flip_smooth()
-		await get_tree().create_timer(2 * TIEMPO_ESPERA_CIERRE / 3).timeout
-		_desvanecer_carta(back_card)
-		await get_tree().create_timer(TIEMPO_ESPERA_CIERRE / 3).timeout
-		_finalizar_overlay()
+		await _fadeout_card(back_card)
+		_move_card_to_center(front_card)
+	await get_tree().create_timer(TIEMPO_ESPERA_CIERRE).timeout
+	_close_overlay()
 
 func setup_card(card_data: Dictionary) -> void:	
 	# Pasamos los textos a la carta delantera
@@ -46,25 +44,29 @@ func setup_card(card_data: Dictionary) -> void:
 func _on_back_fantasy_card_pressed() -> void:
 	Utils.debug("Mazo pulsado, revelando y desvaneciendo frontal...")
 	
-	_bloquear_todas_las_entradas()
+	_block_input()
 	front_card_chosen = false
 	WsClient.ws_action_choose_fantasy_card(false)
 
 func _on_front_fantasy_card_pressed() -> void:
 	Utils.debug("Carta frontal elegida, desvaneciendo mazo...")
 	
-	_bloquear_todas_las_entradas()
+	_block_input()
 	WsClient.ws_action_choose_fantasy_card(true)
 
-func _desvanecer_carta(carta_a_ocultar: Control) -> void:
+func _fadeout_card(card: Control) -> void:
 	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tween.tween_method(carta_a_ocultar.set_opacity, 1.0, 0.0, 1.0)
-	# tween.tween_callback(carta_a_ocultar.hide)
+	tween.tween_method(card.set_opacity, 1.0, 0.0, 1.0)
+	await tween.finished
 
-func _bloquear_todas_las_entradas() -> void:
+func _move_card_to_center(card) -> void:
+	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(card, "position:x", 760, 1)
+
+func _block_input() -> void:
 	back_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	front_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-func _finalizar_overlay() -> void:
+func _close_overlay() -> void:
 	card_action_resolved.emit(result)
 	queue_free()
