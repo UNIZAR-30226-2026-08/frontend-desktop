@@ -507,6 +507,7 @@ func _cancel_trade_selection() -> void:
 		trade_selection_instance = null
 		
 	overlay_closed.emit() # Devuelve los controles a la pantalla
+	show_controls_when_possible()
 
 func _on_trade_target_selected(target_id: int) -> void:
 	# Ignoramos clics si no estamos en modo selección

@@ -853,8 +853,8 @@ func ws_action_respond_to_trade(accept: bool) -> void:
 	_build_and_send_action({"type": "ActionTradeAnswer", "choose": accept})
 
 ## Action: Pays bail for current player
-func ws_action_pay_bail() -> void:
-	_build_and_send_action({"type": "ActionPayBail"})
+func ws_action_pay_bail(decision: bool) -> void:
+	_build_and_send_action({"type": "ActionPayBail", "to_pay": decision})
 
 ## Action: Surrenders current player
 func ws_action_surrender() -> void:

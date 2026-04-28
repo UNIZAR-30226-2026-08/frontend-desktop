@@ -354,8 +354,12 @@ func _handle_normal_movement(animation: bool, player_id: int, path: Array[String
 # RESPONSE - JUGADOR ACTUAL HA SELECCIONADO CASILLA PARA MOVERSE
 func _on_choose_square_received(data: Dictionary) -> void:
 	# movemos al player actual a la posición elegida
-	_handle_normal_movement(true, ModelManager.get_current_turn_player_id(), data["path"], data["fantasy_event"] if data["fantasy_event"] else {})
-	
+	var game = ModelManager.game
+	var current_player = ModelManager.get_player(game.current_turn_player_id)
+	if(current_player.is_in_jail):
+		overlay_manager.show_controls_when_possible()
+	else:
+		_handle_normal_movement(true, ModelManager.get_current_turn_player_id(), data["path"], data["fantasy_event"] if data["fantasy_event"] else {})
 # ====================
 #  Tile click handler
 # ====================
@@ -368,8 +372,18 @@ func _on_highlighted_tile_clicked(tile_id: String) -> void:
 		tile_manager.reset_tile_highlight()
 		overlay_manager._start_property_administration(tile_id) 
 		return
-	
-	# El player está eligiendo casilla desde la cárcel
+	elif overlay_manager.in_trade_selection_mode:
+		overlay_manager.in_trade_selection_mode = false
+		if overlay_manager.current_trade_overlay:
+			overlay_manager.current_trade_overlay.property_selected_from_board(
+				overlay_manager.trade_selecting_for_p1,
+				tile_id
+			)
+		return
+	elif is_selecting_for_train:
+		_handle_tram_selection(tile_id)
+		return
+		# El player está eligiendo casilla desde la cárcel
 	elif current_player.is_in_jail:
 		# Player elige quedarse en la cárcel un turno más
 		if tile_id == game.important_tiles["jail"] or tile_id == "104":
@@ -379,22 +393,6 @@ func _on_highlighted_tile_clicked(tile_id: String) -> void:
 		else:
 			overlay_manager.show_jail_pay_decision(50)
 			return
-	
-	#TODO
-	elif overlay_manager.in_trade_selection_mode:
-		overlay_manager.in_trade_selection_mode = false
-		if overlay_manager.current_trade_overlay:
-			overlay_manager.current_trade_overlay.property_selected_from_board(
-				overlay_manager.trade_selecting_for_p1,
-				tile_id
-			)
-		return
-	
-	#TODO
-	elif is_selecting_for_train:
-		_handle_tram_selection(tile_id)
-		return
-	
 	# LOGICA DE SELECCIONAR CASILLA ESTÁNDAR: ENVIAR ACTION DE LA CASILLA SELECCIONADA
 	else:
 		WsClient.ws_action_move_to(tile_id)
@@ -406,17 +404,17 @@ func _on_highlighted_tile_clicked(tile_id: String) -> void:
 func _on_jail_stay_confirmed() -> void:
 	tile_manager.reset_tile_highlight() # Limpiamos el tablero
 	overlay_manager.show_toast("Turno terminado en Secretaría.")
+	WsClient.ws_action_pay_bail(false)
 	overlay_manager.show_controls_when_possible()
 
 # Jugador confirma que paga la fianza para moverse
 func _on_jail_pay_bail_confirmed() -> void:
 	tile_manager.reset_tile_highlight()
 	# Mandamos la action de haber pagado la fianza
-	WsClient.ws_action_pay_bail()
+	WsClient.ws_action_pay_bail(true)
 
 func _on_jail_reselect_requested() -> void:
-	# TODO HARDCODEADO HASTA QUE BACK ARREGLE COSAS
-	tile_manager.prompt_tile_selection(["201","105"])
+	tile_manager.prompt_tile_selection(ModelManager.game.destinations)
 	return
 
 func _on_admin_selection_requested() -> void:
@@ -442,6 +440,7 @@ func _check_cancel_admin_click() -> void:
 		Utils.debug("↩️ Clic fuera de casilla. Cancelando administración...")
 		_cancel_admin_selection()
 		
+		
 func _handle_tram_selection(clicked_tile_id: String) -> void:
 	var current_tile_id = ModelManager.get_player().current_tile_id
 	var tile_name = tile_manager.tile_entities[current_tile_id].get_stop_name()
@@ -464,6 +463,7 @@ func _on_tram_travel_cancelled() -> void:
 func _cancel_admin_selection() -> void:
 	is_selecting_for_admin = false
 	tile_manager.reset_tile_highlight()
+	overlay_manager.show_controls_when_possible()
 
 # ==========================================
 # PUENTE: MODELO -> VISUAL (ACTUALIZAR CASILLAS)
@@ -501,9 +501,9 @@ func _handle_jail_dice_logic(result: Dictionary) -> void:
 		Utils.debug("🚫 No hubo par. Debes elegir: Quedarte o Pagar.")
 		#Iluminamos la cárcel (ID "010" por ejemplo) y el destino
 		if game.current_turn_player_id == ModelManager.game.my_id:
-			#TODO HARDCODEADO de momento
-			#tile_manager.prompt_tile_selection(result.destinations)
-			tile_manager.prompt_tile_selection(["201","105"])
+			#Guardamos las destinations en el game model
+			ModelManager.game.destinations = result.destinations
+			tile_manager.prompt_tile_selection(result.destinations)
 
 func _on_property_purchased(data: Dictionary) -> void:
 	Utils.debug("💰 ¡El jugador ha comprado la casilla " + data["square"])
