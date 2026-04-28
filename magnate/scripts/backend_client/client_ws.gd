@@ -87,7 +87,7 @@ signal chat_message(Dictionary)
 
 ## Emitted when a game state is received, you should probably set everything to this values
 ## Dictionary contains:
-## - "id": int											- id of the player (TODO: I think its the player)
+## - "id": int											- id of the game
 ## - "datetime": String									- Timestamp (ISO format) when the game was created
 ## - "positions": Dictionary[String, String]			- Maps player ID to tile ID
 ## - "money": Dictionary[String, int]					- Maps player ID to money they have
@@ -100,8 +100,8 @@ signal chat_message(Dictionary)
 ## - "possible_destinations": []						- Current possible destinations of the player
 ## - "parking_money": int								- Money stored in the parking
 ## - "jail_remaining_turns": Dictionary[String, int]	- Maps player ID to remainint jail turns
-## - "finished": bool									- TODO: No clue
-## - "bonus_response":									- TODO: No clue
+## - "finished": bool									- If the gme is finished (useless in our case)
+## - "bonus_response":									- The game bonuses (useless in our case)
 ## - "current_turn": int								- Number of the round
 ## - "property_relationships": Array[Dictionary]		- Information about properties
 ##		- Dictionary contains:

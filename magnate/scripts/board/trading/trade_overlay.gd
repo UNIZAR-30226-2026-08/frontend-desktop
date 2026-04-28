@@ -21,6 +21,8 @@ const PROPERTY_ITEM_SCENE = preload("res://scenes/board/players/trade_property_i
 @onready var player_name_1: Label = %PlayerName1
 @onready var player_color_2: Panel = %PlayerColor2
 @onready var player_color_1: Panel = %PlayerColor1
+@onready var left_player_box: MarginContainer = %LeftMarginBox
+@onready var right_player_box: MarginContainer = %RightMarginBox
 
 # Guardamos el estado de las propiedades internamente
 var _p1_available_props: Array[PropertyModel] = []
@@ -36,6 +38,9 @@ var old_text = ""
 func _ready() -> void:
 	super()
 	
+	var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).set_parallel()
+	tween.tween_property(right_player_box, "position:x", 1420, .5)
+	tween.tween_property(left_player_box, "position:x", 0, .5)
 	cancel_btn.pressed.connect(trade_cancelled.emit)
 	send_btn.pressed.connect(func():
 		if int("0" + offer_line_edit.text) > _p1_balance or int("0" + request_line_edit.text) > _p2_balance: return

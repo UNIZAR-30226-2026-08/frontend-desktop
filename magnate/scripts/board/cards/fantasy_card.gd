@@ -14,6 +14,7 @@ signal pressed;
 @onready var title_label: Label = %CardTitle 
 @onready var description_label: Label = %CardDescription
 @onready var price: Label = %Price
+@onready var not_enough_money_label: Label = %NotEnoughMoneyLabel
 
 var flipped = false;
 
@@ -31,6 +32,10 @@ func setup_content(data: Dictionary) -> void:
 	title_label.text = data["title"]
 	description_label.text = data["description"]
 	price.text = Utils.to_currency_text(data["card_cost"])
+
+func block() -> void:
+	not_enough_money_label.show()
+	fantasy_card_front.modulate = Color("#333333")
 
 # ================
 #  Flip animation

@@ -33,6 +33,7 @@ var board: Node2D
 var dice_roller_overlay: DiceRollerOverlay
 var jail_dice_roller: DiceRollerOverlay
 var tile_data: Dictionary
+var is_overlay_open: bool = false
 var current_trade_overlay: CanvasLayer = null
 var in_trade_selection_mode: bool = false
 var trade_selecting_for_p1: bool = true
@@ -46,6 +47,8 @@ var controls_hud: ControlsHUD
 var automatic_control_visibility = false
 var chat_hud: CanvasLayer
 var player_hud: PlayerHUD
+var logo_hud: Control
+var round_hud: Control
 
 # trade
 var is_selecting_trade_target: bool = false
@@ -75,6 +78,8 @@ const CHAT_SCENE = preload("uid://bb3relwhb88sa")
 const SURRENDER_OVERLAY = preload("uid://r7wff0p1ra5x")
 const TRADE_SELECTION_OVERLAY = preload("uid://cf7vsw1q85viu")
 const TRAIN_SELECTION_OVERLAY = preload("uid://dbleh2dgxratm")
+const LOGO = preload("uid://baktdl26t2tmk")
+const ROUND_COUNT = preload("uid://ognwccvwg2b3")
 
 const BANNER_MESSAGE = preload("uid://g1ccyk0arbkf")
 const TOAST_MESSAGE = preload("uid://dj0br3kdrndit")
@@ -97,12 +102,14 @@ func show_controls_when_possible() -> void:
 	controls_hud.toggle_hud_visibility(false)
 
 func show_dice_overlay() -> void:
+	round_hud.hide()
 	dice_roller_overlay.show_overlay()
 	dice_roller_overlay.has_rolled = false
 	dice_roller_overlay.roll_finished.connect(
 		func(result):
 			await board.get_tree().create_timer(3).timeout
 			dice_roller_overlay.hide_overlay()
+			round_hud.show()
 			dice_rolled.emit(result)
 	)
 
@@ -241,6 +248,7 @@ func start_finished_auction(response: Dictionary) -> void:
 
 func start_fantasy_overlay(fantasy_event: Dictionary) -> void:
 	Utils.debug("✨ Iniciando evento de Fantasía...")
+	overlay_open.emit()
 	
 	# 1. Instantiate the overlay
 	var overlay = FANTASY_OVERLAY.instantiate()
@@ -421,11 +429,13 @@ func setup_huds(players_data: Array[PlayerModel]) -> void:
 	# 1. Inicializar PlayerHUD (La barra de los jugadores)
 	player_hud = PlayerHUD.new()
 	board.add_child(player_hud)
+	player_hud.hide()
 	player_hud.setup_players(players_data)
 	
 	# 2. Inicializar Controles (Dados, ajustes...)
 	controls_hud = CONTROLS_HUD_SCENE.instantiate()
 	board.add_child(controls_hud)
+	controls_hud.hide()
 	controls_hud.open_settings_requested.connect(_open_settings)
 	controls_hud.roll_dice_requested.connect(func(): normal_roll_requested.emit())
 	controls_hud.bankrupt_requested.connect(_start_surrender_overlay)
@@ -436,18 +446,39 @@ func setup_huds(players_data: Array[PlayerModel]) -> void:
 	# 3. Inicializar Chat
 	chat_hud = CHAT_SCENE.instantiate()
 	board.add_child(chat_hud)
+	chat_hud.hide()
 	chat_hud.init_chat(players_data)
 	
 	overlay_open.connect(func():
+		is_overlay_open = true
 		player_hud.toggle_hud_visibility.bind(true)
 		if automatic_control_visibility:
 			controls_hud.toggle_hud_visibility(true)
 	)
 	overlay_closed.connect(func():
+		is_overlay_open = false
 		player_hud.toggle_hud_visibility.bind(false)
 		if automatic_control_visibility:
 			controls_hud.toggle_hud_visibility(false)
 	)
+	
+	logo_hud = LOGO.instantiate()
+	board.add_child(logo_hud)
+	logo_hud.pivot_offset_ratio = Vector2(.5, .5)
+	logo_hud.position = Vector2(
+		int((1920 - logo_hud.size.x) / 2),
+		int((1080 - logo_hud.size.y) / 2)
+	)
+	logo_hud.scale = Vector2(.25, .25)
+	
+	round_hud = ROUND_COUNT.instantiate()
+	board.add_child(round_hud)
+	round_hud.pivot_offset_ratio = Vector2(.5, .5)
+	round_hud.position = Vector2(
+		int((1920 - round_hud.size.x) / 2),
+		int((1080 - round_hud.size.y) / 2)
+	)
+	round_hud.modulate.a = 0
 
 func _open_settings() -> void:
 	var settings = SETTINGS_OVERLAY_SCENE.instantiate()

@@ -7,6 +7,7 @@ signal parking # Emited when parking updated
 # Señales útiles para que la UI reaccione instantáneamente a los cambios
 signal property_updated(property_id: int)
 signal player_balance_changed(player_id: int, new_balance: int)
+signal turn_updated
 
 # Modelos
 var game: GameModel
@@ -62,7 +63,7 @@ func initialize_game(game_state: Dictionary) -> void:
 	game.my_id = WsClient.player_id
 	game.current_phase = game_state["phase"]
 	game.parking_money = game_state["parking_money"]
-	game.current_turn = game_state["current_turn"]
+	ModelManager.set_turn(game_state["current_turn"])
 	game.current_phase_player_id = game_state["active_phase_player"]
 	game_initialized.emit()
 
@@ -183,17 +184,16 @@ func set_player_balance(player_id: int, amount: int) -> void:
 
 func update_player_position(player_id: int, new_tile_id: String, path: Array[Vector2]) -> void:
 	var player = get_player(player_id)
+	if player.current_tile_id == new_tile_id: return
 	if player:
 		player.move_to_tile(new_tile_id, path)
 		player.emit_update()
-		if new_tile_id == "201":
-			player.is_in_jail = true
-		else:
-			player.is_in_jail = false
+		player.is_in_jail = new_tile_id == "201"
 		
 
 func set_player_surrender(player_id: int) -> void:
 	var player = get_player(player_id)
+	if player.surrender: return
 	if player:
 		player.surrendered = true
 		player.emit_update()
@@ -206,6 +206,15 @@ func set_parking_money(amount: int) -> void:
 func update_parking_money(diff: int) -> void:
 	if diff == 0: return
 	set_parking_money(game.parking_money + diff)
+
+func set_turn(turn: int) -> void:
+	if game.current_turn == turn: return
+	game.current_turn = turn
+	turn_updated.emit()
+
+func update_turn(diff: int = 1) -> void:
+	if diff == 0: return
+	set_turn(game.current_turn + diff)
 
 # ==========================================
 # ⚖️ VALIDACIONES DE REGLAS (Monopoly Estricto)

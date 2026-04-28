@@ -85,12 +85,18 @@ func set_number_of_houses(n: int) -> void:
 		child.queue_free()
 	
 	if n == 5:
+		var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).set_parallel()
 		var instance = HOTEL.instantiate()
 		building_container.add_child(instance)
+		instance.modulate.a = 0
+		tween.tween_property(instance, "modulate:a", 1, .5)
 	elif n > 0 and n < 5:
+		var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).set_parallel()
 		for i in range(n):
 			var instance = HOUSE.instantiate()
 			building_container.add_child(instance)
+			instance.modulate.a = 0
+			tween.tween_property(instance, "modulate:a", 1, .5)
 	
 	# 3. GUARDAMOS EL ESTADO
 	number_of_houses = n

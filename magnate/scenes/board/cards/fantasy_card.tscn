@@ -362,4 +362,26 @@ fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="NotEnoughMoneyLabel" type="Label" parent="SubViewportContainer/SubViewport" unique_id=1335244655]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(400, 600)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -300.0
+offset_right = 200.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 45
+text = "No tienes suficiente 
+dinero"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
 [connection signal="gui_input" from="SubViewportContainer" to="." method="_on_sub_viewport_container_gui_input"]

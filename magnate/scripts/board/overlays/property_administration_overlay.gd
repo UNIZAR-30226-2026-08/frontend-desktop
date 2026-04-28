@@ -74,7 +74,6 @@ func _update_ui() -> void:
 	else:
 		add_house_button.disabled = index == max_houses_allowed or pay + property.build_price > player_balance or is_mortgaged
 		remove_house_button.disabled = index == min_houses_allowed or is_mortgaged
-	mortgage_button.disabled = index != 0 or not is_mortgaged
 
 	# Button text
 	if pay < 0:

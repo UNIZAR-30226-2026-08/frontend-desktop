@@ -11,6 +11,7 @@ const TIEMPO_DESVANECIMIENTO: float = 1.0
 
 var result: Dictionary
 var front_card_chosen = true
+var front_card_blocked = false
 
 func _ready() -> void:
 	super()
@@ -37,20 +38,21 @@ func _handle_response(response: Dictionary):
 	await get_tree().create_timer(TIEMPO_ESPERA_CIERRE).timeout
 	_close_overlay()
 
-func setup_card(card_data: Dictionary) -> void:	
-	# Pasamos los textos a la carta delantera
+func setup_card(card_data: Dictionary) -> void:
 	front_card.setup_content(card_data)
+	if ModelManager.get_player().balance < card_data["card_cost"]:
+		front_card_blocked = true
+		front_card.block()
 
 func _on_back_fantasy_card_pressed() -> void:
 	Utils.debug("Mazo pulsado, revelando y desvaneciendo frontal...")
-	
 	_block_input()
 	front_card_chosen = false
 	WsClient.ws_action_choose_fantasy_card(false)
 
 func _on_front_fantasy_card_pressed() -> void:
+	if front_card_blocked: return
 	Utils.debug("Carta frontal elegida, desvaneciendo mazo...")
-	
 	_block_input()
 	WsClient.ws_action_choose_fantasy_card(true)
 
