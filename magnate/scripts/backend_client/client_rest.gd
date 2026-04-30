@@ -209,7 +209,6 @@ func _load_refresh_token():
 ## - "password2": String	- Password confirmation field
 ## Return dictionary with:
 ## - "message" = "correctly registered user"
-## TODO: do I explain the rest? seems pretty useless at this point
 func user_signup(data: Dictionary) -> Dictionary:
 	make_request(
 		Globals.REST_BASE_URL + "/auth/register/",
@@ -226,7 +225,6 @@ func user_signup(data: Dictionary) -> Dictionary:
 ## - "password": String	- User's password
 ## Return dictionary with:
 ## - "message" = "succesful login"
-## TODO: do I explain the rest? seems pretty useless at this point
 func user_login(data: Dictionary) -> Dictionary:
 	make_request(
 		Globals.REST_BASE_URL + "/auth/login/",
@@ -271,17 +269,14 @@ func user_get_info() -> Dictionary:
 		resp["num_played_games"] = int(resp["num_won_games"])
 	return resp
 
-# TODO
 func user_get_games() -> Dictionary:
 	make_auth_request(Globals.REST_BASE_URL + "/user/games-played/")
 	return await response
 
-# TODO
 func user_get_game_summary(game_id: int) -> Dictionary:
 	make_auth_request(Globals.REST_BASE_URL + "/game/summary/" + str(game_id) + "/")
 	return await response
 
-# TODO
 func user_change_piece(piece_id: int) -> Dictionary:
 	make_auth_request(
 		Globals.REST_BASE_URL + "/user/change-piece/",
@@ -290,17 +285,14 @@ func user_change_piece(piece_id: int) -> Dictionary:
 	)
 	return await response
 
-# TODO
 func fetch_user_name_and_piece(pk: int) -> Dictionary:
 	make_auth_request(Globals.REST_BASE_URL + "/info/user-name-piece/" + str(pk) + "/")
 	return await response
 
-# TODO [{ "custom_id": 1.0, "itemType": "piece", "price": 100.0, "owned": false }, { "custom_id": 2.0, "itemType": "piece", "price": 200.0, "owned": false }, { "custom_id": 3.0, "itemType": "piece", "price": 300.0, "owned": false }, { "custom_id": 4.0, "itemType": "emoji", "price": 150.0, "owned": false }, { "custom_id": 5.0, "itemType": "emoji", "price": 250.0, "owned": false }]
 func shop_get_items() -> Array:
 	make_auth_request(Globals.REST_BASE_URL + "/shop/items/")
 	return await response
 
-# TODO
 func shop_buy_item(item_id: int) -> Dictionary:
 	make_auth_request(
 		Globals.REST_BASE_URL + "/shop/buy/",
@@ -309,7 +301,6 @@ func shop_buy_item(item_id: int) -> Dictionary:
 	)
 	return await response
 
-# TODO
 func shop_get_user_pieces() -> Array:
 	make_auth_request(Globals.REST_BASE_URL + "/shop/user-pieces/")
 	var resp = await response
@@ -317,12 +308,10 @@ func shop_get_user_pieces() -> Array:
 		return resp
 	return []
 
-# TODO
 func shop_get_user_emojis() -> Dictionary:
 	make_auth_request(Globals.REST_BASE_URL + "/shop/user-emojis/")
 	return await response
 
-# TODO
 func game_get_private_code() -> Dictionary:
 	make_auth_request(Globals.REST_BASE_URL + "/lobby/get-private-code")
 	return await response
@@ -330,4 +319,8 @@ func game_get_private_code() -> Dictionary:
 # Returns {"exists": bool}
 func game_check_private_code(code: String) -> Dictionary:
 	make_auth_request(Globals.REST_BASE_URL + "/lobby/check-code/" + code + "/")
+	return await response
+
+func user_get_active_game() -> Dictionary:
+	make_auth_request(Globals.REST_BASE_URL + "/user/active-game/")
 	return await response

@@ -49,3 +49,23 @@ theme_override_font_sizes/font_size = 25
 text = "Bridge name"
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="Price" type="Label" parent="." unique_id=1472507584]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 44.0
+offset_top = 172.0
+offset_right = 294.0
+offset_bottom = 197.0
+grow_vertical = 2
+rotation = 4.712389
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_font_sizes/font_size = 18
+text = "0M"
+vertical_alignment = 1
+autowrap_mode = 2

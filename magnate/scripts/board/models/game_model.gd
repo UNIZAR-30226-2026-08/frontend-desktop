@@ -33,17 +33,15 @@ var trade_p2_id: int = -1
 var trade_p1_properties: Array[String] = []
 var trade_p2_properties: Array[String] = []
 
-func _init(_game_id: int, player_list: Array[PlayerModel], properties: Array[PropertyModel]) -> void:
+func _init(_game_id: int, _current_player_id: int) -> void:
 	game_id = _game_id
-	
-	if player_list.size() > 0:
-		current_turn_player_id = player_list[0].id
-		
-	for property in properties:
-		board_properties[property.id] = property
-		
-	for player in player_list:
-		players[player.id] = player
+	current_turn_player_id = _current_player_id
+
+func add_property(property: PropertyModel) -> void:
+	board_properties[property.id] = property
+
+func add_player(player: PlayerModel) -> void:
+	players[player.id] = player
 
 func get_property_owner(property_id: String) -> int:
 	# Siempre es buena práctica comprobar si existe la key en el diccionario en Godot

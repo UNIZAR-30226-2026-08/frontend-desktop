@@ -35,6 +35,7 @@ func _ready() -> void:
 	
 	await _play_intro()
 	_start_turn()
+	_start_phase()
 	_connect_all_signals()
 
 # ===========================
@@ -53,10 +54,12 @@ func _play_intro() -> void:
 	overlay_manager.controls_hud.show()
 	overlay_manager.logo_hud.queue_free()
 
+var first_turn = true
 func _setup_game_data() -> void:
 	var game_state = await WsClient.game_state
 	if game_state == {}: return
-
+	
+	first_turn = game_state["current_turn"] == 1
 	await ModelManager.initialize_game(game_state)
 	
 	Utils.debug("💾 ModelManager inicializado con las reglas cargadas desde JSON")
@@ -143,7 +146,6 @@ func _handle_general_response(data: Dictionary) -> void:
 	if new_turn: _start_turn()
 	if new_phase: _start_phase()
 
-var first_turn = true
 func _start_turn() -> void:
 	if not first_turn: ModelManager.update_turn()
 	else: first_turn = false
@@ -154,6 +156,17 @@ func _start_turn() -> void:
 	if not ModelManager.is_my_turn():
 		text = "Turno de " + player.player_name
 	overlay_manager.show_banner(text, player.color)
+	# The following will match if we join an ongoing game because Phase != ROLL_THE_DICES
+	if not ModelManager.is_my_turn(): return
+	match ModelManager.game.current_phase:
+		WsClient.Phase.BUSINESS:
+			overlay_manager.show_controls_when_possible()
+		WsClient.Phase.LIQUIDATION:
+			overlay_manager.show_controls_when_possible()
+		WsClient.Phase.MANAGEMENT:
+			overlay_manager.display_overlay_for_tile(ModelManager.get_player().current_tile_id)
+		WsClient.Phase.CHOOSE_FANTASY:
+			pass
 
 func _start_phase() -> void:
 	match ModelManager.game.current_phase:
