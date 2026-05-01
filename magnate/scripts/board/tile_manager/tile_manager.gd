@@ -50,17 +50,24 @@ func darken_tiles(ids: Array[String]) -> void:
 func reset_tile_highlight() -> void:
 	reset_clickable_tiles()
 	var darken_canvas = null
+	
 	for child in tile_parent_node.get_children():
 		if is_instance_of(child, CanvasGroup):
 			darken_canvas = child
+			break # Optimization: stop looping once you find it
+			
 	if not darken_canvas: return
 	
 	var tween = tile_parent_node.create_tween()
 	tween.tween_property(darken_canvas, "self_modulate", Color.WHITE, .5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	
 	await tween.finished
-	for child in darken_canvas.get_children():
-		child.reparent(tile_parent_node)
-	darken_canvas.queue_free()
+	
+	# Check if the node is still valid before trying to access it
+	if is_instance_valid(darken_canvas):
+		for child in darken_canvas.get_children():
+			child.reparent(tile_parent_node)
+		darken_canvas.queue_free()
 
 func set_tile_owner(tile_id: String, player_color: Color) -> void:
 	if not tile_entities.has(tile_id):

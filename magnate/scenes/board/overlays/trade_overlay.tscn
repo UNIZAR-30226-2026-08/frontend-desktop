@@ -33,10 +33,11 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="LeftMarginBox" type="MarginContainer" parent="TradeUI" unique_id=1728989837]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 500.0
+offset_left = -600.0
 grow_vertical = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
@@ -115,6 +116,8 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.27058825, 0.27058825, 0.27058825, 1)
 theme_override_colors/font_placeholder_color = Color(0.72265625, 0.72265625, 0.72265625, 1)
+theme_override_colors/caret_color = Color(0.06666667, 0.06666667, 0.06666667, 1)
+theme_override_constants/caret_width = 5
 theme_override_fonts/font = ExtResource("3_e845h")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = ExtResource("9_e845h")
@@ -207,12 +210,13 @@ theme_override_styles/focus = ExtResource("8_bmfss")
 text = "CANCELAR NEGOCIACIÓN"
 
 [node name="RightMarginBox" type="MarginContainer" parent="TradeUI" unique_id=21825662]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -500.0
+offset_right = 600.0
 grow_horizontal = 0
 grow_vertical = 2
 theme_override_constants/margin_left = 50
@@ -292,6 +296,8 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.27058825, 0.27058825, 0.27058825, 1)
 theme_override_colors/font_placeholder_color = Color(0.72265625, 0.72265625, 0.72265625, 1)
+theme_override_colors/caret_color = Color(0.06666667, 0.06666667, 0.06666667, 1)
+theme_override_constants/caret_width = 5
 theme_override_fonts/font = ExtResource("3_e845h")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = ExtResource("9_e845h")

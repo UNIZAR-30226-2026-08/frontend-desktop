@@ -1,15 +1,6 @@
 class_name MagnateOverlayManager
 extends RefCounted
 
-#  ===== MOCK DATA, CAN BE DELETED FOR RELEASE =====
-var _dummy_fantasy_cards = [
-	{"name": "Beca por Excelencia", "description": "Tus notas en Programación son increíbles. Ganas 100€."},
-	{"name": "Multa de Biblioteca", "description": "Olvidaste devolver un libro de SQL. Pagas 20€."},
-	{"name": "Cafetería Cerrada", "description": "No hay café hoy. Pierdes 10€ buscando otra máquina."},
-	{"name": "Regalo de Graduación", "description": "Tus abuelos están orgullosos de ti. Ganas 200€."}
-]
-# ================ END OF MOCK DATA ================
-
 # common signals
 signal overlay_closed # Emited when a FULLSCREEN overlay is closed
 signal overlay_open # Emited when a FULLSCREEN overlay is opened
@@ -23,9 +14,9 @@ signal offer_accepted
 signal offer_rejected
 signal get_parking_money
 signal dice_rolled(Dictionary) # Response to dice throw
+signal fantasy_result(Dictionary) # Response to fantasy chosen
 
 # jail signals
-signal jail_roll_requested
 signal jail_stay_confirmed
 signal jail_pay_bail_confirmed
 signal jail_reselect_requested
@@ -42,6 +33,7 @@ var board: Node2D
 var dice_roller_overlay: DiceRollerOverlay
 var jail_dice_roller: DiceRollerOverlay
 var tile_data: Dictionary
+var is_overlay_open: bool = false
 var current_trade_overlay: CanvasLayer = null
 var in_trade_selection_mode: bool = false
 var trade_selecting_for_p1: bool = true
@@ -55,6 +47,8 @@ var controls_hud: ControlsHUD
 var automatic_control_visibility = false
 var chat_hud: CanvasLayer
 var player_hud: PlayerHUD
+var logo_hud: Control
+var round_hud: Control
 
 # trade
 var is_selecting_trade_target: bool = false
@@ -84,6 +78,8 @@ const CHAT_SCENE = preload("uid://bb3relwhb88sa")
 const SURRENDER_OVERLAY = preload("uid://r7wff0p1ra5x")
 const TRADE_SELECTION_OVERLAY = preload("uid://cf7vsw1q85viu")
 const TRAIN_SELECTION_OVERLAY = preload("uid://dbleh2dgxratm")
+const LOGO = preload("uid://baktdl26t2tmk")
+const ROUND_COUNT = preload("uid://ognwccvwg2b3")
 
 const BANNER_MESSAGE = preload("uid://g1ccyk0arbkf")
 const TOAST_MESSAGE = preload("uid://dj0br3kdrndit")
@@ -100,18 +96,30 @@ func setup_overlays(_board: Node2D, dice_roller, jail_dice) -> void:
 
 func show_controls_when_possible() -> void:
 	if not ModelManager.is_my_turn(): return
-	if ModelManager.game.current_phase != WsClient.Phase.BUSINESS:
+	if ModelManager.game.current_phase != WsClient.Phase.BUSINESS and ModelManager.game.current_phase != WsClient.Phase.LIQUIDATION:
 		await show_controls_now
 	automatic_control_visibility = true
 	controls_hud.toggle_hud_visibility(false)
 
 func show_dice_overlay() -> void:
+	round_hud.hide()
 	dice_roller_overlay.show_overlay()
 	dice_roller_overlay.has_rolled = false
 	dice_roller_overlay.roll_finished.connect(
 		func(result):
 			await board.get_tree().create_timer(3).timeout
 			dice_roller_overlay.hide_overlay()
+			round_hud.show()
+			dice_rolled.emit(result)
+	)
+
+func show_jail_dice_overlay() -> void:
+	jail_dice_roller.show_overlay()
+	jail_dice_roller.has_rolled = false
+	jail_dice_roller.roll_finished.connect(
+		func(result):
+			await board.get_tree().create_timer(3).timeout
+			jail_dice_roller.hide_overlay()
 			dice_rolled.emit(result)
 	)
 
@@ -120,7 +128,15 @@ func show_banner(message: String, bg_color: Color = Color("008a5c"), duration: f
 	banner_instance.show_banner(message, bg_color, duration)
 	await banner_instance.current_tween.finished
 	overlay_closed.emit()
-	show_dice_overlay()
+	var current_player = ModelManager.game.players[ModelManager.game.current_turn_player_id]
+	if current_player.is_in_jail:
+		show_jail_dice_overlay()
+		current_player.jail_turn_count += 1
+		# Si es nuestro turno enseñamos un overlay indicando cuantos turnos llevamos en la cárcel
+		if ModelManager.game.my_id == ModelManager.game.current_turn_player_id:
+			show_jail_initial_warning(current_player.jail_turn_count)
+	#else:
+		#show_dice_overlay()
 		
 func show_toast(message: String, duration: float = 3.0) -> void:
 	if toast_instance:
@@ -143,7 +159,6 @@ func display_overlay_for_tile(tile_id: String) -> void:
 	var handlers: Dictionary[Globals.TileType, Callable] = {
 		Globals.TileType.PROPERTY: _property_state_dispatcher.bind(tile_id),
 		Globals.TileType.SERVER: _property_state_dispatcher.bind(tile_id),
-		Globals.TileType.FANTASY: _start_fantasy_overlay.bind(tile_id),
 		Globals.TileType.GO_TO_JAIL: _start_go_to_jail_overlay.bind(tile_id),
 		Globals.TileType.JAIL: _start_jail_overlay.bind(tile_id),
 		Globals.TileType.PARKING: _start_parking_overlay.bind(tile_id),
@@ -181,10 +196,9 @@ func _start_property_administration(tile_id: String) -> void:
 	board.add_child(overlay)
 	var property = ModelManager.get_property(tile_id)
 	overlay.setup(property)
-	#func ws_action_mortgage_property(tile_id: String) -> void:
-	#func ws_action_unmortgage_property(tile_id: String) -> void:
+
 	overlay.administration_confirmed.connect(func(houses, mortgaged):
-		var house_diff = property.house_count - houses
+		var house_diff = houses - property.house_count
 		if house_diff > 0: WsClient.ws_action_build_house(tile_id, house_diff)
 		elif house_diff < 0: WsClient.ws_action_demolish_house(tile_id, -house_diff)
 		if property.is_mortgaged and not mortgaged: WsClient.ws_action_unmortgage_property(tile_id)
@@ -197,14 +211,16 @@ func _start_property_with_mortgage(property: PropertyModel) -> void:
 	var overlay = MORTGAGE_OVERLAY.instantiate()
 	overlay.setup(property)
 	board.add_child(overlay)
-	overlay.button_pressed.connect(show_controls_when_possible)
+	if ModelManager.game.current_phase == WsClient.Phase.ROLL_THE_DICES: board._start_phase()
+	else: overlay.button_pressed.connect(show_controls_when_possible)
 
 func _start_pay_rent(property: PropertyModel) -> void:
 	Utils.debug("Abriendo overlay de propiedad para la casilla: " + property.id)
 	var overlay = PAY_RENT_OVERLAY.instantiate()
 	overlay.setup(property)
 	board.add_child(overlay)
-	overlay.button_pressed.connect(show_controls_when_possible)
+	if ModelManager.game.current_phase == WsClient.Phase.ROLL_THE_DICES: board._start_phase()
+	else: overlay.button_pressed.connect(show_controls_when_possible)
 
 func start_auction(action: Dictionary) -> void:
 	Utils.debug("🔨 Empezando subasta para la casilla: " + action["square"])
@@ -230,23 +246,24 @@ func start_finished_auction(response: Dictionary) -> void:
 	)
 	Utils.debug("✅ La propiedad ahora pertenece al ganador")
 
-func _start_fantasy_overlay(_tile_id: String) -> void:
+func start_fantasy_overlay(fantasy_event: Dictionary) -> void:
 	Utils.debug("✨ Iniciando evento de Fantasía...")
+	overlay_open.emit()
 	
 	# 1. Instantiate the overlay
 	var overlay = FANTASY_OVERLAY.instantiate()
 	board.add_child(overlay)
 	
 	# 2. choose a random card from mock data
-	var random_card = _dummy_fantasy_cards.pick_random()
+	var card
+	if fantasy_event["value"]: card = Globals.fantasy[fantasy_event["fantasy_type"]][fantasy_event["value"]]
+	else: card = Globals.fantasy[fantasy_event["fantasy_type"]][0.0]
 	
 	# 3. Setup overlay with card data
-	overlay.setup_card(random_card)
-	overlay.card_action_resolved.connect(overlay_closed.emit)
-	
-	# 4. Log final event
-	overlay.card_action_resolved.connect(func():
-		Utils.debug("Fin del evento Fantasía. Continuando juego...")
+	overlay.setup_card(card)
+	overlay.card_action_resolved.connect(func(r):
+		fantasy_result.emit(r)
+		overlay_closed.emit()
 		show_controls_when_possible()
 	)
 
@@ -258,7 +275,6 @@ func _start_tram_overlay() -> void:
 	# overlay.button_pressed.connect(overlay_closed.emit)
 
 func _start_go_to_jail_overlay(tile_id: String) -> void:
-	# Dejo el icono pero xd
 	Utils.debug("🚨 Has caído en 'Ve a secretaría': " + tile_id)
 	
 	var overlay = SECRETARY_ANIMATION.instantiate()
@@ -270,13 +286,18 @@ func _start_go_to_jail_overlay(tile_id: String) -> void:
 	)
 	overlay.animation_complete.connect(func():
 		overlay_closed.emit()
-		show_controls_when_possible()
 	)
 	
 	overlay.play_animation()
 
 func _start_jail_overlay(tile_id: String) -> void:
-	Utils.debug("🔒 Estás de visita en Secretaría: " + tile_id)
+	Utils.debug("🔒 Acabas de entrar a la cárcel: " + tile_id)
+	# Muestras controles si estás en negativo, sino pasas automáticamente de turno
+	var current_player = ModelManager.game.players[ModelManager.game.current_turn_player_id]
+	if ModelManager.game.current_phase == WsClient.Phase.LIQUIDATION and current_player.balance < 0:
+		show_controls_when_possible()
+	else:
+		WsClient.ws_action_end_current_phase()
 
 func _start_parking_overlay(tile_id: String) -> void:
 	Utils.debug("🅿️ Has caído en el Parking Libre: " + tile_id)
@@ -323,6 +344,7 @@ func start_scoreboard_overlay(response: Dictionary) -> void:
 		SceneTransition.change_scene("res://scenes/UI/home_screen.tscn")
 	)
 	await board.get_tree().create_timer(2).timeout
+	await current_overlay.prepare_for_categories()
 	for bonus in response["bonuses"]:
 		var scores: Dictionary[String, int] = {}
 		for player in ModelManager.game.players.values():
@@ -365,13 +387,6 @@ func show_jail_initial_warning(turn: int, max_turns: int = 3) -> void:
 	var overlay = JAIL_DECISION_OVERLAY.instantiate()
 	board.add_child(overlay)
 	overlay.setup_initial(turn, max_turns)
-	
-	# Al darle a "Tirar Dados", avisamos al board y destruimos este pop-up específico
-	overlay.primary_action.connect(func():
-		jail_roll_requested.emit()
-		overlay.queue_free() # Destruimos la ventanita de la cárcel visualmente
-		# (Y ya no emitimos overlay_closed, de eso se encargará el board cuando muevas la ficha)
-	)
 	overlay_open.emit()
 
 func show_jail_stay_decision(turn: int, max_turns: int = 3) -> void:
@@ -402,6 +417,7 @@ func show_jail_pay_decision(bail_price: int = 50) -> void:
 	)
 	overlay.secondary_action.connect(func():
 		jail_reselect_requested.emit()
+		# Aquí no emitimos overlay_closed porque sigue en la fase de elegir
 	)
 	overlay_open.emit()
 
@@ -413,11 +429,13 @@ func setup_huds(players_data: Array[PlayerModel]) -> void:
 	# 1. Inicializar PlayerHUD (La barra de los jugadores)
 	player_hud = PlayerHUD.new()
 	board.add_child(player_hud)
+	player_hud.hide()
 	player_hud.setup_players(players_data)
 	
 	# 2. Inicializar Controles (Dados, ajustes...)
 	controls_hud = CONTROLS_HUD_SCENE.instantiate()
 	board.add_child(controls_hud)
+	controls_hud.hide()
 	controls_hud.open_settings_requested.connect(_open_settings)
 	controls_hud.roll_dice_requested.connect(func(): normal_roll_requested.emit())
 	controls_hud.bankrupt_requested.connect(_start_surrender_overlay)
@@ -428,18 +446,39 @@ func setup_huds(players_data: Array[PlayerModel]) -> void:
 	# 3. Inicializar Chat
 	chat_hud = CHAT_SCENE.instantiate()
 	board.add_child(chat_hud)
+	chat_hud.hide()
 	chat_hud.init_chat(players_data)
 	
 	overlay_open.connect(func():
+		is_overlay_open = true
 		player_hud.toggle_hud_visibility.bind(true)
 		if automatic_control_visibility:
 			controls_hud.toggle_hud_visibility(true)
 	)
 	overlay_closed.connect(func():
+		is_overlay_open = false
 		player_hud.toggle_hud_visibility.bind(false)
 		if automatic_control_visibility:
 			controls_hud.toggle_hud_visibility(false)
 	)
+	
+	logo_hud = LOGO.instantiate()
+	board.add_child(logo_hud)
+	logo_hud.pivot_offset_ratio = Vector2(.5, .5)
+	logo_hud.position = Vector2(
+		int((1920 - logo_hud.size.x) / 2),
+		int((1080 - logo_hud.size.y) / 2)
+	)
+	logo_hud.scale = Vector2(.25, .25)
+	
+	round_hud = ROUND_COUNT.instantiate()
+	board.add_child(round_hud)
+	round_hud.pivot_offset_ratio = Vector2(.5, .5)
+	round_hud.position = Vector2(
+		int((1920 - round_hud.size.x) / 2),
+		int((1080 - round_hud.size.y) / 2)
+	)
+	round_hud.modulate.a = 0
 
 func _open_settings() -> void:
 	var settings = SETTINGS_OVERLAY_SCENE.instantiate()
@@ -499,6 +538,7 @@ func _cancel_trade_selection() -> void:
 		trade_selection_instance = null
 		
 	overlay_closed.emit() # Devuelve los controles a la pantalla
+	show_controls_when_possible()
 
 func _on_trade_target_selected(target_id: int) -> void:
 	# Ignoramos clics si no estamos en modo selección

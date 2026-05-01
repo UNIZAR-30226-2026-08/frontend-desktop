@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://btlb3cwbcaso4" path="res://scripts/board/controls/settings_overlay.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="2_header"]
 [ext_resource type="FontFile" uid="uid://b78i0vraohs54" path="res://assets/fonts/LTSuperior/LTSuperior-Black.ttf" id="3_0m2wi"]
-[ext_resource type="PackedScene" uid="uid://dep1ru34gfn0m" path="res://scenes/board/controls/mute_button.tscn" id="4_mute_btn"]
+[ext_resource type="PackedScene" uid="uid://dep1ru34gfn0m" path="res://scenes/board/hud/controls/mute_button.tscn" id="4_mute_btn"]
 [ext_resource type="Shader" uid="uid://dk6h3t6f17nd" path="res://styles/shaders/strip_background.gdshader" id="5_shader"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal"]

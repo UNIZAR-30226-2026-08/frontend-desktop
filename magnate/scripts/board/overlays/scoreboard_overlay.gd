@@ -2,18 +2,40 @@ extends BlurryBgOverlay
 
 signal button_pressed
 
+@onready var pre_title_label: Label = %PreTitleLabel
+@onready var pre_title_space: Control = %PreTitleSpace
+@onready var description_space: Control = %DescriptionSpace
+@onready var description: Label = %Description
 @onready var category_name = %TitleLabel
 @onready var unnamed_scores = [%ScoreboardEntry, %ScoreboardEntry2, %ScoreboardEntry3, %ScoreboardEntry4]
 @onready var confirm_button: Button = %ConfirmButton
 var named_scores = {}
 
+var score_categories = {}
+
 func _ready() -> void:
 	super()
+	var json_text = FileAccess.get_file_as_string("res://assets/game_info/finalCategories.json")
+	score_categories = JSON.parse_string(json_text)
 	confirm_button.pressed.connect(button_pressed.emit)
 	for player in ModelManager.game.players.values():
 		add_player(player.player_name, player.color)
 	for entry in unnamed_scores:
 		entry.hide()
+
+const duration = 1
+func prepare_for_categories() -> void:
+	var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_parallel().set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property(category_name, "position:y", pre_title_label.position.y, duration)
+	tween.tween_property(pre_title_label, "self_modulate:a", 0, duration)
+	await tween.finished
+	pre_title_label.hide()
+	pre_title_space.hide()
+	tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_parallel().set_trans(Tween.TRANS_CUBIC)
+	description.show()
+	description_space.show()
+	tween.tween_property(description, "self_modulate:a", 1, duration)
+	await tween.finished
 
 func finish() -> void:
 	confirm_button.disabled = false
@@ -69,7 +91,8 @@ func smooth_sort_entries(scores: Dictionary[String, int]) -> void:
 func score_category(_category_name: String, scores: Dictionary[String, int]) -> void:
 	var timer = get_tree().create_timer(2)
 	
-	category_name.text = _category_name
+	category_name.text = score_categories[_category_name]["title"]
+	description.text = score_categories[_category_name]["description"]
 	var max_final_score = 100
 	for _name in scores.keys():
 		max_final_score = max(max_final_score, named_scores[_name].current_score + scores[_name])

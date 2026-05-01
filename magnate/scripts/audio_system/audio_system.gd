@@ -161,10 +161,8 @@ func _create_new_audio_player(audio: AudioResource, is_positional: bool = false)
 		_next_ticket += 1
 		
 	var new_audio_player: Node
-	if is_positional:
-		new_audio_player = AudioStreamPlayer2D.new()
-	else:
-		new_audio_player = AudioStreamPlayer.new()
+	if is_positional: new_audio_player = AudioStreamPlayer2D.new()
+	else: new_audio_player = AudioStreamPlayer.new()
 		
 	add_child(new_audio_player)
 	
@@ -178,10 +176,13 @@ func _create_new_audio_player(audio: AudioResource, is_positional: bool = false)
 	new_audio_player.bus = _get_busname_from_type(audio.bus)
 	_audio_players[ticket] = new_audio_player
 	
-	new_audio_player.finished.connect(func(): 
-		audio_finished.emit(ticket)
-		new_audio_player.queue_free()
-	)
+	if audio.bus == AudioResource.AudioResourceType.MUSIC:
+		new_audio_player.finished.connect(audio_finished.emit.bind(ticket))
+	else:
+		new_audio_player.finished.connect(func(): 
+			audio_finished.emit(ticket)
+			new_audio_player.queue_free()
+		)
 	return ticket
 
 func _start_audio(player, fadein: bool) -> void:
@@ -218,6 +219,9 @@ const SAVE_PATH: String = "user://audio_settings.cfg"
 var _config: ConfigFile = ConfigFile.new()
 
 func _ready() -> void:
+	audio_finished.connect(func(ticket):
+		if ticket == 0: _audio_players[0].play()
+	)
 	load_settings()
 
 ## Saves all current bus volumes and mute states to a config file

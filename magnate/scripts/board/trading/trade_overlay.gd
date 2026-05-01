@@ -21,12 +21,16 @@ const PROPERTY_ITEM_SCENE = preload("res://scenes/board/players/trade_property_i
 @onready var player_name_1: Label = %PlayerName1
 @onready var player_color_2: Panel = %PlayerColor2
 @onready var player_color_1: Panel = %PlayerColor1
+@onready var left_player_box: MarginContainer = %LeftMarginBox
+@onready var right_player_box: MarginContainer = %RightMarginBox
 
 # Guardamos el estado de las propiedades internamente
 var _p1_available_props: Array[PropertyModel] = []
 var _p2_available_props: Array[PropertyModel] = []
 var _p1_selected_props: Array[String] = []
 var _p2_selected_props: Array[String] = []
+var _p1_balance: int = 0
+var _p2_balance: int = 0
 
 var regex = RegEx.new()
 var old_text = ""
@@ -34,8 +38,12 @@ var old_text = ""
 func _ready() -> void:
 	super()
 	
+	var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).set_parallel()
+	tween.tween_property(right_player_box, "position:x", 1420, .5)
+	tween.tween_property(left_player_box, "position:x", 0, .5)
 	cancel_btn.pressed.connect(trade_cancelled.emit)
 	send_btn.pressed.connect(func():
+		if int("0" + offer_line_edit.text) > _p1_balance or int("0" + request_line_edit.text) > _p2_balance: return
 		offer_sent.emit(_p1_selected_props, _p2_selected_props, int("0" + offer_line_edit.text), int("0" + request_line_edit.text))
 	)
 
@@ -43,15 +51,30 @@ func setup_trade(p1: PlayerModel, p2: PlayerModel) -> void:
 	regex.compile("^[0-9]*$")
 	offer_line_edit.text_changed.connect(_on_text_changed.bind(offer_line_edit))
 	request_line_edit.text_changed.connect(_on_text_changed.bind(request_line_edit))
-	# 1. Textos e inputs (asumiendo que tienes Labels para los nombres)
+
 	player_name_1.text = "TÚ"
 	player_name_2.text = p2.player_name
 	offer_line_edit.placeholder_text = "Max. " + str(p1.balance)
 	request_line_edit.placeholder_text = "Max. " + str(p2.balance)
+	_p1_balance = p1.balance
+	_p2_balance = p2.balance
 	
-	# 2. Copiamos las listas asegurando el tipado correcto de Godot 4
-	_p1_available_props.assign(ModelManager.get_player_properties(p1.id))
-	_p2_available_props.assign(ModelManager.get_player_properties(p2.id))
+	_p1_available_props = []
+	for prop in ModelManager.get_player_properties(p1.id):
+		var properties = ModelManager._get_properties_in_group(prop.group_id)
+		var has_houses = false
+		for group_property in properties:
+			if group_property.house_count > 0: has_houses = true
+		if not has_houses:
+			_p1_available_props.append(prop)
+	_p2_available_props = []
+	for prop in ModelManager.get_player_properties(p2.id):
+		var properties = ModelManager._get_properties_in_group(prop.group_id)
+		var has_houses = false
+		for group_property in properties:
+			if group_property.house_count > 0: has_houses = true
+		if not has_houses:
+			_p2_available_props.append(prop)
 	
 	player_color_1.modulate = p1.color
 	player_color_2.modulate = p2.color

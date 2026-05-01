@@ -4,11 +4,7 @@ extends RefCounted
 # Class to represent an audio track, can control pitch, randomness,
 # autoplay and specific audio.
 
-enum AudioResourceType {
-	MUSIC,
-	SFX,
-	UI
-}
+enum AudioResourceType { MUSIC, SFX, UI }
 
 var audio_track: AudioStream
 var pitch: float = 1

@@ -52,8 +52,7 @@ func _gui_input(event: InputEvent) -> void:
 func _update_balance_label(amount: int) -> void:
 	var formatted_money = str(amount)
 	if amount >= 1000:
-		var s = str(amount)
-		formatted_money = s.left(s.length() - 3) + "," + s.right(3)
+		formatted_money = Utils.to_currency_text(amount).left(-1)
 	balance_label.text = formatted_money
 
 func update_balance(amount: int) -> void:

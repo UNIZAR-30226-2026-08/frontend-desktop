@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://ognwccvwg2b3"]
+
+[ext_resource type="Theme" uid="uid://c1nforevd52yq" path="res://styles/themes/main_theme.tres" id="1_eyjrn"]
+[ext_resource type="Script" uid="uid://cko0h3vfwho1d" path="res://scripts/board/hud/round_count.gd" id="2_ynlow"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ynlow"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_eyjrn"]
+color = Color(1, 1, 1, 1)
+thickness = 6
+
+[node name="RoundCount" type="Panel" unique_id=582522906]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -43.5
+offset_top = -35.0
+offset_right = 43.5
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_eyjrn")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ynlow")
+script = ExtResource("2_ynlow")
+
+[node name="Title" type="Label" parent="." unique_id=2090622213]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -94.0
+offset_top = -88.0
+offset_right = 74.0
+offset_bottom = -38.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "Rondas"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RoundCount" type="Label" parent="." unique_id=1968550080]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -83.5
+offset_top = -28.0
+offset_right = 3.5
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RoundMax" type="Label" parent="." unique_id=967177569]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -3.5
+offset_top = 22.0
+offset_right = 83.5
+offset_bottom = 92.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "20"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator" type="HSeparator" parent="." unique_id=1786050744]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -53.5
+offset_top = 32.0
+offset_right = 33.5
+offset_bottom = 102.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.7853982
+theme_override_styles/separator = SubResource("StyleBoxLine_eyjrn")

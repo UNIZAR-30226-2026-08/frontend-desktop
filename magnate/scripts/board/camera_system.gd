@@ -48,25 +48,25 @@ func transition_camera(origin: Camera2D, destiny: Camera2D, duration: float = 1.
 	
 	stopped.emit()
 
-func follow_node(followed: Node2D, _zoom: Vector2 = Vector2(1, 1)) -> void:
+func follow_node(followed: Node2D, _zoom: Vector2 = Vector2(1, 1), _duration: float = 1.) -> void:
 	var new_camera = Camera2D.new()
 	new_camera.ignore_rotation = false
 	_additional_cameras.append(new_camera)
 	followed.add_child(_additional_cameras[1])
 	_additional_cameras[1].zoom = _zoom
-	transition_camera(_additional_cameras[0], _additional_cameras[1])
+	transition_camera(_additional_cameras[0], _additional_cameras[1], _duration)
 	_additional_cameras.pop_front()
 
-func main_camera() -> void:
+func main_camera(_duration: float = 1.) -> void:
 	_additional_cameras.append(_main_camera)
-	transition_camera(_additional_cameras[0], _additional_cameras[1])
+	transition_camera(_additional_cameras[0], _additional_cameras[1], _duration)
 	_additional_cameras.pop_front()
 
-func zoom(_zoom: Vector2) -> void:
+func zoom(_zoom: Vector2, _duration: float = 1.) -> void:
 	var zoomed_camera = _additional_cameras[0].duplicate()
 	zoomed_camera.zoom = _zoom
 	_additional_cameras[0].get_parent().add_child(zoomed_camera)
 	_additional_cameras.append(zoomed_camera)
-	transition_camera(_additional_cameras[0], _additional_cameras[1])
+	transition_camera(_additional_cameras[0], _additional_cameras[1], _duration)
 	_additional_cameras.pop_front()
 	

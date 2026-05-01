@@ -1,6 +1,7 @@
 extends Panel
 
 @onready var bridge_name: Label = %BridgeName
+@onready var price: Label = %Price
 
 var owner_id: int = -1
 var is_mortgaged = false
@@ -12,6 +13,9 @@ func update(tile_id: String) -> void:
 
 func set_bridge_name(_name: String) -> void:
 	bridge_name.text = _name
+
+func set_property_price(amount: int) -> void:
+	price.text = Utils.to_currency_text(amount)
 
 func set_property_owner(player_id: int) -> void:
 	if owner_id == player_id: return

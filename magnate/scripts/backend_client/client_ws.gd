@@ -21,7 +21,7 @@ extends Node
 ## Possible types of fantasy card events
 enum FantasyEventType {
 	WIN_PLAIN_MONEY, # Gives the player money in absolute terms
-	WIN_RATION_MONEY, # Gives the player money in percetages (relative to their current wealth)
+	WIN_RATIO_MONEY, # Gives the player money in percetages (relative to their current wealth)
 	LOSE_PLAIN_MONEY, # Takes money from the player in absolute terms
 	LOSE_RATIO_MONEY, # Takes money from the player in percentages (relative to their current wealth)
 	SHARE_MONEY_ALL, # The player sends money to all other players
@@ -30,6 +30,7 @@ enum FantasyEventType {
 	GET_PARKING_MONEY, # Receive the money stored in the parking
 	GO_TO_JAIL, # Go to the jail tile
 	SEND_TO_JAIL, # Send someone to the jail tile
+	EVERYBODY_TO_JAIL, # Sends everyone to jail
 	SHUFFLE_POSITIONS, # Randomly shuffle all player positions
 	MOVE_ANYWHERE_RANDOM, # Randomly move somewhere
 	MOVE_OPPONENT_ANYWHERE_RANDOM, # Randomly move an opponent somewhere
@@ -39,7 +40,7 @@ enum FantasyEventType {
 	BREAK_OWN_HOUSE, # Break one of the players houses (lastest built)
 	FREE_HOUSE, # Build a free house (priciest house the player could build if it had the money)
 	REVIVE_PROPERTY, # Unmortgages a property
-	EARTHQUAKE, # All streets miss a property
+	EARTHQUAKE, # All streets lose a property
 }
 
 ## Phases of the game
@@ -86,21 +87,21 @@ signal chat_message(Dictionary)
 
 ## Emitted when a game state is received, you should probably set everything to this values
 ## Dictionary contains:
-## - "id": int										- id of the player (TODO: I think its the player)
-## - "datetime": String								- Timestamp (ISO format) when the game was created
+## - "id": int											- id of the game
+## - "datetime": String									- Timestamp (ISO format) when the game was created
 ## - "positions": Dictionary[String, String]			- Maps player ID to tile ID
-## - "money": Dictionary[String, int]				- Maps player ID to money they have
-## - "active_phase_player": int						- ID of the player of the current phase
-## - "active_turn_player": int						- ID of the player of the current turn
-## - "phase": Phase									- Current Phase in play
-## - "players": Array[int]							- IDs of the players
-## - "ordered_players": Array[int]					- IDs of the players in order
-## - "streak": int									- Current streak of doubles in play
+## - "money": Dictionary[String, int]					- Maps player ID to money they have
+## - "active_phase_player": int							- ID of the player of the current phase
+## - "active_turn_player": int							- ID of the player of the current turn
+## - "phase": Phase										- Current Phase in play
+## - "players": Array[int]								- IDs of the players
+## - "ordered_players": Array[int]						- IDs of the players in order
+## - "streak": int										- Current streak of doubles in play
 ## - "possible_destinations": []						- Current possible destinations of the player
-## - "parking_money": int							- Money stored in the parking
+## - "parking_money": int								- Money stored in the parking
 ## - "jail_remaining_turns": Dictionary[String, int]	- Maps player ID to remainint jail turns
-## - "finished": bool								- TODO: No clue
-## - "bonus_response":								- TODO: No clue
+## - "finished": bool									- If the gme is finished (useless in our case)
+## - "bonus_response":									- The game bonuses (useless in our case)
 ## - "current_turn": int								- Number of the round
 ## - "property_relationships": Array[Dictionary]		- Information about properties
 ##		- Dictionary contains:
@@ -218,9 +219,6 @@ signal response_choose_fantasy(Dictionary)
 
 ## Response for the result of an auction, shows who won
 ## Response Dictionary includes:
-## - "winner": int
-## - "final_amount": int
-## - "is_tie": bool
 ## - "auction": Dictionary
 ##		- "id": int
 ##		- "square": String
@@ -388,7 +386,10 @@ func _safe_connect(url: String, headers: PackedStringArray = []) -> void:
 ## WARNING: You probably shouldn't be using this. There should be a
 ## specific function in this class that abstracts your interaction logic.
 func send_data(data_to_send: Variant) -> void:
+	socket.poll()
+	if socket.get_ready_state() != WebSocketPeer.STATE_OPEN: return
 	data_to_send = JSON.stringify(data_to_send)
+	Utils.debug(data_to_send)
 	socket.send_text(data_to_send)
 
 func start_client_public_queue() -> void:
@@ -510,10 +511,10 @@ func _botlevel_string_to_enum(bot_level_str: String) -> BotLevel:
 			Utils.debug("BotLevel string not recognized: " + bot_level_str)
 			return BotLevel.MEDIUM # Default
 
-func _fantasyeventtype_string_to_enum(event_string: String) -> FantasyEventType:
+func fantasyeventtype_string_to_enum(event_string: String) -> FantasyEventType:
 	match event_string:
 		"winPlainMoney": return FantasyEventType.WIN_PLAIN_MONEY
-		"winRationMoney": return FantasyEventType.WIN_RATION_MONEY
+		"winRatioMoney": return FantasyEventType.WIN_RATIO_MONEY
 		"losePlainMoney": return FantasyEventType.LOSE_PLAIN_MONEY
 		"loseRatioMoney": return FantasyEventType.LOSE_RATIO_MONEY
 		"shareMoneyAll": return FantasyEventType.SHARE_MONEY_ALL
@@ -522,6 +523,7 @@ func _fantasyeventtype_string_to_enum(event_string: String) -> FantasyEventType:
 		"getParkingMoney": return FantasyEventType.GET_PARKING_MONEY
 		"goToJail": return FantasyEventType.GO_TO_JAIL
 		"sendToJail": return FantasyEventType.SEND_TO_JAIL
+		"everybodyToJail": return FantasyEventType.EVERYBODY_TO_JAIL
 		"shufflePositions": return FantasyEventType.SHUFFLE_POSITIONS
 		"moveAnywhereRandom": return FantasyEventType.MOVE_ANYWHERE_RANDOM
 		"moveOpponentAnywhereRandom": return FantasyEventType.MOVE_OPPONENT_ANYWHERE_RANDOM
@@ -537,7 +539,7 @@ func _fantasyeventtype_string_to_enum(event_string: String) -> FantasyEventType:
 	return FantasyEventType.WIN_PLAIN_MONEY
 
 func _parse_fantasy_event(fantasy_event: Dictionary) -> Dictionary:
-	fantasy_event["fantasy_type"] = _fantasyeventtype_string_to_enum(fantasy_event["fantasy_type"])
+	fantasy_event["fantasy_type"] = fantasyeventtype_string_to_enum(fantasy_event["fantasy_type"])
 	return fantasy_event
 
 func _parse_fantasy_result(fantasy_result: Dictionary) -> Dictionary:
@@ -547,6 +549,8 @@ func _parse_fantasy_result(fantasy_result: Dictionary) -> Dictionary:
 		fantasy_result["result"]["square"] = _normalize_tile_id(fantasy_result["result"]["square"])
 	elif fantasy_result["result"].has("squares"):
 		fantasy_result["result"]["squares"] = _normalize_tile_id(fantasy_result["result"]["squares"])
+	elif fantasy_result["result"].has("target_player"):
+		fantasy_result["result"]["target_player"] = int(fantasy_result["result"]["target_player"])
 	return fantasy_result
 
 func _build_base_action() -> Dictionary:
@@ -641,6 +645,7 @@ func _game_response_dispatcher(response: Dictionary) -> void:
 	if response["type"] == "ResponseBonus":
 		response_bonus.emit(response)
 		return
+	response["parking_money"] = int(response["parking_money"])
 	response["phase"] = _phase_string_to_enum(response["phase"])
 	for pk in response["positions"]:
 		response["positions"][pk] = _normalize_tile_id(response["positions"][pk])
@@ -686,6 +691,12 @@ func _game_state_dispatcher(_game_state: Dictionary) -> void:
 	_game_state["current_turn"] = int(_game_state["current_turn"])
 	_game_state["active_phase_player"] = int(_game_state["active_phase_player"])
 	_game_state["active_turn_player"] = int(_game_state["active_turn_player"])
+	if _game_state["fantasy_event"]:
+		_game_state["fantasy_event"] = _parse_fantasy_event(_game_state["fantasy_event"])
+	_game_state["possible_destinations"] = _normalize_tile_id(_game_state["possible_destinations"])
+	if _game_state["proposal"]:
+		_game_state["proposal"]["offered_properties"] = _normalize_tile_id(_game_state["proposal"]["offered_properties"])
+		_game_state["proposal"]["asked_properties"] = _normalize_tile_id(_game_state["proposal"]["asked_properties"])
 	for i in len(_game_state["players"]):
 		_game_state["players"][i] = int(_game_state["players"][i])
 		_game_state["ordered_players"][i] = int(_game_state["ordered_players"][i])
@@ -848,10 +859,51 @@ func ws_action_respond_to_trade(accept: bool) -> void:
 	_build_and_send_action({"type": "ActionTradeAnswer", "choose": accept})
 
 ## Action: Pays bail for current player
-func ws_action_pay_bail() -> void:
-	_build_and_send_action({"type": "ActionPayBail"})
+func ws_action_pay_bail(decision: bool) -> void:
+	_build_and_send_action({"type": "ActionPayBail", "to_pay": decision})
 
 ## Action: Surrenders current player
 func ws_action_surrender() -> void:
 	_next_response_closes = true
 	_build_and_send_action({"type": "ActionSurrender"})
+
+## Cheat: Forces next throw
+func ws_cheat_dice(d1: int, d2: int, d3: int) -> void:
+	send_data({"type": "Cheat", "cheat": "MockDice", "dice1": d1, "dice2": d2, "dice_bus": d3})
+
+## Cheat: Teleport a player to any tile
+signal tp(p_id, tile_id) # A bit of spaguetti code, cant solve path here
+func ws_cheat_tp(p_name: String, tile_id: String) -> void:
+	var p_id = -1
+	for p in ModelManager.game.players:
+		if ModelManager.get_player(p).player_name != p_name: continue
+		p_id = ModelManager.get_player(p).id
+		break
+	tp.emit(p_id, tile_id)
+	send_data({"type": "Cheat", "cheat": "Teleport", "player_id": p_id, "square_id": int(tile_id)})
+
+func ws_cheat_money(p_name: String, money: int) -> void:
+	var p_id = -1
+	for p in ModelManager.game.players:
+		if ModelManager.get_player(p).player_name != p_name: continue
+		p_id = ModelManager.get_player(p).id
+		break
+	ModelManager.set_player_balance(p_id, money)
+	send_data({"type": "Cheat", "cheat": "SetMoney", "player_id": p_id, "amount": money})
+
+func ws_cheat_property(p_name: String, tile_id: String, target_houses: int, mortgage: bool) -> void:
+	var p_id = -1
+	for p in ModelManager.game.players:
+		if ModelManager.get_player(p).player_name != p_name: continue
+		p_id = ModelManager.get_player(p).id
+		break
+	ModelManager.set_property_houses(tile_id, target_houses)
+	ModelManager.set_property_mortgaged(tile_id, mortgage)
+	ModelManager.set_property_owner(tile_id, p_id)
+	send_data({"type": "Cheat", "cheat": "CreateProperty", "player_id": p_id, "square_id": int(tile_id), "houses": target_houses, "mortgage": mortgage})
+
+func ws_cheat_deletehouse(tile_id: String) -> void:
+	ModelManager.set_property_houses(tile_id, 0)
+	ModelManager.set_property_mortgaged(tile_id, false)
+	ModelManager.set_property_owner(tile_id, -1)
+	send_data({"type": "Cheat", "cheat": "DeleteProperty", "square_id": int(tile_id)})
