@@ -10,8 +10,12 @@ var parking_money: int = 0
 var is_paused: bool = false
 var current_turn: int = 1
 var current_phase: MagnateWSClient.Phase
-#NO BORRAR, SE USA PARA LA RESELECCION DE CASILLAS EN LA CARCEL
+# Jail destinations
 var destinations: Array[String]
+# Recovery from disconnect
+var recovered_fantasy_event: Variant # Dictionary or null
+var recovered_trade: Variant # Dictionary or null
+var recovered_destinations: Variant # Dictionary or null
 
 # Diccionarios para simular los 'Record<string, Model>' de TypeScript
 var board_properties: Dictionary[String, PropertyModel] = {} 

@@ -63,6 +63,9 @@ func initialize_game(game_state: Dictionary) -> void:
 	set_parking_money(game_state["parking_money"])
 	set_turn(game_state["current_turn"])
 	game.current_phase_player_id = game_state["active_phase_player"]
+	game.recovered_fantasy_event = game_state["fantasy_event"]
+	game.recovered_trade = game_state["proposal"]
+	game.recovered_destinations = game_state["possible_destinations"]
 	game_initialized.emit()
 
 # ==========================================

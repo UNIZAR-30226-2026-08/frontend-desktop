@@ -30,7 +30,6 @@ var needs_refresh: bool = false
 var token_refresh: String = "" # Stores the refresh token
 var token_access: String = "" # Stores the access token
 var current_request: HTTPRequest = null # Start off with no request
-var waiting_for_response: bool = false
 
 var _was_auth_request: bool = false
 var has_last_data: bool = false
@@ -69,9 +68,9 @@ func make_request(
 	verb: HTTPClient.Method = HTTPClient.METHOD_GET,
 	headers: Array = [],
 ) -> bool:
-	if waiting_for_response:
-		response.emit({})
-		return false
+	while current_request:
+		await response
+	
 	current_request = HTTPRequest.new()
 	add_child(current_request)
 	current_request.request_completed.connect(_response_handler)
@@ -81,7 +80,6 @@ func make_request(
 		if error != OK:
 			push_error("An error occurred in the HTTP request.")
 		else:
-			waiting_for_response = true
 			return true
 	elif verb == HTTPClient.METHOD_POST:
 		headers += ['Content-Type: application/json']
@@ -91,7 +89,6 @@ func make_request(
 		if error != OK:
 			push_error("An error occurred in the HTTP request.")
 		else:
-			waiting_for_response = true
 			return true
 	else:
 		push_error("Unsupported verb in HTTP request")
@@ -158,7 +155,6 @@ func _refresh_access_token():
 func _response_handler(_result, response_code, _headers, body) -> void:
 	current_request.queue_free()
 	current_request = null
-	waiting_for_response = false
 	var response_data = JSON.parse_string(body.get_string_from_utf8())
 	if response_code == 401 and _was_auth_request:
 		if not _was_auth_request:

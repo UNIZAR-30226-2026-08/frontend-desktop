@@ -691,6 +691,12 @@ func _game_state_dispatcher(_game_state: Dictionary) -> void:
 	_game_state["current_turn"] = int(_game_state["current_turn"])
 	_game_state["active_phase_player"] = int(_game_state["active_phase_player"])
 	_game_state["active_turn_player"] = int(_game_state["active_turn_player"])
+	if _game_state["fantasy_event"]:
+		_game_state["fantasy_event"] = _parse_fantasy_event(_game_state["fantasy_event"])
+	_game_state["possible_destinations"] = _normalize_tile_id(_game_state["possible_destinations"])
+	if _game_state["proposal"]:
+		_game_state["proposal"]["offered_properties"] = _normalize_tile_id(_game_state["proposal"]["offered_properties"])
+		_game_state["proposal"]["asked_properties"] = _normalize_tile_id(_game_state["proposal"]["asked_properties"])
 	for i in len(_game_state["players"]):
 		_game_state["players"][i] = int(_game_state["players"][i])
 		_game_state["ordered_players"][i] = int(_game_state["ordered_players"][i])

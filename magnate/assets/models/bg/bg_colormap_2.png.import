@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://df1o5p3cxtgpm"
-path.s3tc="res://.godot/imported/bg_colormap_1.png-a6a4382b0a1c9828579b4c259288deba.s3tc.ctex"
+uid="uid://bkbjx80b57xi7"
+path.s3tc="res://.godot/imported/bg_colormap_2.png-357e69ced0e35f53fb5dfa27d2a470cf.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "75a02bdbe531f1d377e96bcd8cd9ec50"
+"md5": "ef6c8f021506cbf338b3ccb15ca9a3ac"
 }
 
 [deps]
 
-source_file="res://assets/models/bg/bg_colormap_1.png"
-dest_files=["res://.godot/imported/bg_colormap_1.png-a6a4382b0a1c9828579b4c259288deba.s3tc.ctex"]
+source_file="res://assets/models/bg/bg_colormap_2.png"
+dest_files=["res://.godot/imported/bg_colormap_2.png-357e69ced0e35f53fb5dfa27d2a470cf.s3tc.ctex"]
 
 [params]
 
