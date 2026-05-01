@@ -35,6 +35,7 @@ func _ready() -> void:
 	
 	await _play_intro()
 	_start_turn()
+	_start_phase()
 	_connect_all_signals()
 
 # ===========================
@@ -42,7 +43,7 @@ func _ready() -> void:
 # ===========================
 func _play_intro() -> void:
 	camera_system.zoom(Vector2(8, 8), 0)
-	await get_tree().create_timer(3).timeout
+	await get_tree().create_timer(1).timeout
 	camera_system.main_camera(3)
 	var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).set_parallel()
 	tween.tween_property(overlay_manager.logo_hud, "modulate:a", 0, 3)
@@ -56,7 +57,7 @@ func _play_intro() -> void:
 func _setup_game_data() -> void:
 	var game_state = await WsClient.game_state
 	if game_state == {}: return
-
+	
 	await ModelManager.initialize_game(game_state)
 	
 	Utils.debug("💾 ModelManager inicializado con las reglas cargadas desde JSON")
@@ -154,6 +155,24 @@ func _start_turn() -> void:
 	if not ModelManager.is_my_turn():
 		text = "Turno de " + player.player_name
 	overlay_manager.show_banner(text, player.color)
+	# The following will match if we join an ongoing game because Phase != ROLL_THE_DICES
+	if ModelManager.game.current_phase == WsClient.Phase.ROLL_THE_DICES: return
+	else: await overlay_manager.overlay_closed
+	if ModelManager.game.current_phase == WsClient.Phase.PROPOSAL_ACCEPTANCE and ModelManager.game.my_id == ModelManager.game.current_phase_player_id:
+		_handle_trade_proposal(ModelManager.game.recovered_trade)
+	if not ModelManager.is_my_turn(): return
+	match ModelManager.game.current_phase:
+		WsClient.Phase.BUSINESS:
+			overlay_manager.show_controls_when_possible()
+		WsClient.Phase.LIQUIDATION:
+			overlay_manager.show_controls_when_possible()
+		WsClient.Phase.MANAGEMENT:
+			overlay_manager.display_overlay_for_tile(ModelManager.get_player().current_tile_id)
+		WsClient.Phase.CHOOSE_FANTASY:
+			overlay_manager.start_fantasy_overlay(ModelManager.game.recovered_fantasy_event)
+		WsClient.Phase.CHOOSE_SQUARE:
+			overlay_manager.show_toast("¡Elige una casilla!")
+			tile_manager.prompt_tile_selection(ModelManager.game.recovered_destinations)
 
 func _start_phase() -> void:
 	match ModelManager.game.current_phase:

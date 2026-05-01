@@ -135,8 +135,8 @@ func show_banner(message: String, bg_color: Color = Color("008a5c"), duration: f
 		# Si es nuestro turno enseñamos un overlay indicando cuantos turnos llevamos en la cárcel
 		if ModelManager.game.my_id == ModelManager.game.current_turn_player_id:
 			show_jail_initial_warning(current_player.jail_turn_count)
-	else:
-		show_dice_overlay()
+	#else:
+		#show_dice_overlay()
 		
 func show_toast(message: String, duration: float = 3.0) -> void:
 	if toast_instance:

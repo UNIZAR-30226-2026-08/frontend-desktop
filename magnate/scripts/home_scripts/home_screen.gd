@@ -5,6 +5,11 @@ extends Panel
 const SETTINGS_OVERLAY_SCENE = preload("uid://d31dwv0u5en1g")
 
 func _ready() -> void:
+	var active_game = (await RestClient.user_get_active_game())["active_game"]
+	if active_game:
+		WsClient._conn_state = WsClient.ConnState.GO_TO_GAME
+		WsClient.game_id = int(active_game)
+		SceneTransition.change_scene("res://scenes/board/board.tscn")
 	settings_button.pressed.connect(
 		func():
 			var scene = SETTINGS_OVERLAY_SCENE.instantiate()
@@ -22,7 +27,6 @@ func _on_btn_shop_pressed() -> void:
 
 func _on_btn_profile_pressed() -> void:
 	SceneTransition.change_scene("res://scenes/UI/profile_screen.tscn")
-
 
 func _on_help_button_pressed() -> void:
 	SceneTransition.change_scene("res://scenes/UI/rules_screen.tscn")

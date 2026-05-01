@@ -13,58 +13,59 @@ signal turn_updated
 var game: GameModel
 
 func initialize_game(game_state: Dictionary) -> void:
+	game = GameModel.new(game_state["id"], game_state["active_turn_player"])
+	
 	# Initialize PlayerModels
 	var json_text = FileAccess.open("res://assets/game_info/board.json", FileAccess.READ).get_as_text()
 	var board_info = JSON.parse_string(json_text)
-	var player_models: Array[PlayerModel] = []
 	var player_colors: Array = board_info["playerColors"]
 	for idx in len(game_state["ordered_players"]):
 		var color = Color(player_colors[idx])
 		var player_name = (await RestClient.fetch_user_name_and_piece(game_state["ordered_players"][idx])).get("username", "Desconocido")
 		var player = PlayerModel.new(game_state["ordered_players"][idx], player_name, color)
-		player.balance = int(game_state["money"][str(player.id)])
+		game.add_player(player)
+		set_player_balance(player.id, int(game_state["money"][str(player.id)]))
 		player.current_tile_id = game_state["positions"][str(player.id)]
-		player.is_in_jail = game_state["jail_remaining_turns"].has(str(player.id))
-		player.jail_turn_count = 3 - game_state["jail_remaining_turns"].get(str(player.id), 3)
-		player_models.append(player)
+		player.is_in_jail = game_state["jail_remaining_turns"].has(str(player.id)) # TODO
+		player.jail_turn_count = 3 - game_state["jail_remaining_turns"].get(str(player.id), 3) # TODO
 	
 	# Initialize PropertyModels
 	json_text = FileAccess.open("res://assets/game_info/money.json", FileAccess.READ).get_as_text()
 	var property_list = JSON.parse_string(json_text)["tiles"]
 	var property_info = {}
 	for p in property_list: property_info[p["id"]] = p
-	var property_models: Dictionary[String, PropertyModel] = {}
 	for tile in board_info["tiles"]:
 		if not tile["type"] in ["property", "server", "bridge"]: continue
-		property_models[tile["id"]] = PropertyModel.new(tile["id"])
-		property_models[tile["id"]].name = tile["name"]
-		property_models[tile["id"]].rent_prices = property_info[tile["id"]].rent_prices
-		property_models[tile["id"]].buy_price = property_info[tile["id"]].buy_price
-		if tile["type"] == "server": property_models[tile["id"]].group_id = 13
-		elif tile["type"] == "bridge": property_models[tile["id"]].group_id = 14
+		var property_model = PropertyModel.new(tile["id"])
+		game.add_property(property_model)
+		property_model.name = tile["name"]
+		property_model.rent_prices = property_info[tile["id"]].rent_prices
+		property_model.buy_price = property_info[tile["id"]].buy_price
+		if tile["type"] == "server": property_model.group_id = 13
+		elif tile["type"] == "bridge": property_model.group_id = 14
 		else:
-			property_models[tile["id"]].group_id = tile["group"]
-			property_models[tile["id"]].build_price = property_info[tile["id"]].build_price
+			property_model.group_id = tile["group"]
+			property_model.build_price = property_info[tile["id"]].build_price
 			for group in board_info["groups"]:
 				if group["group"] != tile["group"]: continue
-				property_models[tile["id"]].color = Color(group["color"])
+				property_model.color = Color(group["color"])
 				break
 	for p in game_state["property_relationships"]:
 		var _owner = get_player(p["owner"])
-		owner.owned_properties.append(p["square"])
-		var property = property_models[p["square"]]
-		property.house_count = p["houses"]
-		property.owner_id = p["owner"]
-		property.is_mortgaged = p["mortgage"]
+		var property = get_property(p["square"])
+		set_property_owner(property.id, _owner.id)
+		set_property_houses(property.id, clampi(p["houses"], 0, 5))
+		set_property_mortgaged(property.id, p["mortgage"])
 	
 	# Initialize GameModel
-	game = GameModel.new(game_state["id"], player_models, property_models.values())
-	game.current_turn_player_id = game_state["active_turn_player"]
 	game.my_id = WsClient.player_id
 	game.current_phase = game_state["phase"]
-	game.parking_money = game_state["parking_money"]
-	ModelManager.set_turn(game_state["current_turn"])
+	set_parking_money(game_state["parking_money"])
+	set_turn(game_state["current_turn"])
 	game.current_phase_player_id = game_state["active_phase_player"]
+	game.recovered_fantasy_event = game_state["fantasy_event"]
+	game.recovered_trade = game_state["proposal"]
+	game.recovered_destinations = game_state["possible_destinations"]
 	game_initialized.emit()
 
 # ==========================================
@@ -193,7 +194,6 @@ func update_player_position(player_id: int, new_tile_id: String, path: Array[Vec
 
 func set_player_surrender(player_id: int) -> void:
 	var player = get_player(player_id)
-	if player.surrender: return
 	if player:
 		player.surrendered = true
 		player.emit_update()

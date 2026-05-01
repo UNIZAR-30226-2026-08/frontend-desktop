@@ -57,8 +57,6 @@ func _handle_player_ready(info: Dictionary) -> void:
 
 func _handle_settings_change(settings: Dictionary) -> void:
 	bot_level = settings["bot_level"]
-	print(settings["target_players"])
-	print(len(player_info))
 	num_bots = clamp(settings["target_players"] - len(player_info), 0, 4)
 	update_lobby()
 
