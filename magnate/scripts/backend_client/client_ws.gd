@@ -544,7 +544,7 @@ func _parse_fantasy_event(fantasy_event: Dictionary) -> Dictionary:
 
 func _parse_fantasy_result(fantasy_result: Dictionary) -> Dictionary:
 	fantasy_result["fantasy_event"] = _parse_fantasy_event(fantasy_result["fantasy_event"])
-	if not fantasy_result["result"]: return fantasy_result
+	if not fantasy_result["result"] or typeof(fantasy_result["result"]) != TYPE_DICTIONARY: return fantasy_result
 	if fantasy_result["result"].has("square"):
 		fantasy_result["result"]["square"] = _normalize_tile_id(fantasy_result["result"]["square"])
 	elif fantasy_result["result"].has("squares"):

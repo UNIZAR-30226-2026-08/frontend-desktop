@@ -112,7 +112,7 @@ func make_auth_request(
 	_was_auth_request = true
 	
 	var headers: Array = ["Authorization: Bearer " + token_access] + additional_headers
-	make_request(url, data_to_send, verb, headers)
+	await make_request(url, data_to_send, verb, headers)
 
 func _refresh_access_token():
 	needs_refresh = false
@@ -133,9 +133,9 @@ func _refresh_access_token():
 	
 	# Wait for the refresh to finish
 	var resp = await refresh_req.request_completed
-	var refresh_json = JSON.parse_string(resp[3].get_string_from_utf8())
 	
 	if resp[1] == 200:
+		var refresh_json = JSON.parse_string(resp[3].get_string_from_utf8())
 		token_access = refresh_json["access"]
 		Utils.debug("Token refreshed!")
 		if needs_login:
@@ -146,7 +146,7 @@ func _refresh_access_token():
 			WsClient.player_id = int(user_info["pk"])
 		if has_last_data:
 			Utils.debug("Retrying last request")
-			make_auth_request(last_url, last_data, last_verb, last_headers)
+			await make_auth_request(last_url, last_data, last_verb, last_headers)
 	else:
 		user_logout()
 	
@@ -206,7 +206,7 @@ func _load_refresh_token():
 ## Return dictionary with:
 ## - "message" = "correctly registered user"
 func user_signup(data: Dictionary) -> Dictionary:
-	make_request(
+	await make_request(
 		Globals.REST_BASE_URL + "/auth/register/",
 		data,
 		HTTPClient.METHOD_POST,
@@ -222,7 +222,7 @@ func user_signup(data: Dictionary) -> Dictionary:
 ## Return dictionary with:
 ## - "message" = "succesful login"
 func user_login(data: Dictionary) -> Dictionary:
-	make_request(
+	await make_request(
 		Globals.REST_BASE_URL + "/auth/login/",
 		data,
 		HTTPClient.METHOD_POST,
@@ -238,6 +238,7 @@ func user_login(data: Dictionary) -> Dictionary:
 
 func user_logout() -> void:
 	needs_login = true
+	game_active_checked = false
 	username = ""
 	token_access = ""
 	token_refresh = ""
@@ -255,7 +256,7 @@ func user_logout() -> void:
 ## - "num_won_games": int	- Number of won games
 ## - "user_piece": int		- ID of the piece of the current user
 func user_get_info() -> Dictionary:
-	make_auth_request(Globals.REST_BASE_URL + "/user/info/")
+	await make_auth_request(Globals.REST_BASE_URL + "/user/info/")
 	var resp = await response
 	if resp.has("points"):
 		resp["points"] = int(resp["points"])
@@ -266,15 +267,15 @@ func user_get_info() -> Dictionary:
 	return resp
 
 func user_get_games() -> Dictionary:
-	make_auth_request(Globals.REST_BASE_URL + "/user/games-played/")
+	await make_auth_request(Globals.REST_BASE_URL + "/user/games-played/")
 	return await response
 
 func user_get_game_summary(game_id: int) -> Dictionary:
-	make_auth_request(Globals.REST_BASE_URL + "/game/summary/" + str(game_id) + "/")
+	await make_auth_request(Globals.REST_BASE_URL + "/game/summary/" + str(game_id) + "/")
 	return await response
 
 func user_change_piece(piece_id: int) -> Dictionary:
-	make_auth_request(
+	await make_auth_request(
 		Globals.REST_BASE_URL + "/user/change-piece/",
 		{"custom_id": piece_id},
 		HTTPClient.METHOD_POST
@@ -282,15 +283,15 @@ func user_change_piece(piece_id: int) -> Dictionary:
 	return await response
 
 func fetch_user_name_and_piece(pk: int) -> Dictionary:
-	make_auth_request(Globals.REST_BASE_URL + "/info/user-name-piece/" + str(pk) + "/")
+	await make_auth_request(Globals.REST_BASE_URL + "/info/user-name-piece/" + str(pk) + "/")
 	return await response
 
 func shop_get_items() -> Array:
-	make_auth_request(Globals.REST_BASE_URL + "/shop/items/")
+	await make_auth_request(Globals.REST_BASE_URL + "/shop/items/")
 	return await response
 
 func shop_buy_item(item_id: int) -> Dictionary:
-	make_auth_request(
+	await make_auth_request(
 		Globals.REST_BASE_URL + "/shop/buy/",
 		{"custom_id": item_id},
 		HTTPClient.METHOD_POST
@@ -298,25 +299,26 @@ func shop_buy_item(item_id: int) -> Dictionary:
 	return await response
 
 func shop_get_user_pieces() -> Array:
-	make_auth_request(Globals.REST_BASE_URL + "/shop/user-pieces/")
+	await make_auth_request(Globals.REST_BASE_URL + "/shop/user-pieces/")
 	var resp = await response
 	if typeof(resp) == TYPE_ARRAY:
 		return resp
 	return []
 
 func shop_get_user_emojis() -> Dictionary:
-	make_auth_request(Globals.REST_BASE_URL + "/shop/user-emojis/")
+	await make_auth_request(Globals.REST_BASE_URL + "/shop/user-emojis/")
 	return await response
 
 func game_get_private_code() -> Dictionary:
-	make_auth_request(Globals.REST_BASE_URL + "/lobby/get-private-code")
+	await make_auth_request(Globals.REST_BASE_URL + "/lobby/get-private-code")
 	return await response
 
 # Returns {"exists": bool}
 func game_check_private_code(code: String) -> Dictionary:
-	make_auth_request(Globals.REST_BASE_URL + "/lobby/check-code/" + code + "/")
+	await make_auth_request(Globals.REST_BASE_URL + "/lobby/check-code/" + code + "/")
 	return await response
 
+var game_active_checked = false
 func user_get_active_game() -> Dictionary:
-	make_auth_request(Globals.REST_BASE_URL + "/user/active-game/")
+	await make_auth_request(Globals.REST_BASE_URL + "/user/active-game/")
 	return await response
