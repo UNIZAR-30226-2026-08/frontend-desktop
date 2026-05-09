@@ -672,7 +672,7 @@ func _game_response_dispatcher(response: Dictionary) -> void:
 				response["auction"]["bids"][bid] = int(response["auction"]["bids"][bid])
 			response["auction"]["id"] = int(response["auction"]["id"])
 			response["auction"]["square"] = _normalize_tile_id(response["auction"]["square"])
-			response["auction"]["winner"] = int(response["auction"]["winner"])
+			response["auction"]["winner"] = int(response["auction"]["winner"]) if response["auction"]["winner"] else -1
 			response["auction"]["final_amount"] = int(response["auction"]["final_amount"])
 			response_auction.emit(response)
 		"Response": pass

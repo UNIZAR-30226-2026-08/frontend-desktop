@@ -63,6 +63,15 @@ var fantasy: Dictionary[MagnateWSClient.FantasyEventType, Dictionary] = {}
 
 # Universal behaviours
 func _ready() -> void:
+	var config = ConfigFile.new()
+	var err = config.load("res://config.cfg")
+	if err == OK:
+		var hostname = config.get_value("network", "server_host", "localhost")
+		var ws_protocol = config.get_value("network", "ws_protocol", "ws")
+		var rest_protocol = config.get_value("network", "rest_protocol", "http")
+		REST_BASE_URL = rest_protocol + "://" + hostname
+		WS_BASE_URL = ws_protocol + "://" + hostname + "/ws"
+	
 	# On logout go to landing page
 	RestClient.logout.connect(SceneTransition.change_scene.bind("res://scenes/UI/landing_screen.tscn"))
 	# On login go to home page

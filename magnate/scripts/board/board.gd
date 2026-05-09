@@ -197,7 +197,7 @@ func _handle_start_auction(response: Dictionary) -> void:
 
 func _handle_end_auction(response: Dictionary) -> void:
 	overlay_manager.start_finished_auction(response)
-	if response["auction"]["is_tie"]: return
+	if response["auction"]["is_tie"] or not response["auction"]["winner"]: return
 	var auction = response["auction"]
 	for bid in auction["bids"]:
 		ModelManager.update_player_balance(int(bid), -auction["bids"][bid])
