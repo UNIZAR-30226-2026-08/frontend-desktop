@@ -43,7 +43,11 @@ func _ready() -> void:
 	tween.tween_property(left_player_box, "position:x", 0, .5)
 	cancel_btn.pressed.connect(trade_cancelled.emit)
 	send_btn.pressed.connect(func():
-		if int("0" + offer_line_edit.text) > _p1_balance or int("0" + request_line_edit.text) > _p2_balance: return
+		if int("0" + offer_line_edit.text) > _p1_balance and _p1_balance >= 0 or\
+			int("0" + request_line_edit.text) > _p2_balance and _p2_balance >= 0 or\
+			int("0" + offer_line_edit.text) != 0 and _p1_balance < 0 or\
+			int("0" + request_line_edit.text) != 0 and _p2_balance < 0:
+			return
 		offer_sent.emit(_p1_selected_props, _p2_selected_props, int("0" + offer_line_edit.text), int("0" + request_line_edit.text))
 	)
 
@@ -54,8 +58,8 @@ func setup_trade(p1: PlayerModel, p2: PlayerModel) -> void:
 
 	player_name_1.text = "TÚ"
 	player_name_2.text = p2.player_name
-	offer_line_edit.placeholder_text = "Max. " + str(p1.balance)
-	request_line_edit.placeholder_text = "Max. " + str(p2.balance)
+	offer_line_edit.placeholder_text = "Max. " + str(max(p1.balance, 0))
+	request_line_edit.placeholder_text = "Max. " + str(max(p2.balance, 0))
 	_p1_balance = p1.balance
 	_p2_balance = p2.balance
 	

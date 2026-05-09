@@ -98,6 +98,7 @@ func show_controls_when_possible() -> void:
 	if not ModelManager.is_my_turn(): return
 	if ModelManager.game.current_phase != WsClient.Phase.BUSINESS and ModelManager.game.current_phase != WsClient.Phase.LIQUIDATION:
 		await show_controls_now
+	if not ModelManager.is_my_turn(): return
 	automatic_control_visibility = true
 	controls_hud.toggle_hud_visibility(false)
 
@@ -114,12 +115,14 @@ func show_dice_overlay() -> void:
 	)
 
 func show_jail_dice_overlay() -> void:
+	round_hud.hide()
 	jail_dice_roller.show_overlay()
 	jail_dice_roller.has_rolled = false
 	jail_dice_roller.roll_finished.connect(
 		func(result):
 			await board.get_tree().create_timer(3).timeout
 			jail_dice_roller.hide_overlay()
+			round_hud.show()
 			dice_rolled.emit(result)
 	)
 
@@ -280,14 +283,8 @@ func _start_go_to_jail_overlay(tile_id: String) -> void:
 	var overlay = SECRETARY_ANIMATION.instantiate()
 	board.add_child(overlay)
 	
-	overlay.animation_complete.connect(func():
-		Utils.debug("Termina animación de secretaría")
-		overlay.queue_free()
-	)
-	overlay.animation_complete.connect(func():
-		overlay_closed.emit()
-	)
-	
+	overlay.animation_complete.connect(overlay.queue_free)
+	overlay.animation_complete.connect(overlay_closed.emit)
 	overlay.play_animation()
 
 func _start_jail_overlay(tile_id: String) -> void:
@@ -306,7 +303,8 @@ func _start_parking_overlay(tile_id: String) -> void:
 	overlay.button_pressed.connect(func():
 		overlay_closed.emit()
 		get_parking_money.emit()
-		show_controls_when_possible()
+		if ModelManager.game.current_phase == WsClient.Phase.ROLL_THE_DICES: board._start_phase()
+		else: show_controls_when_possible()
 	)
 
 func _start_trade(p1: PlayerModel, p2: PlayerModel) -> void:
@@ -579,7 +577,9 @@ func show_tram_selection(target_tile_id: String, current_tile_id: String, tile_n
 	overlay.setup_tram_selection(target_tile_id, is_same_station, tile_name)
 
 func _on_tram_travel_confirmed(target_tile_id: String) -> void:
-	show_controls_when_possible()
+	overlay_closed.emit()
+	if ModelManager.game.current_phase != WsClient.Phase.ROLL_THE_DICES:
+		show_controls_when_possible()
 	tram_travel_confirmed.emit(target_tile_id)
 
 func _on_tram_travel_cancelled() -> void:

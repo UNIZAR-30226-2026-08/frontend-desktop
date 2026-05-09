@@ -22,6 +22,9 @@ var base_x_pos: float = 0.0
 func _ready() -> void:
 	base_x_pos = slide_container.position.x
 	
+	ModelManager.get_player().player_updated.connect(func(_p):
+		set_finish_disabled(ModelManager.get_player().balance < 0)
+	)
 	settings_button.pressed.connect(func(): open_settings_requested.emit())
 	roll_button.pressed.connect(func(): roll_dice_requested.emit())
 	admin_button.pressed.connect(func(): admin_requested.emit())

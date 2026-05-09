@@ -544,7 +544,7 @@ func _parse_fantasy_event(fantasy_event: Dictionary) -> Dictionary:
 
 func _parse_fantasy_result(fantasy_result: Dictionary) -> Dictionary:
 	fantasy_result["fantasy_event"] = _parse_fantasy_event(fantasy_result["fantasy_event"])
-	if not fantasy_result["result"]: return fantasy_result
+	if not fantasy_result["result"] or typeof(fantasy_result["result"]) != TYPE_DICTIONARY: return fantasy_result
 	if fantasy_result["result"].has("square"):
 		fantasy_result["result"]["square"] = _normalize_tile_id(fantasy_result["result"]["square"])
 	elif fantasy_result["result"].has("squares"):
@@ -672,7 +672,7 @@ func _game_response_dispatcher(response: Dictionary) -> void:
 				response["auction"]["bids"][bid] = int(response["auction"]["bids"][bid])
 			response["auction"]["id"] = int(response["auction"]["id"])
 			response["auction"]["square"] = _normalize_tile_id(response["auction"]["square"])
-			response["auction"]["winner"] = int(response["auction"]["winner"])
+			response["auction"]["winner"] = int(response["auction"]["winner"]) if response["auction"]["winner"] else -1
 			response["auction"]["final_amount"] = int(response["auction"]["final_amount"])
 			response_auction.emit(response)
 		"Response": pass

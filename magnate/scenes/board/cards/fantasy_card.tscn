@@ -20,7 +20,7 @@ shader_parameter/lod = 2.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v6p85"]
 resource_local_to_scene = true
 shader = ExtResource("1_tal0y")
-shader_parameter/fov = 30.0
+shader_parameter/fov = 40.0000018525
 shader_parameter/cull_back = true
 shader_parameter/y_rot = 0.0
 shader_parameter/x_rot = 0.0

@@ -105,6 +105,7 @@ func _connect_all_signals() -> void:
 	WsClient.action_mortgage_unset.connect(_handle_property_unmortgage)
 	WsClient.action_demolish.connect(_handle_house_demolish)
 	WsClient.action_build.connect(_handle_house_build)
+	WsClient.action_pay_bail.connect(_handle_pay_bail)
 	
 	# WS Cheats
 	WsClient.tp.connect(func(p_id, t_id):
@@ -166,6 +167,7 @@ func _start_turn() -> void:
 			overlay_manager.show_controls_when_possible()
 		WsClient.Phase.LIQUIDATION:
 			overlay_manager.show_controls_when_possible()
+			overlay_manager.controls_hud.set_finish_disabled(true)
 		WsClient.Phase.MANAGEMENT:
 			overlay_manager.display_overlay_for_tile(ModelManager.get_player().current_tile_id)
 		WsClient.Phase.CHOOSE_FANTASY:
@@ -185,7 +187,7 @@ func _start_phase() -> void:
 		WsClient.Phase.BUSINESS:
 			overlay_manager.show_controls_now.emit()
 		WsClient.Phase.LIQUIDATION:
-			overlay_manager.show_toast("Estás en rojo: vende o declara bacarrota")
+			overlay_manager.controls_hud.set_finish_disabled(true)
 
 # ================
 #  LOGIC HANDLERS
@@ -195,7 +197,7 @@ func _handle_start_auction(response: Dictionary) -> void:
 
 func _handle_end_auction(response: Dictionary) -> void:
 	overlay_manager.start_finished_auction(response)
-	if response["auction"]["is_tie"]: return
+	if response["auction"]["is_tie"] or not response["auction"]["winner"]: return
 	var auction = response["auction"]
 	for bid in auction["bids"]:
 		ModelManager.update_player_balance(int(bid), -auction["bids"][bid])
@@ -295,6 +297,10 @@ func _handle_fantasy_chosen(response: Dictionary) -> void:
 			for tile_id in tile_ids:
 				ModelManager.update_property_houses(tile_id, -1)
 
+func _handle_pay_bail(action: Dictionary) -> void:
+	if not action.get("to_pay", false): return
+	ModelManager.get_player(action["player"]).is_in_jail = false
+
 # ============
 #  DICE LOGIC
 # ============
@@ -311,7 +317,7 @@ func _on_dice_result_received(result: Dictionary) -> void:
 			pass
 		else:
 			# Jugador ha sacado dobles 3 veces, mandan 201 como destino final, asi q hago trucos
-			if result.path[-1] == ModelManager.game.important_tiles["jail"]:
+			if len(result.path) > 1 and result.path[-1] == ModelManager.game.important_tiles["jail"]:
 				_handle_normal_movement(false, current_player.id, [ModelManager.game.important_tiles["go_to_jail"]], {})
 				overlay_manager.overlay_closed.emit()
 			elif len(result.destinations) > 1:

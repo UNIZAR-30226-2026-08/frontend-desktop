@@ -5,15 +5,17 @@ extends Panel
 const SETTINGS_OVERLAY_SCENE = preload("uid://d31dwv0u5en1g")
 
 func _ready() -> void:
-	var active_game = (await RestClient.user_get_active_game())["active_game"]
+	var active_game = null
+	if not RestClient.game_active_checked:
+		active_game = (await RestClient.user_get_active_game()).get("active_game", null)
+		RestClient.game_active_checked = true
 	if active_game:
 		WsClient._conn_state = WsClient.ConnState.GO_TO_GAME
 		WsClient.game_id = int(active_game)
 		SceneTransition.change_scene("res://scenes/board/board.tscn")
-	settings_button.pressed.connect(
-		func():
-			var scene = SETTINGS_OVERLAY_SCENE.instantiate()
-			add_child(scene)
+	settings_button.pressed.connect(func():
+		var scene = SETTINGS_OVERLAY_SCENE.instantiate()
+		add_child(scene)
 	)
 
 func _on_btn_publica_pressed() -> void:
