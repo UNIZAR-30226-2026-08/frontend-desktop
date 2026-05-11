@@ -17,19 +17,18 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -420.0
-offset_right = 3840.0
-offset_bottom = 3420.0
+offset_right = 1920.0
+offset_bottom = 1500.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.5, 0.5)
 
 [node name="SubViewPort" type="SubViewport" parent="3DWorld" unique_id=1642550105]
-transparent_bg = true
 handle_input_locally = false
 anisotropic_filtering_level = 0
+vrs_update_mode = 2
 physics_object_picking = true
-size = Vector2i(3840, 3840)
-render_target_update_mode = 4
+size = Vector2i(1920, 1920)
+render_target_update_mode = 0
 
 [node name="DiceRoller" parent="3DWorld/SubViewPort" unique_id=1073497704 instance=ExtResource("3_q07he")]
 unique_name_in_owner = true
