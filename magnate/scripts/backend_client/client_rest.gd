@@ -124,6 +124,10 @@ func _refresh_access_token():
 	# Create a temporary HTTPRequest node for the refresh call
 	var refresh_req = HTTPRequest.new()
 	add_child(refresh_req)
+	if Globals.BUILD_TYPE == Globals.BuildType.PROD:
+		var cert = X509Certificate.new()
+		cert.load("res://server.crt")
+		refresh_req.set_tls_options(TLSOptions.client(cert))
 	
 	var refresh_body = JSON.stringify({"refresh": token_refresh})
 	var headers = ["Content-Type: application/json"]
