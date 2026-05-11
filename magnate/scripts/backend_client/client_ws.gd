@@ -414,6 +414,7 @@ func start_client_game() -> void:
 		RestClient.has_last_data = false
 		_conn_state = ConnState.IN_GAME
 		await RestClient._refresh_access_token()
+		print(Globals.WS_BASE_URL + "/game/" + str(game_id) + "/?token=" + RestClient.token_access)
 		_safe_connect(Globals.WS_BASE_URL + "/game/" + str(game_id) + "/?token=" + RestClient.token_access)
 
 func _ready() -> void:
