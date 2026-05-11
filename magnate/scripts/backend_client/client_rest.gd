@@ -73,6 +73,10 @@ func make_request(
 	
 	current_request = HTTPRequest.new()
 	add_child(current_request)
+	if Globals.BUILD_TYPE == Globals.BuildType.PROD:
+		var cert = X509Certificate.new()
+		cert.load("res://server.crt")
+		current_request.set_tls_options(TLSOptions.client(cert))
 	current_request.request_completed.connect(_response_handler)
 	
 	if verb == HTTPClient.METHOD_GET:

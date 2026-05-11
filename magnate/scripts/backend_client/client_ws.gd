@@ -376,7 +376,13 @@ func _safe_connect(url: String, headers: PackedStringArray = []) -> void:
 				socket.poll()
 				await get_tree().process_frame
 	socket.handshake_headers = headers
-	var err = socket.connect_to_url(url)
+	var err
+	if Globals.BUILD_TYPE == Globals.BuildType.PROD:
+		var cert = load("res://server.crt")
+		var tls_options = TLSOptions.client(cert)
+		err = socket.connect_to_url(url, tls_options)
+	else:
+		err = socket.connect_to_url(url)
 	if err == OK:
 		Utils.debug("Started WS in URL: " + url)
 		set_process(true)
