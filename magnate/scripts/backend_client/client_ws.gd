@@ -379,7 +379,7 @@ func _safe_connect(url: String, headers: PackedStringArray = []) -> void:
 	var err
 	if Globals.BUILD_TYPE == Globals.BuildType.PROD:
 		var cert = load("res://server.crt")
-		var tls_options = TLSOptions.client_unsafe(cert)
+		var tls_options = TLSOptions.client(cert)
 		err = socket.connect_to_url(url, tls_options)
 	else:
 		err = socket.connect_to_url(url)

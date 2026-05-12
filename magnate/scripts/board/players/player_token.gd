@@ -65,8 +65,8 @@ func tp_to_pos(pos: Vector2) -> void:
 	position = pos
 
 func move_to(positions: Array[Vector2]) -> void:
-	var hop_height: float = 40.0
-	var duration: float = 0.4
+	var hop_height: float = 10.0
+	var duration: float = 0.2
 	
 	for target_pos in positions:
 		AudioSystem.play_audio(hop_audio)
@@ -92,6 +92,9 @@ func move_to(positions: Array[Vector2]) -> void:
 			
 		await tween.finished
 		await get_tree().create_timer(0.05).timeout
+		
+		if target_pos == Vector2(1400, 983):
+			ModelManager.update_player_balance(ModelManager.get_current_turn_player_id(), 200)
 	stopped.emit()
 
 # DEBUG

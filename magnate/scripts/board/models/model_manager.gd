@@ -61,7 +61,8 @@ func initialize_game(game_state: Dictionary) -> void:
 	game.my_id = WsClient.player_id
 	game.current_phase = game_state["phase"]
 	set_parking_money(game_state["parking_money"])
-	set_turn(game_state["current_turn"])
+	set_turn(game_state["current_round"])
+	game.max_rounds = int(game_state["max_rounds"])
 	game.current_phase_player_id = game_state["active_phase_player"]
 	game.recovered_fantasy_event = game_state["fantasy_event"]
 	game.recovered_trade = game_state["proposal"]

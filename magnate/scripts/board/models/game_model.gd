@@ -9,6 +9,7 @@ var current_phase_player_id: int
 var parking_money: int = 0
 var is_paused: bool = false
 var current_turn: int = 1
+var max_rounds: int = -1
 var current_phase: MagnateWSClient.Phase
 # Jail destinations
 var destinations: Array[String]

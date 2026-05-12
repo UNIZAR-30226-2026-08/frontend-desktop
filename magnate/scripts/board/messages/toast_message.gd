@@ -20,6 +20,8 @@ func show_toast(message: String, duration: float = 3.0) -> void:
 		current_tween.kill()
 
 	message_label.text = message
+	toast_panel.size = Vector2.ZERO
+	toast_panel.reset_size()
 	toast_panel.show()
 	toast_panel.pivot_offset = toast_panel.size / 2.0
 

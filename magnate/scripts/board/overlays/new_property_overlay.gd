@@ -29,6 +29,9 @@ func setup(property: PropertyModel) -> void:
 	var buy_price = property.buy_price
 	buy_button.text = "Comprar por %d" % buy_price + Globals.SYMBOL_CURRENCY
 	
+	if ModelManager.get_player(ModelManager.get_current_turn_player_id()).balance < buy_price:
+		buy_button.disabled = true
+	
 	if property.is_server:
 		server_card.update_all_data(property)
 		aparecer(server_card)

@@ -171,6 +171,7 @@ func display_overlay_for_tile(tile_id: String) -> void:
 	if handlers.has(tile_type):
 		handlers[tile_type].call()
 	else:
+		show_controls_when_possible()
 		Utils.debug("⚠️ Tipo de casilla desconocido o sin acción programada")
 
 func _property_state_dispatcher(tile_id: String) -> void:
@@ -477,6 +478,7 @@ func setup_huds(players_data: Array[PlayerModel]) -> void:
 		int((1080 - round_hud.size.y) / 2)
 	)
 	round_hud.modulate.a = 0
+	round_hud.set_round_max(ModelManager.game.max_rounds)
 
 func _open_settings() -> void:
 	var settings = SETTINGS_OVERLAY_SCENE.instantiate()

@@ -19,7 +19,7 @@ func _ready() -> void:
 
 func show_results(bids: Array) -> void:
 	bids.sort_custom(func(a, b): return a["bid"] > b["bid"])
-	var is_tie = len(bids) >= 2 and bids[0]["bid"] == bids[1]["bid"] or len(bids) == 0
+	var is_tie = not bids or len(bids) >= 2 and bids[0]["bid"] == bids[1]["bid"] or len(bids) == 0
 	if is_tie: title_label.text = "¡NADIE GANA!"
 	if len(bids) > 1: other_bids_label.show()
 	for idx in len(bids):
