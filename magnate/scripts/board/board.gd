@@ -132,6 +132,7 @@ func _handle_general_response(data: Dictionary) -> void:
 	ModelManager.game.current_turn_player_id = data["active_turn_player"]
 	var new_phase = ModelManager.game.current_phase != data["phase"]
 	ModelManager.game.current_phase = data["phase"]
+	ModelManager.set_turn(int(data["current_round"]))
 	if overlay_manager.is_overlay_open: # Wait to show effects
 		await overlay_manager.overlay_closed
 	for pk in data["money"]:
@@ -145,10 +146,7 @@ func _handle_general_response(data: Dictionary) -> void:
 	if new_turn: _start_turn()
 	if new_phase: _start_phase()
 
-var first_turn = true
 func _start_turn() -> void:
-	if not first_turn: ModelManager.update_turn()
-	else: first_turn = false
 	overlay_manager.automatic_control_visibility = false
 	overlay_manager.controls_hud.toggle_hud_visibility(true)
 	var text = "Tu turno"
@@ -156,6 +154,7 @@ func _start_turn() -> void:
 	if not ModelManager.is_my_turn():
 		text = "Turno de " + player.player_name
 	overlay_manager.show_banner(text, player.color)
+	overlay_manager.player_hud.update_turn_visuals()
 	# The following will match if we join an ongoing game because Phase != ROLL_THE_DICES
 	if ModelManager.game.current_phase == WsClient.Phase.ROLL_THE_DICES: return
 	else: await overlay_manager.overlay_closed
@@ -180,7 +179,7 @@ func _start_phase() -> void:
 	match ModelManager.game.current_phase:
 		WsClient.Phase.ROLL_THE_DICES:
 			if ModelManager.get_player().id == ModelManager.get_current_turn_player_id():
-				overlay_manager.show_toast("¡Tira los dados!")
+				overlay_manager.show_toast("¡Tira los dados!", 5)
 			var current_player = ModelManager.get_player(ModelManager.get_current_turn_player_id())
 			if current_player.is_in_jail: overlay_manager.show_jail_dice_overlay()
 			else: overlay_manager.show_dice_overlay()
@@ -281,19 +280,29 @@ func _handle_fantasy_chosen(response: Dictionary) -> void:
 		WsClient.FantasyEventType.EVERYBODY_TO_JAIL:
 			for player in ModelManager.game.players.values(): player.is_in_jail = true
 		WsClient.FantasyEventType.BREAK_OPPONENT_HOUSE:
-			if not fantasy_result["result"]: return
+			if not fantasy_result["result"]:
+				overlay_manager.show_toast("No se puede romper ninguna casa")
+				return
 			ModelManager.update_property_houses(fantasy_result["result"]["square"], -1)
 		WsClient.FantasyEventType.BREAK_OWN_HOUSE:
-			if not fantasy_result["result"]: return
+			if not fantasy_result["result"]:
+				overlay_manager.show_toast("No se puede demoler ninguna casa")
+				return
 			ModelManager.update_property_houses(fantasy_result["result"]["square"], -1)
 		WsClient.FantasyEventType.FREE_HOUSE:
-			if not fantasy_result["result"]: return
+			if not fantasy_result["result"]:
+				overlay_manager.show_toast("No se puede construir ninguna casa")
+				return
 			ModelManager.update_property_houses(fantasy_result["result"]["square"], 1)
 		WsClient.FantasyEventType.REVIVE_PROPERTY:
-			if not fantasy_result["result"]: return
+			if not fantasy_result["result"]:
+				overlay_manager.show_toast("No se puede deshipotecar ninguna propiedad")
+				return
 			ModelManager.set_property_mortgaged(fantasy_result["result"]["square"], false)
 		WsClient.FantasyEventType.EARTHQUAKE:
 			var tile_ids = fantasy_result["result"]["squares"] if fantasy_result["result"] else []
+			if len(tile_ids) == 0:
+				overlay_manager.show_toast("No se puede demoler ninguna casa")
 			for tile_id in tile_ids:
 				ModelManager.update_property_houses(tile_id, -1)
 

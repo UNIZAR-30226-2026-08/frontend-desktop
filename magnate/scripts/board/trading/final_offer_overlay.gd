@@ -41,7 +41,7 @@ func setup_offer(left_player_data: Dictionary, right_player_data: Dictionary) ->
 	# 1. Rellenar datos del jugador izquierdo (Lo que entregas)
 	_setup_player_column(
 		left_player_data, 
-		player_name_1, 
+		player_name_1,
 		player_color_1, 
 		money_1, 
 		left_properties_list
@@ -60,7 +60,7 @@ func setup_offer(left_player_data: Dictionary, right_player_data: Dictionary) ->
 func _setup_player_column(data: Dictionary, name_lbl: Label, color_rect: Panel, money_lbl: Label, list_container: VBoxContainer) -> void:
 	# Nombres, colores y dinero
 	name_lbl.text = data.get("name", "Unknown")
-	money_lbl.text = str(data.get("money_offered", 0))
+	money_lbl.text = str(int(data.get("money_offered", 0)))
 	
 	color_rect.modulate = data["color"]
 

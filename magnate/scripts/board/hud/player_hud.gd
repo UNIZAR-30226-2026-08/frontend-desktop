@@ -12,6 +12,10 @@ var base_x_pos: float = 0.0
 var container: VBoxContainer
 var cards: Dictionary = {}
 
+func update_turn_visuals() -> void:
+	for card in cards.values():
+		card.update_turn_visuals()
+
 func _init() -> void:
 	layer = 1 
 	var screen_filler = Control.new()

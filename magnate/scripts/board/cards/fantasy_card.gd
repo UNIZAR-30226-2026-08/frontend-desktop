@@ -31,7 +31,10 @@ func _ready() -> void:
 func setup_content(data: Dictionary) -> void:
 	title_label.text = data["title"]
 	description_label.text = data["description"]
-	price.text = Utils.to_currency_text(data["card_cost"])
+	if data["card_cost"] == 0:
+		price.text = "Gratis"
+	else:
+		price.text = Utils.to_currency_text(data["card_cost"])
 
 func block() -> void:
 	not_enough_money_label.show()

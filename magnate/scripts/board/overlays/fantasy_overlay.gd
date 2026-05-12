@@ -6,8 +6,8 @@ signal card_action_resolved(front_chosen: bool)
 @onready var front_card: Control = $HBoxContainer/FrontFantasyCard
 @onready var back_card: Control = $HBoxContainer/BackFantasyCard
 
-const TIEMPO_ESPERA_CIERRE: float = 4.0
-const TIEMPO_DESVANECIMIENTO: float = 1.0
+const TIEMPO_ESPERA_CIERRE: float = 2.0
+const TIEMPO_DESVANECIMIENTO: float = 0.5
 
 var result: Dictionary
 var front_card_chosen = true
@@ -58,12 +58,12 @@ func _on_front_fantasy_card_pressed() -> void:
 
 func _fadeout_card(card: Control) -> void:
 	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tween.tween_method(card.set_opacity, 1.0, 0.0, 1.0)
+	tween.tween_method(card.set_opacity, 1.0, 0.0, 0.5)
 	await tween.finished
 
 func _move_card_to_center(card) -> void:
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(card, "position:x", 760, 1)
+	tween.tween_property(card, "position:x", 760, 0.5)
 
 func _block_input() -> void:
 	back_card.mouse_filter = Control.MOUSE_FILTER_IGNORE

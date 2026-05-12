@@ -39,7 +39,10 @@ func setup(p_id: int, p_name: String, p_color: Color, p_balance: int) -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP # ¡Vital para detectar clicks!
 	
 	base_color = p_color
-	name_label.text = p_name.to_upper()
+	if p_name == ModelManager.get_player().player_name:
+		name_label.text = "TÚ"
+	else:
+		name_label.text = p_name.to_upper()
 	id_label.text = "#" + str(p_id)
 	
 	_update_balance_label(p_balance)
@@ -116,6 +119,14 @@ func _draw() -> void:
 	var border_points = points.duplicate()
 	border_points.append(points[0])
 	draw_polyline(border_points, Color.WHITE, 2.0, true)
+
+func update_turn_visuals() -> void:
+	pivot_offset = size / 2
+	var target_scale = Vector2(1.2, 1.2) if ModelManager.get_current_turn_player_id() == player_id else Vector2(1, 1)
+	
+	var tween = create_tween()
+	tween.tween_property(self, "scale", target_scale, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	queue_redraw()
 
 # Esta función viaja por todos los hijos y les dice que ignoren el ratón
 func _ignore_mouse_on_children(node: Node) -> void:
