@@ -60,9 +60,8 @@ func setup_players(players_data: Array[PlayerModel]) -> void:
 	cards.clear()
 		
 	for model in players_data:
-		var p_id: int = model.get("id")
-		var raw_name = model.get("player_name") if model.get("player_name") != null else model.get("name")
-		var p_name: String = str(raw_name) if raw_name != null else "Player"
+		var p_id: int = model.id
+		var p_name = model.player_name
 		
 		Utils.debug("✅ Jugador creado -> Nombre: " + p_name + " | ID exacto: '" + str(p_id) + "'")
 		

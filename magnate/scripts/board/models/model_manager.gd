@@ -15,8 +15,6 @@ var game: GameModel
 func initialize_game(game_state: Dictionary) -> void:
 	game = GameModel.new(game_state["id"], game_state["active_turn_player"])
 	game.my_id = WsClient.player_id
-	if WsClient.player_id == -1:
-		Utils.debug("ERROR: AVISAR A FRONT DESKTOP")
 	
 	# Initialize PlayerModels
 	var json_text = FileAccess.open("res://assets/game_info/board.json", FileAccess.READ).get_as_text()
@@ -29,7 +27,7 @@ func initialize_game(game_state: Dictionary) -> void:
 		game.add_player(player)
 		set_player_balance(player.id, int(game_state["money"][str(player.id)]))
 		player.current_tile_id = game_state["positions"][str(player.id)]
-		player.is_in_jail = game_state["jail_remaining_turns"].has(str(player.id)) # TODO
+		player.is_in_jail = game_state["jail_remaining_turns"].has(str(player.id))
 		player.jail_turn_count = 3 - game_state["jail_remaining_turns"].get(str(player.id), 3) # TODO
 	
 	# Initialize PropertyModels
@@ -63,7 +61,7 @@ func initialize_game(game_state: Dictionary) -> void:
 	# Initialize GameModel
 	game.current_phase = game_state["phase"]
 	set_parking_money(game_state["parking_money"])
-	set_turn(game_state["current_round"])
+	set_turn(int(game_state["current_round"]))
 	game.max_rounds = int(game_state["max_rounds"])
 	game.current_phase_player_id = game_state["active_phase_player"]
 	game.recovered_fantasy_event = game_state["fantasy_event"]
