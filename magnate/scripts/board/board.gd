@@ -274,11 +274,12 @@ func _handle_fantasy_chosen(response: Dictionary) -> void:
 	if fantasy_result["fantasy_event"]["fantasy_type"] in already_handled: return
 	match fantasy_result["fantasy_event"]["fantasy_type"]:
 		WsClient.FantasyEventType.GO_TO_JAIL:
-			ModelManager.get_player(ModelManager.get_current_turn_player_id()).is_in_jail = true
+			_handle_normal_movement(false, ModelManager.get_current_turn_player_id(), [ModelManager.game.important_tiles["go_to_jail"]], {})
 		WsClient.FantasyEventType.SEND_TO_JAIL:
-			ModelManager.get_player(fantasy_result["result"]["target_player"]).is_in_jail = true
+			_handle_normal_movement(false, fantasy_result["result"]["target_player"], [ModelManager.game.important_tiles["go_to_jail"]], {})
 		WsClient.FantasyEventType.EVERYBODY_TO_JAIL:
-			for player in ModelManager.game.players.values(): player.is_in_jail = true
+			for player in ModelManager.game.players.values():
+				_handle_normal_movement(false, player.id, [ModelManager.game.important_tiles["go_to_jail"]], {})
 		WsClient.FantasyEventType.BREAK_OPPONENT_HOUSE:
 			if not fantasy_result["result"]:
 				overlay_manager.show_toast("No se puede romper ninguna casa")
@@ -377,7 +378,8 @@ func _handle_normal_movement(animation: bool, player_id: int, path: Array[String
 	# Caso especial: Jugador cae en la cárcel, tenemos que moverlo a la casilla 201
 	if (path[-1] == ModelManager.game.important_tiles["go_to_jail"]):
 		# Esperamos 5 segundos a la animación de cárcel
-		await get_tree().create_timer(5.0).timeout
+		if player_id == ModelManager.game.my_id:
+			await get_tree().create_timer(5.0).timeout
 		_handle_normal_movement(false, player_id, [ModelManager.game.important_tiles["jail"]], fantasy_event)
 
 # RESPONSE - JUGADOR ACTUAL HA SELECCIONADO CASILLA PARA MOVERSE
@@ -524,7 +526,11 @@ func _handle_jail_dice_logic(result: Dictionary) -> void:
 	
 	if is_pair:
 		Utils.debug("✨ ¡DOUBLES! Sales de Secretaría gratis.")
-		overlay_manager.show_toast("¡Has sacado par! Sales libre.")
+		overlay_manager.show_toast("¡Has sacado dobles! Sales libre.")
+		_handle_normal_movement(true, current_player.id, result.path, result["fantasy_event"] if result["fantasy_event"] else {})
+	elif current_player.jail_turn_count == 3:
+		Utils.debug("✨ NO DOBLES Y TERCER TURNO.")
+		overlay_manager.show_toast("No has sacado dobles, pagas obligatoriamente.")
 		_handle_normal_movement(true, current_player.id, result.path, result["fantasy_event"] if result["fantasy_event"] else {})
 	else:
 		Utils.debug("🚫 No hubo par. Debes elegir: Quedarte o Pagar.")
