@@ -228,6 +228,7 @@ func _start_pay_rent(property: PropertyModel) -> void:
 
 func start_auction(action: Dictionary) -> void:
 	Utils.debug("🔨 Empezando subasta para la casilla: " + action["square"])
+	overlay_open.emit()
 	var property = ModelManager.get_property(action["square"])
 	var auction_screen = AUCTION_OVERLAY.instantiate()
 	board.add_child(auction_screen)
