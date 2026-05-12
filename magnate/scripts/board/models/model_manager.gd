@@ -14,6 +14,9 @@ var game: GameModel
 
 func initialize_game(game_state: Dictionary) -> void:
 	game = GameModel.new(game_state["id"], game_state["active_turn_player"])
+	game.my_id = WsClient.player_id
+	if WsClient.player_id == -1:
+		Utils.debug("ERROR: AVISAR A FRONT DESKTOP")
 	
 	# Initialize PlayerModels
 	var json_text = FileAccess.open("res://assets/game_info/board.json", FileAccess.READ).get_as_text()
@@ -58,7 +61,6 @@ func initialize_game(game_state: Dictionary) -> void:
 		set_property_mortgaged(property.id, p["mortgage"])
 	
 	# Initialize GameModel
-	game.my_id = WsClient.player_id
 	game.current_phase = game_state["phase"]
 	set_parking_money(game_state["parking_money"])
 	set_turn(game_state["current_round"])
