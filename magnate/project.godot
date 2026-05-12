@@ -13,7 +13,7 @@ config_version=5
 config/name="Magnate"
 run/main_scene="uid://c72ahxfhkpr7e"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://djhgr8lmsyj4o"
 
 [audio]
 

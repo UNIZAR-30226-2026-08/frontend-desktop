@@ -184,6 +184,7 @@ func _start_new_property(property: PropertyModel) -> void:
 	Utils.debug("Abriendo overlay de propiedad para la casilla: " + property.id)
 	var overlay = NEW_PROPERTY_OVERLAY.instantiate()
 	board.add_child(overlay)
+	overlay.setup(property)
 	# overlay.property_bought.connect(property_bought.emit.bind(tile_id, null))
 	overlay.property_bought.connect(func():
 		WsClient.ws_action_buy_property(property.id)
@@ -192,7 +193,6 @@ func _start_new_property(property: PropertyModel) -> void:
 	)
 	overlay.property_auctioned.connect(WsClient.ws_action_start_auction.bind(property.id))
 	overlay.property_auctioned.connect(overlay_closed.emit)
-	overlay.setup(property)
 
 func _start_property_administration(tile_id: String) -> void:
 	Utils.debug("Abriendo overlay de propiedad para la casilla: " + tile_id)
