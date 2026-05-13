@@ -8,9 +8,9 @@ extends MarginContainer
 @onready var bill_particles: Node2D = %BillParticles
 @onready var balance_difference: Label = %BalanceDifference
 
-# Para hacerlas clickables
 signal clicked(id: int)
 var player_id: int
+var player_name_raw: String = ""
 
 const animation_duration: int = 2
 const animation_label_offset: int = 40
@@ -28,14 +28,15 @@ func _ready() -> void:
 	if font is SystemFont:
 		var variation = FontVariation.new()
 		variation.base_font = font
-		variation.opentype_features = {"tnum": 1, "zero": 1} # No parece funcionar
+		variation.opentype_features = {"tnum": 1, "zero": 1}
 		balance_label.add_theme_font_override("font", variation)
 	
 	if has_node("MainVBox"):
 		_ignore_mouse_on_children($MainVBox)
 
 func setup(p_id: int, p_name: String, p_color: Color, p_balance: int) -> void:
-	player_id = p_id # Guardamos el ID
+	player_id = p_id
+	player_name_raw = p_name
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	
 	base_color = p_color
@@ -47,6 +48,9 @@ func setup(p_id: int, p_name: String, p_color: Color, p_balance: int) -> void:
 	
 	_update_balance_label(p_balance)
 	queue_redraw()
+
+func get_player_name() -> String:
+	return player_name_raw
 	
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
@@ -115,7 +119,6 @@ func _draw() -> void:
 	
 	draw_polygon(points, colors)
 	
-	# Borde blanco para mejorar la visibilidad
 	var border_points = points.duplicate()
 	border_points.append(points[0])
 	draw_polyline(border_points, Color.WHITE, 2.0, true)
@@ -133,4 +136,4 @@ func _ignore_mouse_on_children(node: Node) -> void:
 	for child in node.get_children():
 		if child is Control:
 			child.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_ignore_mouse_on_children(child) # Llamada recursiva para los "nietos"
+		_ignore_mouse_on_children(child) # LLamada recursiva para los nietos
