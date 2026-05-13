@@ -89,12 +89,9 @@ func move_to(positions: Array[Vector2]) -> void:
 		var tween = create_tween().set_trans(Tween.TRANS_QUAD)
 		tween.tween_property(self, "position", target_pos, duration) \
 			.set_ease(Tween.EASE_IN)
-			
+		
 		await tween.finished
 		await get_tree().create_timer(0.05).timeout
-		
-		if target_pos == Vector2(1400, 983) and len(positions) > 1:
-			ModelManager.update_player_balance(ModelManager.get_current_turn_player_id(), 200)
 	stopped.emit()
 
 # DEBUG

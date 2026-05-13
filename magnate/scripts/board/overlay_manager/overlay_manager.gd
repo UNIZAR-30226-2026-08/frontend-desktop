@@ -338,6 +338,7 @@ func _start_trade(p1: PlayerModel, p2: PlayerModel) -> void:
 
 func start_scoreboard_overlay(response: Dictionary) -> void:
 	var current_overlay = SCOREBOARD_OVERLAY.instantiate()
+	overlay_open.emit()
 	board.add_child(current_overlay)
 	current_overlay.button_pressed.connect(func():
 		WsClient.socket.close()

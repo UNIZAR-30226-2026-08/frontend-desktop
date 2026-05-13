@@ -136,7 +136,7 @@ func _handle_general_response(data: Dictionary) -> void:
 	if overlay_manager.is_overlay_open: # Wait to show effects
 		await overlay_manager.overlay_closed
 	for pk in data["money"]:
-		ModelManager.set_player_balance(int(pk), data["money"][pk])
+		ModelManager.set_player_balance(int(pk), int(data["money"][pk]))
 	ModelManager.set_parking_money(data["parking_money"])
 	if data["type"] in ["Response", "ResponseChooseFantasy"]:
 		for pk in data["positions"]:
