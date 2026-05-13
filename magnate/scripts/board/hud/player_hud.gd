@@ -90,7 +90,7 @@ func _show_emoji_on_card(p_id: int, icon_path: String) -> void:
 	var card = cards[p_id]
 	
 	var old = card.get_node_or_null("EmojiFloat")
-	if old:
+	if is_instance_valid(old):
 		old.queue_free()
 	
 	var img = TextureRect.new()
@@ -104,17 +104,28 @@ func _show_emoji_on_card(p_id: int, icon_path: String) -> void:
 	img.position = Vector2(-card.size.x + 20, -60)
 	
 	card.add_child(img)
+	_bounce_step(img, img.position.y, true, 0)
+
+func _bounce_step(img: TextureRect, start_y: float, going_up: bool, count: int) -> void:
+	if not is_instance_valid(img):
+		return
 	
-	var tween = create_tween().set_loops()
-	tween.tween_property(img, "position:y", img.position.y - 10, 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(img, "position:y", img.position.y, 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	var max_bounces = 8
+	if count >= max_bounces:
+		var fade = img.create_tween()
+		fade.tween_property(img, "modulate:a", 0.0, 0.5)
+		fade.tween_callback(func():
+			if is_instance_valid(img):
+				img.queue_free()
+		)
+		return
 	
-	await get_tree().create_timer(3.5).timeout
-	var fade = create_tween()
-	fade.tween_property(img, "modulate:a", 0.0, 0.5)
-	await fade.finished
-	tween.kill()
-	img.queue_free()
+	var target_y = start_y - 10 if going_up else start_y
+	var tween = img.create_tween()
+	tween.tween_property(img, "position:y", target_y, 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_callback(func():
+		_bounce_step(img, start_y, not going_up, count + 1)
+	)
 
 func toggle_hud_visibility(to_hide: bool) -> void:
 	if is_hidden == to_hide: return
