@@ -2,6 +2,7 @@ extends CanvasLayer
 
 @onready var toast_panel: PanelContainer = $Container/ToastPanel
 @onready var message_label: Label = $Container/ToastPanel/MessageLabel
+@onready var container: Control = $Container
 
 var current_tween: Tween
 
@@ -30,7 +31,8 @@ func show_toast(message: String, duration: float = 3.0) -> void:
 	toast_panel.modulate.a = 0.0
 	toast_panel.scale = Vector2(0.95, 0.95)
 	toast_panel.position.y = BASE_Y_POS - ANIM_OFFSET_Y
-	toast_panel.position.x = 960
+	var screen_center_x = container.size.x / 2.0
+	toast_panel.position.x = screen_center_x - (toast_panel.size.x / 2.0)
 	
 	current_tween.set_parallel(true)
 	current_tween.tween_property(toast_panel, "modulate:a", 1.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
