@@ -39,7 +39,7 @@ func _ready() -> void:
 	super()
 	
 	var tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).set_parallel()
-	tween.tween_property(right_player_box, "position:x", 1420, .5)
+	tween.tween_property(right_player_box, "position:x", right_player_box.position.x - right_player_box.size.x, .5)
 	tween.tween_property(left_player_box, "position:x", 0, .5)
 	cancel_btn.pressed.connect(trade_cancelled.emit)
 	send_btn.pressed.connect(func():
