@@ -65,9 +65,8 @@ func setup_players(players_data: Array[PlayerModel]) -> void:
 		
 		Utils.debug("✅ Jugador creado -> Nombre: " + p_name + " | ID exacto: '" + str(p_id) + "'")
 		
-		var p_color: Color = model.get("color") if model.get("color") != null else Color.WHITE
-		
-		var p_balance: int = int(model.get("balance")) if model.get("balance") != null else 0
+		var p_color: Color = model.color
+		var p_balance: int = model.balance
 		
 		var card = CARD_SCENE.instantiate()
 		container.add_child(card)

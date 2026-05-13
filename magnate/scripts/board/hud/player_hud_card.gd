@@ -36,7 +36,7 @@ func _ready() -> void:
 
 func setup(p_id: int, p_name: String, p_color: Color, p_balance: int) -> void:
 	player_id = p_id # Guardamos el ID
-	mouse_filter = Control.MOUSE_FILTER_STOP # ¡Vital para detectar clicks!
+	mouse_filter = Control.MOUSE_FILTER_STOP
 	
 	base_color = p_color
 	if p_name == ModelManager.get_player().player_name:
