@@ -104,7 +104,7 @@ func _ready() -> void:
 	username.text = user_info["username"]
 	games_played_label.text = str(user_info["num_played_games"])
 	wins_label.text = str(user_info["num_won_games"])
-	total_points.text = str(int(user_info["exp"]))
+	total_points.text = str(int(user_info["elo"]))
 	if Globals.tokens.has(user_info["user_piece"]):
 		item_icon.texture = load(Globals.tokens[user_info["user_piece"]]["icon"])
 	
