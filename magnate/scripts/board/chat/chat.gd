@@ -60,6 +60,7 @@ func _on_text_submitted(new_text: String) -> void:
 	input_field.text = ""
 
 func add_player_message(message: Dictionary) -> void:
+	Utils.debug("Voy a mostrar el mensaje " + str(message))
 	var text = message.get("msg", "")
 	var p_name: String = message.get("user", "")
 	var is_sender = p_name == RestClient.username

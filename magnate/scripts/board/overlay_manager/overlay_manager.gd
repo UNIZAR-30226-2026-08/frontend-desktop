@@ -349,7 +349,7 @@ func start_scoreboard_overlay(response: Dictionary) -> void:
 	for bonus in response["bonuses"]:
 		var scores: Dictionary[String, int] = {}
 		for player in ModelManager.game.players.values():
-			scores[player.player_name] = 0
+			scores[player.player_name] = player.balance
 		for player_id in response["bonuses"][bonus]["winners"]:
 			scores[ModelManager.get_player(player_id).player_name] = response["bonuses"][bonus]["bonus_amount"]
 		await current_overlay.score_category(bonus, scores)
