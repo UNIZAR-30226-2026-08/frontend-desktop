@@ -70,7 +70,7 @@ func make_request(
 ) -> bool:
 	while current_request:
 		await response
-	
+	Utils.debug("Sending REST: " + str(data_to_send))
 	current_request = HTTPRequest.new()
 	add_child(current_request)
 	if Globals.BUILD_TYPE == Globals.BuildType.PROD:
@@ -180,6 +180,7 @@ func _response_handler(_result, response_code, _headers, body) -> void:
 	else:
 		needs_refresh = true
 		response.emit(response_data)
+	Utils.debug("REST Response: " + str(response))
 	_was_auth_request = false
 
 func _save_auth_data(tokens: Dictionary):
