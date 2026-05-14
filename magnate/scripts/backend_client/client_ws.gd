@@ -231,6 +231,7 @@ signal response_auction(Dictionary)
 
 ## Response for the result of a game, bonus points
 ## Response Dictionary includes:
+## "last_money": Dictionary - Maps pk to last_money of the player
 ## "bonuses": Dictionary	- Maps bonus ID to bonus types
 ##		- Each bonus contains:
 ##			"bonus_amount": int		- Bonus to win by the category winners
@@ -647,8 +648,11 @@ func _game_response_dispatcher(response: Dictionary) -> void:
 	if not response.has("phase") or not response.has("type"):
 		Utils.debug("ERROR: Response doesnt have a phase or type")
 		return
-
 	if response["type"] == "ResponseBonus":
+		var final_money = {}
+		for i in response["last_money"].keys():
+			final_money[int(i)] = int(response["last_money"][i])
+		response["last_money"] = final_money
 		for bonus in response["bonuses"]:
 			for i in len(response["bonuses"][bonus]["winners"]):
 				response["bonuses"][bonus]["winners"][i] = int(response["bonuses"][bonus]["winners"][i])
