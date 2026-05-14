@@ -13,6 +13,7 @@ config_version=5
 config/name="Magnate"
 run/main_scene="uid://c72ahxfhkpr7e"
 config/features=PackedStringArray("4.6", "Forward Plus")
+boot_splash/stretch_mode=0
 boot_splash/image="uid://djd6n1vv7wucv"
 config/icon="uid://djhgr8lmsyj4o"
 
