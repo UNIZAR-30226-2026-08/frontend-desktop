@@ -182,7 +182,7 @@ func _start_new_property(property: PropertyModel) -> void:
 	Utils.debug("Abriendo overlay de propiedad para la casilla: " + property.id)
 	var overlay = NEW_PROPERTY_OVERLAY.instantiate()
 	board.add_child(overlay)
-	overlay.setup(property)
+	overlay.setup.call_deferred(property)
 	# overlay.property_bought.connect(property_bought.emit.bind(tile_id, null))
 	overlay.property_bought.connect(func():
 		WsClient.ws_action_buy_property(property.id)
@@ -238,7 +238,7 @@ func start_auction(action: Dictionary) -> void:
 	var property = ModelManager.get_property(action["square"])
 	var auction_screen = AUCTION_OVERLAY.instantiate()
 	board.add_child(auction_screen)
-	auction_screen.abrir_carta(property)
+	auction_screen.abrir_carta.call_deferred(property)
 
 func start_finished_auction(response: Dictionary) -> void:
 	Utils.debug("🏆 Subasta terminada. Mostrando resultados para")
