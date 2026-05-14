@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_xd1vc")
 number = "TIP 3"
-title = "Reserva de Emergencia3"
-description = "Nunca gastes todo tu dinero. Mantén siempre reserva para r3"
+title = "Alianzas"
+description = "Se amable con otros jugadores, nada te impide aliarte con otro jugador y que te salve de la bancarrota."
 metadata/_custom_type_script = "uid://dn5v3dwxpk883"

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TipData" format=3 uid="uid://lvfhrvmk6x5e"]
+
+[ext_resource type="Script" uid="uid://dn5v3dwxpk883" path="res://scripts/tips_scripts/tip_data.gd" id="1_e4swf"]
+
+[resource]
+script = ExtResource("1_e4swf")
+number = "TIP 7"
+title = "Cárcel al final de la partida"
+description = "Aunque suene contradictorio, igual cuando el tablero está lleno de hoteles y propiedades que te harán perder todo tu dinero, es mejor que te quedes en la cárcel todos los turnos que puedas. NO PAGUES LA FIANZA"
+metadata/_custom_type_script = "uid://dn5v3dwxpk883"
