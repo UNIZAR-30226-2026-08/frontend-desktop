@@ -27,6 +27,12 @@ func _init(p_id: int, p_name: String, p_color: Color) -> void:
 func move_to_tile(new_tile_id: String, new_path: Array[Vector2]) -> void:    
 	current_tile_id = new_tile_id
 	last_path_taken = new_path
+	# Cosas de la carcel para asegurarnos de que se gestiona bien
+	if new_tile_id == "201":
+		is_in_jail = true
+	else:
+		is_in_jail = false
+		jail_turn_count = 0
 
 func emit_update() -> void:
 	# Emitimos el diccionario igual que en React
