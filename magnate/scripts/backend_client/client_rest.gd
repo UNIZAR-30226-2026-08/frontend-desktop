@@ -70,7 +70,7 @@ func make_request(
 ) -> bool:
 	while current_request:
 		await response
-	Utils.debug("Sending REST: " + str(data_to_send))
+	Utils.debug("Sending REST: " + str(verb) + " " + url + " " + str(data_to_send))
 	current_request = HTTPRequest.new()
 	add_child(current_request)
 	if Globals.BUILD_TYPE == Globals.BuildType.PROD:
