@@ -46,3 +46,4 @@ func _on_header_back_action_requested() -> void:
 func _on_code_input_text_changed(new_text: String) -> void:
 	code_input.text = _regex.sub(new_text.to_upper(), "", true)
 	code_input.caret_column = len(code_input.text)
+	if len(code_input.text) == 6: confirm_button.disabled = false

@@ -138,8 +138,6 @@ func show_banner(message: String, bg_color: Color = Color("008a5c"), duration: f
 		# Si es nuestro turno enseñamos un overlay indicando cuantos turnos llevamos en la cárcel
 		if ModelManager.game.my_id == ModelManager.game.current_turn_player_id:
 			show_jail_initial_warning(current_player.jail_turn_count)
-	#else:
-		#show_dice_overlay()
 		
 func show_toast(message: String, duration: float = 3.0) -> void:
 	if toast_instance:
@@ -216,7 +214,11 @@ func _start_property_with_mortgage(property: PropertyModel) -> void:
 	overlay.setup(property)
 	board.add_child(overlay)
 	if ModelManager.game.current_phase == WsClient.Phase.ROLL_THE_DICES: board._start_phase()
-	else: overlay.button_pressed.connect(show_controls_when_possible)
+	else:
+		overlay.button_pressed.connect(func():
+			overlay_closed.emit()
+			show_controls_when_possible()
+		)
 
 func _start_pay_rent(property: PropertyModel) -> void:
 	Utils.debug("Abriendo overlay de propiedad para la casilla: " + property.id)
@@ -224,7 +226,11 @@ func _start_pay_rent(property: PropertyModel) -> void:
 	overlay.setup(property)
 	board.add_child(overlay)
 	if ModelManager.game.current_phase == WsClient.Phase.ROLL_THE_DICES: board._start_phase()
-	else: overlay.button_pressed.connect(show_controls_when_possible)
+	else:
+		overlay.button_pressed.connect(func():
+			overlay_closed.emit()
+			show_controls_when_possible()
+		)
 
 func start_auction(action: Dictionary) -> void:
 	Utils.debug("🔨 Empezando subasta para la casilla: " + action["square"])
@@ -277,7 +283,6 @@ func _start_tram_overlay() -> void:
 	var overlay = TRAM_OVERLAY.instantiate()
 	board.add_child(overlay)
 	overlay.button_pressed.connect(tram_ok.emit)
-	# overlay.button_pressed.connect(overlay_closed.emit)
 
 func _start_go_to_jail_overlay(tile_id: String) -> void:
 	Utils.debug("🚨 Has caído en 'Ve a secretaría': " + tile_id)
@@ -346,12 +351,17 @@ func start_scoreboard_overlay(response: Dictionary) -> void:
 	)
 	await board.get_tree().create_timer(2).timeout
 	await current_overlay.prepare_for_categories()
+	var scores: Dictionary[String, int] = {}
+	for player in ModelManager.game.players.values():
+		scores[player.player_name] = player.balance
+	await current_overlay.score_category("final_money", scores)
 	for bonus in response["bonuses"]:
-		var scores: Dictionary[String, int] = {}
+		scores = {}
 		for player in ModelManager.game.players.values():
-			scores[player.player_name] = player.balance
-		for player_id in response["bonuses"][bonus]["winners"]:
-			scores[ModelManager.get_player(player_id).player_name] = response["bonuses"][bonus]["bonus_amount"]
+			if player.id in response["bonuses"][bonus]["winners"]:
+				scores[player.player_name] = response["bonuses"][bonus]["bonus_amount"]
+			else:
+				scores[player.player_name] = 0
 		await current_overlay.score_category(bonus, scores)
 	current_overlay.finish()
 

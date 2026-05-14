@@ -30,13 +30,15 @@ func setup(game_data: Dictionary) -> void:
 	player_names.sort_custom(func(a, b): return game_data["final_money"][a] > game_data["final_money"][b])
 	var _position = player_names.find(RestClient.username) + 1
 	if time_start_label:
-		time_start_label.text = game_data.get("start_date", "---T").split("T")[0]
+		var date = Time.get_datetime_dict_from_datetime_string(game_data["start_date"], false)
+		time_start_label.text = "%02d/%02d/%d %02d:%02d" % [date.day, date.month, date.year, date.hour, date.minute]
 	if position_label:
 		position_label.text = "#" + str(_position)
 	if reward_amount_label:
 		reward_amount_label.text = str(_money)
 	if time_end_label:
-		time_end_label.text = "FIN: " + game_data.get("end_date", "---T").split("T")[0]
+		var date = Time.get_datetime_dict_from_datetime_string(game_data["end_date"], false)
+		time_end_label.text = "FIN: " + "%02d/%02d/%d %02d:%02d" % [date.day, date.month, date.year, date.hour, date.minute]
 
 	# 2. Configurar la lista de jugadores y visibilidad de puestos
 	var num_players = player_names.size()

@@ -96,9 +96,6 @@ func make_request(
 			return true
 	else:
 		push_error("Unsupported verb in HTTP request")
-	current_request.queue_free()
-	response.emit({})
-	_was_auth_request = false
 	return false
 
 func make_auth_request(
@@ -171,6 +168,7 @@ func _response_handler(_result, response_code, _headers, body) -> void:
 		if needs_refresh:
 			Utils.debug("Access token expired. Attempting refresh...")
 			_refresh_access_token()
+			has_last_data = false
 		else:
 			Utils.debug("Refresh token also expired. Redirecting to login.")
 			user_logout()
@@ -182,6 +180,7 @@ func _response_handler(_result, response_code, _headers, body) -> void:
 	else:
 		needs_refresh = true
 		response.emit(response_data)
+	_was_auth_request = false
 
 func _save_auth_data(tokens: Dictionary):
 	token_access = tokens["access"]

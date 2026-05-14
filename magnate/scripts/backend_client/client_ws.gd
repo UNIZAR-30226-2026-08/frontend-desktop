@@ -649,6 +649,9 @@ func _game_response_dispatcher(response: Dictionary) -> void:
 		return
 
 	if response["type"] == "ResponseBonus":
+		for bonus in response["bonuses"]:
+			for i in len(response["bonuses"][bonus]["winners"]):
+				response["bonuses"][bonus]["winners"][i] = int(response["bonuses"][bonus]["winners"][i])
 		response_bonus.emit(response)
 		return
 	response["parking_money"] = int(response["parking_money"])
