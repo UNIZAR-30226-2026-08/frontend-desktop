@@ -11,6 +11,8 @@
 [ext_resource type="Resource" uid="uid://djaly15rrqkcu" path="res://styles/tips/tip_3.tres" id="7_6pcab"]
 [ext_resource type="Resource" uid="uid://dxjxuk23u6663" path="res://styles/tips/tip_4.tres" id="8_647yf"]
 [ext_resource type="Resource" uid="uid://5j2b8t0de47o" path="res://styles/tips/tip_5.tres" id="9_5m3ie"]
+[ext_resource type="Resource" uid="uid://boorl0ix723kp" path="res://styles/tips/tip_6.tres" id="10_5m3ie"]
+[ext_resource type="Resource" uid="uid://lvfhrvmk6x5e" path="res://styles/tips/tip_7.tres" id="11_k4ix8"]
 [ext_resource type="PackedScene" uid="uid://df7l4312ldpad" path="res://scenes/components/header.tscn" id="12_6pcab"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g2gpt"]
@@ -30,7 +32,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_hex4j")
 script = ExtResource("3_ykcls")
-tips_data = Array[ExtResource("4_kbn6k")]([ExtResource("5_ykcls"), ExtResource("6_tu13m"), ExtResource("7_6pcab"), ExtResource("8_647yf"), ExtResource("9_5m3ie")])
+tips_data = Array[ExtResource("4_kbn6k")]([ExtResource("5_ykcls"), ExtResource("6_tu13m"), ExtResource("7_6pcab"), ExtResource("8_647yf"), ExtResource("9_5m3ie"), ExtResource("10_5m3ie"), ExtResource("11_k4ix8")])
 card_scene = ExtResource("4_5dtuh")
 
 [node name="Background" type="Panel" parent="." unique_id=279795062]

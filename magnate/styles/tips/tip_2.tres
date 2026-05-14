@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_rjlvw")
 number = "TIP 2"
-title = "Reserva de Emergencia2"
-description = "Nunca gastes todo tu dinero. Mantén siempre reserva 2"
+title = "Compra temprana"
+description = "Al principio de la partida intenta comprar todo lo que puedas, una vez se acaban las casillas el tablero es un campo de minas!"
 metadata/_custom_type_script = "uid://dn5v3dwxpk883"

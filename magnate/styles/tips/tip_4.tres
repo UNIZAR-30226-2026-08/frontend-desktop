@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_w4rao")
 number = "TIP 4"
-title = "Reserva de Emergenci4"
-description = "Nun4"
+title = "Usa el transporte público"
+description = "Los tranvías te permiten moverte por el mapa para evitar zonas peligrosas. Mejor pagar 50M a la banca que 400M a un jugador."
 metadata/_custom_type_script = "uid://dn5v3dwxpk883"
