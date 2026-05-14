@@ -11,4 +11,5 @@
 	"num_trades": {"title": "El mercante", "description": "Más intercambios realizados"},
 	"num_mortgages": {"title": "El especulador", "description": "Más propiedades hipotecadas"},
 	"end_game": {"title": "Finalistas", "description": "Ha llegado al final de la partida"},
+	"final_money": {"title": "Dinero final", "description": "Dinero al final de la partida"},
 }

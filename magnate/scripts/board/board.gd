@@ -196,10 +196,10 @@ func _handle_start_auction(response: Dictionary) -> void:
 
 func _handle_end_auction(response: Dictionary) -> void:
 	overlay_manager.start_finished_auction(response)
-	if response["auction"]["is_tie"] or not response["auction"]["winner"]: return
 	var auction = response["auction"]
-	for bid in auction["bids"]:
-		ModelManager.update_player_balance(int(bid), -auction["bids"][bid])
+	if auction["is_tie"] or not auction["winner"]: return
+	if auction["winner"]:
+		ModelManager.update_player_balance(int(auction["winner"]), -int(auction["final_amount"]))
 	ModelManager.set_property_owner(auction["square"], response["auction"]["winner"])
 
 func _handle_surrender(action: Dictionary) -> void:
