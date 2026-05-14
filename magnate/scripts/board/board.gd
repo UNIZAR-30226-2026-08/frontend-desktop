@@ -527,10 +527,12 @@ func _handle_jail_dice_logic(result: Dictionary) -> void:
 	if is_pair:
 		Utils.debug("✨ ¡DOUBLES! Sales de Secretaría gratis.")
 		overlay_manager.show_toast("¡Has sacado dobles! Sales libre.")
+		current_player.jail_turn_count = 0
 		_handle_normal_movement(true, current_player.id, result.path, result["fantasy_event"] if result["fantasy_event"] else {})
 	elif current_player.jail_turn_count == 3:
 		Utils.debug("✨ NO DOBLES Y TERCER TURNO.")
 		overlay_manager.show_toast("No has sacado dobles, pagas obligatoriamente.")
+		current_player.jail_turn_count = 0
 		_handle_normal_movement(true, current_player.id, result.path, result["fantasy_event"] if result["fantasy_event"] else {})
 	else:
 		Utils.debug("🚫 No hubo par. Debes elegir: Quedarte o Pagar.")
