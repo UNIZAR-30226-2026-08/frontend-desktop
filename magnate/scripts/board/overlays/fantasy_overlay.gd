@@ -5,6 +5,7 @@ signal card_action_resolved(front_chosen: bool)
 # Referencias a los nodos hijos (cartas)
 @onready var front_card: Control = $HBoxContainer/FrontFantasyCard
 @onready var back_card: Control = $HBoxContainer/BackFantasyCard
+@onready var h_box_container: HBoxContainer = %HBoxContainer
 
 const TIEMPO_ESPERA_CIERRE: float = 2.0
 const TIEMPO_DESVANECIMIENTO: float = 0.5
@@ -63,7 +64,7 @@ func _fadeout_card(card: Control) -> void:
 
 func _move_card_to_center(card) -> void:
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(card, "position:x", 760, 0.5)
+	tween.tween_property(card, "position:x", h_box_container.size.x / 2 - card.size.x / 2, 0.5)
 
 func _block_input() -> void:
 	back_card.mouse_filter = Control.MOUSE_FILTER_IGNORE

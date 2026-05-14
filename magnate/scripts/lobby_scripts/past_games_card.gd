@@ -31,14 +31,28 @@ func setup(game_data: Dictionary) -> void:
 	var _position = player_names.find(RestClient.username) + 1
 	if time_start_label:
 		var date = Time.get_datetime_dict_from_datetime_string(game_data["start_date"], false)
-		time_start_label.text = "%02d/%02d/%d %02d:%02d" % [date.day, date.month, date.year, date.hour, date.minute]
+		var tz_info = Time.get_time_zone_from_system()
+		var offset_minutes = tz_info["bias"]
+		var local_day = (date["hour"] + (offset_minutes / 60)) / 24 + date["day"]
+		var local_hour = (date["hour"] + (offset_minutes / 60)) % 24
+		var local_min = date["minute"] + offset_minutes % 60
+		if local_hour < 0:
+			local_hour += 24
+		time_start_label.text = "%02d/%02d/%d %02d:%02d" % [local_day, date.month, date.year, local_hour, local_min]
 	if position_label:
 		position_label.text = "#" + str(_position)
 	if reward_amount_label:
 		reward_amount_label.text = str(_money)
 	if time_end_label:
 		var date = Time.get_datetime_dict_from_datetime_string(game_data["end_date"], false)
-		time_end_label.text = "FIN: " + "%02d/%02d/%d %02d:%02d" % [date.day, date.month, date.year, date.hour, date.minute]
+		var tz_info = Time.get_time_zone_from_system()
+		var offset_minutes = tz_info["bias"]
+		var local_day = (date["hour"] + (offset_minutes / 60)) / 24 + date["day"]
+		var local_hour = (date["hour"] + (offset_minutes / 60)) % 24
+		var local_min = date["minute"] + offset_minutes % 60
+		if local_hour < 0:
+			local_hour += 24
+		time_end_label.text = "FIN: " + "%02d/%02d/%d %02d:%02d" % [local_day, date.month, date.year, local_hour, local_min]
 
 	# 2. Configurar la lista de jugadores y visibilidad de puestos
 	var num_players = player_names.size()
