@@ -29,8 +29,20 @@ func _ready() -> void:
 	chat_button_audio = AudioResource.from_type(Globals.BUTTON_BACK, AudioResource.AudioResourceType.UI)
 	
 	emoji_data = _load_emojis()
-	print("Emojis cargados: ", emoji_data.size())
+	await _filter_user_emojis()
+	print("Emojis del usuario: ", emoji_data.size())
 	_build_emoji_picker()
+	
+func _filter_user_emojis() -> void:
+	var owned: Array = await RestClient.shop_get_user_emojis()
+
+	var owned_ids: Array = []
+	for item in owned:
+		var id = item.get("custom_id", item.get("id", -1))
+		if id != -1:
+			owned_ids.append(id)
+
+	emoji_data = emoji_data.filter(func(e): return e.get("id", -1) in owned_ids)
 
 func _load_emojis() -> Array:
 	var file = FileAccess.open("res://assets/game_info/items.json", FileAccess.READ)

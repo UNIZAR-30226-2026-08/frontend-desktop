@@ -310,9 +310,12 @@ func shop_get_user_pieces() -> Array:
 		return resp
 	return []
 
-func shop_get_user_emojis() -> Dictionary:
+func shop_get_user_emojis() -> Array:
 	await make_auth_request(Globals.REST_BASE_URL + "/shop/user-emojis/")
-	return await response
+	var resp = await response
+	if typeof(resp) == TYPE_ARRAY:
+		return resp
+	return []
 
 func game_get_private_code() -> Dictionary:
 	await make_auth_request(Globals.REST_BASE_URL + "/lobby/get-private-code")
