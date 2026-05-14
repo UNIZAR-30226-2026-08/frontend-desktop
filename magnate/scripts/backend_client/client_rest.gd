@@ -67,11 +67,19 @@ func make_request(
 	data_to_send: Variant = null, # String or Dictionary
 	verb: HTTPClient.Method = HTTPClient.METHOD_GET,
 	headers: Array = [],
+	is_auth: bool = false
 ) -> bool:
 	while current_request:
 		await response
-	Utils.debug("Sending REST: " + str(verb) + " " + url + " " + str(data_to_send))
 	current_request = HTTPRequest.new()
+	if is_auth:
+		has_last_data = true
+		last_url = url
+		last_verb = verb
+		last_data = data_to_send
+		last_headers = headers
+		_was_auth_request = true
+	Utils.debug("Sending REST: " + str(verb) + " " + url + " " + str(data_to_send))
 	add_child(current_request)
 	if Globals.BUILD_TYPE == Globals.BuildType.PROD:
 		var cert = X509Certificate.new()
@@ -104,16 +112,8 @@ func make_auth_request(
 	verb: HTTPClient.Method = HTTPClient.METHOD_GET,
 	additional_headers: Array = [],
 ):
-	has_last_data = true
-	last_url = url
-	last_verb = verb
-	last_data = data_to_send
-	last_headers = additional_headers
-	
-	_was_auth_request = true
-	
 	var headers: Array = ["Authorization: Bearer " + token_access] + additional_headers
-	await make_request(url, data_to_send, verb, headers)
+	await make_request(url, data_to_send, verb, headers, true)
 
 func _refresh_access_token():
 	needs_refresh = false
@@ -162,9 +162,6 @@ func _response_handler(_result, response_code, _headers, body) -> void:
 	current_request = null
 	var response_data = JSON.parse_string(body.get_string_from_utf8())
 	if response_code == 401 and _was_auth_request:
-		if not _was_auth_request:
-			last_faulty_response = response_data
-			last_faulty_response_code = response_code
 		if needs_refresh:
 			Utils.debug("Access token expired. Attempting refresh...")
 			_refresh_access_token()
@@ -268,10 +265,10 @@ func user_get_info() -> Dictionary:
 	var resp = await response
 	if resp.has("points"):
 		resp["points"] = int(resp["points"])
-	if resp.has("num_played_games"):
+	if resp.has("num_won_games"):
 		resp["num_won_games"] = int(resp["num_won_games"])
 	if resp.has("num_played_games"):
-		resp["num_played_games"] = int(resp["num_won_games"])
+		resp["num_played_games"] = int(resp["num_played_games"])
 	return resp
 
 func user_get_games() -> Dictionary:
