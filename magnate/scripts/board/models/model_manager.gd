@@ -27,7 +27,7 @@ func initialize_game(game_state: Dictionary) -> void:
 		game.add_player(player)
 		set_player_balance(player.id, int(game_state["money"][str(player.id)]))
 		player.current_tile_id = game_state["positions"][str(player.id)]
-		player.is_in_jail = game_state["jail_remaining_turns"].has(str(player.id))
+		player.is_in_jail = game_state["jail_remaining_turns"].has(str(player.id)) and game_state["jail_remaining_turns"][str(player.id)] != 0
 		player.jail_turn_count = 3 - game_state["jail_remaining_turns"].get(str(player.id), 3) # TODO
 	
 	# Initialize PropertyModels

@@ -133,11 +133,11 @@ func _handle_general_response(data: Dictionary) -> void:
 	var new_phase = ModelManager.game.current_phase != data["phase"]
 	ModelManager.game.current_phase = data["phase"]
 	ModelManager.set_turn(int(data["current_round"]))
+	ModelManager.set_parking_money(data["parking_money"])
 	if overlay_manager.is_overlay_open: # Wait to show effects
 		await overlay_manager.overlay_closed
 	for pk in data["money"]:
 		ModelManager.set_player_balance(int(pk), int(data["money"][pk]))
-	ModelManager.set_parking_money(data["parking_money"])
 	if data["type"] in ["Response", "ResponseChooseFantasy"]:
 		for pk in data["positions"]:
 			var path = tile_manager.solve_path([data["positions"][pk]])
