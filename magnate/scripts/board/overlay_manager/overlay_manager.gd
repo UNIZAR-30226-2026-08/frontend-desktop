@@ -242,7 +242,7 @@ func start_auction(action: Dictionary) -> void:
 
 func start_finished_auction(response: Dictionary) -> void:
 	Utils.debug("🏆 Subasta terminada. Mostrando resultados para")
-	
+	overlay_open.emit()
 	var results_screen = RESULTS_AUCTION_OVERLAY.instantiate()
 	board.add_child(results_screen)
 	

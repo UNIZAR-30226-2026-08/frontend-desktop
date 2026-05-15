@@ -3,7 +3,8 @@ extends Control
 @onready var coin_particles: Node2D = %CoinParticles
 @onready var jackpot: Label = %Jackpot
 
-func ready() -> void:
+func _ready() -> void:
+	set_jackpot()
 	ModelManager.parking.connect(set_jackpot)
 
 func emit_coins() -> void:
